@@ -1,5 +1,7 @@
 package kr.ac.kopo.board.controller;
 
+import java.lang.ProcessBuilder.Redirect;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,8 +20,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import kr.ac.kopo.board.reply.vo.ReplyVO;
 import kr.ac.kopo.board.service.BoardService;
 import kr.ac.kopo.board.vo.BoardVO;
 
@@ -37,7 +41,7 @@ public class BoardController {
 		
 		ModelAndView mav = new ModelAndView("board/list");
 		
-		mav.addObject("list",boardList);
+		mav.addObject("list", boardList);
 		
 		return mav;
 	}
@@ -66,6 +70,7 @@ public class BoardController {
 	// @PathVariable("no") int no, @PathVariable("name") String name
 	// url이 유연하게 움직이고 있음
 	
+	// list에서 게시글 클릭했을 때 게시글 상세
 	@RequestMapping("/board/{no}")
 	public ModelAndView selectByNo2(@PathVariable("no") int no) {
 		
@@ -77,6 +82,13 @@ public class BoardController {
 		// service => dao 거쳐서 해당하는 게시물의 값을 받아와서 mav로 공유영역에 저장
 		BoardVO board = service.selectDetailBoard(no);
 		
+		
+		//no(해당 게시글)에 해당하는 댓글을 가져와야함 => 공유영역에 저장, return되는 jsp에 댓글 출력하기
+		// ajax로 댓글 등록하고, /board/{no}를 호출해야할 것 같은데..
+		// 게시글 번호에 해당하는 댓글을 출력해주는게 필요함 ==> 이거를 이렇게 했다가 ajax로 변경했음
+		//List<ReplyVO> replyList = service.boardReplyList(no);
+		
+		//mav.addObject("replyList", replyList);
 		mav.addObject("board", board);
 		
 		return mav;
@@ -185,12 +197,11 @@ public class BoardController {
 	}
 	
 	
-	
 	// BoardVO에 들어있는, 입력된 데이터가 실제 올바르게 입력된 데이터인가
-	//	if(board.getTitle() == null || board.getTitle().equals(""))
+	// if(board.getTitle() == null || board.getTitle().equals(""))
 	// 이거를 제목, 작성자, 내용 한 개씩 다물어봐야함.. 
 	// 비효율적이잖아? => 일단, VO 멤버변수로 가자
-	// vo에 @NotEmpty가 붙은 멤버변수에 대해 @Valid
+	// VO에 @NotEmpty가 붙은 멤버변수에 대해 @Valid
 	// 이게 잘작동되는지 결과=> Errors or BindingResult
 	@PostMapping("/board/write")
 	public String write(@Valid BoardVO board, Errors error) {
@@ -211,6 +222,66 @@ public class BoardController {
 		
 		return "redirect:/board";
 		
+	}
+	
+	// 댓글 insert -1
+//	@PostMapping("/board/reply")
+//	public void replyWrite(ReplyVO replyVO) {
+//		
+//		System.out.println(replyVO);
+//		
+//		// ajax로 보낸 파라마터를 ReplyVO에 set해서 들고옴
+//		service.boardReplyWrite(replyVO);
+//	
+//	}
+	
+	// 댓글 insert -2
+//	@PostMapping("/board/reply")
+//	@ResponseBody
+//	public int replyWrite(@RequestParam("content") String content,
+//							@RequestParam("boardNo") int boardNo,
+//							@RequestParam("writer") String writer)
+//	{
+//		 
+//		ReplyVO reply = new ReplyVO();
+//		reply.setBoardNo(boardNo);
+//		reply.setContent(content);
+//		reply.setWriter(writer);
+//		
+//		System.out.println(reply);
+//		// ajax로 보낸 파라마터를 ReplyVO에 set해서 들고옴
+//		
+//		int cnt = service.boardReplyWrite(reply);
+//		
+//		return cnt;
+//	}
+	
+	// 댓글 insert -3
+	@PostMapping("/board/reply")
+	@ResponseBody
+	public int replyWrite(ReplyVO reply){
+		 
+		// return 값이 .jsp가 아닌 경우 사용하는 @ResponseBody
+		
+		System.out.println(reply);
+		// ajax로 보낸 파라마터를 ReplyVO에 set해서 들고옴
+		
+		int cnt = service.boardReplyWrite(reply);
+		return cnt;
+	}
+	
+	
+	@GetMapping("/board/replyList/{no}")
+	public ModelAndView getReplyList(@PathVariable("no") int no) {
+		
+		ModelAndView mav = new ModelAndView("board/replyList");
+		
+		List<ReplyVO> replyList = service.boardReplyList(no);
+		
+		mav.addObject("replyList", replyList);
+		
+		
+		return mav;
 	}
 	
 	

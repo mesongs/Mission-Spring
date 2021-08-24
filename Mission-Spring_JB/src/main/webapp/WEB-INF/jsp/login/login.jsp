@@ -5,9 +5,17 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" href="<%= request.getContextPath() %>/resources/css/layout.css" />
-<link rel="stylesheet" href="<%= request.getContextPath() %>/resources/css/board.css" />
+<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/layout.css" />
+<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/board.css" />
 <script src="<%= request.getContextPath() %>/resources/js/myJS.js"></script>
+
+<script>
+
+	if('${msg}'){
+		alert('${ msg }')
+	}
+
+</script>
 
 
 </head>
@@ -31,6 +39,12 @@
 					<tr>
 						<th>PASSWORD</th>
 						<td><input type="password" name="password"></td>
+					</tr>
+					<tr>
+						<!--클라이언트의 웹브라우저에 저장하는 쿠키 이용  -->
+						<td rowspan="2">
+							<input type="checkbox">아이디 저장
+						</td>
 					</tr>
 				</table>
 				<br>

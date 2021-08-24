@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.ac.kopo.board.reply.vo.ReplyVO;
 import kr.ac.kopo.board.vo.BoardVO;
 
 // component-scan할 때 만들어줘야지
@@ -50,7 +51,23 @@ public class BoardDAOImpl implements BoardDAO{
 		
 	}
 
-	
+
+	public int boardReplyWrite(ReplyVO reply) {
 		
+		int cnt = sqlSessionTemplate.insert(namespace + ".writeReply", reply);
+		
+		return cnt;
+	}
+
+
+	public List<ReplyVO> boardReplyList(int boardNo) {
+		
+		List<ReplyVO> replyList = sqlSessionTemplate.selectList(namespace+ ".replyList", boardNo); 
+		
+		return replyList;
+	}
+
+	
+	
 	
 }

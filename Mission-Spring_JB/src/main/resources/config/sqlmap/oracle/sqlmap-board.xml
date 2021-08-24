@@ -13,6 +13,11 @@
 		<result column="reg_date" property="regDate" />
 	</resultMap>
 	
+	<resultMap type="replyVO" id="replyMap">
+		<result column="board_no" property="boardNo" />
+		<result column="reg_date" property="regDate" />
+	</resultMap>
+	
 	<select id="selectAll" resultMap="boardMap">
 		select no, title, writer, to_char(reg_date, 'yyyy-mm-dd') as reg_date
 		from t_board
@@ -39,5 +44,17 @@
 		insert into t_board(no, title, writer, content)
 		values(seq_t_board_no.nextval, #{title}, #{writer}, #{content})
 	</insert>
-
+	
+	<!-- insert할 때는 resultMap이 필요없음, 직접 멤버변수를 적어주기 때문에  -->
+	<insert id="writeReply" parameterType="replyVO">
+		insert into t_reply(no, board_no, content, writer)
+		values(seq_t_reply_no.nextval, #{boardNo}, #{content}, #{writer})
+	</insert>
+	
+	<!--sql가져올 때, 마지막 세미콜론 꼭 빼기..  -->
+	<select id="replyList" parameterType="int" resultMap="replyMap">
+		select no, board_no, content, writer, reg_date 
+		from t_reply
+		where board_no = #{no}
+	</select>
 </mapper>

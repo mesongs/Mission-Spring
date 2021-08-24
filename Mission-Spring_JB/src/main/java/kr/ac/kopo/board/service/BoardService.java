@@ -2,6 +2,7 @@ package kr.ac.kopo.board.service;
 
 import java.util.List;
 
+import kr.ac.kopo.board.reply.vo.ReplyVO;
 import kr.ac.kopo.board.vo.BoardVO;
 
 public interface BoardService {
@@ -13,5 +14,9 @@ public interface BoardService {
 	void boardDelete(int boardNo);
 	
 	void boardWrite(BoardVO board);
+	
+	int boardReplyWrite(ReplyVO reply);
+	
+	List<ReplyVO> boardReplyList(int boardNo);
 	
 }

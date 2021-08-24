@@ -14,6 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import kr.ac.kopo.board.vo.BoardVO;
+import kr.ac.kopo.member.vo.MemberVO;
 
 
 // 스프링 기반의 junit으로 test한다
@@ -63,12 +64,26 @@ public class MybatisTest {
 		BoardVO board = sessionTemplate.selectOne("board.BoardDAO.selectByNo", 186); 
 		System.out.println(board);
 	}
-	
+	@Ignore
 	@Test
 	public void 게시글삭제Test() throws Exception{
 		
 		sessionTemplate.delete("board.BoardDAO.deleteByNo", 186);
 	}
+	
+	@Test
+	public void 로그인테스트() throws Exception{
+		
+		MemberVO member = new MemberVO();
+		
+		member.setId("jb8049");
+		member.setPassword("1234");
+		
+		MemberVO userVO = sessionTemplate.selectOne("member.memberDAO.login",member);
+		
+		assertNotNull(userVO);
+	}
+	
 	
  
 	

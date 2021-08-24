@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.ac.kopo.board.dao.BoardDAO;
+import kr.ac.kopo.board.reply.vo.ReplyVO;
 import kr.ac.kopo.board.vo.BoardVO;
 
 @Service
@@ -43,6 +44,23 @@ public class BoardServiceImpl implements BoardService  {
 		boardDAO.boardWrite(board);
 		
 	}
+
+
+	public int boardReplyWrite(ReplyVO reply) {
+		
+		int cnt = boardDAO.boardReplyWrite(reply);
+		
+		return cnt;
+	}
+
+
+	public List<ReplyVO> boardReplyList(int boardNo) {
+		
+		List<ReplyVO> replyList = boardDAO.boardReplyList(boardNo);
+		
+		return replyList;
+	}
+	
 	
 	
 	

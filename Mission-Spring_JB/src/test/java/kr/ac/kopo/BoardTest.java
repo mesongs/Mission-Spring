@@ -11,6 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import kr.ac.kopo.board.dao.BoardDAO;
+import kr.ac.kopo.board.reply.vo.ReplyVO;
 import kr.ac.kopo.board.service.BoardService;
 import kr.ac.kopo.board.vo.BoardVO;
 
@@ -55,11 +56,32 @@ public class BoardTest {
 	}
 	// test 이상없음
 	@Test
+	@Ignore
 	public void 상세게시글조회Test() throws Exception{
 		
 		BoardVO board = boardService.selectDetailBoard(186);
-		
 		System.out.println(board);
+		
+	}
+	
+	@Test
+	public void 답글Test() throws Exception{
+		
+//		ReplyVO reply = new ReplyVO();
+//		
+//		reply.setBoardNo(190);
+//		reply.setContent("제발");
+//		reply.setWriter("되라");
+//		
+//		System.out.println(reply);
+//		boardService.boardReplyWrite(reply);
+		
+		List<ReplyVO> replyList = boardService.boardReplyList(190);
+		
+		for(ReplyVO reply : replyList) {
+			System.out.println(reply);
+			
+		}
 		
 	}
 	

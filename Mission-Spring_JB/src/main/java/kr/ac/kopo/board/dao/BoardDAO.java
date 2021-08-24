@@ -2,6 +2,7 @@ package kr.ac.kopo.board.dao;
 
 import java.util.List;
 
+import kr.ac.kopo.board.reply.vo.ReplyVO;
 import kr.ac.kopo.board.vo.BoardVO;
 
 // 변화에 민감하지 않게 하기 위해 인터페이스로 구성
@@ -35,4 +36,12 @@ public interface BoardDAO {
 	 */
 	void boardWrite(BoardVO board);
 	
+	/**
+	 * 답글 등록
+	 * @param reply
+	 */
+	int boardReplyWrite(ReplyVO reply);
+	
+	
+	List<ReplyVO> boardReplyList(int boardNo);
 }	

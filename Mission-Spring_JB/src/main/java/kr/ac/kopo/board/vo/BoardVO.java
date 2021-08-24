@@ -65,6 +65,4 @@ public class BoardVO {
 				+ viewCnt + ", regDate=" + regDate + "]";
 	}
 	
-	
-
 }

@@ -3,10 +3,14 @@ package kr.ac.kopo.board.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -127,32 +131,89 @@ public class BoardController {
 	
 //	@RequestMapping(value="/board/write", method=RequestMethod.GET)
 //  어노테이션이 새로나왔음, 스프링 4.3이후부터
+//	@GetMapping("/board/write")
+//	public String writeForm() {
+//		
+//		
+//		return "board/write";
+//	}
+//	
+////	@RequestMapping(value="/board/write", method=RequestMethod.POST)
+//	@PostMapping("/board/write")
+//	public String write(BoardVO board, Model model) {
+//		
+//		
+//		System.out.println(board);
+//		
+//		// 백엔드에서 제약조건을 지킬 수 있도록 해보자
+////		if(board.getTitle() == null || board.getTitle().equals("")) {
+////			
+////			// 만약 사용자가 제목, 작성자는 이미 등록했는데, 이거는 기억시켜야지! => model 등록
+////			model.addAttribute("board", board);
+////			return "board/write";
+////			
+////		}
+//		
+//		
+//		
+//		return "redirect:/board";
+//		
+//		// 리턴값이 void였을 때, uri (board/write)와 똑같은 이름의 파일을 포워드!
+//	}
+	
+	
+	// db에 저장되기 전 컨트롤러에서 올바르게 데이터를 입력했는지 판단
+	// 사용자가 '제목'만 입력했고, '작성자'와 '내용'은 입력 안했으면?
+	// 사용자가 이미 입력한 '제목'을 보여줘야함 => 공유영역에 객체를 등록시키는 방법 뿐
+	// response 하면서 공유영역에 등록된 내용을 화면에 뿌려줌
+	// 이렇게 하면 사용자가 입력한 내용을 기억하고 있는 것처럼 보임
+	// 이 과정을 편하게 하는 스프링 form 태그
+	
 	@GetMapping("/board/write")
-	public String writeForm() {
+	public String writeForm(Model model) {
 		
+		//BoardVO board = new BoardVO();
+		//board.setTitle("제목..");
+		
+		// 이 부분 뭐지?
+		// write.jsp에서 modelAttribute="boardVO"를 사용할거니까
+		// 여기서 객체를 생성해서, 공유영역에 저장해놓아야 write.jsp에서 사용할 수 있음
+		model.addAttribute("boardVO", new BoardVO());
 		
 		return "board/write";
+		
 	}
 	
-//	@RequestMapping(value="/board/write", method=RequestMethod.POST)
+	
+	
+	// BoardVO에 들어있는, 입력된 데이터가 실제 올바르게 입력된 데이터인가
+	//	if(board.getTitle() == null || board.getTitle().equals(""))
+	// 이거를 제목, 작성자, 내용 한 개씩 다물어봐야함.. 
+	// 비효율적이잖아? => 일단, VO 멤버변수로 가자
+	// vo에 @NotEmpty가 붙은 멤버변수에 대해 @Valid
+	// 이게 잘작동되는지 결과=> Errors or BindingResult
 	@PostMapping("/board/write")
-	public String write(BoardVO board, Model model) {
-		
+	public String write(@Valid BoardVO board, Errors error) {
 		
 		System.out.println(board);
 		
-		// 백엔드에서 제약조건을 지킬 수 있도록 해보자
-//		if(board.getTitle() == null || board.getTitle().equals("")) {
-//			
-//			// 만약 사용자가 제목, 작성자는 이미 등록했는데, 이거는 기억시켜야지! => model 등록
-//			model.addAttribute("board", board);
-//			return "board/write";
-//			
-//		}
+		// 에러가 있는지 true, false로 나타냄, 문제없으면 false
+		//System.out.println(error.hasErrors());
+		
+		if(error.hasErrors()) {
+			
+			// BoardVO board로 값을 받았기 때문에
+			// boardVO라는 이름으로 자연스럽게 공유영역에 등록되어있음
+			
+			return "board/write";
+		}
+		
+		
 		return "redirect:/board";
 		
-		// 리턴값이 void였을 때, uri (board/write)와 똑같은 이름의 파일을 포워드!
 	}
+	
+	
 }
 
 

@@ -11,5 +11,9 @@
 	<a href="${ pageContext.request.contextPath }/board">게시글</a><br>
 	<!-- GET 방식으로 보내는 것  -->
 	<a href="${ pageContext.request.contextPath }/board/write">새글등록</a><br>
+	<a href="${ pageContext.request.contextPath }/login">로그인</a><br>
+	
+
+
 </body>
 </html>

@@ -15,14 +15,12 @@
 <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/board.css">
 
 
-<style>
+<script>
 
-	.error{
-		color: red;
-	}
+	
 
 
-</style>
+</script>
 
 </head>
 <body>
@@ -37,38 +35,29 @@
 			<hr width="80%">
 			<h2>게시글 등록폼</h2>
 			<hr width="80%">
-			<br>
-			<!--get과 post가 동일하니까, action을 쓸 필요없음, 스프링4 이전에는 modelAttribute가 commnad name? 이었음 -->
-			<form:form method="post" modelAttribute="boardVO">
-				<table border="1" style="width: 100%;">
+			
+			<%-- <form action="${ pageContext.request.contextPath }/board/write" method="post">--%>			
+			<!-- 어떨 때 생략이 가능하다고?.. 현재 들어와있는 url이 /board/write임 이곳으로 그대로 post로 보냄 -->
+			<form method="post">
+				<table border="1" style="width: 80%">
 					<tr>
 						<th width="25%">제목</th>
-						<td>
-							<!--boarVO에 등록된 객체의 getTitle(), setTitle() path  -->
-							<!--path 이것으로 사용자가 이미 입력했던 정보를 get으로 불러옴  -->
-							<form:input path="title" />
-							<form:errors path="title" class="error" />
-						</td>
-					</tr>			
-					<tr>
-						<th>작성자</th>
-						<td>
-							<form:input path="writer" />
-							<form:errors path="writer" class="error" />
-						</td>
+						<td><input type="text" size="60" name="title"></td>
 					</tr>
 					<tr>
-						<th>내용</th>
-						<td>
-							<form:textarea rows="8" cols="60" path="content" />
-							<form:errors path="content" class="error" />
-						</td>
+						<th width="25%">작성자</th>
+						<td><input type="text" size="60" name="writer"></td>
 					</tr>
+					<tr>
+						<th width="25%">내용</th>
+						<td><textarea rows="8" cols="60" name="content"></textarea></td>
+					</tr>
+					
 				</table>
 				<br>
-				<form:button>등록</form:button>
-			</form:form>
-			
+				<input type="submit" value="등록"> 
+				<input id=goListBtn type="button" value="목록">
+			</form>
 		</div>
 
 

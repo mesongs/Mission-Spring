@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,8 +36,9 @@
 			<h2>게시글 등록폼</h2>
 			<hr width="80%">
 			
-			<form action="${ pageContext.request.contextPath }/board/write" method="post">
-				
+			<%-- <form action="${ pageContext.request.contextPath }/board/write" method="post">--%>			
+			<!-- 어떨 때 생략이 가능하다고?.. 현재 들어와있는 url이 /board/write임 이곳으로 그대로 post로 보냄 -->
+			<form method="post">
 				<table border="1" style="width: 80%">
 					<tr>
 						<th width="25%">제목</th>

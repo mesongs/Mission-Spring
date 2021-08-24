@@ -6,9 +6,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -86,39 +90,71 @@ public class BoardController {
 		return "redirect:/board";
 	}
 	
-	@RequestMapping("/board/writeForm")
-	public String boardWriteForm() {
-		
-		// http://localhost:9999/Mission-Spring/board/writeForm
-		// WEB-INF/jsp//board/writeForm.jsp
-		
+//	@RequestMapping("/board/writeForm")
+//	public String boardWriteForm() {
+//		
+//		// http://localhost:9999/Mission-Spring/board/writeForm
+//		// WEB-INF/jsp//board/writeForm.jsp
+//		
+//	
+//		return "/board/writeForm";
+//		
+//	}
+//	
+//	@RequestMapping("/board/write")
+//	public String boardWrite(@RequestParam("title") String title, @RequestParam("writer") String writer, @RequestParam("content") String content) {
+//		
+//		// 변신
+//		// BoardVO에 setter로 값을 넣어서 들고 오는거 했다가 변경
+//		// @ModelAttribute로 공유영역에 저장되는 이름을 설정안해주면, boardVO이렇게 들어감
+//		// 공유영역에 저장할 필요없음, redirect할꺼고, 공유영역에 저장된 값을 출력해줄 필요없음
+//		
+//		BoardVO board = new BoardVO();
+//		board.setTitle(title);
+//		board.setWriter(writer);
+//		board.setContent(content);
+//		
+//		// 처음에 파라미터 변수를 boardVO board이렇게해서.. 다른 것 없이 바로 boardWrite(board);로 넘기니까 안됐었음..
+//		
+//		service.boardWrite(board);
+//		
+//		
+//		return "redirect:/board";
+//		
+//	}
+
+	// write 하는거 아래부터는 교수님이 해주신거
 	
-		return "/board/writeForm";
+//	@RequestMapping(value="/board/write", method=RequestMethod.GET)
+//  어노테이션이 새로나왔음, 스프링 4.3이후부터
+	@GetMapping("/board/write")
+	public String writeForm() {
 		
+		
+		return "board/write";
 	}
 	
-	@RequestMapping("/board/write")
-	public String boardWrite(@RequestParam("title") String title, @RequestParam("writer") String writer, @RequestParam("content") String content) {
-		
-		// 변신
-		// BoardVO에 setter로 값을 넣어서 들고 오는거 했다가 변경
-		// @ModelAttribute로 공유영역에 저장되는 이름을 설정안해주면, boardVO이렇게 들어감
-		// 공유영역에 저장할 필요없음, redirect할꺼고, 공유영역에 저장된 값을 출력해줄 필요없음
-		
-		BoardVO board = new BoardVO();
-		board.setTitle(title);
-		board.setWriter(writer);
-		board.setContent(content);
-		
-		// 처음에 파라미터 변수를 boardVO board이렇게해서.. 다른 것 없이 바로 boardWrite(board);로 넘기니까 안됐었음..
-		
-		service.boardWrite(board);
+//	@RequestMapping(value="/board/write", method=RequestMethod.POST)
+	@PostMapping("/board/write")
+	public String write(BoardVO board, Model model) {
 		
 		
+		System.out.println(board);
+		
+		// 백엔드에서 제약조건을 지킬 수 있도록 해보자
+//		if(board.getTitle() == null || board.getTitle().equals("")) {
+//			
+//			// 만약 사용자가 제목, 작성자는 이미 등록했는데, 이거는 기억시켜야지! => model 등록
+//			model.addAttribute("board", board);
+//			return "board/write";
+//			
+//		}
 		return "redirect:/board";
 		
+		// 리턴값이 void였을 때, uri (board/write)와 똑같은 이름의 파일을 포워드!
 	}
-	
-	
-	
 }
+
+
+
+

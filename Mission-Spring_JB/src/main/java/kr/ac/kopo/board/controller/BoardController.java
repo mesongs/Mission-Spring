@@ -236,27 +236,6 @@ public class BoardController {
 //	}
 	
 	// 댓글 insert -2
-//	@PostMapping("/board/reply")
-//	@ResponseBody
-//	public int replyWrite(@RequestParam("content") String content,
-//							@RequestParam("boardNo") int boardNo,
-//							@RequestParam("writer") String writer)
-//	{
-//		 
-//		ReplyVO reply = new ReplyVO();
-//		reply.setBoardNo(boardNo);
-//		reply.setContent(content);
-//		reply.setWriter(writer);
-//		
-//		System.out.println(reply);
-//		// ajax로 보낸 파라마터를 ReplyVO에 set해서 들고옴
-//		
-//		int cnt = service.boardReplyWrite(reply);
-//		
-//		return cnt;
-//	}
-	
-	// 댓글 insert -3
 	@PostMapping("/board/reply")
 	@ResponseBody
 	public int replyWrite(ReplyVO reply){

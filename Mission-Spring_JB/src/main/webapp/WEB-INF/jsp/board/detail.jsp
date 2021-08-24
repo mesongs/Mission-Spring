@@ -57,11 +57,12 @@
 				url : "${pageContext.request.contextPath}/board/reply",
 				
 				succsess: function(data){
-					//replyList() //성공한 경우, ajax 함수 실행해야하는데
+					// replyList() //성공한 경우, ajax 함수 실행해야하는데..
+					// success or error를 띄우지않네..
 					console.log(data)
 					alert('성공')
 				},
-				error:function(request,status,error){
+				error:function(request, status, error){
 				    alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);}
 			})
 			

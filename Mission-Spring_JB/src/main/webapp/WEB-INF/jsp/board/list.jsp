@@ -13,7 +13,7 @@
 
 	$(document).ready(function() {
 		$('#addBtn').click(function() {
-			location.href = "${ pageContext.request.contextPath }/board/writeForm"
+			location.href = "${ pageContext.request.contextPath }/board/write"
 		})
 	})
 	

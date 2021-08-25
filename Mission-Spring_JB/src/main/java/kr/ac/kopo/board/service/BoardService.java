@@ -2,8 +2,8 @@ package kr.ac.kopo.board.service;
 
 import java.util.List;
 
-import kr.ac.kopo.board.reply.vo.ReplyVO;
 import kr.ac.kopo.board.vo.BoardVO;
+import kr.ac.kopo.board.vo.ReplyVO;
 
 public interface BoardService {
 

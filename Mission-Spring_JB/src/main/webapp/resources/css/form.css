@@ -1,0 +1,149 @@
+@charset "UTF-8";
+
+ #blog-post-area{
+ 	margin-top: 30px;
+ }
+ 
+ #comment-custom{
+ 	max-width: 700px;
+ 	margin-left: 480px;
+ 	font-family: 'Noto Sans KR', sans-serif;
+ }
+ 
+ #comment-custom-login{
+ 	max-width: 700px; 
+ 	margin-left: 589px;
+ 	font-family: 'Noto Sans KR', sans-serif;
+ 
+ }
+ 
+ #comment-custom > h4{
+ 	font-family: 'Noto Sans KR', sans-serif;
+ 	font-size: xx-large;
+ }
+ 
+ #comment-custom-login > h4{
+ 	font-family: 'Noto Sans KR', sans-serif;
+ 	font-size: xx-large;
+ }
+ 
+ #signUpBtn{
+ 	border :0px;
+ 	font-size: large;
+ 	-webkit-border-radius: 30px;
+	-moz-border-radius: 30px;
+	-ms-border-radius: 30px;
+	border-radius: 30px;
+	color : #fff;
+ 	background-color :#27b2a5;
+ 	
+ }
+ 
+ #loginBtn{
+ 	border :0px;
+ 	margin-left: 15px;
+ 	font-size: large;
+ 	-webkit-border-radius: 30px;
+	-moz-border-radius: 30px;
+	-ms-border-radius: 30px;
+	border-radius: 30px;
+	color : #fff;
+ 	background-color :#27b2a5;
+ 
+ }
+ 
+ #kakaoBtn{
+ 	width : 160px;
+ 	height : 52px;
+ 	margin-left: 19px;
+ 	border :0px;
+ 	-webkit-border-radius: 30px;
+	-moz-border-radius: 30px;
+	-ms-border-radius: 30px;
+	border-radius: 30px;
+ }
+ 
+ .check{
+    padding: 10px 24px;
+    background-color: rgba(130,139,178,0.25);
+    color: rgb(2,2,2);
+    width:80px;
+    height: 38px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-left: 9px;
+    padding-top: 5px;
+    -webkit-border-radius: 30px;
+	-moz-border-radius: 30px;
+	-ms-border-radius: 30px;
+	border-radius: 30px;
+	font-family: 'Noto Sans KR', sans-serif;
+ }
+ 
+ .check.email{
+ 	padding: 10px 24px;
+    background-color: rgba(130,139,178,0.25);
+    color: rgb(2,2,2);
+    width:100px;
+    height: 38px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-left: 9px;
+    padding-top: 5px;
+    -webkit-border-radius: 30px;
+	-moz-border-radius: 30px;
+	-ms-border-radius: 30px;
+	border-radius: 30px;
+	font-family: 'Noto Sans KR', sans-serif;
+ }
+ 
+ .search.zipcode{
+ 	padding: 10px 24px;
+    background-color: rgba(130,139,178,0.25);
+    color: rgb(2,2,2);
+    width:120px;
+    height: 38px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-left: 11px;
+    padding-top: 5px;
+    -webkit-border-radius: 30px;
+	-moz-border-radius: 30px;
+	-ms-border-radius: 30px;
+	border-radius: 30px;
+	font-family: 'Noto Sans KR', sans-serif;
+ }
+ 
+ input[type=text] { 
+ text-transform :none !important;
+ background-color: rgba(130,139,178,0.25) !important;
+}
+
+input[type=password] { 
+ text-transform :none !important;
+ background-color: rgba(130,139,178,0.25) !important; 
+}
+
+input[type=date] { 
+ text-transform :none !important;
+ background-color: rgba(130,139,178,0.25) !important; 
+}
+
+ select{
+ 	padding: 8px 20px;
+    background: rgba(130,139,178,0.25) !important;
+    border: none;
+    border-radius: 0px;
+    width: 100%;
+    font-size: 13px;
+    color: #999999;
+    border: 1px solid transparent;
+    padding-left: 0px;
+    padding-bottom: 6px;
+    padding-top: 0px;
+    border-top-width: 6px;
+}
+
+
+
+

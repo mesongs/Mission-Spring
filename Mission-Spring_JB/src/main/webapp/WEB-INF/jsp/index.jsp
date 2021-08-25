@@ -1,31 +1,101 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
- <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	pageEncoding="UTF-8"%>
+ <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>	
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-	
-	<hr>
-	${ userVO }<br>
-	${ sessionScope.userVO }<br>
-	<hr>
+<html lang="en">
 
-	<!--표현식이나 자바코드 사용안하고!! el방식으로 가져옴! pageContext가 가진 request로 -->
-	<a href="${ pageContext.request.contextPath }/board">게시글</a><br>
-	<!-- GET 방식으로 보내는 것  -->
-	<a href="${ pageContext.request.contextPath }/board/write">새글등록</a><br>
-	
-	<c:if test="${empty userVO }">
-		<a href="${ pageContext.request.contextPath }/login">로그인</a><br>
-	</c:if>
-	<c:if test="${not empty userVO }">
-		<a href="${ pageContext.request.contextPath }/logout">로그아웃</a><br>
-	</c:if>
-	
+<head>
+<jsp:include page="/WEB-INF/jsp/include/head.jsp"/>
+<style>
+
+#mainImage {
+	width: 900px;
+	margin-top: 30px;
+}
+
+.cardMenu {
+	border: 3px solid;
+	border-color: rgba(130, 139, 178, 0.5);
+	width: 250px;
+	height: 241px
+}
+
+.cardMenu>a img {
+	width: 70%;
+}
+</style>
+
+</head>
+
+<body>
+	<!--================Header Menu Area =================-->
+	<jsp:include page="/WEB-INF/jsp/include/header.jsp"/>
+	<!--================Header Menu Area =================-->
+
+	<main class="site-main">
+
+		<!--================Hero Banner start =================-->
+		<section class="mb-30px">
+			<div class="container" align="center">
+				<img id="mainImage" src="resources/img/indexMain2.jpg">
+			</div>
+		</section>
+
+		<!--================Hero Banner end =================-->
+
+		<!--================ Start Blog Post Area =================-->
+
+		<section>
+			<div class="container" align="center" class="cardMenuCon">
+				<div class="row">
+					<div class="col">
+						<div class="single-recent-blog-post card-view">
+							<div class="cardMenu">
+								<a href="#"> <img src="resources/img/money.png"
+									style="margin-top: -13px">
+								</a>
+							</div>
+						</div>
+					</div>
+					<div class="col">
+						<div class="single-recent-blog-post card-view">
+							<div class="cardMenu">
+								<a href="#"> <img src="resources/img/financial2.png"
+									style="margin-top: -8px">
+								</a>
+
+
+							</div>
+						</div>
+					</div>
+					<div class="col">
+						<div class="single-recent-blog-post card-view">
+							<div class="cardMenu">
+								<a href="#"> <img src="resources/img/receipt.png"
+									style="margin-top: 13px;">
+								</a>
+
+
+							</div>
+						</div>
+					</div>
+					<div class="col">
+						<div class="single-recent-blog-post card-view">
+							<div class="cardMenu">
+								<a href="#"> <img src="resources/img/counsel.png"
+									style="margin-top: -8px"">
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<!--================ Start Footer Area =================-->
+	<jsp:include page="/WEB-INF/jsp/include/footer.jsp"/>
+	<!--================ End Footer Area =================-->
 
 
 </body>

@@ -23,9 +23,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import kr.ac.kopo.board.reply.vo.ReplyVO;
 import kr.ac.kopo.board.service.BoardService;
 import kr.ac.kopo.board.vo.BoardVO;
+import kr.ac.kopo.board.vo.ReplyVO;
 
 @Controller
 public class BoardController {
@@ -120,7 +120,7 @@ public class BoardController {
 //	@RequestMapping("/board/write")
 //	public String boardWrite(@RequestParam("title") String title, @RequestParam("writer") String writer, @RequestParam("content") String content) {
 //		
-//		// 변신
+//
 //		// BoardVO에 setter로 값을 넣어서 들고 오는거 했다가 변경
 //		// @ModelAttribute로 공유영역에 저장되는 이름을 설정안해주면, boardVO이렇게 들어감
 //		// 공유영역에 저장할 필요없음, redirect할꺼고, 공유영역에 저장된 값을 출력해줄 필요없음
@@ -150,10 +150,9 @@ public class BoardController {
 //		return "board/write";
 //	}
 //	
-////	@RequestMapping(value="/board/write", method=RequestMethod.POST)
+//  @RequestMapping(value="/board/write", method=RequestMethod.POST)
 //	@PostMapping("/board/write")
 //	public String write(BoardVO board, Model model) {
-//		
 //		
 //		System.out.println(board);
 //		
@@ -172,7 +171,6 @@ public class BoardController {
 //		
 //		// 리턴값이 void였을 때, uri (board/write)와 똑같은 이름의 파일을 포워드!
 //	}
-	
 	
 	// db에 저장되기 전 컨트롤러에서 올바르게 데이터를 입력했는지 판단
 	// 사용자가 '제목'만 입력했고, '작성자'와 '내용'은 입력 안했으면?
@@ -214,7 +212,7 @@ public class BoardController {
 		if(error.hasErrors()) {
 			
 			// BoardVO board로 값을 받았기 때문에
-			// boardVO라는 이름으로 자연스럽게 공유영역에 등록되어있음
+			// boardVO라는 이름으로 공유영역에 등록되어있음 => 이것을 이용해서 제약조건을 체크함
 			
 			return "board/write";
 		}
@@ -235,17 +233,19 @@ public class BoardController {
 //	
 //	}
 	
-	// 댓글 insert -2
+	// 댓글 insert-2
 	@PostMapping("/board/reply")
 	@ResponseBody
 	public int replyWrite(ReplyVO reply){
-		 
-		// return 값이 .jsp가 아닌 경우 사용하는 @ResponseBody
+		
+		// return값이 .jsp가 아닌 경우 사용하는 @ResponseBody
 		
 		System.out.println(reply);
 		// ajax로 보낸 파라마터를 ReplyVO에 set해서 들고옴
-		
 		int cnt = service.boardReplyWrite(reply);
+		
+		// System.out.println(cnt);
+		
 		return cnt;
 	}
 	
@@ -257,7 +257,14 @@ public class BoardController {
 		
 		List<ReplyVO> replyList = service.boardReplyList(no);
 		
+		// 
+		
 		mav.addObject("replyList", replyList);
+		
+		// ajax로 html을 들고왔음
+		// 이 방식말고, List만 들고오는 방식도 생각해보기 (@ResponseBody 사용)
+		// List를 json형식으로 변환해서 리턴
+		// ajax에서 console.log 찍어보고, 반복문으로 출력
 		
 		
 		return mav;

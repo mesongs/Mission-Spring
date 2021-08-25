@@ -56,22 +56,26 @@
 				data : param,
 				url : "${pageContext.request.contextPath}/board/reply",
 				
-				succsess: function(data){
-					// replyList() //성공한 경우, ajax 함수 실행해야하는데..
+				// 컨트롤러 쪽에서 문제가 생겼을 수 있음
+				// 서버에서 응답이 아직 완료가 안되었기 때문에 success / error가 완료되지 않음
+				success: function(data){
+					replyList() // 성공한 경우, ajax 함수 실행해야하는데..
 					// success or error를 띄우지않네..
 					console.log(data)
-					alert('성공')
 				},
+				
 				error:function(request, status, error){
-				    alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);}
+				    alert("code:"+ request.status +"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				}
 			})
 			
-			replyList()
+			// ajax를 이렇게 여러 번 사용할 경우 async : false로 사용하자
+			//replyList()
 		})
 		
 	function clickBtn(type) {
 			switch(type) {
-			case 'U' : 
+			case 'U' :
 				
 				break
 			case 'D' : 

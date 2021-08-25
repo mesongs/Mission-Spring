@@ -44,12 +44,12 @@
 					<tr>
 						<th width="25%">제목</th>
 						<td>
-							<!--boarVO에 등록된 객체의 getTitle(), setTitle() path  -->
-							<!--path 이것으로 사용자가 이미 입력했던 정보를 get으로 불러옴  -->
+							<!--boarVO에 등록된 객체의 getTitle(), setTitle() path -->
+							<!--path 이것으로 사용자가 이미 입력했던 정보를 get으로 불러옴 -->
 							<form:input path="title" />
 							<form:errors path="title" class="error" />
 						</td>
-					</tr>			
+					</tr>
 					<tr>
 						<th>작성자</th>
 						<td>

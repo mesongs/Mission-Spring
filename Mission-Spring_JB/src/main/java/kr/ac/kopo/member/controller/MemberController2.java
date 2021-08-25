@@ -20,7 +20,6 @@ public class MemberController2 {
 	@GetMapping("/login")
 	public String loginForm() {
 		
-		
 		return "login/login";
 		
 	}
@@ -33,9 +32,8 @@ public class MemberController2 {
 		
 		MemberVO userVO =  service.login(member);
 		
+		
 		//로그인을 실패한 경우
-		
-		
 		if(userVO == null) {
 			String msg = "아이디 또는 패스워드가 잘못되었습니다.";
 			// 실패한 경우, 공유영역에 msg 등록
@@ -44,14 +42,9 @@ public class MemberController2 {
 			return "login/login";
 		}
 		
-		
 		// 로그인을 성공했음
 		// 스프링은 필요한거 요구하면 됨, session 객체도 굳이 request로 받아올 필요없음!
-		session.setAttribute("userVO", userVO);		
-		
-		
-		
-		
+		session.setAttribute("userVO", userVO);
 		
 		return "redirect:/";
 		

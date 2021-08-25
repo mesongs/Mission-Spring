@@ -11,9 +11,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import kr.ac.kopo.board.dao.BoardDAO;
-import kr.ac.kopo.board.reply.vo.ReplyVO;
 import kr.ac.kopo.board.service.BoardService;
 import kr.ac.kopo.board.vo.BoardVO;
+import kr.ac.kopo.board.vo.ReplyVO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:config/spring/spring-mvc.xml"})

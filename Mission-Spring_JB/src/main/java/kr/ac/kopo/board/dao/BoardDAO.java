@@ -2,8 +2,8 @@ package kr.ac.kopo.board.dao;
 
 import java.util.List;
 
-import kr.ac.kopo.board.reply.vo.ReplyVO;
 import kr.ac.kopo.board.vo.BoardVO;
+import kr.ac.kopo.board.vo.ReplyVO;
 
 // 변화에 민감하지 않게 하기 위해 인터페이스로 구성
 public interface BoardDAO {

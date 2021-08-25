@@ -1,0 +1,48 @@
+@charset "UTF-8";
+
+.header_area .navbar .nav .nav-item .nav-link {
+		color : rgb(2,2,2);
+		font-size : 19px;
+		font-family: 'Noto Sans KR', sans-serif;
+	}
+	
+	.header_area .navbar .nav .nav-select .nav-link {
+		font-family: 'Noto Sans KR', sans-serif;
+	}
+	
+	
+	.header_area .navbar .nav .nav-select .nav-link {
+		color : rgb(2,2,2);
+		font-size : 19px;
+		font-family: 'Noto Sans KR', sans-serif;
+	}
+	
+	.header_area .navbar .nav .nav-item .nav-link:hover {
+	
+		color : rgb(6, 150, 150);
+	}
+	
+	#menuContent{
+		 margin-left: 100px;
+	}
+	
+	#menuContent li.nav-select a {
+	margin-left: 15px;
+	padding: 5px 14px;
+	background: #27b2a5;
+	color: #fff;
+	display: -moz-inline-stack;
+	display: inline-block;
+	zoom: 1;
+	*display: inline;
+	-webkit-border-radius: 30px;
+	-moz-border-radius: 30px;
+	-ms-border-radius: 30px;
+	border-radius: 30px;
+	margin-top: 27px;
+	font-family: 'Noto Sans KR', sans-serif;
+}
+	
+#nav_custom {
+	background-color: white;
+}	

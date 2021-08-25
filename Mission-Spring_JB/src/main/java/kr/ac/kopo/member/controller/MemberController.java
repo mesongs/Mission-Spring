@@ -47,23 +47,19 @@ public class MemberController {
 			return "login/login";
 		}
 		
-		
 		// 로그인을 성공했음
 		// 스프링은 필요한거 요구하면 됨, session 객체도 굳이 request로 받아올 필요없음!
-		//session.setAttribute("userVO", userVO);	
-		
+		// session.setAttribute("userVO", userVO);
 		model.addAttribute("userVO", userVO);
 		
 		
-		// 로그인 인터셉터를 거쳤는지 확인
+		// 로그인 인터셉터를 거쳤는지 확인, 사용자가 로그인 후 가고싶은 경로
 		String dest = (String)session.getAttribute("dest");
 		if(dest != null) {
 				
 				session.removeAttribute("dest");
 				return "redirect:" + dest;
 			}
-		
-		
 		
 		return "redirect:/";
 		

@@ -22,10 +22,10 @@
             <ul class="nav navbar-nav menu_nav justify-content-center" id="menuContent">
               <li class="nav-item"><a class="nav-link" href="index.html">금융서비스</a></li> 
               <li class="nav-item"><a class="nav-link" href="salesReport.jsp">사업보고서</a></li> 
-              <li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receiptRegister">증빙관리</a>
+              <li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt">증빙관리</a>
               <li class="nav-item"><a class="nav-link" href="supprotCenter.jsp">지원센터</a>
-              <li class="nav-select"><a calss="nav-link" href="${ pageContext.request.contextPath }/login">로그인</a>
-              <li class="nav-select"><a calss="nav-link" href="${ pageContext.request.contextPath }/signUp">회원가입</a>
+              <li class="nav-select"><a class="nav-link" href="${ pageContext.request.contextPath }/login">로그인</a>
+              <li class="nav-select"><a class="nav-link" href="${ pageContext.request.contextPath }/signUp">회원가입</a>
             </ul>
           </div> 
         </div>

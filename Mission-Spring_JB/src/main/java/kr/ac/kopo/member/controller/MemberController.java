@@ -52,7 +52,6 @@ public class MemberController {
 		// session.setAttribute("userVO", userVO);
 		model.addAttribute("userVO", userVO);
 		
-		
 		// 로그인 인터셉터를 거쳤는지 확인, 사용자가 로그인 후 가고싶은 경로
 		String dest = (String)session.getAttribute("dest");
 		if(dest != null) {
@@ -83,5 +82,15 @@ public class MemberController {
 		
 		return "redirect:/";
 	}
+	
+	@GetMapping("/signUp")
+	public String signUp(){
+		
+		return "member/signUp";
+	}
+	
+	// 회원가입 한 후
+//	@PostMapping("/signUp")
+	
 	
 }

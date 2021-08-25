@@ -52,8 +52,8 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			//로그인 하도록 redirect
 			response.sendRedirect(request.getContextPath() + "/login");
 			
-			// 일단 인터셉터 작동안하게 하자
-			return true;
+			
+			return false;
 		}
 		
 		// return true라고하면 통과

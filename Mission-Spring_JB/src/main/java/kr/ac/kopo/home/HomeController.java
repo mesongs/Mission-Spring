@@ -13,4 +13,14 @@ public class HomeController {
 		return "index";
 		
 	}
+	
+	// 테스트해보자
+	
+	@RequestMapping("/receipt")
+	public String rec() {
+		
+		
+		return "receipt/receiptList"; 
+	}
+	
 }

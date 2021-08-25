@@ -28,7 +28,7 @@ public class MemberController {
 	@GetMapping("/login")
 	public String loginForm() {
 		
-		return "login/login";
+		return "member/login";
 	}
 	
 	@PostMapping("/login")
@@ -44,7 +44,7 @@ public class MemberController {
 			// 실패한 경우, 공유영역에 msg 등록
 			model.addAttribute("msg", msg);
 			
-			return "login/login";
+			return "member/login";
 		}
 		
 		// 로그인을 성공했음

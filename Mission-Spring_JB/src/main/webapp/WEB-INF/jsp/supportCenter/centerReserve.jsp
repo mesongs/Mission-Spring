@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/form.css?after">
+<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/form.css">
 
 <head>
 <jsp:include page="/WEB-INF/jsp/include/head.jsp" />

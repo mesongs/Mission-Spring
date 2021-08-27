@@ -15,7 +15,8 @@
 #comment-custom-receipt {
 	/* max-width: 700px; */
 	width: 1000px;
-    margin-left: 350px;
+    margin : auto;
+    margin-top : 70px;
 	font-family: 'Noto Sans KR', sans-serif;
     margin-top: 30px;
 	
@@ -159,25 +160,24 @@
 	
 	<div class="comment-form-receipt" id="comment-custom-receipt">
 		<h4>증빙관리</h4>
-		
 		<div class="container">
 			<ul class="nav nav-tabs" style="margin-left: 50px;">
 				<li class="nav-item"><a class="nav-link active" aria-current="page" href="#">영수증 등록</a></li>
-				<li class="nav-item"><a class="nav-link" href="receiptList.jsp">영수증 목록</a></li>
-				<li class="nav-item"><a class="nav-link" href="receiptWaitList.jsp">처리 대기</a></li>
+				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/processedList">영수증 목록</a></li>
+				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/receiptWaitList">처리 대기</a></li>
 				<li class="nav-item"><a class="nav-link" href="javascript:" onclick="doReturnCall()">반려된 영수증</a></li>
-				
-				
 			</ul>
 
 			<section id="ajaxReplace">
-				<form>
+				<form method="post" enctype="multipart/form-data">
 					
 					<div class="container"> 
 						
 						<div class="row box">
 	
-							<div class="col" style="background-color: rgba(130, 139, 178, 0.25); height: 430px; top: 25px;">영수증 사진</div>
+							<div class="col" style="background-color: rgba(130, 139, 178, 0.25); height: 430px; top: 25px;">
+								<input type="file" name="attachFile1" /><br/>
+							</div>
 	
 							<div class="col">
 								<span>증빙 구분</span>
@@ -209,7 +209,7 @@
 									<textarea class="form-control mb-10" name="memo" id="memo"rows="10" placeholder="기록하실 내용을 입력하세요." onfocus="this.placeholder = ''" onblur="this.placeholder = '기록하실 내용을 입력하세요.'" style="padding-left: 4px; color: #999999; margin-bottom: 20px;" ></textarea>
 								</div>
 								<div class="col" align="center">
-									<a href="#" class="button submit_btn" id="receiptResgisterBtn">등록</a>
+									<input type="submit" class="button submit_btn" value="등록" id="receiptResgisterBtn" /><br/>  
 								</div>
 	
 							</div>
@@ -226,7 +226,6 @@
 				</form>
 			</section>
 		</div>
-
 	</div>
 	
 

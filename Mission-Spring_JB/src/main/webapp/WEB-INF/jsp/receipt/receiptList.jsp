@@ -4,7 +4,7 @@
 <html lang="en">
 
 <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/form.css?after">
-<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/list.css?after1">
+<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/list.css?after">
 
 
 <head>
@@ -202,16 +202,14 @@ input::placeholder{
 			
 			   if($("input[type=checkbox]").is(":checked")){
 				   
-				   $.get("<%=request.getContextPath()%>/include/replaceCheck.jsp", function(data){
+				   $.get("${ pageContext.request.contextPath }/receipt/replaceCheck", function(data){
 					   $('#categoryAjax').replaceWith(data)
-					   
 				   })
 				   
 			   }else{
 				   
-				   $.get("<%=request.getContextPath()%>/include/replaceUnCheck.jsp", function(data){
+				   $.get("${ pageContext.request.contextPath }/receipt/replaceUnCheck", function(data){
 					   $('#categoryAjax').replaceWith(data)
-					   
 				   })
 				   
 				   
@@ -279,7 +277,7 @@ input::placeholder{
 	<jsp:include page="/WEB-INF/jsp/include/header.jsp"/>
 	<!--================Header Menu Area =================-->
 
-	<div class="comment-form-receipt" id="comment-custom-receipt">
+	<div class="comment-form-receipt" id="comment-custom-receipt" >
 		<div class="row">
 			<div class="col">
 				<h4 style="font-family: 'Noto Sans KR', sans-serif;font-size: xx-large;">증빙관리</h4>
@@ -291,15 +289,14 @@ input::placeholder{
 					 <input type="text" class="calenderInput" id="endDate" autocomplete="off" style="margin-left: 2px; color: transparent; text-shadow: 0 0 0 rgba(2,2,2, 0.7)" >								
 					 <button type="submit" id="searchDate" style="margin-left: 7px;">조회</button>
 				</span>
-			</div>	
+			</div>
 		</div>
 		<div class="container">
 			<ul class="nav nav-tabs" style="margin-left: 50px;">
-				<li class="nav-item"><a class="nav-link" href="receiptRegister.jsp">영수증 등록</a></li>
+				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/register">영수증 등록</a></li>
 				<li class="nav-item"><a class="nav-link active" aria-current="page" href="#">영수증 목록</a></li>
-				<li class="nav-item"><a class="nav-link" href="receiptWaitList.jsp">처리 대기</a></li>
+				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/receiptWaitList">처리 대기</a></li>
 				<li class="nav-item"><a class="nav-link" href="#">반려된 영수증</a></li>
-				
 			</ul> 
 
 			<section>
@@ -333,7 +330,7 @@ input::placeholder{
 										
 									</div>
 									<div class="col" align="right">
-											  	<button type="submit" id="excelBtn" style="padding-left: 0px;"><img class="product-img" src="resources/img/excel.png">Excel 다운로드</button>
+											  	<button type="submit" id="excelBtn" style="padding-left: 0px;"><img class="product-img" src="${ pageContext.request.contextPath }/resources/img/excel.png">Excel 다운로드</button>
 									</div>
 								</div>
 							</section>
@@ -464,7 +461,7 @@ input::placeholder{
 
 	</div>
 	
-	
+	<!-- 여기다 만들어놓고, display = none, -->
 	<!--================ End Blog Post Area =================-->
 
 	<!--================ Start Footer Area =================-->

@@ -5,7 +5,8 @@
 #comment-custom-receipt {
 	/* max-width: 700px; */
 	width: 1000px;
-    margin-left: 350px;
+    margin : auto;
+    margin-top : 70px;
 	font-family: 'Noto Sans KR', sans-serif;
     margin-top: 30px;
 	

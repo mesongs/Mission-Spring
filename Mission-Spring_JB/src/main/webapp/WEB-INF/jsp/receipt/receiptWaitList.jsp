@@ -3,8 +3,8 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<link rel="stylesheet" href="resources/css/form.css?after">
-<link rel="stylesheet" href="resources/css/list.css">
+<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/form.css?after">
+<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/list.css">
 
 
 <head>
@@ -78,8 +78,8 @@
 		
 		<div class="container">
 			<ul class="nav nav-tabs" style="margin-left: 50px;">
-				<li class="nav-item"><a class="nav-link" href="receiptRegister.jsp">영수증 등록</a></li>
-				<li class="nav-item"><a class="nav-link" href="receiptList.jsp">영수증 목록</a></li>
+				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/register">영수증 등록</a></li>
+				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/processedList">영수증 목록</a></li>
 				<li class="nav-item"><a class="nav-link active" aria-current="page" href="#">처리 대기</a></li>
 				<li class="nav-item"><a class="nav-link" href="#">반려된 영수증</a></li>
 				

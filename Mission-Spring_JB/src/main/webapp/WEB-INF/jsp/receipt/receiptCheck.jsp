@@ -7,7 +7,6 @@
 <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/form.css?before">
 
 <head>
-
 <jsp:include page="/WEB-INF/jsp/include/head.jsp"/>
 
 
@@ -15,8 +14,8 @@
 <style>
 #comment-custom-receipt {
 	/* max-width: 700px; */
-	width: 1000px;
-    margin : auto; 
+	width : 1000px;
+    margin : auto;
 	font-family: 'Noto Sans KR', sans-serif;
     margin-top: 70px;
 	
@@ -123,87 +122,27 @@ input[type=text] {
 
 
 <script>
+	
+$(function(){
+	
+	$("#receiptKind").val(${selectedReceiptNo}).prop("selected", true)
+	$("#purpose").val(${selectedpurposeNo}).prop("selected", true)
+	
+	
+	// js에서 숫자는 바로 인식가능, 문자열은 ''표시해야 문자열로 인식함, 숫자로 인식하려다 에러 생긴 것
+	console.log('${inputMemo}')
+	$("#memo").val('${inputMemo}')
+	
+	
+	
+	
+	
+})
 
-	$(function(){
-		 
-		 var subMenu = $(".container > ul > li"); // container 클래스 아래의 ul li태그
-		 
-		 // subMenu아래의 a태그를 클릭하면 호출되는 함수
-		 subMenu.find("a").click(function() {   
-	     
-			 // 우선 a태그에 걸려있는 active 클래스 삭제 
-			 $("a").removeClass("active");  
-			 // 내가 선택한 태그에 a태그에 active 클래스 추가
-			 $(this).addClass("active");
-			 
-	  })
-	})
-	
-	
-	// 영수증 등록 탭 section replace, 탭 이동 시 자신의 section도 호출해야함
-	function doRegisterCall(){
+	function cancel(){
 		
-		$.get("<%=request.getContextPath()%>/replaceTest3.jsp", function(data){
-			
-			$('#ajaxReplace').replaceWith(data)
-			
-		})
+		location.href = '${ pageContext.request.contextPath }/receipt/register'
 		
-	}
-	
-	function doListCall(){
-		
-		// subMenu 이동 시 페이지 replace
-		$.get("<%=request.getContextPath()%>/replaceTest.jsp", function(data){
-			
-			$('#ajaxReplace').replaceWith(data)
-			
-		})
-		
-	}
-	
-	function doProcessCall(){
-		
-		$.get("<%=request.getContextPath()%>/replaceTest2.jsp", function(data){
-			
-			$('#ajaxReplace').replaceWith(data)
-		})
-		
-	}
-	
-	function doNext(){
-		
-		// 확인누르면 모달창 실행, 상세내역 창에는 필요없음
-		// 사용자가 영수증을 등록할 때 필요함
-		var receiptKind =''
-		var html =''
-		
-		switch($('#receiptKind').val()){
-			case '1' : 
-				receiptKind = '세금계산서'
-				break;
-			case '2' : 
-				receiptKind = '계산서'
-				break;
-			case '3' : 
-				receiptKind = '카드영수증'
-				break;
-			case '4' : 
-				receiptKind = '간이영수증'
-				break;
-		}
-		
-		html += '입력하신 정보가 올바른지 확인해주세요.<br/>' 
-		html += '증빙구분 : ' + receiptKind + '<br/>'
-		html += '업체명 : ' + $('#storeName').val() + '<br/>'
-		html += '사업자등록번호 : ' +$('#businessNo').val() + '<br/>'
-		html += '영수일시 : ' + $('#receiptDate').val() + '<br/>'
-		html += '영수금액 : ' + $('#receiptAmount').val() 
-		
-		$('#confirm-modal-body-msg').html(html)
-		$('#myModal').modal('show') 
-		
-		// 
 	}
 	
 </script>
@@ -216,7 +155,7 @@ input[type=text] {
 	<jsp:include page="/WEB-INF/jsp/include/header.jsp"/>
 
 	<div class="comment-form-receipt" id="comment-custom-receipt">
-		<h4>상세내역</h4>
+		<h4>영수증 등록</h4>
 		
 		<div class="container">
 			
@@ -245,7 +184,7 @@ input[type=text] {
 	                          	<input type="text" class="form-control" name="storeName" id="storeName" placeholder="업체명" onfocus="this.placeholder = ''" onblur="this.placeholder = '업체명'">
 	                        	
 	                        	<span>사업자등록번호</span>
-	                          	<input type="text" class="form-control" name="businessNo" id="businessNo" placeholder="사업자등록번호" onfocus="this.placeholder = ''" onblur="this.placeholder = '사업자번호'">
+	                          	<input type="text" class="form-control" name="businessNo" id="businessNo" placeholder="사업자등록번호 ('-'를 제외하고 입력하세요.)" onfocus="this.placeholder = ''" onblur="this.placeholder = '사업자번호 (\'-\'를 제외하고 입력하세요.)'" maxlength='10'>
 	                        	
 	                        	<span>영수일시</span>
 	                          	<input type="text" class="form-control" name="receiptDate" id="receiptDate" placeholder="영수일시" onfocus="this.placeholder = ''" onblur="this.placeholder = '영수일시'">
@@ -255,13 +194,6 @@ input[type=text] {
 								
 								<span>부가세</span>
 	                          	<input type="text" class="form-control" name="receiptVat" id="receiptVat" placeholder="부가세" onfocus="this.placeholder = ''" onblur="this.placeholder = '부가세'">
-								
-								<span>중복 여부</span>
-								<select name="overlap" id="overlap"  style="background-color: rgba(130, 139, 178, 0.25); margin-bottom: 20px;">
-									<option value="">중복여부를 선택하세요.</option>
-									<option value="1">중복아님</option>
-									<option value="2">중복의심</option>
-								</select>
 								
 								<span>사용 목적</span>
 								<select name="purpose" id="purpose"  style="background-color: rgba(130, 139, 178, 0.25); margin-bottom: 20px;" required>
@@ -280,11 +212,11 @@ input[type=text] {
 								
 								<div class="form-group">
 									<span>메모</span>
-									<textarea class="form-control mb-10" name="memo" id="memo"rows="10" placeholder="기록하실 내용을 입력하세요." onfocus="this.placeholder = ''" onblur="this.placeholder = '기록하실 내용을 입력하세요.'" style="padding-left: 4px; color: #999999; margin-bottom: 20px;" ></textarea>
+									<textarea class="form-control mb-10" name="memo" id="memo" rows="10" placeholder="기록하실 내용을 입력하세요." onfocus="this.placeholder = ''" onblur="this.placeholder = '기록하실 내용을 입력하세요.'" style="padding-left: 4px; color: #999999; margin-bottom: 20px;" ></textarea>
 								</div>
 								<div class="col" align="center">
 									<a href="javascript:doNext()" class="button submit_btn" id="receiptSaveBtn">저장</a>
-									<a href="#" class="button submit_btn" id="receiptDelBtn">삭제</a>
+									<a href="javascript:cancel()" class="button submit_btn" id="receiptDelBtn">취소</a>
 								</div>
 	
 							</div>

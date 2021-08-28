@@ -100,39 +100,11 @@
 	text-align: center;
 }
 
-.progressBar {
-	width: 100px;
-	height: 22px;
-	border: 1px solid #ddd;
-	border-radius: 5px;
-	overflow: hidden;
-	display: inline-block;
-	margin: 0px 10px 5px 5px;
-	vertical-align: top;
-	margin-top: 3px;
-	margin-left: 21px;
-}
-
-.progressBar div {
-	height: 100%;
-	color: #fff;
-	text-align: right;
-	line-height: 22px;
-	/* same as #progressBar height if we want text middle aligned */
-	width: 0;
-	background-color: #27b2a5;
-	border-radius: 3px;
-}
-
 .statusbar {
 	min-height: 25px;
 	width: 99%;
 	padding: 10px 10px 0px 10px;
 	vertical-align: top;
-}
-
-.statusbar:nth-child(odd) {
-	background: #EBEFF0;
 }
 
 .filename {
@@ -150,107 +122,77 @@
 	margin-right: 5px;
 }
 
-.abort {
-	background-color: #A8352F;
-	-moz-border-radius: 4px;
-	-webkit-border-radius: 4px;
-	border-radius: 4px;
-	display: inline-block;
-	color: #fff;
-	font-family: arial;
-	font-size: 13px;
-	font-weight: normal;
-	padding: 4px 15px;
-	cursor: pointer;
-	vertical-align: top
-}
 </style>
 
 
 <script>
-	$(document).ready(function() {
 
+	$(document).ready(function() {
+		
 		var objDragAndDrop = $(".dragAndDropDiv");
         
-        $(document).on("dragenter",".dragAndDropDiv",function(e){
-            e.stopPropagation();
-            e.preventDefault();
-            $(this).css('border', '4px solid #999999');
-        });
-        
-        $(document).on("dragover",".dragAndDropDiv",function(e){
-            e.stopPropagation();
-            e.preventDefault();
-        });
-        
-        $(document).on("drop",".dragAndDropDiv",function(e){
-            
-            $(this).css('border', '4px dotted #999999');
-            e.preventDefault();
-            var files = e.originalEvent.dataTransfer.files;
-        
-            handleFileUpload(files,objDragAndDrop);
-        });
-        
-        $(document).on('dragenter', function (e){
-            e.stopPropagation();
-            e.preventDefault();
-        });
-        
-        // 드래그해서 드롭하려했다가 안하면 발생하는 이벤트
-        $(document).on('dragover', function (e){
-          e.stopPropagation();
-          e.preventDefault();
-          objDragAndDrop.css('border', '4px dashed #999999');
-        });
-        
-        $(document).on('drop', function (e){
-            e.stopPropagation();
-            e.preventDefault();
-        });
-       
-        //drag 영역 클릭시 파일 선택창
+        // 해당 영역 클릭으로 파일 업로드 가능
         objDragAndDrop.on('click',function (e){
+        	
         	// display none으로 둔 input[type=file]
             $('input[type=file]').trigger('click');
         });
-	
-        $('input[type=file]').on('change', function(e) {
-            var files = e.originalEvent.target.files;
-            handleFileUpload(files,objDragAndDrop);
+		
+        
+        $("input[name='fileUpload']").on('change', function(e) {
+           
+        	// 확장자 체크 (확장자 pop)
+        	 var ext = $("input[name='fileUpload']").val().split('.').pop().toLowerCase();
+    		
+        	// 배열내의 ext와 같은 값을 찾아서 인덱스 반환
+        	 if($.inArray(ext, ['jpg','jpeg','png']) == -1) {
+        		 
+        		$('#myModal').modal('show');
+        		$('#alert-modal-body-msg').html('지원되지 않는 파일 유형입니다.<br/> (jpg, jpeg, png 파일 유형을 사용해 주십시오.)')
+        	
+        		return false;
+    		}
+        	
+        	// 업로드한 파일 객체
+        	var file = e.originalEvent.target.files;
+        	
+        	// 썸네일을 표시할 이미지 태그
+        	let preview = $('#thumb');
+        	
+        	// 파라미터로 받은 경로에 있는 파일의 바이너리 데이터를 읽는 method (파일객체에서 이미지 데이터 가져옴)
+        	preview.attr("src", URL.createObjectURL(file[0]))
+        	
+        	preview.src = URL.createObjectURL(file[0])
+  
+        	// replaceImg를 replaceThumb로 replace, display none을 block으로
+        	$('#replaceImg').replaceWith($('#replaceThumb'))
+        	$('#replaceThumb').css('display', 'block');
+        	
+        	// 이미지 로딩 후 객체를 메모리에서 해제
+        	preview.onload = function(){
+        		URL.revokeObjectURL(preview.src);
+        	}
+        	
+        	// 업로드 div아래에 상태창 생성, obj.after(this.statusbar)
+            var status = new createStatusbar(objDragAndDrop);
+            status.setFileNameSize(file[0].name, file[0].size);
         });
         
-        function handleFileUpload(files, obj)
-        {
-           for (var i = 0; i < files.length; i++) 
-           {
-                var fd = new FormData();
-                fd.append('file', files[i]);
-         
-                var status = new createStatusbar(obj); //Using this we can set progress.
-                status.setFileNameSize(files[i].name,files[i].size);
-                sendFileToServer(fd,status);
-         
-           }
-        }
         
-        var rowCount=0;
         function createStatusbar(obj){
-                
-            rowCount++;
-            var row="odd";
-            if(rowCount %2 ==0) row ="even";
-            this.statusbar = $("<div class='statusbar "+ row +"'></div>");
-            this.filename = $("<div class='filename'></div>").appendTo(this.statusbar);
-            this.size = $("<div class='filesize'></div>").appendTo(this.statusbar);
-            this.progressBar = $("<div class='progressBar' ><div></div></div>").appendTo(this.statusbar);
-            this.abort = $("<div class='abort'>정지</div>").appendTo(this.statusbar);
+            
+         	this.statusbar = $("<div class='statusbar'></div>");
+         	this.filename = $("<div class='filename'></div>").appendTo(this.statusbar);
+        	this.size = $("<div class='filesize'></div>").appendTo(this.statusbar);
             
             obj.after(this.statusbar);
-         
-            this.setFileNameSize = function(name,size){
-                var sizeStr="";
+         	
+            // 전달받은 파일명, 사이즈
+            this.setFileNameSize = function(name, size){
+                
+            	var sizeStr="";
                 var sizeKB = size/1024;
+                
                 if(parseInt(sizeKB) > 1024){
                     var sizeMB = sizeKB/1024;
                     sizeStr = sizeMB.toFixed(2)+" MB";
@@ -262,61 +204,12 @@
                 this.size.html(sizeStr);
             }
             
-            this.setProgress = function(progress){       
-                var progressBarWidth =progress*this.progressBar.width()/ 100;  
-                this.progressBar.find('div').animate({ width: progressBarWidth }, 10).html(progress + "% ");
-                if(parseInt(progress) >= 100)
-                {
-                    this.abort.hide();
-                }
-            }
             
-            this.setAbort = function(jqxhr){
-                var sb = this.statusbar;
-                this.abort.click(function()
-                {
-                    jqxhr.abort();
-                    sb.hide();
-                });
-            }
         }
         
-        function sendFileToServer(formData,status)
-        {
-            var uploadURL = "/fileUpload/post"; //Upload URL
-            var extraData ={};
-            var jqXHR=$.ajax({
-                    xhr: function() {
-                    var xhrobj = $.ajaxSettings.xhr();
-                    if (xhrobj.upload) {
-                            xhrobj.upload.addEventListener('progress', function(event) {
-                                var percent = 0;
-                                var position = event.loaded || event.position;
-                                var total = event.total;
-                                if (event.lengthComputable) {
-                                    percent = Math.ceil(position / total * 100);
-                                }
-                                //Set progress
-                                status.setProgress(percent);
-                            }, false);
-                        }
-                    return xhrobj;
-                },
-                url: uploadURL,
-                type: "POST",
-                contentType:false,
-                processData: false,
-                cache: false,
-                data: formData,
-                success: function(data){
-                    status.setProgress(100);
-         
-                    //$("#status1").append("File upload Done<br>");           
-                }
-            }); 
-         
-            status.setAbort(jqXHR);
-        }
+        
+        
+        
         
     });
 </script>
@@ -355,13 +248,16 @@
 					<div class="container">
 
 						<div class="row box">
-
-							<!-- <div class="col" style="background-color: rgba(130, 139, 178, 0.25); height: 430px; top: 25px;"> -->
+							
 							<div class="col" style="margin-top: 25px;">
-								<div id="fileUpload" class="dragAndDropDiv">Drag & Drop
-									Files Here or Browse Files</div>
-								<input type="file" name="fileUpload" id="fileUpload"
-									style="display: none;">
+								<div id="fileUpload" class="dragAndDropDiv">
+									<section id="replaceImg">
+										<img src="${ pageContext.request.contextPath }/resources/img/upload.png" style="width: 300px;">
+										<p>File Upload</p>
+									</section>
+								</div>
+								<!-- preview에서 이미지 파일만 필터링해서 보이도록 accept, 확장자 체크x -->
+								<input type="file" name="fileUpload" id="fileUpload" style="display: none;" accept="image/jpeg, image/jpg, image/png" multiple />
 							</div>
 							<div class="col">
 								<span>증빙 구분</span> <select name="receiptKind" id="receiptKind"
@@ -393,8 +289,7 @@
 										style="padding-left: 4px; color: #999999; margin-bottom: 20px;"></textarea>
 								</div>
 								<div class="col" align="center">
-									<input type="submit" class="button submit_btn" value="등록"
-										id="receiptResgisterBtn" /><br />
+									<input type="submit" class="button submit_btn" value="등록" id="receiptResgisterBtn" /><br />
 								</div>
 
 							</div>
@@ -414,7 +309,14 @@
 	</div>
 
 
+	<section id="replaceThumb" style="max-width: 100%; height: 100%;">
+		<img src="" id="thumb" style="max-width: 100%; height: 100%;"/>
+	</section>
 
+	
+	<!-- Modal -->
+	<jsp:include page="/WEB-INF/jsp/include/modalAlert.jsp"/>
+	
 	<!--================ End Blog Post Area =================-->
 
 	<!--================ Start Footer Area =================-->

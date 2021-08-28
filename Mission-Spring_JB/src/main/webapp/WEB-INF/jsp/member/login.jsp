@@ -11,11 +11,13 @@
 
 	
 <script>
+	
 	function doLogin(){
 		// datepicker 사용하려고, head.jsp에 script들고왔는데 그 이후부터 여기 모달작동안함(script지우면 되긴함)
 		$('#myModal').modal('show');
 		$('#alert-modal-body-msg').text('로그인 버튼 누르면 모달')
 	}
+	
 </script>
 
 

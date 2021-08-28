@@ -37,7 +37,7 @@
 		<!--================Hero Banner start =================-->
 		<section class="mb-30px">
 			<div class="container" align="center">
-				<img id="mainImage" src="resources/img/indexMain2.jpg">
+				<img id="mainImage" src="${ pageContext.request.contextPath }/resources/img/indexMain2.jpg">
 			</div>
 		</section>
 
@@ -51,8 +51,7 @@
 					<div class="col">
 						<div class="single-recent-blog-post card-view">
 							<div class="cardMenu">
-								<a href="#"> <img src="resources/img/money.png"
-									style="margin-top: -13px">
+								<a href="#"> <img src="${ pageContext.request.contextPath }/resources/img/money.png"style="margin-top: -13px">
 								</a>
 							</div>
 						</div>
@@ -60,7 +59,7 @@
 					<div class="col">
 						<div class="single-recent-blog-post card-view">
 							<div class="cardMenu">
-								<a href="#"> <img src="resources/img/financial2.png"
+								<a href="#"> <img src="${ pageContext.request.contextPath }/resources/img/financial2.png"
 									style="margin-top: -8px">
 								</a>
 
@@ -71,7 +70,7 @@
 					<div class="col">
 						<div class="single-recent-blog-post card-view">
 							<div class="cardMenu">
-								<a href="#"> <img src="resources/img/receipt.png"
+								<a href="#"> <img src="${ pageContext.request.contextPath }/resources/img/receipt.png"
 									style="margin-top: 13px;">
 								</a>
 
@@ -82,7 +81,7 @@
 					<div class="col">
 						<div class="single-recent-blog-post card-view">
 							<div class="cardMenu">
-								<a href="#"> <img src="resources/img/counsel.png"
+								<a href="#"> <img src="${ pageContext.request.contextPath }/resources/img/counsel.png"
 									style="margin-top: -8px"">
 								</a>
 							</div>

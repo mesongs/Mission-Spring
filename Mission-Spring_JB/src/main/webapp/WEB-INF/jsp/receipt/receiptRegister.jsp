@@ -131,10 +131,9 @@
 		
 		var objDragAndDrop = $(".dragAndDropDiv");
         
-        // 해당 영역 클릭으로 파일 업로드 가능
+        // 해당 영역 클릭하면, hidden되어있는 file태그 실행
         objDragAndDrop.on('click',function (e){
         	
-        	// display none으로 둔 input[type=file]
             $('input[type=file]').trigger('click');
         });
 		
@@ -153,24 +152,22 @@
         		return false;
     		}
         	
+        	// 썸네일을 표시할 이미지 태그
+        	let preview = $('#thumb');
+ 
         	// 업로드한 파일 객체
         	var file = e.originalEvent.target.files;
         	
-        	// 썸네일을 표시할 이미지 태그
-        	let preview = $('#thumb');
-        	
-        	// 파라미터로 받은 경로에 있는 파일의 바이너리 데이터를 읽는 method (파일객체에서 이미지 데이터 가져옴)
+        	// createObjectURL 파라미터로 받은 파일의 바이너리 데이터를 읽는 method (파일객체에서 이미지 데이터 가져옴)
         	preview.attr("src", URL.createObjectURL(file[0]))
         	
-        	preview.src = URL.createObjectURL(file[0])
-  
         	// replaceImg를 replaceThumb로 replace, display none을 block으로
-        	$('#replaceImg').replaceWith($('#replaceThumb'))
+        	$('#replaceImg').replaceWith($('#replaceThumb')) 
         	$('#replaceThumb').css('display', 'block');
         	
         	// 이미지 로딩 후 객체를 메모리에서 해제
         	preview.onload = function(){
-        		URL.revokeObjectURL(preview.src);
+        		URL.revokeObjectURL(URL.createObjectURL(file[0]));
         	}
         	
         	// 업로드 div아래에 상태창 생성, obj.after(this.statusbar)
@@ -182,9 +179,10 @@
         function createStatusbar(obj){
             
          	this.statusbar = $("<div class='statusbar'></div>");
-         	this.filename = $("<div class='filename'></div>").appendTo(this.statusbar);
+         	this.filename = $("<div class='filename'></div>").appendTo(this.statusbar); // statusbar 하위 항목으로 appendTo
         	this.size = $("<div class='filesize'></div>").appendTo(this.statusbar);
             
+         	// 썸네일 표시하는 div 아래에 넣기 위해
             obj.after(this.statusbar);
          	
             // 전달받은 파일명, 사이즈

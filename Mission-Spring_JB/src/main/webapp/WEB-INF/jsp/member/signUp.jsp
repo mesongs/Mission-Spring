@@ -138,14 +138,7 @@
                             	<input type="password" class="form-control" name="rrnb" id="rrnb" maxlength="7" placeholder="주민등록번호 뒷자리" onfocus="this.placeholder = ''" onblur="this.placeholder = '주민등록번호 뒷자리'">
                           	</div>
 	                    </div>
-	                    
-	                    <div class="form-group col-lg-6 col-md-6 name">
-	                          <input type="password" class="form-control" name="easyPassword" id="easyPassword" maxlength="6" placeholder="간편비밀번호 (6자리)" onfocus="this.placeholder = ''" onblur="this.placeholder = '간편비밀번호 (6자리)'">
-	                    </div>
-	                    <div class="form-group col-lg-6 col-md-6 name">
-	                          <input type="password" class="form-control" name="easyPasswordCheck" id="easyPasswordCheck" maxlength="6" placeholder="간편비밀번호 확인" onfocus="this.placeholder = ''" onblur="this.placeholder = '간편비밀번호 확인'">
-	                    </div>
-	                    
+
                         <div class="form-group form-inline">
 	                    	<div class="form-group col-lg-6 col-md-6 name">
 	                          <span>

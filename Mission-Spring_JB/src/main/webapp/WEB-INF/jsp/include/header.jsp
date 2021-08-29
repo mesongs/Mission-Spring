@@ -20,7 +20,8 @@
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
             <ul class="nav navbar-nav menu_nav justify-content-center" id="menuContent">
-              <li class="nav-item"><a class="nav-link" href="index.html">금융서비스</a></li> 
+              <!--사용자의 agreement가 'N'일 경우 agreement 실행  -->
+              <li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/account/agreement">계좌관리</a></li> 
               <li class="nav-item"><a class="nav-link" href="salesReport.jsp">사업보고서</a></li> 
               <li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/processedList">증빙관리</a>
               <li class="nav-item"><a class="nav-link" href="supprotCenter.jsp">지원센터</a>

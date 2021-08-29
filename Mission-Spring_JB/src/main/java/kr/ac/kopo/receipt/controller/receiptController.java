@@ -37,13 +37,19 @@ public class receiptController {
 		
 		ModelAndView mav = new ModelAndView("receipt/receiptCheck");
 		
-		// 사용자가 업로드하는 파일에 대한 확장자 확인하기, 아마 이건 js에서 해야할듯함
 		// 영수증 사진말고, 관련 없는 사진 등록하면 어떻게? => 템플릿 OCR에서는 구분가능함, general OCR에서는 어떻게?.. 잘못 올리는 사진에 대한 대비가 필요한데
 		// UploadController 참고
-		// 영수증 등록 버튼 누르면, 이미지 썸네일과 함께 추출된 정보 자동입력된 것 확인할 수 있는 페이지로
 		
-		// 파일, 증빙 구분, 사용 목적, 메모에 대한 내용 저장 => 파일은 서버에 저장 / 파라미터는 공유영역에 저장
-		// receiptCheck.jsp에서 자동완성 => 사용자가 등록 누르면, 
+		
+		/*
+		 * 1. 파일을 서버 경로에 저장
+		 * 2. template or general ocr api 호출 => parsing
+		 * 3. 추출된 텍스트 VO에 저장, 공유영역에 등록 => replaceCheck.jsp에서 자동완성
+		 * 4. general ocr의 경우 합계 금액으로 아무것도 추출이 안되는 경우 -1을 반환하도록 만들어야함
+		 */
+		
+		
+		
 		
 		Iterator<String> iter = multipartRequest.getFileNames();
 		

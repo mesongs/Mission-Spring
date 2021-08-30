@@ -45,6 +45,8 @@ public class AccountServiceImpl implements AccountService {
 
 					text += line + "\n";
 					// text ="", 첫 번째 줄 읽어서 바로 넣어주는데.. 왜 공백이..
+					System.out.println(text);
+					
 				}
 
 				PolicyVO vo = new PolicyVO();
@@ -94,7 +96,6 @@ public class AccountServiceImpl implements AccountService {
 
 				// readLine()은 String값으로 개행문자를 포함해 한 줄을 전부 읽어오는 방식
 				while ((line = br.readLine()) != null) {
-
 					text += line + "\n";
 					// text ="", 첫 번째 줄 읽어서 바로 넣어주는데.. 왜 공백이..
 				}
@@ -148,7 +149,7 @@ public class AccountServiceImpl implements AccountService {
 		params.put("from", "01090258049");
 		params.put("type", "SMS");
 		params.put("text", "[하나WITH 인증번호 " + authNo + "]");
-
+		
 		try {
 			// json 형식으로 변경해서 api 요청
 			JSONObject obj = (JSONObject) coolsms.send(params);
@@ -161,5 +162,7 @@ public class AccountServiceImpl implements AccountService {
 
 		return authNo;
 	}
+	
+	
 
 }

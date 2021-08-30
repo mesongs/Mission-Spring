@@ -20,4 +20,28 @@ public class MemberDAOImpl implements MemberDAO {
 		return userVO;
 	}
 
+
+	@Override
+	public String idCheck(String inputId) {
+		
+		String valid ="";
+		
+		if(sqlSessionTemplate.selectOne("member.memberDAO.idCheck",inputId) == null) {
+			
+			valid = "success";
+			
+		}else {
+			
+			valid ="fail";
+			
+		}
+		
+		// inputId에 해당하는 값이 존재하는지 찾음 => null이면, valid에 success 대입
+		
+		return valid;
+	}	
+	
+	
+	
+
 }

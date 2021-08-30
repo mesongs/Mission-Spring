@@ -5,5 +5,10 @@ import kr.ac.kopo.member.vo.MemberVO;
 public interface MemberService {
 	
 	
-	MemberVO login(MemberVO member); 
+	MemberVO login(MemberVO member);
+	
+	String idCheck(String inputId);
+	
+	int emailCheck(String email);
+	
 }

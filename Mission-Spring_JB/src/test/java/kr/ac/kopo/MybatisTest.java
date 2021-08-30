@@ -12,8 +12,6 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import kr.ac.kopo.board.vo.BoardVO;
 import kr.ac.kopo.member.vo.MemberVO;
 
 
@@ -39,39 +37,38 @@ public class MybatisTest {
 			
 	// 내가 만든 객체의 어느 메소드가 잘실행되는지 테스트해보고 싶다
 	// 컨트롤러 서비스 dao 거쳐야하는데, 언제 기다려..
-	@Ignore
-	@Test
-	public void DataSource생성테스트() throws Exception{
-		
-		// System.out.println("dataSource : " +  dataSource);
-		// 리턴값이 null이 아닌지 확인, 제대로 만들어졌으면 null이 아님
-		assertNotNull(dataSource);
-	}
-	
-	// 이미 테스트 했던 위에꺼 안하고 싶을때는 @Ignore
-	@Ignore
-	@Test
-	public void mybatis연동테스트() throws Exception{
-		
-//		assertNotNull(sqlFactory);
-		assertNotNull(sessionTemplate);
-	}
-	
-	@Ignore
-	@Test
-	public void 상세게시글조회Test() throws Exception{
-		
-		BoardVO board = sessionTemplate.selectOne("board.BoardDAO.selectByNo", 186); 
-		System.out.println(board);
-	}
-	@Ignore
-	@Test
-	public void 게시글삭제Test() throws Exception{
-		
-		sessionTemplate.delete("board.BoardDAO.deleteByNo", 186);
-	}
+	/*
+	 * @Ignore
+	 * 
+	 * @Test public void DataSource생성테스트() throws Exception{
+	 * 
+	 * // System.out.println("dataSource : " + dataSource); // 리턴값이 null이 아닌지 확인,
+	 * 제대로 만들어졌으면 null이 아님 assertNotNull(dataSource); }
+	 * 
+	 * // 이미 테스트 했던 위에꺼 안하고 싶을때는 @Ignore
+	 * 
+	 * @Ignore
+	 * 
+	 * @Test public void mybatis연동테스트() throws Exception{
+	 * 
+	 * // assertNotNull(sqlFactory); assertNotNull(sessionTemplate); }
+	 * 
+	 * @Ignore
+	 * 
+	 * @Test public void 상세게시글조회Test() throws Exception{
+	 * 
+	 * BoardVO board = sessionTemplate.selectOne("board.BoardDAO.selectByNo", 186);
+	 * System.out.println(board); }
+	 * 
+	 * @Ignore
+	 * 
+	 * @Test public void 게시글삭제Test() throws Exception{
+	 * 
+	 * sessionTemplate.delete("board.BoardDAO.deleteByNo", 186); }
+	 */
 	
 	@Test
+	@Ignore
 	public void 로그인테스트() throws Exception{
 		
 		MemberVO member = new MemberVO();
@@ -84,9 +81,14 @@ public class MybatisTest {
 		assertNotNull(userVO);
 	}
 	
+	@Test
+	public void 아이디체크() throws Exception{
+		
+		String inputId = "jb8049";
+		String valid = sessionTemplate.selectOne("member.memberDAO.idCheck", inputId);
+		System.out.println(valid);
+	}
 	
 	
-	
- 
 	
 }

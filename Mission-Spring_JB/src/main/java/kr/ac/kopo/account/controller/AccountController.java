@@ -33,7 +33,7 @@ public class AccountController {
 		return mav;
 	}
 	
-	// 간편비밀번호 설정
+	// 간편비밀번호 설정 이용약관
 	@GetMapping("/account/easyPassword")
 	public ModelAndView setEasypassword() {
 		

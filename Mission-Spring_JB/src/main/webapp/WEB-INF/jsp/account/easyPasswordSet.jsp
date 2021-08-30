@@ -356,13 +356,12 @@ let checkEasyPassword = false;
 								<c:forEach items="${ policyList }" var="policy">
 
 									<div class="col-8" style="padding-left: 0px;">
-										<h4
-											style="font-family: 'Noto Sans KR', sans-serif; margin-bottom: 10px;">${ policy.title }</h4>
+										<h4 style="font-family: 'Noto Sans KR', sans-serif; margin-bottom: 10px;">${ policy.title }</h4>
 										<!-- 사용자가 textarea 태그 박스크기, 사이즈를 임의로 수정을 못하게함 resize : none -->
-										<textarea rows="10" readonly="readonly"
-											style="resize: none; width: 100%;">
-									${ policy.content }
-       							</textarea>
+									
+										<textarea rows="10" readonly="readonly" style="resize: none; width: 100%; text-align: left;">
+											${ policy.content }
+       									</textarea>
 									</div>
 									<div class="col-8" style="text-align: right">
 										<input type="checkbox" id="${ policy.name }"
@@ -418,7 +417,7 @@ let checkEasyPassword = false;
 								<div align="center" class="container"
 									style="padding-right: 0px; padding-left: 0px; max-width: 287px; padding-right: 0px; padding-left: 0px; max-width: 287px; margin-right: 324px; margin-top: -10px;">
 									<a href="javascript:doCheck()" class="btn btn-default"
-										style="background-color: #27b2a5; color: #fff; font-size: 20px;">등록</a>
+										style="background-color: #27b2a5; color: #fff; font-size: 20px; width: 70px;">등록</a>
 								</div>
 							</div>
 						</div>

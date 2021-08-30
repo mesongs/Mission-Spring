@@ -7,6 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.context.annotation.SessionScope;
@@ -83,14 +86,43 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
-	@GetMapping("/signUp")
-	public String signUp(){
+	////////////////////////////// 윗 부분은 board 만들 때 생성한 것
+	@GetMapping("/member/signUp")
+	public String signUpForm(){
 		
 		return "member/signUp";
 	}
 	
-	// 회원가입 한 후
-//	@PostMapping("/signUp")
+	// 회원가입 실행
+	@PostMapping("/member/signUp")
+	public String signUpProcess(MemberVO member) {
+		
+		// 값 넘어오는거 확인, 멤버변수와 이름이 동일한지
+		System.out.println(member);
+		
+		
+		return "member/login";
+	}
+	
+	@RequestMapping("/member/idCheck")
+	@ResponseBody
+	public String idCheck(@RequestParam("userId") String inputId) {
+		
+
+		String valid = service.idCheck(inputId);
+		
+		// 반환되는 값이 success or fail
+		return valid;
+	}
+	
+	@RequestMapping("/member/emailCheck")
+	@ResponseBody
+	public int emailCheck(@RequestParam("email") String email) {
+		
+		int authNo = service.emailCheck(email);
+		
+		return authNo;
+	}
 	
 	
 }

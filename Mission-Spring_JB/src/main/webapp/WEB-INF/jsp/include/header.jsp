@@ -26,7 +26,7 @@
               <li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/processedList">증빙관리</a>
               <li class="nav-item"><a class="nav-link" href="supprotCenter.jsp">지원센터</a>
               <li class="nav-select"><a class="nav-link" href="${ pageContext.request.contextPath }/login">로그인</a>
-              <li class="nav-select"><a class="nav-link" href="${ pageContext.request.contextPath }/signUp">회원가입</a>
+              <li class="nav-select"><a class="nav-link" href="${ pageContext.request.contextPath }/member/signUp">회원가입</a>
             </ul>
           </div> 
         </div>

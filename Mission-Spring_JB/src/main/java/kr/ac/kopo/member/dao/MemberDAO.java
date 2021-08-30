@@ -6,5 +6,6 @@ public interface MemberDAO {
 	
 	MemberVO login(MemberVO member);
 	
+	String idCheck(String inputId);
 	
 }

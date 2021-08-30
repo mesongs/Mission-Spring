@@ -50,7 +50,7 @@
 		                    </div>
 		                    <div class="container" style="padding-right: 0px;padding-left: 0px;">
 		                        <a href="javascript:doLogin()" class="button submit_btn" id="loginBtn" style="float: left">로그인</a>
-		                        <a href="#"><img src="resources/img/kakaoLogin.png" id="kakaoBtn" style="margin-left: 15px;"></a>
+		                        <a href="#"><img src="${ pageContext.request.contextPath }/resources/img/kakaoLogin.png" id="kakaoBtn" style="margin-left: 15px;"></a>
 	                    	</div>
 	                    </form>
                 </div>

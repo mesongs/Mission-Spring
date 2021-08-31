@@ -5,9 +5,36 @@
 
 <mapper namespace="member.memberDAO">
 	
+	<resultMap type="loginVO" id="loginMap">
+		<result column="user_id" property="id" />
+		<result column="user_password" property="password" />
+	</resultMap>
+	
+	
 	<select id="idCheck" resultType="String">
 		select user_id
 		from tb_user
 		where user_id=#{inputId}
 	</select>
+	
+	<!-- 로그인  -->
+	<select id="login" parameterType="loginVO" resultType="loginVO" resultMap="loginMap">
+		select user_id, user_password
+		from tb_user
+		where user_id = #{id} and user_password = #{password}
+	</select>
+	
+	<insert id="signUpMember" parameterType="memberVO">
+		insert into TB_USER(user_id, user_password , name, phone, email, tax_agent_email, rrn)
+		VALUES(#{userId}, #{userPassword}, #{name}, #{phone}, concat(#{emailId},#{domain}), concat(#{taxAgentEmailId},#{taxAgentDomain}), concat(#{fRrn},#{bRrn}))
+	</insert>
+	
+	<insert id="signUpBusiness" parameterType="memberVO">	
+		INSERT INTO TB_BUSINESS(business_no, store_name, zipCode, addr_road, addr_jibun, addr_detail, user_id)
+        	VALUES(#{businessNo}, #{storeName}, #{zipCode}, #{addrRoad}, #{addrJibun}, #{addrDetail}, #{userId})
+	</insert>
+	
+	
+	
+	
 </mapper>

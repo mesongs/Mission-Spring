@@ -4,8 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<typeAliases>
-		<!--  <typeAlias type="kr.ac.kopo.board.vo.BoardVO" alias="boardVO" />
-		<typeAlias type="kr.ac.kopo.board.vo.ReplyVO" alias="replyVO"/>-->
 		<typeAlias type="kr.ac.kopo.member.vo.MemberVO" alias="memberVO" />
+		<typeAlias type="kr.ac.kopo.member.vo.LoginVO" alias="loginVO" />
 	</typeAliases>
 </configuration>

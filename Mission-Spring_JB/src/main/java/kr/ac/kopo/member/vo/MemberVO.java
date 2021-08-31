@@ -1,21 +1,24 @@
 package kr.ac.kopo.member.vo;
 
 public class MemberVO {
-
+	
+	//회원_TB
 	private String userId;
-	private String user_password;
+	private String userPassword;
 	private String name;
 	private String type;
 	private String phone;
 	private String emailId;
-	private int domain;
-	private String frrn;
-	private String brrn;
+	private String domain;
+	private String fRrn;
+	private String bRrn;
 	private String taxAgentEmailId;
-	private int taxAgentDomain;
+	private String taxAgentDomain;
+	
 	// 사업장_TB
 	private String businessNo;
-	private String zipcode;
+	private String storeName;
+	private String zipCode;
 	private String addrRoad;
 	private String addrJibun;
 	private String addrDetail;
@@ -23,11 +26,14 @@ public class MemberVO {
 	public String getUserId() {
 		return userId;
 	}
-	public String getUser_password() {
-		return user_password;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
-	public void setUser_password(String user_password) {
-		this.user_password = user_password;
+	public String getUserPassword() {
+		return userPassword;
+	}
+	public void setUserPassword(String userPassword) {
+		this.userPassword = userPassword;
 	}
 	public String getName() {
 		return name;
@@ -53,23 +59,23 @@ public class MemberVO {
 	public void setEmailId(String emailId) {
 		this.emailId = emailId;
 	}
-	public int getDomain() {
+	public String getDomain() {
 		return domain;
 	}
-	public void setDomain(int domain) {
+	public void setDomain(String domain) {
 		this.domain = domain;
 	}
-	public String getFrrn() {
-		return frrn;
+	public String getfRrn() {
+		return fRrn;
 	}
-	public void setFrrn(String frrn) {
-		this.frrn = frrn;
+	public void setfRrn(String fRrn) {
+		this.fRrn = fRrn;
 	}
-	public String getBrrn() {
-		return brrn;
+	public String getbRrn() {
+		return bRrn;
 	}
-	public void setBrrn(String brrn) {
-		this.brrn = brrn;
+	public void setbRrn(String bRrn) {
+		this.bRrn = bRrn;
 	}
 	public String getTaxAgentEmailId() {
 		return taxAgentEmailId;
@@ -77,10 +83,10 @@ public class MemberVO {
 	public void setTaxAgentEmailId(String taxAgentEmailId) {
 		this.taxAgentEmailId = taxAgentEmailId;
 	}
-	public int getTaxAgentDomain() {
+	public String getTaxAgentDomain() {
 		return taxAgentDomain;
 	}
-	public void setTaxAgentDomain(int taxAgentDomain) {
+	public void setTaxAgentDomain(String taxAgentDomain) {
 		this.taxAgentDomain = taxAgentDomain;
 	}
 	public String getBusinessNo() {
@@ -89,11 +95,17 @@ public class MemberVO {
 	public void setBusinessNo(String businessNo) {
 		this.businessNo = businessNo;
 	}
-	public String getZipcode() {
-		return zipcode;
+	public String getStoreName() {
+		return storeName;
 	}
-	public void setZipcode(String zipcode) {
-		this.zipcode = zipcode;
+	public void setStoreName(String storeName) {
+		this.storeName = storeName;
+	}
+	public String getZipCode() {
+		return zipCode;
+	}
+	public void setZipCode(String zipCode) {
+		this.zipCode = zipCode;
 	}
 	public String getAddrRoad() {
 		return addrRoad;
@@ -113,17 +125,14 @@ public class MemberVO {
 	public void setAddrDetail(String addrDetail) {
 		this.addrDetail = addrDetail;
 	}
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
 	
 	@Override
 	public String toString() {
-		return "MemberVO [userId=" + userId + ", user_password=" + user_password + ", name=" + name + ", type=" + type
-				+ ", phone=" + phone + ", emailId=" + emailId + ", domain=" + domain + ", frrn=" + frrn + ", brrn="
-				+ brrn + ", taxAgentEmailId=" + taxAgentEmailId + ", taxAgentDomain=" + taxAgentDomain + ", businessNo="
-				+ businessNo + ", zipcode=" + zipcode + ", addrRoad=" + addrRoad + ", addrJibun=" + addrJibun
-				+ ", addrDetail=" + addrDetail + "]";
+		return "MemberVO [userId=" + userId + ", userPassword=" + userPassword + ", name=" + name + ", type=" + type
+				+ ", phone=" + phone + ", emailId=" + emailId + ", domain=" + domain + ", fRrn=" + fRrn + ", bRrn="
+				+ bRrn + ", taxAgentEmailId=" + taxAgentEmailId + ", taxAgentDomain=" + taxAgentDomain + ", businessNo="
+				+ businessNo + ", storeName=" + storeName + ", zipCode=" + zipCode + ", addrRoad=" + addrRoad
+				+ ", addrJibun=" + addrJibun + ", addrDetail=" + addrDetail + "]";
 	}
 	
 }

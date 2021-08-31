@@ -3,7 +3,9 @@ package kr.ac.kopo.member.dao;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import kr.ac.kopo.member.vo.LoginVO;
 import kr.ac.kopo.member.vo.MemberVO;
 
 @Repository
@@ -13,9 +15,9 @@ public class MemberDAOImpl implements MemberDAO {
 	private SqlSessionTemplate sqlSessionTemplate;
 	
 	
-	public MemberVO login(MemberVO member) {
+	public LoginVO login(LoginVO login) {
 		
-		MemberVO userVO = sqlSessionTemplate.selectOne("member.memberDAO.login",member);
+		LoginVO userVO = sqlSessionTemplate.selectOne("member.memberDAO.login", login);
 		
 		return userVO;
 	}
@@ -37,9 +39,23 @@ public class MemberDAOImpl implements MemberDAO {
 		}
 		
 		// inputId에 해당하는 값이 존재하는지 찾음 => null이면, valid에 success 대입
-		
 		return valid;
-	}	
+	}
+
+	@Override
+	public void signUpMember(MemberVO member) {
+		
+		sqlSessionTemplate.insert("member.memberDAO.signUpMember",member);
+		
+	}
+
+
+	@Override
+	public void signUpBusiness(MemberVO member) {
+
+		sqlSessionTemplate.insert("member.memberDAO.signUpBusiness", member);
+		
+	}
 	
 	
 	

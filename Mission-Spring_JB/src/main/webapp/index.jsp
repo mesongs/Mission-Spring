@@ -62,27 +62,20 @@
 								<a href="#"> <img src="${ pageContext.request.contextPath }/resources/img/financial2.png"
 									style="margin-top: -8px">
 								</a>
-
-
 							</div>
 						</div>
 					</div>
 					<div class="col">
 						<div class="single-recent-blog-post card-view">
 							<div class="cardMenu">
-								<a href="#"> <img src="${ pageContext.request.contextPath }/resources/img/receipt.png"
-									style="margin-top: 13px;">
-								</a>
-
-
+								<a href="#"><img src="${ pageContext.request.contextPath }/resources/img/receipt.png" style="margin-top: 13px;"></a>
 							</div>
 						</div>
 					</div>
 					<div class="col">
 						<div class="single-recent-blog-post card-view">
 							<div class="cardMenu">
-								<a href="#"> <img src="${ pageContext.request.contextPath }/resources/img/counsel.png"
-									style="margin-top: -8px"">
+								<a href="#"> <img src="${ pageContext.request.contextPath }/resources/img/counsel.png" style="margin-top: -8px">
 								</a>
 							</div>
 						</div>

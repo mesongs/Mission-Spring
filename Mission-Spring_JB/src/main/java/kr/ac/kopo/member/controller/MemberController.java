@@ -13,10 +13,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.context.annotation.SessionScope;
+import org.springframework.web.servlet.ModelAndView;
 
 import kr.ac.kopo.member.service.MemberService;
+import kr.ac.kopo.member.vo.LoginVO;
 import kr.ac.kopo.member.vo.MemberVO;
-
 
 // model객체나 modelAndView를 통해 공유영역에 올린 것 중
 // ~이름을 가진 것을 세션영역에 올려줘, 하나 일 때는 {} 기호 안써도 됨
@@ -28,21 +29,28 @@ public class MemberController {
 	@Autowired
 	private MemberService service;
 	
-	@GetMapping("/login")
-	public String loginForm() {
+	@GetMapping("/member/login")
+	public String loginForm(Model model, HttpSession session) {
+		
+		String msg = (String)session.getAttribute("msg");
+		
+		// session에서 msg 제거
+		session.removeAttribute("msg");
+		
+		model.addAttribute("msg", msg);
 		
 		return "member/login";
 	}
 	
-	@PostMapping("/login")
-	public String login(MemberVO member, Model model, HttpSession session) {
+	@PostMapping("/member/login")
+	public String login(LoginVO loginVO, Model model, HttpSession session) {
 		
-		//System.out.println(member);
 		
-		MemberVO userVO =  service.login(member);
+		LoginVO userVO =  service.login(loginVO);
 		
 		//로그인을 실패한 경우
 		if(userVO == null) {
+			
 			String msg = "아이디 또는 패스워드가 잘못되었습니다.";
 			// 실패한 경우, 공유영역에 msg 등록
 			model.addAttribute("msg", msg);
@@ -51,9 +59,9 @@ public class MemberController {
 		}
 		
 		// 로그인을 성공했음
-		// 스프링은 필요한거 요구하면 됨, session 객체도 굳이 request로 받아올 필요없음!
-		// session.setAttribute("userVO", userVO);
+		// 필요한거 요구하면 됨, session 객체도 굳이 request로 받아올 필요없음
 		model.addAttribute("userVO", userVO);
+		
 		
 		// 로그인 인터셉터를 거쳤는지 확인, 사용자가 로그인 후 가고싶은 경로
 		String dest = (String)session.getAttribute("dest");
@@ -86,7 +94,7 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
-	////////////////////////////// 윗 부분은 board 만들 때 생성한 것
+	///////////////////////////////////////////////////////////////// 윗 부분은 board 만들 때 생성한 것
 	@GetMapping("/member/signUp")
 	public String signUpForm(){
 		
@@ -95,13 +103,15 @@ public class MemberController {
 	
 	// 회원가입 실행
 	@PostMapping("/member/signUp")
-	public String signUpProcess(MemberVO member) {
+	public String signUpProcess(MemberVO member, HttpSession session) {
 		
-		// 값 넘어오는거 확인, 멤버변수와 이름이 동일한지
-		System.out.println(member);
+		String msg = "회원가입을 축하합니다. 로그인 해주세요.";
+		session.setAttribute("msg", msg);
 		
+		// login.jsp에 모달로 msg 호출
+		// session에 저장하고, 컨트롤러 보내기 위해 redirect, GetMapping으로 보내지지..
 		
-		return "member/login";
+		return "redirect:/member/login";
 	}
 	
 	@RequestMapping("/member/idCheck")

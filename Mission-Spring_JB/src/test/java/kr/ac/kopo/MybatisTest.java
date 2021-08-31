@@ -12,6 +12,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import kr.ac.kopo.member.vo.LoginVO;
 import kr.ac.kopo.member.vo.MemberVO;
 
 
@@ -68,19 +70,18 @@ public class MybatisTest {
 	 */
 	
 	@Test
-	@Ignore
 	public void 로그인테스트() throws Exception{
 		
-		MemberVO member = new MemberVO();
+		LoginVO login = new LoginVO();
 		
-		member.setId("jb8049");
-		member.setPassword("1234");
+		login.setId("jb8049");
+		login.setPassword("1");
 		
-		MemberVO userVO = sessionTemplate.selectOne("member.memberDAO.login",member);
-		
-		assertNotNull(userVO);
+		LoginVO userVO = sessionTemplate.selectOne("member.memberDAO.login",login);
+		System.out.println(userVO);
 	}
 	
+	@Ignore
 	@Test
 	public void 아이디체크() throws Exception{
 		

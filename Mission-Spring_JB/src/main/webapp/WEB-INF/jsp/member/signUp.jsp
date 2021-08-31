@@ -18,8 +18,9 @@
 
 <script>
 
-let idCheck = false;
-let emailCheck = false;
+// test를 위해 false를 true로
+let idCheck = true;
+let emailCheck = true;
 
 	$(document).ready(function(){
 		
@@ -68,23 +69,7 @@ let emailCheck = false;
 			let emailId = $('#emailId').val()
 			let domain = $('select[name=domain]').val()
 			
-			switch (domain){
-		    case '1' :
-		    	domain = '@naver.com';
-		        break;
-		    case '2' :
-		        domain = '@daum.net';
-		        break;
-		    case '3' :
-		        domain = '@google.com';
-		        break;
-		    case '4' :
-		        domain = '@yahoo.co.kr';
-		        break;
-			}
-			
 			let email = emailId + domain;
-			
 			
 			$.ajax({
 				type : "get",
@@ -248,7 +233,7 @@ let emailCheck = false;
 	                        </div>
                         </div>
                         <div class="form-group col-lg-6 col-md-6 name">
-	                          <input type="password" class="form-control" name="password" id="password" placeholder="비밀번호" onfocus="this.placeholder = ''" onblur="this.placeholder = '비밀번호'" required="required">
+	                          <input type="password" class="form-control" name="userPassword" id="userPassword" placeholder="비밀번호" onfocus="this.placeholder = ''" onblur="this.placeholder = '비밀번호'" required="required">
 	                    </div>
 	                    <div class="form-group col-lg-6 col-md-6 name">
 	                          <input type="text" class="form-control" name="name" id="name" placeholder="이름" onfocus="this.placeholder = ''" onblur="this.placeholder = '이름'" required="required">
@@ -263,10 +248,10 @@ let emailCheck = false;
 	                          <span>
 		                          <input type="text" class="form-control" name="emailId" id="emailId" placeholder="이메일" onfocus="this.placeholder = ''" onblur="this.placeholder = '이메일'" style="float: left; width: 50%" required="required" >
 		                       	  <select name="domain" id="domain" style="width: 50%">
-									<option value="1">@naver.com</option>
-									<option value="2">@daum.net</option>
-									<option value="3">@google.com</option>
-									<option value="4">@yahoo.co.kr</option>
+									<option value="@naver.com">@naver.com</option>
+									<option value="@daum.net">@daum.net</option>
+									<option value="@google.com">@google.com</option>
+									<option value="@yahoo.co.kr">@yahoo.co.kr</option>
 								  </select>
 	                          </span>
 	                        </div>
@@ -284,11 +269,11 @@ let emailCheck = false;
 	                        </div>
 	                    </div>
                         <div class="form-group form-inline">
-		                    <div class="form-group col-lg-6 col-md-6 name">
-		                        <input type="date" class="form-control" name="frrn" id="frrn" maxlength="16" placeholder="생년월일" onfocus="this.placeholder = ''" onblur="this.placeholder = '생년월일'" required="required">
+		                    <div class="form-group col-lg-6 col-md-6 name"> 
+		                        <input type="text" class="form-control" name="fRrn" id="fRrn" maxlength="6" placeholder="생년월일" onfocus="this.placeholder = ''" onblur="this.placeholder = '생년월일'" required="required">
 		                    </div>
 		                    <div class="form-group col-lg-6 col-md-6 name">
-                            	<input type="password" class="form-control" name="brrn" id="brrn" maxlength="7" placeholder="주민등록번호 뒷자리" onfocus="this.placeholder = ''" onblur="this.placeholder = '주민등록번호 뒷자리'" required="required">
+                            	<input type="password" class="form-control" name="bRrn" id="bRrn" maxlength="7" placeholder="주민등록번호 뒷자리" onfocus="this.placeholder = ''" onblur="this.placeholder = '주민등록번호 뒷자리'" required="required">
                           	</div>
 	                    </div>
 
@@ -297,10 +282,10 @@ let emailCheck = false;
 	                          <span>
 		                          <input type="text" class="form-control" name="taxAgentEmailId" id="taxAgentEmailId" placeholder="세무대리인 이메일" onfocus="this.placeholder = ''" onblur="this.placeholder = '세무대리인 이메일'" style="float: left; width: 50%" required="required" >
 		                       	  <select name="taxAgentDomain" id="taxAgentDomain" style="width: 50%">
-									<option value="1">@naver.com</option>
-									<option value="2">@daum.net</option>
-									<option value="3">@google.com</option>
-									<option value="4">@yahoo.co.kr</option>
+									<option value="@naver.com">@naver.com</option>
+									<option value="@daum.net">@daum.net</option>
+									<option value="@google.com">@google.com</option>
+									<option value="@yahoo.co.kr">@yahoo.co.kr</option>
 								</select>
 	                          </span>
 	                        </div>
@@ -310,9 +295,13 @@ let emailCheck = false;
 	                          <input type="text" class="form-control" name="businessNo" id="businessNo" maxlength="10" placeholder="사업자번호" onfocus="this.placeholder = ''" onblur="this.placeholder = '사업자번호'" required="required">
 	                    </div>
 	                    
+	                    <div class="form-group col-lg-6 col-md-6 name">
+	                          <input type="text" class="form-control" name="storeName" id="storeName" maxlength="10" placeholder="상호명" onfocus="this.placeholder = ''" onblur="this.placeholder = '사업자번호'" required="required">
+	                    </div>
+	                    
 	                    <div class="form-group form-inline">
 	                    	<div class="form-group col-lg-6 col-md-6 name">
-	                          <input type="text" class="form-control" name="zipcode" id="sample4_postcode" placeholder="사업장 우편번호" onfocus="this.placeholder = ''" onblur="this.placeholder = '사업장 우편번호'" required="required">
+	                          <input type="text" class="form-control" name="zipCode" id="sample4_postcode" placeholder="사업장 우편번호" onfocus="this.placeholder = ''" onblur="this.placeholder = '사업장 우편번호'" required="required">
 	                        </div>
 	                        <div class="form-group col-lg-6 col-md-6 name">
 	                            <a href="javascript:sample4_execDaumPostcode();" class="search zipcode" id="zipcode ">우편번호 찾기</a>

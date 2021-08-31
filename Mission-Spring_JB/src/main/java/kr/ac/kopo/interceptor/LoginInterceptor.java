@@ -14,7 +14,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			throws Exception {
 		
 		
-		//System.out.println("로그인 인터셉터 처리...");	
+		System.out.println("로그인 인터셉터 처리...");	
 		// 로그인 여부 판단!
 		
 		HttpSession session = request.getSession();

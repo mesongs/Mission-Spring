@@ -37,7 +37,7 @@
 		<!--================Hero Banner start =================-->
 		<section class="mb-30px">
 			<div class="container" align="center">
-				<img id="mainImage" src="${ pageContext.request.contextPath }/resources/img/indexMain2.jpg">
+				<img id="mainImage" src="${ pageContext.request.contextPath }/resources/img/indexMain2.png">
 			</div>
 		</section>
 

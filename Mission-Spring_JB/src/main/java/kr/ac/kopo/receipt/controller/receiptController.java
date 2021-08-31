@@ -49,8 +49,6 @@ public class receiptController {
 		 */
 		
 		
-		
-		
 		Iterator<String> iter = multipartRequest.getFileNames();
 		
 		String formFileName = iter.next();

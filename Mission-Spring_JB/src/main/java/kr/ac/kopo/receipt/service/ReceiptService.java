@@ -7,6 +7,6 @@ import kr.ac.kopo.receipt.vo.ReceiptVO;
 
 public interface ReceiptService {
 
-	ReceiptVO uploadImgFile(MultipartFile mFile);
+	ReceiptVO uploadImgFile(MultipartHttpServletRequest multipartRequest);
 	
 }

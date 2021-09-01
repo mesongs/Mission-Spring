@@ -52,11 +52,15 @@ public class receiptController {
 	@PostMapping("/receipt/register")
 	public ModelAndView receiptRegister(MultipartHttpServletRequest multipartRequest) {
 		
+		service.uploadImgFile(multipartRequest);
+		
+		
 		ModelAndView mav = new ModelAndView("receipt/receiptCheck");
 		
 		// 여기서 ocr처리한 뒤에 receiptCheck.jsp로 처리된 결과를 넘겨야함
 		
 		// 영수증 사진말고, 관련 없는 사진 등록하면 어떻게? => 템플릿 OCR에서는 구분가능함, general OCR에서는 어떻게?.. 잘못 올리는 사진에 대한 대비가 필요한데
+		
 		/*
 		 * 1. 파일을 서버 경로에 저장
 		 * 2. template or general ocr api 호출 => parsing
@@ -76,10 +80,8 @@ public class receiptController {
 		
 		MultipartFile mFile = multipartRequest.getFile(formFileName);
 		
-		
 		// 사용자가 업로드한 파일 객체를 service단으로 넘기고 싶은데..
 		// ReceiptVO receipt = service.uploadImgFile(mFile);
-		
 		
 		// 원본 파일명
 		String oriFileName = mFile.getOriginalFilename();
@@ -150,8 +152,7 @@ public class receiptController {
  		mav.addObject("selectedpurposeNo", selectedPurposeNo);
  		mav.addObject("inputMemo", inputMemo);
  		
- 		// 이 부분에서 OCR들어가서
- 		
+ 		// 이 부분에서 OCR 요청해서 값을 받아와야함
  		
  		
 		return mav;

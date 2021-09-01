@@ -1,25 +1,21 @@
-package kr.ac.kopo.ocr.controller;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
-
 /*
+ * package kr.ac.kopo.ocr.controller;
+ * 
+ * import java.util.ArrayList; import java.util.Collection; import
+ * java.util.Collections; import java.util.List;
+ * 
+ * import org.springframework.stereotype.Controller; import
+ * org.springframework.web.bind.annotation.GetMapping; import
+ * org.springframework.web.bind.annotation.RequestMapping;
+ * 
+ * import com.fasterxml.jackson.databind.JsonNode; import
+ * com.fasterxml.jackson.databind.ObjectMapper;
+ * 
+ * import okhttp3.MediaType; import okhttp3.OkHttpClient; import
+ * okhttp3.Request; import okhttp3.RequestBody; import okhttp3.Response; import
+ * okhttp3.ResponseBody;
+ * 
+ * 
  * @Controller public class OcrController2 {
  * 
  * @RequestMapping("/ocr/list") public String generalOcr() {
@@ -2331,4 +2327,5 @@ import okhttp3.ResponseBody;
  * }
  * 
  * }
+ * 
  */

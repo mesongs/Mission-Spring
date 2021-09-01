@@ -7,6 +7,8 @@ public interface MemberService {
 	
 	LoginVO login(LoginVO login);
 	
+	LoginVO kakaoLogin(LoginVO login);
+	
 	String idCheck(String inputId);
 	
 	int emailCheck(String email);

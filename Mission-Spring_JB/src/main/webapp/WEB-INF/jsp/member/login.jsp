@@ -8,7 +8,9 @@
 
 <head>
 	<jsp:include page="/WEB-INF/jsp/include/head.jsp"/>
-
+	
+<!--카카오톡 로그인 -->
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 
 <script>
 
@@ -19,7 +21,44 @@
 			$('#alert-modal-body-msg').text('${ msg }');
 	})
 	
+</script>
+
+<script>
+
+window.Kakao.init("bbe9ec6b57b56d8ef60c464ef2214a90");
 	
+	function kakaoLogin() {
+		//문서에 보면 다나와있음
+		//로그인 버튼 누르면 실행됨
+		window.Kakao.Auth.login({
+			
+			scope : 'account_email',
+			
+			//authObj 받아온 오브젝트 데이터, access 토큰 값 들어있음
+			success: function(authObj){
+				//console.log(authObj)
+				
+				//로그인된 상태에서 유저정보들 받아오기
+				window.Kakao.API.request({
+					//로그인한 사용자의 정보를 받아옴
+					url:'/v2/user/me',
+					success : res => {
+						
+						const kakao_account = res.kakao_account
+						console.log(kakao_account); // 변수에 해당하는 값 출력
+						console.log(res.id) // 사용자 구분 id
+						location.href ="${ pageContext.request.contextPath }/member/kakaoLoginProcess/"+ res.id ;
+					}
+					
+				});
+				
+				
+			}
+		});
+		
+	}
+
+
 
 </script>
 	
@@ -51,7 +90,7 @@
 		                    <div class="container" style="padding-right: 0px;padding-left: 0px;">
 		                       <!--  <a href="javascript:doLogin()" class="button submit_btn" id="loginBtn" style="float: left">로그인</a> -->
 		                        <input type="submit" class="button submit_btn" id="loginBtn" style="float: left" value="로그인">
-		                        <a href="#"><img src="${ pageContext.request.contextPath }/resources/img/kakaoLogin.png" id="kakaoBtn" style="margin-left: 15px;"></a>
+		                        <a href="javascript:kakaoLogin();"><img src="${ pageContext.request.contextPath }/resources/img/kakaoLogin.png" id="kakaoBtn" style="margin-left: 15px;"></a>
 	                    	</div>
 	                    </form>
                 </div>

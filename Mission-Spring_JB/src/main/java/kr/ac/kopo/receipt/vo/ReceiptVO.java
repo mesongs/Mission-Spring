@@ -5,7 +5,7 @@ public class ReceiptVO {
 	int receiptNo;
 	String receiptCode; // 영수증 분류코드
 	String supplierBusinessNo; // 공급자 사업자 번호
-	String store_name;
+	String storeName;
 	String receiptDate; // 영수일시
 	String regDate; // 등록일시
 	int amount; // 영수금액
@@ -14,7 +14,6 @@ public class ReceiptVO {
 	String receiptStatus; // 처리완료, 처리대기, 반려
 	String purpose;
 	String memo;
-	String business_no;
 	
 	public int getReceiptNo() {
 		return receiptNo;
@@ -34,11 +33,11 @@ public class ReceiptVO {
 	public void setSupplierBusinessNo(String supplierBusinessNo) {
 		this.supplierBusinessNo = supplierBusinessNo;
 	}
-	public String getStore_name() {
-		return store_name;
+	public String getStoreName() {
+		return storeName;
 	}
-	public void setStore_name(String store_name) {
-		this.store_name = store_name;
+	public void setStoreName(String storeName) {
+		this.storeName = storeName;
 	}
 	public String getReceiptDate() {
 		return receiptDate;
@@ -88,21 +87,14 @@ public class ReceiptVO {
 	public void setMemo(String memo) {
 		this.memo = memo;
 	}
-	public String getBusiness_no() {
-		return business_no;
-	}
-	public void setBusiness_no(String business_no) {
-		this.business_no = business_no;
-	}
 	
 	@Override
 	public String toString() {
 		return "ReceiptVO [receiptNo=" + receiptNo + ", receiptCode=" + receiptCode + ", supplierBusinessNo="
-				+ supplierBusinessNo + ", store_name=" + store_name + ", receiptDate=" + receiptDate + ", regDate="
+				+ supplierBusinessNo + ", storeName=" + storeName + ", receiptDate=" + receiptDate + ", regDate="
 				+ regDate + ", amount=" + amount + ", vat=" + vat + ", overlap=" + overlap + ", receiptStatus="
-				+ receiptStatus + ", purpose=" + purpose + ", memo=" + memo + ", business_no=" + business_no + "]";
+				+ receiptStatus + ", purpose=" + purpose + ", memo=" + memo + "]";
 	}
-	
 	
 	
 	

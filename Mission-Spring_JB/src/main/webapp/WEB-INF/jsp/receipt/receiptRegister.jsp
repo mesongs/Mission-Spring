@@ -310,7 +310,6 @@
 	<section id="replaceThumb" style="max-width: 100%; height: 100%;">
 		<img src="" id="thumb" style="max-width: 100%; height: 100%;"/>
 	</section>
-
 	
 	<!-- Modal -->
 	<jsp:include page="/WEB-INF/jsp/include/modalAlert.jsp"/>

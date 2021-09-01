@@ -68,7 +68,7 @@ public class MybatisTest {
 	 * 
 	 * sessionTemplate.delete("board.BoardDAO.deleteByNo", 186); }
 	 */
-	
+	@Ignore
 	@Test
 	public void 로그인테스트() throws Exception{
 		
@@ -81,14 +81,18 @@ public class MybatisTest {
 		System.out.println(userVO);
 	}
 	
-	@Ignore
 	@Test
 	public void 아이디체크() throws Exception{
 		
 		String inputId = "jb8049";
 		String valid = sessionTemplate.selectOne("member.memberDAO.idCheck", inputId);
 		System.out.println(valid);
+		
+		
+		
 	}
+	
+	
 	
 	
 	

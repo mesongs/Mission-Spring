@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import javax.servlet.jsp.PageContext;
+
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Service;
 
@@ -26,9 +28,11 @@ public class AccountServiceImpl implements AccountService {
 		String[] fileNames = { "information", "personal", "service", "transaction" };
 		String[] policyNames = { "오픈뱅킹 서비스 이용약관", "오픈뱅킹공동업무 금융정보조회 약관", "금융거래정보 제공동의", "개인(신용)정보수집/이용/제공 동의" };
 
+		
 		String line = "";
+		// 리눅스에서 읽으려면, ${pageContext} 같은걸로 읽어야함
 		String directoy = "C:\\Users\\HP\\git\\Mission-Spring_JB\\Mission-Spring_JB\\src\\main\\webapp\\resources\\policy\\";
-
+//					       \\src\\main\\webapp\\resources\\policy\\"
 		FileReader fr = null;
 		BufferedReader br = null;
 

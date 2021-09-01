@@ -11,7 +11,7 @@
       <nav id="nav_custom" class="navbar navbar-expand-lg navbar-light">
         <div class="container box_1620">
         
-          <a class="navbar-brand logo_h" href="${ pageContext.request.contextPath }"><img src="/Mission-Spring/resources/img/logo.png" alt=""></a>
+          <a class="navbar-brand logo_h" href="${ pageContext.request.contextPath }"><img src="${ pageContext.request.contextPath }/resources/img/logo.png" alt=""></a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -25,8 +25,17 @@
               <li class="nav-item"><a class="nav-link" href="salesReport.jsp">사업보고서</a></li> 
               <li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/processedList">증빙관리</a>
               <li class="nav-item"><a class="nav-link" href="supprotCenter.jsp">지원센터</a>
-              <li class="nav-select"><a class="nav-link" href="${ pageContext.request.contextPath }/member/login">로그인</a>
-              <li class="nav-select"><a class="nav-link" href="${ pageContext.request.contextPath }/member/signUp">회원가입</a>
+              
+              <c:choose>
+              	<c:when test="${ not empty userVO }">
+	              <li class="nav-select"><a class="nav-link" href="#">마이페이지</a>
+	              <li class="nav-select"><a class="nav-link" href="${ pageContext.request.contextPath }/member/logout">로그아웃</a>   		
+              	</c:when>
+              	<c:otherwise>
+              	  <li class="nav-select"><a class="nav-link" href="${ pageContext.request.contextPath }/member/login">로그인</a>
+	              <li class="nav-select"><a class="nav-link" href="${ pageContext.request.contextPath }/member/signUp">회원가입</a> 
+              	</c:otherwise>
+              </c:choose>
             </ul>
           </div> 
         </div>

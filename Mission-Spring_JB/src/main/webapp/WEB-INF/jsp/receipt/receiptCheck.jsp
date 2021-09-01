@@ -21,6 +21,23 @@
 	
 }
 
+.dragAndDropDiv {
+	border: 4px dashed #999999;
+	/* width: 610px; */
+	width: 410px;
+	top: 25px;
+	height: 430px;
+	color: #999999;
+	margin-top: 26px;
+	text-align: center;
+	vertical-align: middle;
+	/*  padding: 10px 0px 10px 10px; */
+	font-size: 200%;
+	display: table-cell;
+	background-color: rgba(130, 139, 178, 0.25);
+	text-align: center;
+}
+
 #comment-custom-receipt > h4 {
 	font-family: 'Noto Sans KR', sans-serif;
 	font-size: xx-large;
@@ -161,17 +178,21 @@ $(function(){
 			
 
 			<section>
-				<form>
-					
-					<div class="container"> 
-						
+				<form method="post" action="${ pageContext.request.contextPath }/receipt/finalRegister">
+					<input type="hidden" name="filePath" value="${filePath }">
+					<input type="hidden" name="fileSize" value="${ fileSize }">
+					<input type="hidden" name="fileOriginalName" value="${ oriFileName }">
+                    <input type="hidden" name="fileSaveName" value="${ saveFileName }">
+                    
+					<div class="container">
 						<div class="row box">
-	
-							<div class="col" style="background-color: rgba(130, 139, 178, 0.25); height: 926px; top: 25px;">영수증 사진</div>
-	
+							<div id="fileUpload" class="dragAndDropDiv">
+								<section id="replaceThumb" style="max-width: 100%; height: 100%;">
+									<img src="/testUpload/${ saveFileName }" style="width: 400px; height: 100%;">
+								</section>
+							</div>
 							<div class="col">
 								<span>증빙 구분</span>
-								<!--넘어온 값에 따라 동적으로 selected https://dorongdogfoot.tistory.com/136  -->
 								<select name="receiptKind" id="receiptKind" required style="background-color: rgba(130, 139, 178, 0.25); margin-bottom: 20px;" required>
 									<option value="">등록하실 영수증을 선택하세요.</option>
 									<option value="1">세금계산서</option>
@@ -184,16 +205,16 @@ $(function(){
 	                          	<input type="text" class="form-control" name="storeName" id="storeName" placeholder="업체명" onfocus="this.placeholder = ''" onblur="this.placeholder = '업체명'">
 	                        	
 	                        	<span>사업자등록번호</span>
-	                          	<input type="text" class="form-control" name="businessNo" id="businessNo" placeholder="사업자등록번호 ('-'를 제외하고 입력하세요.)" onfocus="this.placeholder = ''" onblur="this.placeholder = '사업자번호 (\'-\'를 제외하고 입력하세요.)'" maxlength='10'>
+	                          	<input type="text" class="form-control" name="supplierBusinessNo" id="supplierBusinessNo" placeholder="사업자등록번호 ('-'를 제외하고 입력하세요.)" onfocus="this.placeholder = ''" onblur="this.placeholder = '사업자번호 (\'-\'를 제외하고 입력하세요.)'" maxlength='10'>
 	                        	
 	                        	<span>영수일시</span>
 	                          	<input type="text" class="form-control" name="receiptDate" id="receiptDate" placeholder="영수일시" onfocus="this.placeholder = ''" onblur="this.placeholder = '영수일시'">
 								
 								<span>영수금액</span>
-	                          	<input type="text" class="form-control" name="receiptAmount" id="receiptAmount" placeholder="영수금액" onfocus="this.placeholder = ''" onblur="this.placeholder = '영수금액'">
+	                          	<input type="text" class="form-control" name="amount" id="amount" placeholder="영수금액" onfocus="this.placeholder = ''" onblur="this.placeholder = '영수금액'">
 								
 								<span>부가세</span>
-	                          	<input type="text" class="form-control" name="receiptVat" id="receiptVat" placeholder="부가세" onfocus="this.placeholder = ''" onblur="this.placeholder = '부가세'">
+	                          	<input type="text" class="form-control" name="vat" id="vat" placeholder="부가세" onfocus="this.placeholder = ''" onblur="this.placeholder = '부가세'">
 								
 								<span>사용 목적</span>
 								<select name="purpose" id="purpose"  style="background-color: rgba(130, 139, 178, 0.25); margin-bottom: 20px;" required>
@@ -215,8 +236,10 @@ $(function(){
 									<textarea class="form-control mb-10" name="memo" id="memo" rows="10" placeholder="기록하실 내용을 입력하세요." onfocus="this.placeholder = ''" onblur="this.placeholder = '기록하실 내용을 입력하세요.'" style="padding-left: 4px; color: #999999; margin-bottom: 20px;" ></textarea>
 								</div>
 								<div class="col" align="center">
-									<a href="javascript:doNext()" class="button submit_btn" id="receiptSaveBtn">저장</a>
-									<a href="javascript:cancel()" class="button submit_btn" id="receiptDelBtn">취소</a>
+									<input type="submit" class="button submit_btn" id="receiptSaveBtn" value="저장">
+									<input type="submit" class="button submit_btn" id="receiptDelBtn" value="취소">
+									<!-- <a href="javascript:doNext()" class="button submit_btn" id="receiptSaveBtn">저장</a> -->
+									<!-- <a href="javascript:cancel()" class="button submit_btn" id="receiptDelBtn">취소</a> -->
 								</div>
 	
 							</div>

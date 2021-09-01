@@ -7,6 +7,8 @@ public interface MemberDAO {
 	
 	LoginVO login(LoginVO login);
 	
+	LoginVO kakaoLogin(LoginVO login);
+	
 	String idCheck(String inputId);
 	
 	void signUpMember(MemberVO member);

@@ -14,15 +14,22 @@ public class MemberDAOImpl implements MemberDAO {
 	@Autowired
 	private SqlSessionTemplate sqlSessionTemplate;
 	
-	
+	@Override
 	public LoginVO login(LoginVO login) {
 		
 		LoginVO userVO = sqlSessionTemplate.selectOne("member.memberDAO.login", login);
 		
 		return userVO;
 	}
-
-
+	
+	@Override
+	public LoginVO kakaoLogin(LoginVO login) {
+		
+		LoginVO userVO = sqlSessionTemplate.selectOne("member.memberDAO.kakaoLogin", login);
+		
+		return userVO;
+	}
+	
 	@Override
 	public String idCheck(String inputId) {
 		

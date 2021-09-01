@@ -28,11 +28,20 @@ public class MemberServiceImpl implements MemberService {
 	
 	// MemberDAO에 해당하는 값 알아서 찾아서 넣어줌
 	// Impl2 만들어서 기존의 Impl을 변경해줄 때 유용
-	
+	@Override
 	public LoginVO login(LoginVO login) {
 
 		LoginVO userVO = memberDAO.login(login);
 
+		return userVO;
+	}
+	
+	@Override
+	public LoginVO kakaoLogin(LoginVO login) {
+		
+		
+		LoginVO userVO = memberDAO.kakaoLogin(login);
+		
 		return userVO;
 	}
 

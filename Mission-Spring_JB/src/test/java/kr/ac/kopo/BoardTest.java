@@ -10,11 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import kr.ac.kopo.board.dao.BoardDAO;
-import kr.ac.kopo.board.service.BoardService;
-import kr.ac.kopo.board.vo.BoardVO;
-import kr.ac.kopo.board.vo.ReplyVO;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:config/spring/spring-mvc.xml"})
 public class BoardTest {
@@ -28,45 +23,45 @@ public class BoardTest {
 	// BoardDAOImpl 객체가 자동주입 되고있는 거임
 	// BoardDAO에 해당하는 값
 	// 자동으로 만들어진(@Repository) BoardDAOImpl(BoardDAO를 상속하고 있는)
-	@Autowired
-	private BoardDAO boardDAO;
-	
-	// 만들어진 boardServiceImpl이 만들어졌는지 확인!
-	@Autowired
-	private BoardService boardService;
+//	@Autowired
+//	private BoardDAO boardDAO;
+//	
+//	// 만들어진 boardServiceImpl이 만들어졌는지 확인!
+//	@Autowired
+//	private BoardService boardService;
 	
 	// Test annotation 필수
-	@Test
-	@Ignore
-	public void 전체게시글조회Test() throws Exception{
-		
-		// 가져오려는 레코드의 개수가 여러 개, 네임스페이스 + id
-		//List<BoardVO> list = sqlSessionTemplate.selectList("board.BoardDAO.selectAll");
-		
+//	@Test
+//	@Ignore
+//	public void 전체게시글조회Test() throws Exception{
+//		
+//		// 가져오려는 레코드의 개수가 여러 개, 네임스페이스 + id
+//		//List<BoardVO> list = sqlSessionTemplate.selectList("board.BoardDAO.selectAll");
+//		
 //		List<BoardVO> list = boardDAO.searchAll();
-		
-		List<BoardVO> list = boardService.selectAllBoard();
-		
-		for(BoardVO board : list) {
-			
-			System.out.println(board);
-			
-		}
-		
-	}
+//		
+//		List<BoardVO> list = boardService.selectAllBoard();
+//		
+//		for(BoardVO board : list) {
+//			
+//			System.out.println(board);
+//			
+//		}
+//		
+//	}
 	// test 이상없음
-	@Test
-	@Ignore
-	public void 상세게시글조회Test() throws Exception{
-		
-		BoardVO board = boardService.selectDetailBoard(186);
-		System.out.println(board);
-		
-	}
+//	@Test
+//	@Ignore
+//	public void 상세게시글조회Test() throws Exception{
+//		
+//		BoardVO board = boardService.selectDetailBoard(186);
+//		System.out.println(board);
+//		
+//	}
 	
-	@Test
-	public void 답글Test() throws Exception{
-		
+//	@Test
+//	public void 답글Test() throws Exception{
+//		
 //		ReplyVO reply = new ReplyVO();
 //		
 //		reply.setBoardNo(190);
@@ -75,15 +70,15 @@ public class BoardTest {
 //		
 //		System.out.println(reply);
 //		boardService.boardReplyWrite(reply);
-		
-		List<ReplyVO> replyList = boardService.boardReplyList(190);
-		
-		for(ReplyVO reply : replyList) {
-			System.out.println(reply);
-			
-		}
-		
-	}
+//		
+//		List<ReplyVO> replyList = boardService.boardReplyList(190);
+//		
+//		for(ReplyVO reply : replyList) {
+//			System.out.println(reply);
+//			
+//		}
+//		
+//	}
 	
 	
 	

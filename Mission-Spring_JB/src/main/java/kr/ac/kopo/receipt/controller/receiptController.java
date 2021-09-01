@@ -98,7 +98,6 @@ public class receiptController {
  		int selectedPurposeNo = Integer.parseInt(multipartRequest.getParameter("purpose"));
  		String inputMemo = multipartRequest.getParameter("memo");
  		
- 		
  		mav.addObject("selectedReceiptNo", selectedReceiptNo);
  		mav.addObject("selectedpurposeNo", selectedPurposeNo);
  		mav.addObject("inputMemo", inputMemo);

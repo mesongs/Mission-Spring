@@ -142,13 +142,13 @@ input[type=text] {
 	
 $(function(){
 	
-	$("#receiptKind").val(${selectedReceiptNo}).prop("selected", true)
-	$("#purpose").val(${selectedpurposeNo}).prop("selected", true)
+	$("#receiptKind").val(${receiptFile.selectedReceiptNo}).prop("selected", true)
+	$("#purpose").val(${receiptFile.selectedPurposeNo}).prop("selected", true)
 	
 	
 	// js에서 숫자는 바로 인식가능, 문자열은 ''표시해야 문자열로 인식함, 숫자로 인식하려다 에러 생긴 것
-	console.log('${inputMemo}')
-	$("#memo").val('${inputMemo}')
+	console.log('${receiptFile.inputMemo}')
+	$("#memo").val('${receiptFile.inputMemo}')
 	
 	
 	
@@ -175,20 +175,22 @@ $(function(){
 		<h4>영수증 등록</h4>
 		
 		<div class="container">
-			
-
 			<section>
 				<form method="post" action="${ pageContext.request.contextPath }/receipt/finalRegister">
-					<input type="hidden" name="filePath" value="${filePath }">
-					<input type="hidden" name="fileSize" value="${ fileSize }">
-					<input type="hidden" name="fileOriginalName" value="${ oriFileName }">
-                    <input type="hidden" name="fileSaveName" value="${ saveFileName }">
+					<input type="hidden" name="filePath" value="${receiptFile.filePath }">
+					<input type="hidden" name="fileSize" value="${receiptFile.fileSize }">
+					<input type="hidden" name="fileOriginalName" value="${receiptFile.fileOriginalName }">
+                    <input type="hidden" name="fileSaveName" value="${ receiptFile.fileSaveName }">
                     
 					<div class="container">
 						<div class="row box">
 							<div id="fileUpload" class="dragAndDropDiv">
 								<section id="replaceThumb" style="max-width: 100%; height: 100%;">
-									<img src="/testUpload/${ saveFileName }" style="width: 400px; height: 100%;">
+									<img src="/testUpload/${ receiptFile.fileSaveName }" style="width: 400px; height: 100%;">
+									<%-- <img src="/var/lib/tomcat9/webapps/Mission-Spring_JB/upload/${ receiptFile.thumbnailFileName }" style="width: 400px; height: 100%;">--%>
+									<!-- 아래가 실제 서버 경로  -->
+									<%-- <img src="${ pageContext.request.contextPath }/upload/${ receiptFile.thumbnailFileName }" style="width: 400px; height: 100%;"> --%>
+								
 								</section>
 							</div>
 							<div class="col">
@@ -211,10 +213,10 @@ $(function(){
 	                          	<input type="text" class="form-control" name="receiptDate" id="receiptDate" placeholder="영수일시" onfocus="this.placeholder = ''" onblur="this.placeholder = '영수일시'">
 								
 								<span>영수금액</span>
-	                          	<input type="text" class="form-control" name="amount" id="amount" placeholder="영수금액" onfocus="this.placeholder = ''" onblur="this.placeholder = '영수금액'">
+	                          	<input type="text" class="form-control" name="amount" id="amount" placeholder="영수금액" onfocus="this.placeholder = ''" onblur="this.placeholder = '영수금액'" value="${ receiptFile.amount }">
 								
 								<span>부가세</span>
-	                          	<input type="text" class="form-control" name="vat" id="vat" placeholder="부가세" onfocus="this.placeholder = ''" onblur="this.placeholder = '부가세'">
+	                          	<input type="text" class="form-control" name="vat" id="vat" placeholder="부가세" onfocus="this.placeholder = ''" onblur="this.placeholder = '부가세'" value="${ receiptFile.vat }">
 								
 								<span>사용 목적</span>
 								<select name="purpose" id="purpose"  style="background-color: rgba(130, 139, 178, 0.25); margin-bottom: 20px;" required>

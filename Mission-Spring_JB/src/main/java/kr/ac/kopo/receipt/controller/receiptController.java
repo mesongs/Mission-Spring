@@ -33,6 +33,7 @@ public class receiptController {
 	private ReceiptService service;
 	
 	
+	
 	// 증빙관리 선택 => 영수증 목록 페이지 (처리 완료된)
 	@RequestMapping("/receipt/processedList")
 	public String receiptProcessedList() {
@@ -50,12 +51,14 @@ public class receiptController {
 	// 영수증 등록 진행 => 사용자가 입력한 영수증 => 이미지 파일 서버에 저장 => DB에 저장하는 것 까지
 	// http 프로토콜의 바디 부분에 파일정보를 담아서 전송
 	@PostMapping("/receipt/register")
-	public ModelAndView receiptRegister(MultipartHttpServletRequest multipartRequest) {
+	public String receiptRegister(MultipartHttpServletRequest multipartRequest, Model model) {
 		
-		service.uploadImgFile(multipartRequest);
+		ReceiptFileVO receiptFile = service.uploadImgFile(multipartRequest);
+		model.addAttribute("receiptFile", receiptFile);
 		
+		return "receipt/receiptCheck";
 		
-		ModelAndView mav = new ModelAndView("receipt/receiptCheck");
+//		ModelAndView mav = new ModelAndView("receipt/receiptCheck");
 		
 		// 여기서 ocr처리한 뒤에 receiptCheck.jsp로 처리된 결과를 넘겨야함
 		
@@ -68,104 +71,99 @@ public class receiptController {
 		 * 4. general ocr의 경우 합계 금액으로 아무것도 추출이 안되는 경우 -1을 반환하도록 만들어야함
 		 */
 		
-		String filePath = "C:\\Lecture\\spring-workspace\\newUpload\\";
+//		String filePath = "C:\\Lecture\\spring-workspace\\newUpload\\";
 //		String filePath = "/var/www/html/img/";
-		
-		Iterator<String> iter = multipartRequest.getFileNames();
-		
-		String formFileName = iter.next();
-		
-		//return되는 jsp에서 해당 파일에 접근하기 위해 공유영역에 saveFileName 저장
-		String saveFileName ="";
-		
-		MultipartFile mFile = multipartRequest.getFile(formFileName);
-		
-		// 사용자가 업로드한 파일 객체를 service단으로 넘기고 싶은데..
-		// ReceiptVO receipt = service.uploadImgFile(mFile);
-		
-		// 원본 파일명
-		String oriFileName = mFile.getOriginalFilename();
-		System.out.println("원본 파일명 : " + oriFileName);
-		
-		try {
-			
-			if(oriFileName != null && !oriFileName.equals("")) {
-				
-				// 확장자 처리
-				String ext = "";
-				
-				// 뒤쪽에 있는 . 의 위치 
-				int index = oriFileName.lastIndexOf(".");
-				
-				// 위 조건 .이 없으면 -1
-				if (index != -1) {
-					// 파일명에서 확장자명(.포함)을 추출
-					ext = oriFileName.substring(index);
-				}
-				
-				// 파일 사이즈
-				long fileSize = mFile.getSize();
-				System.out.println("파일 사이즈 : " + fileSize);
-				
-				// 고유한 파일명 만들기, 여러 명의 사용자가 동일한 이름의 파일을 올리는 경우 구분해주어야함
-				saveFileName = "kopo-" + UUID.randomUUID().toString() + ext;
-				System.out.println("저장할 파일명 : " + saveFileName);
-				
-				// 실질적으로 임시 저장된 파일을 내가 만들어둔 원하는 경로에 저장함
-				mFile.transferTo(new File(filePath + saveFileName));
-				
-				// 썸네일 표시를 위해 이미지 불러오기
-				
-//				File file = new File(filePath, oriFileName);
-				File file = new File(filePath, saveFileName);
-				BufferedImage sourceImage = ImageIO.read(file);
-				
-				//BufferedImage thumnailImage = Scalr.resize(sourceImage, Scalr.Method.AUTOMATIC, Scalr.Mode.FIT_TO_WIDTH, 400);
-				
-				index = saveFileName.lastIndexOf(".");
-				
-				// 썸네일 파일의 이름 설정 
-				String thumbnailFileName = saveFileName.substring(0, index) + "_s" + saveFileName.substring(index);
-				index = thumbnailFileName.lastIndexOf(".");
-				
-//				ImageIO.write(thumnailImage, thumbnailFileName.substring(index + 1), new File(file_path, thumbnailFileName));
-				ImageIO.write(sourceImage, thumbnailFileName.substring(index + 1), new File(filePath, thumbnailFileName));
-				
-				//썸네일 공유영역에 등록
-		 		mav.addObject("thumbnailFileName", thumbnailFileName);
-		 		mav.addObject("saveFileName", saveFileName);
-		 		mav.addObject("oriFileName", oriFileName);
-		 		mav.addObject("fileSize", fileSize);
-		 		mav.addObject("filePath", filePath);
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		int selectedReceiptNo = Integer.parseInt(multipartRequest.getParameter("receiptKind"));
- 		int selectedPurposeNo = Integer.parseInt(multipartRequest.getParameter("purpose"));
- 		String inputMemo = multipartRequest.getParameter("memo");
- 		
- 		// 사용자가 receiptRegister에서 입력한 값
- 		mav.addObject("selectedReceiptNo", selectedReceiptNo);
- 		mav.addObject("selectedpurposeNo", selectedPurposeNo);
- 		mav.addObject("inputMemo", inputMemo);
+//		
+//		Iterator<String> iter = multipartRequest.getFileNames();
+//		
+//		String formFileName = iter.next();
+//		
+//		//return되는 jsp에서 해당 파일에 접근하기 위해 공유영역에 saveFileName 저장
+//		String saveFileName ="";
+//		
+//		MultipartFile mFile = multipartRequest.getFile(formFileName);
+//		
+//		// 사용자가 업로드한 파일 객체를 service단으로 넘기고 싶은데..
+//		// ReceiptVO receipt = service.uploadImgFile(mFile);
+//		
+//		// 원본 파일명
+//		String oriFileName = mFile.getOriginalFilename();
+//		System.out.println("원본 파일명 : " + oriFileName);
+//		
+//		try {
+//			
+//			if(oriFileName != null && !oriFileName.equals("")) {
+//				
+//				// 확장자 처리
+//				String ext = "";
+//				
+//				// 뒤쪽에 있는 . 의 위치 
+//				int index = oriFileName.lastIndexOf(".");
+//				
+//				// 위 조건 .이 없으면 -1
+//				if (index != -1) {
+//					// 파일명에서 확장자명(.포함)을 추출
+//					ext = oriFileName.substring(index);
+//				}
+//				
+//				// 파일 사이즈
+//				long fileSize = mFile.getSize();
+//				System.out.println("파일 사이즈 : " + fileSize);
+//				
+//				// 고유한 파일명 만들기, 여러 명의 사용자가 동일한 이름의 파일을 올리는 경우 구분해주어야함
+//				saveFileName = "kopo-" + UUID.randomUUID().toString() + ext;
+//				System.out.println("저장할 파일명 : " + saveFileName);
+//				
+//				// 실질적으로 임시 저장된 파일을 내가 만들어둔 원하는 경로에 저장함
+//				mFile.transferTo(new File(filePath + saveFileName));
+//				
+//				// 썸네일 표시를 위해 이미지 불러오기
+//				
+////				File file = new File(filePath, oriFileName);
+//				File file = new File(filePath, saveFileName);
+//				BufferedImage sourceImage = ImageIO.read(file);
+//				
+//				//BufferedImage thumnailImage = Scalr.resize(sourceImage, Scalr.Method.AUTOMATIC, Scalr.Mode.FIT_TO_WIDTH, 400);
+//				
+//				index = saveFileName.lastIndexOf(".");
+//				
+//				// 썸네일 파일의 이름 설정 
+//				String thumbnailFileName = saveFileName.substring(0, index) + "_s" + saveFileName.substring(index);
+//				index = thumbnailFileName.lastIndexOf(".");
+//				
+////				ImageIO.write(thumnailImage, thumbnailFileName.substring(index + 1), new File(file_path, thumbnailFileName));
+//				ImageIO.write(sourceImage, thumbnailFileName.substring(index + 1), new File(filePath, thumbnailFileName));
+//				
+//				//썸네일 공유영역에 등록
+//		 		mav.addObject("thumbnailFileName", thumbnailFileName);
+//		 		mav.addObject("saveFileName", saveFileName);
+//		 		mav.addObject("oriFileName", oriFileName);
+//		 		mav.addObject("fileSize", fileSize);
+//		 		mav.addObject("filePath", filePath);
+//			}
+//			
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		
+//		int selectedReceiptNo = Integer.parseInt(multipartRequest.getParameter("receiptKind"));
+// 		int selectedPurposeNo = Integer.parseInt(multipartRequest.getParameter("purpose"));
+// 		String inputMemo = multipartRequest.getParameter("memo");
+// 		
+// 		// 사용자가 receiptRegister에서 입력한 값
+// 		mav.addObject("selectedReceiptNo", selectedReceiptNo);
+// 		mav.addObject("selectedpurposeNo", selectedPurposeNo);
+// 		mav.addObject("inputMemo", inputMemo);
  		
  		// 이 부분에서 OCR 요청해서 값을 받아와야함
- 		
- 		
-		return mav;
-		
-		
-	
+
 	}
 	
 	@PostMapping("/receipt/finalRegister")
 	public String finalRegister(ReceiptFileVO receiptFileVO, ReceiptVO receipt) {
 		
-		System.out.println(receiptFileVO);
-		System.out.println(receipt);
+//		System.out.println(receiptFileVO);
+//		System.out.println(receipt);
 		
 		return "redirect:/";
 		

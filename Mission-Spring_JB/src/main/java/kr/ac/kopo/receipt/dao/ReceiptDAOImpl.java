@@ -1,5 +1,6 @@
 package kr.ac.kopo.receipt.dao;
 
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,28 +14,30 @@ import kr.ac.kopo.receipt.vo.ReceiptVO;
 public class ReceiptDAOImpl implements ReceiptDAO {
 	
 	@Autowired
-	private ReceiptDAO receiptDAO;
+	private SqlSessionTemplate sqlSessionTemplate;
 
 	@Override
-	public ReceiptFileVO uploadImgFile(MultipartHttpServletRequest multipartRequest) {
+	public void receiptRegister(ReceiptVO ReceiptVO) {
 		
-		// 이거 테스트를 위해서 적어놓은건데, 사용안했음
-		ReceiptFileVO vo = new ReceiptFileVO();
+		sqlSessionTemplate.insert("receipt.receiptDAO.receiptRegister", ReceiptVO);
 		
-		return vo;
 	}
-	
-	// 서버에 저장된 이미지 파일의 정보를 DB에 저장
-//	@Override
-//	public void insertImgData(ReceiptFileVO receiptFile) {
-//		
-//		
-//		
-//		
-//		
-//	}
-	
-	
+	 
+	@Override
+	public void receiptFileRegister(ReceiptVO ReceiptVO) {
+		
+		sqlSessionTemplate.insert("receipt.receiptDAO.receiptFileRegister", ReceiptVO);
+		
+	}
+
+	@Override
+	public int getReceiptNo() {
+		
+		// 영수증_TB, 영수증파일_TB의 PK
+		int receiptNo = sqlSessionTemplate.selectOne("receipt.receiptDAO.getReceiptNo");
+		
+		return receiptNo;
+	}
 	
 	
 

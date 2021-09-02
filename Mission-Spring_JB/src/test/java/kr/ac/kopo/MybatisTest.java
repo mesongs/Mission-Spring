@@ -2,6 +2,7 @@ package kr.ac.kopo;
 
 import static org.junit.Assert.assertNotNull;
 
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -13,8 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import kr.ac.kopo.member.service.MemberService;
 import kr.ac.kopo.member.vo.LoginVO;
 import kr.ac.kopo.member.vo.MemberVO;
+import kr.ac.kopo.receipt.service.ReceiptService;
+import kr.ac.kopo.receipt.vo.ReceiptVO;
 
 
 // 스프링 기반의 junit으로 test한다
@@ -33,41 +37,15 @@ public class MybatisTest {
 	@Autowired
 	private SqlSessionFactory sqlFactory;
 	
-	
 	@Autowired
 	private SqlSessionTemplate sessionTemplate;
 			
-	// 내가 만든 객체의 어느 메소드가 잘실행되는지 테스트해보고 싶다
-	// 컨트롤러 서비스 dao 거쳐야하는데, 언제 기다려..
-	/*
-	 * @Ignore
-	 * 
-	 * @Test public void DataSource생성테스트() throws Exception{
-	 * 
-	 * // System.out.println("dataSource : " + dataSource); // 리턴값이 null이 아닌지 확인,
-	 * 제대로 만들어졌으면 null이 아님 assertNotNull(dataSource); }
-	 * 
-	 * // 이미 테스트 했던 위에꺼 안하고 싶을때는 @Ignore
-	 * 
-	 * @Ignore
-	 * 
-	 * @Test public void mybatis연동테스트() throws Exception{
-	 * 
-	 * // assertNotNull(sqlFactory); assertNotNull(sessionTemplate); }
-	 * 
-	 * @Ignore
-	 * 
-	 * @Test public void 상세게시글조회Test() throws Exception{
-	 * 
-	 * BoardVO board = sessionTemplate.selectOne("board.BoardDAO.selectByNo", 186);
-	 * System.out.println(board); }
-	 * 
-	 * @Ignore
-	 * 
-	 * @Test public void 게시글삭제Test() throws Exception{
-	 * 
-	 * sessionTemplate.delete("board.BoardDAO.deleteByNo", 186); }
-	 */
+	@Autowired
+	private ReceiptService receiptService;
+	
+	@Autowired
+	private MemberService memberService;
+
 	@Ignore
 	@Test
 	public void 로그인테스트() throws Exception{
@@ -82,13 +60,45 @@ public class MybatisTest {
 	}
 	
 	@Test
-	public void 아이디체크() throws Exception{
+	public void 영수증최종등록(HttpSession session) throws Exception{
 		
-		String inputId = "jb8049";
-		String valid = sessionTemplate.selectOne("member.memberDAO.idCheck", inputId);
-		System.out.println(valid);
+		int receiptNo = sessionTemplate.selectOne("receipt.receiptDAO.getReceiptNo");
+		
+		ReceiptVO receipt = new ReceiptVO();
+		
+		LoginVO login = new LoginVO();
+		
+		login.setBusinessNo("126346");
+		
+		LoginVO userVO = memberService.login(login);
+		
+		session.setAttribute("userVO", userVO);
+
+
+		receipt.setFileSize(12322);
+		receipt.setFilePath("123");
+		receipt.setFileSaveName("214214");
+		receipt.setFileOriginalName("214214");
+		receipt.setPurpose("1");
+		receipt.setMemo("123");
+		receipt.setAmount(123);
+		receipt.setReceiptKind("1");
+		receipt.setStoreName("종범");
+		receipt.setSupplierBusinessNo("650");
+		receipt.setReceiptDate("23");
+		receipt.setAmount(123);
+		receipt.setVat(456);
 		
 		
+		//receiptNo는 직접 안넣어줘도 됨
+		
+		receiptService.receiptResgister(receipt);
+		
+		
+		System.out.println("영수증 seq 번호 : " + receiptNo);
+		
+		
+	
 		
 	}
 	

@@ -46,7 +46,6 @@ public class MemberController {
 	@PostMapping("/member/login")
 	public String login(LoginVO loginVO, Model model, HttpSession session) {
 		
-		
 		LoginVO userVO = service.login(loginVO);
 		
 		//로그인을 실패한 경우

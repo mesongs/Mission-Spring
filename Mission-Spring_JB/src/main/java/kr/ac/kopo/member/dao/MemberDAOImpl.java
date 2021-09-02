@@ -56,7 +56,6 @@ public class MemberDAOImpl implements MemberDAO {
 		
 	}
 
-
 	@Override
 	public void signUpBusiness(MemberVO member) {
 

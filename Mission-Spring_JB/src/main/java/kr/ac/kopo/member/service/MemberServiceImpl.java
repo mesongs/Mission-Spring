@@ -32,13 +32,12 @@ public class MemberServiceImpl implements MemberService {
 	public LoginVO login(LoginVO login) {
 
 		LoginVO userVO = memberDAO.login(login);
-
+		
 		return userVO;
 	}
 	
 	@Override
 	public LoginVO kakaoLogin(LoginVO login) {
-		
 		
 		LoginVO userVO = memberDAO.kakaoLogin(login);
 		
@@ -61,9 +60,9 @@ public class MemberServiceImpl implements MemberService {
 
 		String mail_id = "jb8068049@gmail.com";
 		String mail_pwd = "whd806712./!";
-
+		
 		int authNo = ThreadLocalRandom.current().nextInt(100000, 1000000);
-
+		
 		// 서버 정보 설정
 		Properties prop = new Properties();
 		prop.put("mail.smtp.host", "smtp.gmail.com");

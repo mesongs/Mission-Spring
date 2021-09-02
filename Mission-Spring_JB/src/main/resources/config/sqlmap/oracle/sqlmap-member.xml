@@ -8,6 +8,9 @@
 	<resultMap type="loginVO" id="loginMap">
 		<result column="user_id" property="id" />
 		<result column="user_password" property="password" />
+		<result column="USER_STATUS" property="userStatus" />
+		<result column="TAX_AGENT_EMAIL" property="taxAgentEmail" />
+		<result column="business_no" property="businessNo" />
 	</resultMap>
 	
 	<select id="idCheck" resultType="String">
@@ -18,12 +21,12 @@
 	
 	<!-- 로그인 -->
 	<select id="login" parameterType="loginVO" resultType="loginVO" resultMap="loginMap">
-		select user_id, user_password
-		from tb_user
-		where user_id = #{id} and user_password = #{password}
+		select a.user_id, a.user_password, name, email, USER_STATUS, AGREEMENT, TAX_AGENT_EMAIL, business_no from tb_user a, TB_BUSINESS b
+		where a.user_id = b.user_id
+		and a.user_id = #{id} and a.user_password = #{password}
 	</select>
 	
-	<!--카카오 로그인  -->
+	<!-- 카카오 로그인  -->
 	<select id="kakaoLogin" parameterType="loginVO" resultType="loginVO" resultMap="loginMap">
 		select user_id
 		from tb_user

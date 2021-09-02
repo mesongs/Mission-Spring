@@ -8,8 +8,10 @@ import kr.ac.kopo.receipt.vo.ReceiptVO;
 
 public interface ReceiptDAO {
 	
-	ReceiptFileVO uploadImgFile(MultipartHttpServletRequest multipartRequest);
+	void receiptRegister(ReceiptVO ReceiptVO);
 	
-//	void insertImgData(ReceiptFileVO receiptFile);
-
+	void receiptFileRegister(ReceiptVO ReceiptVO);
+	
+	int getReceiptNo();
+	
 }

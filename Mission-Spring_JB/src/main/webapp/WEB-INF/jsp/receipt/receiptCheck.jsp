@@ -150,10 +150,6 @@ $(function(){
 	console.log('${receiptFile.inputMemo}')
 	$("#memo").val('${receiptFile.inputMemo}')
 	
-	
-	
-	
-	
 })
 
 	function cancel(){
@@ -173,14 +169,14 @@ $(function(){
 
 	<div class="comment-form-receipt" id="comment-custom-receipt">
 		<h4>영수증 등록</h4>
-		
 		<div class="container">
 			<section>
 				<form method="post" action="${ pageContext.request.contextPath }/receipt/finalRegister">
-					<input type="hidden" name="filePath" value="${receiptFile.filePath }">
-					<input type="hidden" name="fileSize" value="${receiptFile.fileSize }">
-					<input type="hidden" name="fileOriginalName" value="${receiptFile.fileOriginalName }">
+					<input type="hidden" name="filePath" value="${ receiptFile.filePath }">
+					<input type="hidden" name="fileSize" value="${ receiptFile.fileSize }">
+					<input type="hidden" name="fileOriginalName" value="${ receiptFile.fileOriginalName }">
                     <input type="hidden" name="fileSaveName" value="${ receiptFile.fileSaveName }">
+                    <input type="hidden" name="businessNo" value="${ userVO.businessNo }">
                     
 					<div class="container">
 						<div class="row box">

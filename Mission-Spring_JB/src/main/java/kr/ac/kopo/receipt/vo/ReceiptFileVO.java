@@ -18,6 +18,8 @@ public class ReceiptFileVO {
 	private String receiptDate;
 	private String storeName;
 	
+	
+	
 	public int getFileNo() {
 		return fileNo;
 	}

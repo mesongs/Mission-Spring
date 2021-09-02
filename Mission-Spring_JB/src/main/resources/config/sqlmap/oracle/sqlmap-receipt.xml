@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="receipt.receiptDAO">
+	
+	
+	<select id="getReceiptNo" resultType="int">
+		SELECT RECEIPT_SEQ.NEXTVAL as receiptNo FROM DUAL
+	</select>
+	
+	<insert id="receiptRegister" parameterType="receiptVO">
+		insert into TB_RECEIPT(RECEIPT_NO, RECEIPT_CODE, SUPPLIER_BUSINESS_NO, STORE_NAME, RECEIPT_DATE,
+                      		  AMOUNT, VAT, PURPOSE, MEMO, BUSINESS_NO)
+            		values(#{receiptNo},#{receiptKind}, #{supplierBusinessNo}, 
+            				#{storeName}, #{receiptDate}, #{amount}, #{vat}, #{purpose}, #{memo}, #{businessNo})
+	</insert>
+	
+	<insert id="receiptFileRegister" parameterType="receiptVO">
+		insert into tb_receipt_file(RECEIPT_NO, FILE_PATH, FILE_ORIGINAL_NAME, FILE_SAVE_NAME, FILE_SIZE)
+            		values(#{receiptNo}, #{filePath}, #{fileOriginalName}, #{fileSaveName}, #{fileSize})
+	</insert>
+	
+	
+</mapper>

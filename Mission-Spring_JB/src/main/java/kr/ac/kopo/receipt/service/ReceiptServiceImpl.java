@@ -12,9 +12,11 @@ import java.util.UUID;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
@@ -35,12 +37,94 @@ import okhttp3.ResponseBody;
 @Service
 public class ReceiptServiceImpl implements ReceiptService {
 
-//	@Autowired
-//	private ReceiptDAO receiptDAO;
-
 	@Autowired
-	ServletContext servletContext;
+	private ReceiptDAO receiptDAO;
 
+//	@Autowired
+//	ServletContext servletContext;
+	
+	// 사용자 확인 후 영수증 등록 신청
+	@Transactional
+	@Override
+	public void receiptResgister(ReceiptVO receipt) {
+		
+		// pk가 될 영수증 번호 추출
+		int receiptNo = receiptDAO.getReceiptNo();
+	
+		receipt.setReceiptNo(receiptNo); 
+		
+		String filePath = receipt.getFilePath();
+		String fileSaveName = receipt.getFileSaveName();
+		
+		String fileFullPath = filePath + fileSaveName;
+		
+		receipt.setFilePath(fileFullPath);
+		
+		// 로그인했을 때 세션에 저장되는 사업장 번호를 가져와서
+		// 숫자로 저장되어있는 값
+		
+		int purposeNo = (Integer.parseInt(receipt.getPurpose()));
+		int receiptKindNo= (Integer.parseInt(receipt.getReceiptKind()));;
+		
+		String purpose = "";
+		String receiptKind = "";
+		
+		switch (purposeNo) {
+		case 1:
+			purpose = "재료비";
+			break;
+		case 2:
+			purpose = "자재비";
+			break;
+		case 3:
+			purpose = "식비";
+			break;
+		case 4:
+			purpose = "접대비";
+			break;
+		case 5:
+			purpose = "세금";
+			break;
+		case 6:
+			purpose = "인건비";
+			break;
+		case 7:
+			purpose = "공과금";
+			break;
+		case 8:
+			purpose = "기타";
+			break;
+		}
+		
+		switch (receiptKindNo) {
+		case 1:
+			receiptKind = "001";
+			break;
+		case 2:
+			receiptKind = "002";
+			break;
+		case 3:
+			receiptKind = "003";
+			break;
+		case 4:
+			receiptKind = "004";
+			break;
+		}
+		
+		receipt.setPurpose(purpose);
+		receipt.setReceiptKind(receiptKind);
+		
+		receiptDAO.receiptRegister(receipt);
+		receiptDAO.receiptFileRegister(receipt);
+	}
+	
+	
+	// 가장 먼저했던 이미지 서버에 저장, 썸네일 이미지 저장 => 저장된 이미지 ocr
+	/**
+	 * 1. 이미지 서버 파일에 저장, 썸네일 이미지
+	 * 2. 저장된 이미지 영수증 종류별 general / template ocr 요청
+	 * 3. parsing한 후 VO에 저장
+	 */
 	@Override
 	public ReceiptFileVO uploadImgFile(MultipartHttpServletRequest multipartRequest) {
 
@@ -64,11 +148,11 @@ public class ReceiptServiceImpl implements ReceiptService {
 		String saveFileName ="";
 		
 		// 로컬 테스트, 일단 업로드는 로컬에 하고, api로 넘기는 url을 다르게 설정해서 자동완성 시켜보기, 그 다음은 dbms서버 연결
-		//String filePath = "C:\\Lecture\\spring-workspace\\newUpload\\";
+		String filePath = "C:\\Lecture\\spring-workspace\\newUpload\\";
 		
 		// deploy했을 때 서버의 실제 경로를 가져오는 servletContext
 		// deploy했을 때 /var/lib/tomcat9/webapps/Mission-Spring_JB 이게 실제 경로임
-		String filePath = servletContext.getRealPath("/upload/");
+		//String filePath = servletContext.getRealPath("/upload/");
 		
 		MultipartFile mFile = multipartRequest.getFile(formFileName);
 
@@ -152,20 +236,21 @@ public class ReceiptServiceImpl implements ReceiptService {
 
 			MediaType mediaType = MediaType.parse("application/json");
 
-//			RequestBody body = RequestBody.create(mediaType,
-//					"{\n\t\"version\" : \"V1\"," + "\n\t\"requestId\" : \"test2\"," + "\n\t\"timestamp\" : 0,"
-//							+ "\n\t\"images\" :[{\n\t\t\n\t\t\"format\" : \"jpg\","
-//							+ "\n\t\t\"url\" : \"https://kr.object.ncloudstorage.com/testbucke/test8.jpg\","
-//							+ "\n\t\t\"name\" : \"test8.jpg\"\n\t}]\n}");
+			RequestBody body = RequestBody.create(mediaType,
+					"{\n\t\"version\" : \"V1\"," + "\n\t\"requestId\" : \"test2\"," + "\n\t\"timestamp\" : 0,"
+							+ "\n\t\"images\" :[{\n\t\t\n\t\t\"format\" : \"jpg\","
+							+ "\n\t\t\"url\" : \"https://kr.object.ncloudstorage.com/testbucke/test8.jpg\","
+							+ "\n\t\t\"name\" : \"test8.jpg\"\n\t}]\n}");
 			
 			//String testFilePath ="kopo-8aaa3f34-7aaa-46c8-9e6d-bd8584fde567.jpg";
 			// http://34.64.137.151:8080/Mission-Spring_JB/upload/kopo-8aaa3f34-7aaa-46c8-9e6d-bd8584fde567.jpg
 			
-			RequestBody body = RequestBody.create(mediaType,
-			"{\n\t\"version\" : \"V1\"," + "\n\t\"requestId\" : \"test2\"," + "\n\t\"timestamp\" : 0,"
-					+ "\n\t\"images\" :[{\n\t\t\n\t\t\"format\" : \"png\","
-					+ "\n\t\t\"url\" : \"http://34.64.137.151:8080/Mission-Spring_JB/upload/"+ saveFileName + "\","
-					+ "\n\t\t\"name\" : \""+ saveFileName +"\"\n\t}]\n}");
+			// 이걸로 api 요청해야함, 로컬 테스트를 위해 주석
+//			RequestBody body = RequestBody.create(mediaType,
+//			"{\n\t\"version\" : \"V1\"," + "\n\t\"requestId\" : \"test2\"," + "\n\t\"timestamp\" : 0,"
+//					+ "\n\t\"images\" :[{\n\t\t\n\t\t\"format\" : \"png\","
+//					+ "\n\t\t\"url\" : \"http://34.64.137.151:8080/Mission-Spring_JB/upload/"+ saveFileName + "\","
+//					+ "\n\t\t\"name\" : \""+ saveFileName +"\"\n\t}]\n}");
 			
 			// 알아서 객체 생성? (request 객체 생성)
 			Request request = new Request.Builder().url(

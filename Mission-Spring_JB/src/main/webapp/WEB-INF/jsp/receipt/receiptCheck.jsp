@@ -186,11 +186,10 @@ $(function(){
 						<div class="row box">
 							<div id="fileUpload" class="dragAndDropDiv">
 								<section id="replaceThumb" style="max-width: 100%; height: 100%;">
-									<img src="/testUpload/${ receiptFile.fileSaveName }" style="width: 400px; height: 100%;">
+									<%-- <img src="/testUpload/${ receiptFile.fileSaveName }" style="width: 400px; height: 100%;"> --%>
 									<%-- <img src="/var/lib/tomcat9/webapps/Mission-Spring_JB/upload/${ receiptFile.thumbnailFileName }" style="width: 400px; height: 100%;">--%>
 									<!-- 아래가 실제 서버 경로  -->
-									<%-- <img src="${ pageContext.request.contextPath }/upload/${ receiptFile.thumbnailFileName }" style="width: 400px; height: 100%;"> --%>
-								
+									<img src="${ pageContext.request.contextPath }/upload/${ receiptFile.fileSaveName }" style="width: 400px; height: 100%;">
 								</section>
 							</div>
 							<div class="col">
@@ -202,16 +201,26 @@ $(function(){
 									<option value="3">카드영수증</option>
 									<option value="4">간이영수증</option>
 								</select>
-								
-								<span>업체명</span>
-	                          	<input type="text" class="form-control" name="storeName" id="storeName" placeholder="업체명" onfocus="this.placeholder = ''" onblur="this.placeholder = '업체명'">
+									
+								<c:choose>
+									<c:when test="${ receiptFile.selectedReceiptNo eq 3 }">	
+										<span>업체명</span>
+	                          			<input type="text" class="form-control" name="storeName" id="storeName" placeholder="업체명" onfocus="this.placeholder = ''" onblur="this.placeholder = '업체명'">								
+										<span>사업자등록번호</span>
+	                          			<input type="text" class="form-control" name="supplierBusinessNo" id="supplierBusinessNo" placeholder="사업자등록번호 ('-'를 제외하고 입력하세요.)" onfocus="this.placeholder = ''" onblur="this.placeholder = '사업자번호 (\'-\'를 제외하고 입력하세요.)'" maxlength='10'>
+										<span>영수일시 (ex 20210902)</span>
+	                          			<input type="text" class="form-control" name="receiptDate" id="receiptDate" placeholder="영수일시" onfocus="this.placeholder = ''" onblur="this.placeholder = '영수일시'">
+									</c:when>
+									<c:otherwise>
+										<span>업체명</span>
+	                          			<input type="text" class="form-control" name="storeName" id="storeName" placeholder="업체명" onfocus="this.placeholder = ''" onblur="this.placeholder = '업체명'" value="${ receiptFile.storeName }">
+										<span>사업자등록번호</span>
+	                          			<input type="text" class="form-control" name="supplierBusinessNo" id="supplierBusinessNo" placeholder="사업자등록번호 ('-'를 제외하고 입력하세요.)" onfocus="this.placeholder = ''" onblur="this.placeholder = '사업자번호 (\'-\'를 제외하고 입력하세요.)'" maxlength='10' value="${ receiptFile.supplierBusinessNo }">
+										<span>영수일시(ex 20210902)</span>
+	                          			<input type="text" class="form-control" name="receiptDate" id="receiptDate" placeholder="영수일시" onfocus="this.placeholder = ''" onblur="this.placeholder = '영수일시'" value="${ receiptFile.receiptDate }">
+									</c:otherwise>
+								</c:choose>
 	                        	
-	                        	<span>사업자등록번호</span>
-	                          	<input type="text" class="form-control" name="supplierBusinessNo" id="supplierBusinessNo" placeholder="사업자등록번호 ('-'를 제외하고 입력하세요.)" onfocus="this.placeholder = ''" onblur="this.placeholder = '사업자번호 (\'-\'를 제외하고 입력하세요.)'" maxlength='10'>
-	                        	
-	                        	<span>영수일시</span>
-	                          	<input type="text" class="form-control" name="receiptDate" id="receiptDate" placeholder="영수일시" onfocus="this.placeholder = ''" onblur="this.placeholder = '영수일시'">
-								
 								<span>영수금액</span>
 	                          	<input type="text" class="form-control" name="amount" id="amount" placeholder="영수금액" onfocus="this.placeholder = ''" onblur="this.placeholder = '영수금액'" value="${ receiptFile.amount }">
 								
@@ -230,8 +239,6 @@ $(function(){
 									<option value="7">공과금</option>
 									<option value="8">기타</option>
 								</select>
-								
-								
 								
 								<div class="form-group">
 									<span>메모</span>

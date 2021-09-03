@@ -84,11 +84,18 @@ public class ReceiptDAOImpl implements ReceiptDAO {
 
 	@Override
 	public List<ReceiptVO> searchReceiptKind(String receiptKind) {
-		// TODO Auto-generated method stub
 		
 		List<ReceiptVO> searchReceiptKindList = sqlSessionTemplate.selectList("receipt.receiptDAO.getReceiptKindList", receiptKind);
 		
 		return searchReceiptKindList;
+	}
+
+	@Override
+	public List<ReceiptVO> getPerReceiptList(int perReceipt) {
+		
+		List<ReceiptVO> perReceiptList = sqlSessionTemplate.selectList("receipt.receiptDAO.getPerReceiptList", perReceipt);
+		
+		return perReceiptList;
 	}
 	
 	

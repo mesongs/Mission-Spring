@@ -7,9 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import javax.servlet.ServletContext;
 import javax.servlet.jsp.PageContext;
 
 import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.ac.kopo.account.vo.PolicyVO;
@@ -19,6 +21,10 @@ import net.nurigo.java_sdk.exceptions.CoolsmsException;
 @Service
 public class AccountServiceImpl implements AccountService {
 
+	// 배포 서버 경로
+	@Autowired
+	ServletContext servletContext;
+	
 	// 오픈뱅킹 서비스 이용약관, 파일 read
 	@Override
 	public List<PolicyVO> policyAgree() {
@@ -34,6 +40,12 @@ public class AccountServiceImpl implements AccountService {
 		// @Autowired 서블릿컨텍스트/resourcespolicy/
 		String directoy = "C:\\Users\\HP\\git\\Mission-Spring_JB\\Mission-Spring_JB\\src\\main\\webapp\\resources\\policy\\";
 //					       \\src\\main\\webapp\\resources\\policy\\"
+		
+//		String directoy = servletContext.getContextPath();
+		// 아니면, 파일을 서버에 저장해놓고 읽으면됨
+		//String filePath = servletContext.getRealPath("/upload/");
+		
+		
 		FileReader fr = null;
 		BufferedReader br = null;
 

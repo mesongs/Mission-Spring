@@ -5,7 +5,7 @@
 <html lang="en">
 
 <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/form.css?after">
-<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/list.css?after">
+<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/list.css?before">
 
 
 <head>
@@ -15,7 +15,8 @@
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
   <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
-  
+ 
+
 <!-- <style>
 
 #comment-custom-receipt {
@@ -176,8 +177,20 @@ input::placeholder{
 	 	border-bottom-left-radius: 5px;
 	
 	}
- 
+ 	
+ tr:hover {
+	background-color: #FEFDCF;
+}
 </style> -->
+
+<style>
+	.product-img2 {
+    max-width: 30px;
+    max-height: 50px;
+    margin-top: -5px;
+    margin-right: -10px;
+}
+</style>
 
 <script>
 
@@ -269,11 +282,91 @@ input::placeholder{
 							     str +="<td>" + receiptKindList.receiptName + "</td>"
 							     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/detail/" + receiptKindList.receiptNo + ">" + receiptKindList.storeName +"</a></td>"; 
 							     
-							     str +="<td>" + receiptKindList.sum +"</td>";
+							     str +="<td>" + receiptKindList.sum +"원</td>";
 							     str +="<td>" + receiptKindList.purpose +"</td>";
-							     
-							     str +="<td>" + receiptKindList.overlap + "</td>"
+							     if(receiptKindList.overlap == 'Y'){
+					 					
+							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>"
+							     }else{
+				 					
+							    	 str += "<td>" + "</td>"
+				 				 }
 			 					 str +="<td>" + receiptKindList.memo +"</td>";
+			 					 str +="</tr>"
+			 					 $('#test').append(str);
+						 })
+					 }
+					
+				},
+				
+				error:function(request, status, error){
+				    alert("code:"+ request.status +"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				}
+				
+				
+			})
+			
+			
+			
+			
+		})
+		
+		// 목록 개수 ajax
+		$(document).on('change','#perReceipt', function(){	
+			
+			let perReceipt = $('#perReceipt').val()
+			
+			switch(receiptKind) {
+					  
+				  case '15':
+					receiptKind = 15
+					break
+			
+				  case '30':
+					receiptKind = 30
+				    break								
+				
+				  case '50':
+					receiptKind = 50
+				    break
+				    
+				  case '100':
+					receiptKind = 100   
+					break 
+				}
+			
+			
+			$.ajax({
+				type : "get",
+				url : "${pageContext.request.contextPath}/receipt/getPerReceiptList",
+				data : { perReceipt : perReceipt },
+				success : function(result){
+					
+					let obj = JSON.parse(result);
+					
+			 		 $('#test').empty();
+			 		 
+					 if(obj.length >= 1){
+						 
+						 obj.forEach(function(perReceiptistList){
+							 	 
+							 	 str="<tr>"
+							 	 str += "<td>" + '<input type="checkbox" class="testBox">' + "</td>" 
+							     str +="<td>" + perReceiptistList.receiptDate + "</td>"
+							     str +="<td>" + perReceiptistList.receiptName + "</td>"
+							     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/detail/" + perReceiptistList.receiptNo + ">" + perReceiptistList.storeName +"</a></td>"; 
+							     
+							     str +="<td>" + perReceiptistList.sum +"원</td>";
+							     str +="<td>" + perReceiptistList.purpose +"</td>";
+							     
+							     if(perReceiptistList.overlap == 'Y'){
+					 					
+							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>"
+							     }else{
+				 					
+							    	 str += "<td>" + "</td>"
+				 				 }
+			 					 str +="<td>" + perReceiptistList.memo +"</td>";
 			 					 str +="</tr>"
 			 					 $('#test').append(str);
 						 })
@@ -313,17 +406,37 @@ input::placeholder{
 							 	 
 							 	 str="<tr>"
 							 	 str += "<td>" + '<input type="checkbox" class="testBox">' + "</td>" 
-							     str +="<td>" + processedList.receiptDate + "</td>"
-							     str +="<td>" + processedList.receiptName + "</td>"
+							     str += "<td>" + processedList.receiptDate + "</td>"
+							     str += "<td>" + processedList.receiptName + "</td>"
 							     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/detail/" + processedList.receiptNo + ">" + processedList.storeName +"</a></td>"; 
 							     
-							     str +="<td>" + processedList.sum +"</td>";
-							     str +="<td>" + processedList.purpose +"</td>";
+							     str += "<td>" + processedList.sum +"원</td>";
+							     str += "<td>" + processedList.purpose +"</td>";
 							     
-							     str +="<td>" + processedList.overlap + "</td>"
-			 					 str +="<td>" + processedList.memo +"</td>";
-			 					 str +="</tr>"
+							     if(processedList.overlap == 'Y'){
+				 					
+							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>"
+							     }else{
+				 					
+							    	 str += "<td>" + "</td>"
+				 				 }
+				 				 
+							     /* str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>" */
+							     /* str +="<td>" + processedList.overlap + "</td>" */
+							     
+			 					 str += "<td>" + processedList.memo +"</td>";
+			 					 str += "</tr>"
 			 					 $('#test').append(str);
+			 					 
+			 					 
+			 					 
+			 					 
+			 					 // 받아온 overlap값이 'Y'이면, 경고 이미지 띄우기
+			 					 // 'N'이면, empty
+			 					 
+			 					 
+			 					 
+			 					
 						 })
 					 }
 					
@@ -404,10 +517,16 @@ input::placeholder{
 							     str +="<td>" + searchDateList.receiptName + "</td>"
 							     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/detail/" + searchDateList.receiptNo + ">" + searchDateList.storeName +"</a></td>"; 
 							     
-							     str +="<td>" + searchDateList.sum +"</td>";
+							     str +="<td>" + searchDateList.sum +"원</td>";
 							     str +="<td>" + searchDateList.purpose +"</td>";
 							     
-							     str +="<td>" + searchDateList.overlap + "</td>"
+							     if(searchDateList.overlap == 'Y'){
+					 					
+							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>"
+							     }else{
+				 					
+							    	 str += "<td>" + "</td>"
+				 				 }
 			 					 str +="<td>" + searchDateList.memo +"</td>";
 			 					 str +="</tr>"
 			 					 $('#test').append(str);
@@ -461,7 +580,7 @@ input::placeholder{
 					     str +="<td>" + searchprocessedList.receiptName + "</td>"
 					     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/detail/" + searchprocessedList.receiptNo + ">" + searchprocessedList.storeName +"</a></td>"; 
 					     
-					     str +="<td>" + searchprocessedList.sum +"</td>";
+					     str +="<td>" + searchprocessedList.sum +"원</td>";
 					     str +="<td>" + searchprocessedList.purpose +"</td>";
 					     
 					     str +="<td>" + searchprocessedList.overlap + "</td>"
@@ -489,10 +608,10 @@ input::placeholder{
 	<jsp:include page="/WEB-INF/jsp/include/header.jsp"/>
 	<!--================Header Menu Area =================-->
 
-	<div class="comment-form-receipt" id="comment-custom-receipt" >
+	<div class="comment-form-receipt" id="comment-custom-receipt" style="width: 1110px;">
 		<div class="row">
 			<div class="col">
-				<h4 style="font-family: 'Noto Sans KR', sans-serif;font-size: xx-large;">증빙관리</h4>
+				<h4 style="font-family: 'Noto Sans KR', sans-serif;font-size: xx-large; margin-left: 32px;">증빙관리</h4>
 			</div>
 			<div class="col" align="right">
 				<span>
@@ -567,19 +686,7 @@ input::placeholder{
 								
 								<tbody id="test">
 								 
-									<%-- <tr> <!--회원이 보유한 영수증 리스트 출력  -->
-										<td><input type="checkbox"></td>
-										<td>07/08</td>
-										<td>세금계산서</td>
-										<td><a href="<%=request.getContextPath()%>/receiptDetail.jsp">종범상회</a></td>
-										<td>500,000</td>
-										<td>재료비</td>
-										<td></td>
-										<td>재료 구매를 위한 지출</td>
-									</tr> --%>
-									
-								</tbody>	
-									
+								</tbody>
 							</table>
 							</div>
 						</div>
@@ -588,10 +695,10 @@ input::placeholder{
 						<div class="row">
 							<div class="col" style="margin-top: 25px;">
 								<select name="perReceipt" id="perReceipt" style="width: 110px; margin-bottom: 20px; color:#495057; height: 35px;border-top-width: 0px;padding-bottom: 0px;">
-									<option value="1">10개 보기</option>
-									<option value="2">25개 보기</option>
-									<option value="3">50개 보기</option>
-									<option value="4">100개 보기</option>
+									<option value="15">15개 보기</option>
+									<option value="30">30개 보기</option>
+									<option value="50">50개 보기</option>
+									<option value="100">100개 보기</option>
 								</select>
 							</div>
 						</div>

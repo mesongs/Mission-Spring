@@ -109,6 +109,16 @@ public class receiptController {
 		return searchReceiptKindList;
 	}
 	
+	// 목록 개수에 따른 조회 ajax
+		@GetMapping("/receipt/getPerReceiptList")
+		@ResponseBody
+		public List<ReceiptVO> getpPerReceipList(@RequestParam("perReceipt") int perReceipt){
+			
+			List<ReceiptVO> perReceiptList = service.getPerReceiptList(perReceipt);
+			
+			return perReceiptList;
+	}
+	
 	
 	// 세부사항 조회하기
 	@RequestMapping("/receipt/detail/{receiptNo}")
@@ -131,20 +141,16 @@ public class receiptController {
 		
 	}
 	
+	// 처리 완료된 영수증 목록
 	@GetMapping("/receipt/processedAllList")
 	@ResponseBody
 	public List<ReceiptVO> processedList(){
 		
 		List<ReceiptVO> processedAllList = service.getProcessedList();
 		
-		
-		
 		return processedAllList;
 		
 	}
-	
-	
-	
 	
 	// 사용자가 선택한 영수증에 대한 세부사항, {no} => @Path~
 	@RequestMapping("/receipt/detail")

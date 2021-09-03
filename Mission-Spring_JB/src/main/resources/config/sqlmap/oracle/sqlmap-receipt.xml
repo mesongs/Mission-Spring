@@ -49,37 +49,37 @@
 	</select>
 	
 	<select id="processedAllList" resultType="receiptVO" resultMap="receiptMap">
-			select receipt_no, SUPPLIER_BUSINESS_NO, STORE_NAME, to_char(RECEIPT_DATE, 'yy/mm/dd') as RECEIPT_DATE, to_char(REG_DATE, 'yy/mm/dd') as REG_DATE,
-	        receipt_status,AMOUNT, vat, AMOUNT+VAT AS SUM, MEMO, purpose, receipt_name
+			select * from (select receipt_no, SUPPLIER_BUSINESS_NO, STORE_NAME, to_char(RECEIPT_DATE, 'yy/mm/dd') as RECEIPT_DATE, to_char(REG_DATE, 'yy/mm/dd') as REG_DATE,
+	        receipt_status,AMOUNT, vat, AMOUNT+VAT AS SUM, MEMO, purpose, receipt_name, overlap
 			from TB_RECEIPT a, TB_RECEIPT_KIND b     
 			where a.RECEIPT_code = b.RECEIPT_code and
 			receipt_status ='P'
-			order by REG_DATE desc
+			order by RECEIPT_DATE desc) where rownum <![CDATA[ <= ]]> 15
 	</select>
 	
 	<select id="getSeachProcessedList" parameterType="String" resultType="receiptVO" resultMap="receiptMap">
 			select receipt_no, SUPPLIER_BUSINESS_NO, STORE_NAME, to_char(RECEIPT_DATE, 'yy/mm/dd') as RECEIPT_DATE, to_char(REG_DATE, 'yy/mm/dd') as REG_DATE,
-		    receipt_status,AMOUNT, vat, AMOUNT+VAT AS SUM, MEMO, purpose, receipt_name
+		    receipt_status,AMOUNT, vat, AMOUNT+VAT AS SUM, MEMO, purpose, receipt_name, overlap
 			from TB_RECEIPT a, TB_RECEIPT_KIND b     
 			where a.RECEIPT_code = b.RECEIPT_code and
 			receipt_status ='P'
 			and memo like '%'||#{searchWord}||'%'
-			order by REG_DATE desc
+			order by RECEIPT_DATE desc
 	</select>
 	
 	<select id="getSeachDateList" parameterType="searchDateVO" resultType="receiptVO" resultMap="receiptMap">
 			select receipt_no, SUPPLIER_BUSINESS_NO, STORE_NAME, to_char(RECEIPT_DATE, 'yy/mm/dd') as RECEIPT_DATE, to_char(REG_DATE, 'yy/mm/dd') as REG_DATE,
-		    receipt_status,AMOUNT, vat, AMOUNT+VAT AS SUM, MEMO, purpose, receipt_name
+		    receipt_status,AMOUNT, vat, AMOUNT+VAT AS SUM, MEMO, purpose, receipt_name, overlap
 			from TB_RECEIPT a, TB_RECEIPT_KIND b     
 			where a.RECEIPT_code = b.RECEIPT_code and
 			receipt_status ='P'
             and RECEIPT_DATE between #{startDate} and #{endDate}
-			order by REG_DATE desc
+			order by RECEIPT_DATE desc
 	</select>
 	
 	<select id="getReceiptKindList" parameterType="String" resultType="receiptVO" resultMap="receiptMap">
 			select receipt_no, SUPPLIER_BUSINESS_NO, STORE_NAME, to_char(RECEIPT_DATE, 'yy/mm/dd') as RECEIPT_DATE, to_char(REG_DATE, 'yy/mm/dd') as REG_DATE,
-		    receipt_status,AMOUNT, vat, AMOUNT+VAT AS SUM, MEMO, purpose, receipt_name
+		    receipt_status,AMOUNT, vat, AMOUNT+VAT AS SUM, MEMO, purpose, receipt_name, overlap
 			from TB_RECEIPT a, TB_RECEIPT_KIND b     
 			where a.RECEIPT_code = b.RECEIPT_code and
 			receipt_status ='P'
@@ -89,9 +89,19 @@
             <if test="receiptKind == 000">
             	and b.receipt_code in (001, 002, 003, 004)
             </if>
-			order by REG_DATE desc
+			order by RECEIPT_DATE desc
+	</select>
+	
+	<select id="getPerReceiptList" parameterType="int" resultType="receiptVO" resultMap="receiptMap">
+			select * from (select receipt_no, SUPPLIER_BUSINESS_NO, STORE_NAME, to_char(RECEIPT_DATE, 'yy/mm/dd') as RECEIPT_DATE, to_char(REG_DATE, 'yy/mm/dd') as REG_DATE,
+		    receipt_status,AMOUNT, vat, AMOUNT+VAT AS SUM, MEMO, purpose, receipt_name, overlap
+			from TB_RECEIPT a, TB_RECEIPT_KIND b     
+			where a.RECEIPT_code = b.RECEIPT_code and
+			receipt_status ='P'
+			order by RECEIPT_DATE desc)
+            where rownum <![CDATA[ <= ]]> #{perReceipt}
 	</select>
 	
 	
-	
+
 </mapper>

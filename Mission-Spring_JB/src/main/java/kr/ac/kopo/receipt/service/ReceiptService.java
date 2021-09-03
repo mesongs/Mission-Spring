@@ -29,4 +29,5 @@ public interface ReceiptService {
 	
 	List<ReceiptVO> searchReceiptKind(String receiptKind);
 
+	List<ReceiptVO> getPerReceiptList(int perReceipt);
 }

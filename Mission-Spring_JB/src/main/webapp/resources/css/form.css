@@ -144,6 +144,7 @@ input[type=date] {
     border-top-width: 6px;
 }
 
-
+ tr:hover {
+	background-color: #FEFDCF;
 
 

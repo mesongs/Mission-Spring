@@ -27,6 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.ac.kopo.receipt.dao.ReceiptDAO;
 import kr.ac.kopo.receipt.vo.ReceiptFileVO;
 import kr.ac.kopo.receipt.vo.ReceiptVO;
+import kr.ac.kopo.receipt.vo.searchDateVO;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -47,7 +48,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 	@Transactional
 	@Override
 	public void receiptResgister(ReceiptVO receipt) {
-		
+	
 		// pk가 될 영수증 번호 추출
 		int receiptNo = receiptDAO.getReceiptNo();
 	
@@ -118,7 +119,56 @@ public class ReceiptServiceImpl implements ReceiptService {
 		receiptDAO.receiptFileRegister(receipt);
 	}
 	
+	// 처리 대기 검색
+	@Override
+	public List<ReceiptVO> searchwaitList(String searchWord) {
+		
+		List<ReceiptVO> searchwaitList = receiptDAO.searchWaitList(searchWord);
+		
+		return searchwaitList;
+	}
+
+	// 처리 대기중인 모든 리스트 검색
+	@Override
+	public List<ReceiptVO> waitAllList() {
+		
+		List<ReceiptVO> WaitAllList = receiptDAO.waitAllList();
+		
+		return WaitAllList;
+	}
 	
+	@Override
+	public List<ReceiptVO> getProcessedList() {
+		
+		List<ReceiptVO> WaitAllList = receiptDAO.getProcessedList();
+		
+		return WaitAllList;
+	}
+	
+	@Override
+	public List<ReceiptVO> searchprocessedList(String searchWord) {
+		
+		List<ReceiptVO> processedAllList = receiptDAO.getSearchProcessedList(searchWord);
+		
+		return processedAllList;
+	}
+
+	@Override
+	public List<ReceiptVO> serachDate(searchDateVO searchDate) {
+		
+		List<ReceiptVO> searchDateList = receiptDAO.getSearchDateList(searchDate);
+		
+		return searchDateList;
+	}
+	
+	@Override
+	public List<ReceiptVO> searchReceiptKind(String receiptKind) {
+		
+		List<ReceiptVO> searchReceiptKindList = receiptDAO.searchReceiptKind(receiptKind);
+		
+		return searchReceiptKindList;
+	}
+
 	// 가장 먼저했던 이미지 서버에 저장, 썸네일 이미지 저장 => 저장된 이미지 ocr
 	/**
 	 * 1. 이미지 서버 파일에 저장, 썸네일 이미지
@@ -335,9 +385,11 @@ public class ReceiptServiceImpl implements ReceiptService {
 			// ocr로 추출한 합계금액에서 영수금액, 부가세 추출
 			int sum = Collections.max(resultList);
 			
-			int amount = (int)(sum / 1.1);
+			// 소수점 첫째 자리에서 반올림
+			int amount = (int)(Math.round(sum / 1.1));
 			int vat = sum - amount; 
 			
+			receiptFile.setSum(sum);
 			receiptFile.setAmount(amount);
 			receiptFile.setVat(vat);
 			

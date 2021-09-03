@@ -11,10 +11,12 @@ public class ReceiptVO {
 	private String supplierBusinessNo; // 공급자 사업자 번호
 	private String businessNo; // 자신의 사업장번호
 	private String receiptDate; // 영수일시
-	int amount; // 영수금액
-	int vat; // 부가세
-	String purpose;
-	String memo;
+	private int amount; // 영수금액
+	private int vat; // 부가세
+	private int sum; // ocr로 추출한 합계
+	private String purpose;
+	private String memo;
+	private String receiptName; //가져올 때, 영수증명으로 가져옴
 	// 파일 경로 저장
 	private String filePath;
 	private long fileSize;
@@ -99,6 +101,12 @@ public class ReceiptVO {
 	public void setMemo(String memo) {
 		this.memo = memo;
 	}
+	public String getReceiptName() {
+		return receiptName;
+	}
+	public void setReceiptName(String receiptName) {
+		this.receiptName = receiptName;
+	}
 	public String getFilePath() {
 		return filePath;
 	}
@@ -124,14 +132,30 @@ public class ReceiptVO {
 		this.fileSaveName = fileSaveName;
 	}
 	
+	public int getSum() {
+		return sum;
+	}
+	public void setSum(int sum) {
+		this.sum = sum;
+	}
+	
 	@Override
 	public String toString() {
 		return "ReceiptVO [receiptNo=" + receiptNo + ", regDate=" + regDate + ", receiptKind=" + receiptKind
 				+ ", overlap=" + overlap + ", receiptStatus=" + receiptStatus + ", storeName=" + storeName
 				+ ", supplierBusinessNo=" + supplierBusinessNo + ", businessNo=" + businessNo + ", receiptDate="
-				+ receiptDate + ", amount=" + amount + ", vat=" + vat + ", purpose=" + purpose + ", memo=" + memo
-				+ ", filePath=" + filePath + ", fileSize=" + fileSize + ", fileOriginalName=" + fileOriginalName
-				+ ", fileSaveName=" + fileSaveName + "]";
+				+ receiptDate + ", amount=" + amount + ", vat=" + vat + ", sum=" + sum + ", purpose=" + purpose
+				+ ", memo=" + memo + ", receiptName=" + receiptName + ", filePath=" + filePath + ", fileSize="
+				+ fileSize + ", fileOriginalName=" + fileOriginalName + ", fileSaveName=" + fileSaveName
+				+ ", getReceiptNo()=" + getReceiptNo() + ", getRegDate()=" + getRegDate() + ", getReceiptKind()="
+				+ getReceiptKind() + ", getOverlap()=" + getOverlap() + ", getReceiptStatus()=" + getReceiptStatus()
+				+ ", getStoreName()=" + getStoreName() + ", getSupplierBusinessNo()=" + getSupplierBusinessNo()
+				+ ", getBusinessNo()=" + getBusinessNo() + ", getReceiptDate()=" + getReceiptDate() + ", getAmount()="
+				+ getAmount() + ", getVat()=" + getVat() + ", getPurpose()=" + getPurpose() + ", getMemo()=" + getMemo()
+				+ ", getReceiptName()=" + getReceiptName() + ", getFilePath()=" + getFilePath() + ", getFileSize()="
+				+ getFileSize() + ", getFileOriginalName()=" + getFileOriginalName() + ", getFileSaveName()="
+				+ getFileSaveName() + ", getSum()=" + getSum() + ", getClass()=" + getClass() + ", hashCode()="
+				+ hashCode() + ", toString()=" + super.toString() + "]";
 	}
 	
 }

@@ -1,5 +1,8 @@
 package kr.ac.kopo.receipt.dao;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -9,6 +12,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import kr.ac.kopo.member.dao.MemberDAO;
 import kr.ac.kopo.receipt.vo.ReceiptFileVO;
 import kr.ac.kopo.receipt.vo.ReceiptVO;
+import kr.ac.kopo.receipt.vo.searchDateVO;
 
 @Repository
 public class ReceiptDAOImpl implements ReceiptDAO {
@@ -38,6 +42,58 @@ public class ReceiptDAOImpl implements ReceiptDAO {
 		
 		return receiptNo;
 	}
+	
+	// 처리 대기 검색 결과
+	@Override
+	public List<ReceiptVO> searchWaitList(String searchWord) {
+			
+		List<ReceiptVO> searchWaitList = sqlSessionTemplate.selectList("receipt.receiptDAO.getSeachWaitLst", searchWord);
+			
+		return searchWaitList;
+	}
+
+	@Override
+	public List<ReceiptVO> waitAllList() {
+		List<ReceiptVO> waitAllList = sqlSessionTemplate.selectList("receipt.receiptDAO.waitAllList");
+		return waitAllList;
+	}
+
+	@Override
+	public List<ReceiptVO> getProcessedList() {
+		
+		List<ReceiptVO> processedAllList = sqlSessionTemplate.selectList("receipt.receiptDAO.processedAllList");
+		
+		return processedAllList;
+	}
+
+	@Override
+	public List<ReceiptVO> getSearchProcessedList(String searchWord) {
+
+		List<ReceiptVO> processedAllList = sqlSessionTemplate.selectList("receipt.receiptDAO.getSeachProcessedList", searchWord);
+		
+		return processedAllList;
+	}
+
+	@Override
+	public List<ReceiptVO> getSearchDateList(searchDateVO date) {
+		
+		List<ReceiptVO> searchDateList = sqlSessionTemplate.selectList("receipt.receiptDAO.getSeachDateList", date);
+		
+		return searchDateList;
+	}
+
+	@Override
+	public List<ReceiptVO> searchReceiptKind(String receiptKind) {
+		// TODO Auto-generated method stub
+		
+		List<ReceiptVO> searchReceiptKindList = sqlSessionTemplate.selectList("receipt.receiptDAO.getReceiptKindList", receiptKind);
+		
+		return searchReceiptKindList;
+	}
+	
+	
+	
+	
 	
 	
 

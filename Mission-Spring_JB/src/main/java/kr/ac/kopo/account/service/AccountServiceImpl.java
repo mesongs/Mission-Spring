@@ -31,6 +31,7 @@ public class AccountServiceImpl implements AccountService {
 		
 		String line = "";
 		// 리눅스에서 읽으려면, ${pageContext} 같은걸로 읽어야함
+		// @Autowired 서블릿컨텍스트/resourcespolicy/
 		String directoy = "C:\\Users\\HP\\git\\Mission-Spring_JB\\Mission-Spring_JB\\src\\main\\webapp\\resources\\policy\\";
 //					       \\src\\main\\webapp\\resources\\policy\\"
 		FileReader fr = null;

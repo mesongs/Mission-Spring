@@ -3,18 +3,24 @@ package kr.ac.kopo.receipt.controller;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import kr.ac.kopo.receipt.service.ReceiptService;
 import kr.ac.kopo.receipt.vo.ReceiptFileVO;
 import kr.ac.kopo.receipt.vo.ReceiptVO;
+import kr.ac.kopo.receipt.vo.searchDateVO;
 
 @Controller
 public class receiptController {
@@ -48,24 +54,95 @@ public class receiptController {
 		
 	}
 	
-	// 사용자 확인 후 영수증 DB에 등록
-	// 테스트하려고 int로 받아봤음
 	@PostMapping("/receipt/finalRegister")
 	public void finalRegister(ReceiptVO receipt) {
-		
-		System.out.println("컨트롤러로 잘넘어오지? : " + receipt);
 		
 		service.receiptResgister(receipt);
 		
 	}
 	
-	
+	// 영수증 처리 대기 목록 탭 이동
 	@GetMapping("/receipt/receiptWaitList")
 	public String getreceiptWaitList() {
 		
 		return "receipt/receiptWaitList";
 		
 	}
+	
+	@PostMapping("/receipt/waitListSearch")
+	@ResponseBody
+	public List<ReceiptVO> getwaitSearchList(@RequestParam("searchWord") String searchWord, Model model){
+		
+		List<ReceiptVO> searchWaitList = service.searchwaitList(searchWord);
+		
+		
+		return searchWaitList;
+	}
+	
+	@PostMapping("/receipt/processedListSearch")
+	@ResponseBody
+	public List<ReceiptVO> getprocessedList(@RequestParam("searchWord") String searchWord){
+		
+		List<ReceiptVO> searchprocessedList = service.searchprocessedList(searchWord);
+		
+		return searchprocessedList;
+	}
+	
+	
+	@GetMapping("/receipt/selectDate")
+	@ResponseBody
+	public List<ReceiptVO> getListDate(searchDateVO dateVO){
+		
+		List<ReceiptVO> searchDateList = service.serachDate(dateVO);
+		
+		return searchDateList;
+		
+	}
+	
+	// 영수증 종류에 따른 조회 ajax
+	@GetMapping("/receipt/getReceiptKindList")
+	@ResponseBody
+	public List<ReceiptVO> getReceiptKindList(@RequestParam("receiptKind") String receiptKind){
+		
+		List<ReceiptVO> searchReceiptKindList = service.searchReceiptKind(receiptKind);
+		
+		return searchReceiptKindList;
+	}
+	
+	
+	// 세부사항 조회하기
+	@RequestMapping("/receipt/detail/{receiptNo}")
+	public ReceiptVO receiptDetail(@PathVariable("receiptNo") int receiptNo) {
+		
+		
+		ReceiptVO receipt = new ReceiptVO();
+		// receiptNo 넘겨서 세부사항 조회하기
+		return receipt;
+	}
+	
+	
+	@GetMapping("/receipt/waitAllList")
+	@ResponseBody
+	public List<ReceiptVO> waitList(){
+		
+		List<ReceiptVO> waitAllList = service.waitAllList();
+		
+		return waitAllList;
+		
+	}
+	
+	@GetMapping("/receipt/processedAllList")
+	@ResponseBody
+	public List<ReceiptVO> processedList(){
+		
+		List<ReceiptVO> processedAllList = service.getProcessedList();
+		
+		
+		
+		return processedAllList;
+		
+	}
+	
 	
 	
 	

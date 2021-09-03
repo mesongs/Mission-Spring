@@ -17,6 +17,7 @@ public class ReceiptFileVO {
 	private String supplierBusinessNo;
 	private String receiptDate;
 	private String storeName;
+	private int sum; // ocr로 추출한 합계
 	
 	
 	
@@ -105,6 +106,13 @@ public class ReceiptFileVO {
 		this.storeName = storeName;
 	}
 	
+	public int getSum() {
+		return sum;
+	}
+	public void setSum(int sum) {
+		this.sum = sum;
+	}
+	
 	@Override
 	public String toString() {
 		return "ReceiptFileVO [fileNo=" + fileNo + ", filePath=" + filePath + ", fileOriginalName=" + fileOriginalName
@@ -112,9 +120,7 @@ public class ReceiptFileVO {
 				+ selectedReceiptNo + ", selectedPurposeNo=" + selectedPurposeNo + ", inputMemo=" + inputMemo
 				+ ", thumbnailFileName=" + thumbnailFileName + ", amount=" + amount + ", vat=" + vat
 				+ ", supplierBusinessNo=" + supplierBusinessNo + ", receiptDate=" + receiptDate + ", storeName="
-				+ storeName + "]";
+				+ storeName + ", sum=" + sum + "]";
 	}
-	
-	
 	
 }

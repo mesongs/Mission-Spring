@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,12 +10,12 @@
 
 <head>
 <jsp:include page="/WEB-INF/jsp/include/head.jsp"/>
-  
+
   <!--datePicker-->
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
   <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
-
+  
 <!-- <style>
 
 #comment-custom-receipt {
@@ -198,8 +199,10 @@ input::placeholder{
 		
 		
 		// 체크 상태 변화될 때마다 수정사항 표시
-		$("input[type=checkbox]").change(function(){
-			
+		/*$("input[type=checkbox]").change(function(){*/
+		
+		$(document).on('change','.testBox', function(){
+			   
 			   if($("input[type=checkbox]").is(":checked")){
 				   
 				   $.get("${ pageContext.request.contextPath }/receipt/replaceCheck", function(data){
@@ -212,13 +215,131 @@ input::placeholder{
 					   $('#categoryAjax').replaceWith(data)
 				   })
 				   
-				   
 			   }
 			
 		})
 		
+		// 영수증 구분에 따른 ajax
+		//$('#receiptKind').change(function(){
+		$(document).on('change','#receiptKind', function(){	
+			
+			let receiptKind = $('#receiptKind').val()
+			
+			switch(receiptKind) {
+					  
+				  case '0':
+					receiptKind = '000'
+					break
+			
+				  case '1':
+					receiptKind = '001'
+				    break								
+				
+				  case '2':
+					receiptKind = '002'
+				    break
+				    
+				  case '3':
+					receiptKind = '003'   
+					break 
+					
+				  case '4':
+					receiptKind = '004'   
+				   	break
+				}
+			
+			$.ajax({
+				type : "get",
+				url : "${pageContext.request.contextPath}/receipt/getReceiptKindList",
+				data : {receiptKind : receiptKind},
+				success : function(result){
+					
+					let obj = JSON.parse(result);
+					
+			 		 $('#test').empty();
+			 		 
+					 if(obj.length >= 1){
+						 
+						 // for(receipt vo(=searchWaitList) : receiptList) 1.5버전 for문과 동일함
+						 obj.forEach(function(receiptKindList){
+							 	 
+							 	 str="<tr>"
+							 	 str += "<td>" + '<input type="checkbox" class="testBox">' + "</td>" 
+							     str +="<td>" + receiptKindList.receiptDate + "</td>"
+							     str +="<td>" + receiptKindList.receiptName + "</td>"
+							     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/detail/" + receiptKindList.receiptNo + ">" + receiptKindList.storeName +"</a></td>"; 
+							     
+							     str +="<td>" + receiptKindList.sum +"</td>";
+							     str +="<td>" + receiptKindList.purpose +"</td>";
+							     
+							     str +="<td>" + receiptKindList.overlap + "</td>"
+			 					 str +="<td>" + receiptKindList.memo +"</td>";
+			 					 str +="</tr>"
+			 					 $('#test').append(str);
+						 })
+					 }
+					
+				},
+				
+				error:function(request, status, error){
+				    alert("code:"+ request.status +"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				}
+				
+				
+			})
+			
+			
+			
+			
+		})
+		
+		processedList();
+		
+		function processedList(){
+			
+			$.ajax({
+				type : "get",
+				url : "${pageContext.request.contextPath}/receipt/processedAllList",
+				success : function(result){
+					
+					let obj = JSON.parse(result);
+					
+			 		 $('#test').empty();
+			 		 
+					 if(obj.length >= 1){
+						 
+						 // for(receipt vo(=searchWaitList) : receiptList) 1.5버전 for문과 동일함
+						 obj.forEach(function(processedList){
+							 	 
+							 	 str="<tr>"
+							 	 str += "<td>" + '<input type="checkbox" class="testBox">' + "</td>" 
+							     str +="<td>" + processedList.receiptDate + "</td>"
+							     str +="<td>" + processedList.receiptName + "</td>"
+							     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/detail/" + processedList.receiptNo + ">" + processedList.storeName +"</a></td>"; 
+							     
+							     str +="<td>" + processedList.sum +"</td>";
+							     str +="<td>" + processedList.purpose +"</td>";
+							     
+							     str +="<td>" + processedList.overlap + "</td>"
+			 					 str +="<td>" + processedList.memo +"</td>";
+			 					 str +="</tr>"
+			 					 $('#test').append(str);
+						 })
+					 }
+					
+				},
+				error:function(request, status, error){
+				    alert("code:"+ request.status +"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				}
+				
+				
+			})
+			
+		}
+		
+		
 		// datepicker를 활용한 날짜 조회
-		$('#startDate').datepicker(
+		 $('#startDate').datepicker(
 			{
 			
 				 dateFormat:'yy/mm/dd',
@@ -256,17 +377,108 @@ input::placeholder{
 		});
 		
 		
+		$('#searchDate').click(function(){
+			
+			let startDate = $('#startDate').val();
+ 			let endDate = $('#endDate').val(); 
+			
+			//조회 버튼 누르면, 기간에 해당하는 값만 조회함
+			$.ajax({
+				type : "get",
+				data : {startDate : startDate, endDate : endDate },
+				url : "${pageContext.request.contextPath}/receipt/selectDate",
+				success : function(result){
+					
+					let obj = JSON.parse(result);
+					
+			 		 $('#test').empty();
+			 		 
+					 if(obj.length >= 1){
+						 
+						 // for(receipt vo(=searchWaitList) : receiptList) 1.5버전 for문과 동일함
+						 obj.forEach(function(searchDateList){
+							 	 
+							 	 str="<tr>"
+							 	 str += "<td>" + '<input type="checkbox" class="testBox">' + "</td>" 
+							     str +="<td>" + searchDateList.receiptDate + "</td>"
+							     str +="<td>" + searchDateList.receiptName + "</td>"
+							     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/detail/" + searchDateList.receiptNo + ">" + searchDateList.storeName +"</a></td>"; 
+							     
+							     str +="<td>" + searchDateList.sum +"</td>";
+							     str +="<td>" + searchDateList.purpose +"</td>";
+							     
+							     str +="<td>" + searchDateList.overlap + "</td>"
+			 					 str +="<td>" + searchDateList.memo +"</td>";
+			 					 str +="</tr>"
+			 					 $('#test').append(str);
+						 })
+					 }
+					
+				},
+				error:function(request, status, error){
+				    alert("code:"+ request.status +"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				}
+				
+				
+			})
+			
+		})
+			
 		
 		
 	
 	})
 
-	
-	
-
 </script>
 
+<script>
+	
+//	function getSearchList(){
+	
+//	$(document).on("click", "button[name='searchBtn']", function () {
+	  
+	  $(document).on("click", "#searchBtn", function (){
 
+	   $.ajax({
+		 type : "POST",
+		 url : "${ pageContext.request.contextPath }/receipt/processedListSearch",
+		 data : {
+				"searchWord" : $('#searchWord').val() 
+		 	},
+		 success : function(result){
+			 let obj = JSON.parse(result);
+	 		 /* $('#boardtable > tbody').empty(); */
+	 		 $('#test').empty();
+	 		 
+			 if(obj.length >= 1){
+				 
+				 // for(receipt vo(=searchWaitList) : receiptList) 1.5버전 for문과 동일함
+				 obj.forEach(function(searchprocessedList){
+					 	 
+					 	 str="<tr>"
+					 	 str += "<td>" + '<input type="checkbox" class="testBox">' + "</td>" 
+					     str +="<td>" + searchprocessedList.receiptDate + "</td>"
+					     str +="<td>" + searchprocessedList.receiptName + "</td>"
+					     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/detail/" + searchprocessedList.receiptNo + ">" + searchprocessedList.storeName +"</a></td>"; 
+					     
+					     str +="<td>" + searchprocessedList.sum +"</td>";
+					     str +="<td>" + searchprocessedList.purpose +"</td>";
+					     
+					     str +="<td>" + searchprocessedList.overlap + "</td>"
+	 					 str +="<td>" + searchprocessedList.memo +"</td>";
+	 					 str +="</tr>"
+	 					 $('#test').append(str);
+	 					 
+				 })
+			 }
+			 
+		 }	 
+		 
+	 })
+	 
+ })
+	
+</script>
 
 </head>
 
@@ -298,7 +510,7 @@ input::placeholder{
 				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/receiptWaitList">처리 대기</a></li>
 				<li class="nav-item"><a class="nav-link" href="#">반려된 영수증</a></li>
 			</ul> 
-
+			
 			<section>
 					
 					<div class="container" style="margin-left: 36px;"> 
@@ -314,7 +526,7 @@ input::placeholder{
 										</select>
 									</div>
 									<div class="col-2">
-										<select name="receiptKind" id="receiptKind" style="width: 150px; margin-bottom: 20px; color: #495057; height: 35px; border-top-width: 0px;padding-bottom: 0px; border-radius: 5px 5px 5px 5px; " >
+										<select name="overlap" id="overlap" style="width: 150px; margin-bottom: 20px; color: #495057; height: 35px; border-top-width: 0px;padding-bottom: 0px; border-radius: 5px 5px 5px 5px; " >
 											<option value="">중복여부</option>
 											<option value="1">중복의심</option>
 											<option value="2">중복아님</option>
@@ -324,7 +536,8 @@ input::placeholder{
 										<div>
 											<input type="search" placeholder="검색어 입력" name="searchWord" id="searchWord" value="" style="float: left; width: 150px; ">
 											<span style="float: left">
-											<button id="searchBtn" type="submit">검색</button>
+											<!-- <button id="searchBtn" type="button" onclick="getSearchList()">검색</button> -->
+											<button id="searchBtn" name="searchBtn" type="button">검색</button>
 											</span>
 										</div>
 										
@@ -341,8 +554,8 @@ input::placeholder{
 						<div class="row" style="width: 1500px">
 							<div class="col" style="margin-bottom: 50px;">
 							<table>
-								<tr>
-									<th><input type="checkbox" id="allCheck" value="1"></th>
+								<tr id="boardtable">
+									<th><input type="checkbox" class="testBox" id="allCheck" value="1"></th>
 									<th width="100px">사용일시</th>
 									<th width="150px">구분</th>
 									<th width="200px">업체명</th>
@@ -352,8 +565,9 @@ input::placeholder{
 									<th width="600px">메모</th>
 								</tr>
 								
+								<tbody id="test">
 								 
-									<tr> <!--회원이 보유한 영수증 리스트 출력  -->
+									<%-- <tr> <!--회원이 보유한 영수증 리스트 출력  -->
 										<td><input type="checkbox"></td>
 										<td>07/08</td>
 										<td>세금계산서</td>
@@ -362,81 +576,10 @@ input::placeholder{
 										<td>재료비</td>
 										<td></td>
 										<td>재료 구매를 위한 지출</td>
-									</tr>
+									</tr> --%>
 									
-									<tr> <!--회원이 보유한 영수증 리스트 출력  -->
-										<td><input type="checkbox"></td>
-										<td>07/08</td>
-										<td>세금계산서</td>
-										<td><a href="<%=request.getContextPath()%>/receiptDetail.jsp">종범상회</a></td>
-										<td>500,000</td>
-										<td>재료비</td>
-										<td></td>
-										<td>재료 구매를 위한 지출</td>
-									</tr>
+								</tbody>	
 									
-									<tr> <!--회원이 보유한 영수증 리스트 출력  -->
-										<td><input type="checkbox"></td>
-										<td>07/08</td>
-										<td>세금계산서</td>
-										<td><a href="<%=request.getContextPath()%>/receiptDetail.jsp">종범상회</a></td>
-										<td>500,000</td>
-										<td>재료비</td>
-										<td></td>
-										<td>재료 구매를 위한 지출</td>
-									</tr>
-									
-									<tr> <!--회원이 보유한 영수증 리스트 출력  -->
-										<td><input type="checkbox"></td>
-										<td>07/08</td>
-										<td>세금계산서</td>
-										<td><a href="<%=request.getContextPath()%>/receiptDetail.jsp">종범상회</a></td>
-										<td>500,000</td>
-										<td>재료비</td>
-										<td></td>
-										<td>재료 구매를 위한 지출</td>
-									</tr>
-									
-									<tr> <!--회원이 보유한 영수증 리스트 출력  -->
-										<td><input type="checkbox"></td>
-										<td>07/08</td>
-										<td>세금계산서</td>
-										<td><a href="<%=request.getContextPath()%>/receiptDetail.jsp">종범상회</a></td>
-										<td>500,000</td>
-										<td>재료비</td>
-										<td></td>
-										<td>재료 구매를 위한 지출</td>
-									</tr>
-									<tr> <!--회원이 보유한 영수증 리스트 출력  -->
-										<td><input type="checkbox"></td>
-										<td>07/08</td>
-										<td>세금계산서</td>
-										<td><a href="<%=request.getContextPath()%>/receiptDetail.jsp">종범상회</a></td>
-										<td>500,000</td>
-										<td>재료비</td>
-										<td></td>
-										<td>재료 구매를 위한 지출</td>
-									</tr>
-									<tr> <!--회원이 보유한 영수증 리스트 출력  -->
-										<td><input type="checkbox"></td>
-										<td>07/08</td>
-										<td>세금계산서</td>
-										<td><a href="<%=request.getContextPath()%>/receiptDetail.jsp">종범상회</a></td>
-										<td>500,000</td>
-										<td>재료비</td>
-										<td></td>
-										<td>재료 구매를 위한 지출</td>
-									</tr>
-									<tr> <!--회원이 보유한 영수증 리스트 출력  -->
-										<td><input type="checkbox"></td>
-										<td>07/08</td>
-										<td>세금계산서</td>
-										<td><a href="<%=request.getContextPath()%>/receiptDetail.jsp">종범상회</a></td>
-										<td>500,000</td>
-										<td>재료비</td>
-										<td></td>
-										<td>재료 구매를 위한 지출</td>
-									</tr>
 							</table>
 							</div>
 						</div>

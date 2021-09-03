@@ -8,5 +8,6 @@
 		<typeAlias type="kr.ac.kopo.member.vo.LoginVO" alias="loginVO" />
 		<typeAlias type="kr.ac.kopo.receipt.vo.ReceiptFileVO" alias="receiptFileVO" />
 		<typeAlias type="kr.ac.kopo.receipt.vo.ReceiptVO" alias="receiptVO" />
+		<typeAlias type="kr.ac.kopo.receipt.vo.searchDateVO" alias="searchDateVO" />
 	</typeAliases>
 </configuration>

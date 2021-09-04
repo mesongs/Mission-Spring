@@ -97,6 +97,14 @@ public class ReceiptDAOImpl implements ReceiptDAO {
 		
 		return perReceiptList;
 	}
+
+	@Override
+	public ReceiptVO getReceiptDetail(int receiptNo) {
+		
+		ReceiptVO receipt = sqlSessionTemplate.selectOne("receipt.receiptDAO.getReceiptDetail", receiptNo);
+		
+		return receipt;
+	}
 	
 	
 	

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
 
 import kr.ac.kopo.receipt.service.ReceiptService;
 import kr.ac.kopo.receipt.vo.ReceiptFileVO;
@@ -122,12 +123,13 @@ public class receiptController {
 	
 	// 세부사항 조회하기
 	@RequestMapping("/receipt/detail/{receiptNo}")
-	public ReceiptVO receiptDetail(@PathVariable("receiptNo") int receiptNo) {
+	public ModelAndView receiptDetail(@PathVariable("receiptNo") int receiptNo) {
 		
+		ModelAndView mav = new ModelAndView("receipt/receiptDetail");
+		ReceiptVO receipt = service.receiptDetail(receiptNo);
+		mav.addObject("receipt", receipt);
 		
-		ReceiptVO receipt = new ReceiptVO();
-		// receiptNo 넘겨서 세부사항 조회하기
-		return receipt;
+		return mav;
 	}
 	
 	

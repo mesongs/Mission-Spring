@@ -38,7 +38,7 @@
 											<button id="update" type="submit" style="border-radius: 5px 5px 5px 5px">적용</button>
 											<button id="updateCancel" type="submit" style="border-radius: 5px 5px 5px 5px; margin-left: 5px;">취소</button>
 									</div>
-									<div class="col-2" align="right" style="margin-left: 109px;">
+									<div class="col-2" align="right" style="margin-left: 109px;">					
 											<button id="delete" type="submit" style="border-radius: 5px 5px 5px 5px">영수증 삭제</button>
 									 </div>
 									

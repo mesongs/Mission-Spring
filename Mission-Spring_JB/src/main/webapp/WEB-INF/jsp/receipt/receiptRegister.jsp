@@ -137,7 +137,7 @@
             $('input[type=file]').trigger('click');
         });
 		
-        
+        // 업로드한 경우
         $("input[name='fileUpload']").on('change', function(e) {
            
         	// 확장자 체크 (확장자 pop)
@@ -162,7 +162,7 @@
         	preview.attr("src", URL.createObjectURL(file[0]))
         	
         	// replaceImg를 replaceThumb로 replace, display none을 block으로
-        	$('#replaceImg').replaceWith($('#replaceThumb')) 
+        	$('#replaceImg').replaceWith($('#replaceThumb'))
         	$('#replaceThumb').css('display', 'block');
         	
         	// 이미지 로딩 후 객체를 메모리에서 해제
@@ -204,10 +204,6 @@
             
             
         }
-        
-        
-        
-        
         
     });
 </script>

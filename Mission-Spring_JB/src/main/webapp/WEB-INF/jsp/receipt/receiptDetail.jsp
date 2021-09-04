@@ -119,12 +119,28 @@ input[type=text] {
  color : #999999 !important;
 }
 
+
+ .col.fileUpload {
+	border: 4px dashed #999999;
+	/* width: 610px; */
+	width: 410px;
+	height: 430px;
+	color: #999999;
+	margin-top: 26px;
+	text-align: center;
+	vertical-align: middle;
+	display: table-cell;
+	background-color: rgba(130, 139, 178, 0.25);
+	text-align: center;
+}
+
 </style>
 
 
 <script>
 
-	$(function(){
+	// active 클래스 추가 제거, 탭 이동했을 때 사용했었음
+	/* $(function(){
 		 
 		 var subMenu = $(".container > ul > li"); // container 클래스 아래의 ul li태그
 		 
@@ -137,43 +153,11 @@ input[type=text] {
 			 $(this).addClass("active");
 			 
 	  })
-	})
+	}) */
 	
-	
-	// 영수증 등록 탭 section replace, 탭 이동 시 자신의 section도 호출해야함
-	function doRegisterCall(){
+	/* function doNext(){
 		
-		$.get("<%=request.getContextPath()%>/replaceTest3.jsp", function(data){
-			
-			$('#ajaxReplace').replaceWith(data)
-			
-		})
-		
-	}
-	
-	function doListCall(){
-		
-		// subMenu 이동 시 페이지 replace
-		$.get("<%=request.getContextPath()%>/replaceTest.jsp", function(data){
-			
-			$('#ajaxReplace').replaceWith(data)
-			
-		})
-		
-	}
-	
-	function doProcessCall(){
-		
-		$.get("<%=request.getContextPath()%>/replaceTest2.jsp", function(data){
-			
-			$('#ajaxReplace').replaceWith(data)
-		})
-		
-	}
-	
-	function doNext(){
-		
-		// 확인누르면 모달창 실행, 상세내역 창에는 필요없음
+		// 확인누르면 모달창 실행, 상세내역 창에는 일단 필요없음 (영수증 최종 등록할 때 필요하겠네)
 		// 사용자가 영수증을 등록할 때 필요함
 		var receiptKind =''
 		var html =''
@@ -204,12 +188,64 @@ input[type=text] {
 		$('#myModal').modal('show') 
 		
 		// 
-	}
+	} */
 	
 </script>
 
 </head>
 
+<script>
+
+$(function(){
+	
+	$("#receiptKind").val('${receipt.receiptCode}').prop("selected", true)
+	//$("#purpose").val(${receiptFile.selectedPurposeNo}).prop("selected", true)
+	
+	let purposeNo = '';
+	
+	switch('${receipt.purpose}') {
+	
+				  case '재료비':
+					  purposeNo = '1'
+					  break
+			
+				  case '자재비':
+					  purposeNo = '2'
+				      break								
+				
+				  case '식비':
+					  purposeNo = '3'
+				      break
+				    
+				  case '접대비':
+					  purposeNo = '4'   
+					  break 
+					
+				  case '세금':
+					  purposeNo = '5'   
+				   	  break
+				   	  
+				  case '인건비':
+					  purposeNo = '6'   
+				   	  break
+				   
+				  case '공과금':
+					  purposeNo = '7'   
+					  break
+					   	
+				  case '기타':
+					  purposeNo = '8'   
+					  break
+				}
+	
+		$("#purpose").val(purposeNo).prop("selected", true)
+
+	// js에서 숫자는 바로 인식가능, 문자열은 ''표시해야 문자열로 인식함, 숫자로 인식하려다 에러 생긴 것
+	$("#memo").val('${receipt.memo}')
+	
+})
+
+</script>
 
 <body>
 	<!--================Header Menu Area =================-->
@@ -228,41 +264,55 @@ input[type=text] {
 						
 						<div class="row box">
 	
-							<div class="col" style="background-color: rgba(130, 139, 178, 0.25); height: 926px; top: 25px;">영수증 사진</div>
+							<div class="col fileUpload" style="background-color: rgba(130, 139, 178, 0.25); height: 926px; top: 25px; bottom: 0px;margin-top: 0px; padding-right: 0px; padding-left: 0px;  ">
+								<%-- <img src="${ receipt.filePath }" style="width: 300px;"> --%>
+								<!-- filePath = C:\Lecture\spring-workspace\newUpload\kopo-92782264-3bb0-451d-9fa9-c7b9787cc86f.JPG -->
+								
+								<img src="/testUpload/${ receipt.fileSaveName }" style="max-width:100%; height: 100%">
+								
+								<!-- 아래가 실제 서버 경로( fileSaveName select)  -->
+								<%-- <img src="${ pageContext.request.contextPath }/upload/${ receipt.fileSaveName }" style="width: 400px; height: 100%;"> --%>
+							</div>
 	
 							<div class="col">
 								<span>증빙 구분</span>
 								<!--넘어온 값에 따라 동적으로 selected https://dorongdogfoot.tistory.com/136  -->
 								<select name="receiptKind" id="receiptKind" required style="background-color: rgba(130, 139, 178, 0.25); margin-bottom: 20px;" required>
-									<option value="">등록하실 영수증을 선택하세요.</option>
-									<option value="1">세금계산서</option>
-									<option value="2">계산서</option>
-									<option value="3">카드영수증</option>
-									<option value="4">간이영수증</option>
+									<option value="">영수증 구분</option>
+									<option value="001">세금계산서</option>
+									<option value="002">계산서</option>
+									<option value="003">카드영수증</option>
+									<option value="004">간이영수증</option>
 								</select>
 								
 								<span>업체명</span>
-	                          	<input type="text" class="form-control" name="storeName" id="storeName" placeholder="업체명" onfocus="this.placeholder = ''" onblur="this.placeholder = '업체명'">
+	                          	<input type="text" class="form-control" name="storeName" id="storeName" placeholder="업체명" onfocus="this.placeholder = ''" onblur="this.placeholder = '업체명'" value="${ receipt.storeName }">
 	                        	
 	                        	<span>사업자등록번호</span>
-	                          	<input type="text" class="form-control" name="businessNo" id="businessNo" placeholder="사업자등록번호" onfocus="this.placeholder = ''" onblur="this.placeholder = '사업자번호'">
+	                          	<input type="text" class="form-control" name="businessNo" id="businessNo" placeholder="사업자등록번호" onfocus="this.placeholder = ''" onblur="this.placeholder = '사업자번호'" value="${ receipt.supplierBusinessNo }">
 	                        	
 	                        	<span>영수일시</span>
-	                          	<input type="text" class="form-control" name="receiptDate" id="receiptDate" placeholder="영수일시" onfocus="this.placeholder = ''" onblur="this.placeholder = '영수일시'">
+	                          	<input type="text" class="form-control" name="receiptDate" id="receiptDate" placeholder="영수일시" onfocus="this.placeholder = ''" onblur="this.placeholder = '영수일시'" value="${ receipt.receiptDate }">
 								
 								<span>영수금액</span>
-	                          	<input type="text" class="form-control" name="receiptAmount" id="receiptAmount" placeholder="영수금액" onfocus="this.placeholder = ''" onblur="this.placeholder = '영수금액'">
+	                          	<input type="text" class="form-control" name="receiptAmount" id="receiptAmount" placeholder="영수금액" onfocus="this.placeholder = ''" onblur="this.placeholder = '영수금액'" value="${receipt.amount }원">
 								
 								<span>부가세</span>
-	                          	<input type="text" class="form-control" name="receiptVat" id="receiptVat" placeholder="부가세" onfocus="this.placeholder = ''" onblur="this.placeholder = '부가세'">
+	                          	<input type="text" class="form-control" name="receiptVat" id="receiptVat" placeholder="부가세" onfocus="this.placeholder = ''" onblur="this.placeholder = '부가세'" value="${receipt.vat }원">
 								
 								<span>중복 여부</span>
-								<select name="overlap" id="overlap"  style="background-color: rgba(130, 139, 178, 0.25); margin-bottom: 20px;">
-									<option value="">중복여부를 선택하세요.</option>
-									<option value="1">중복아님</option>
-									<option value="2">중복의심</option>
-								</select>
-								
+										<select name="overlap" id="overlap"  style="background-color: rgba(130, 139, 178, 0.25); margin-bottom: 20px;">
+											<c:choose>
+												<c:when test="${ receipt.overlap eq 'N' }">
+													<option value="1" selected>중복아님</option>
+													<option value="2">중복의심</option>
+												</c:when>
+												<c:when test="${receipt.overlap eq 'Y'}">
+													<option value="1" selected>중복아님</option>
+													<option value="2" selected>중복의심</option>
+												</c:when>
+											</c:choose>
+										</select>
 								<span>사용 목적</span>
 								<select name="purpose" id="purpose"  style="background-color: rgba(130, 139, 178, 0.25); margin-bottom: 20px;" required>
 									<option value="">사용목적을 선택하시거나 입력하세요.</option>

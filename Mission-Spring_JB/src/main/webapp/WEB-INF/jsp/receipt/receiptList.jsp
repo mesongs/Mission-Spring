@@ -583,7 +583,14 @@ input::placeholder{
 					     str +="<td>" + searchprocessedList.sum +"원</td>";
 					     str +="<td>" + searchprocessedList.purpose +"</td>";
 					     
-					     str +="<td>" + searchprocessedList.overlap + "</td>"
+					     if(searchprocessedList.overlap == 'Y'){
+			 					
+					    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>"
+					     }else{
+		 					
+					    	 str += "<td>" + "</td>"
+		 				 }
+					     
 	 					 str +="<td>" + searchprocessedList.memo +"</td>";
 	 					 str +="</tr>"
 	 					 $('#test').append(str);
@@ -680,7 +687,7 @@ input::placeholder{
 									<th width="200px">업체명</th>
 									<th width="200px">사용금액</th>
 									<th width="150px">사용목적</th>
-									<th width="150px">중복여부</th>
+									<th width="130px">중복여부</th>
 									<th width="600px">메모</th>
 								</tr>
 								

@@ -12,7 +12,11 @@
 		<result column="RECEIPT_DATE" property="receiptDate" />
 		<result column="REG_DATE" property="regDate" />
 		<result column="receipt_name" property="receiptName" />
+		<result column="receipt_code" property="receiptCode"/>
 		<result column="receipt_status" property="receiptStatus" />
+		<result column="business_no" property="businessNo" />
+		<result column="file_path" property="filePath" />
+		<result column="file_save_name" property="fileSaveName"/>
 	</resultMap>
 	
 	<select id="getReceiptNo" resultType="int">
@@ -102,6 +106,13 @@
             where rownum <![CDATA[ <= ]]> #{perReceipt}
 	</select>
 	
+	<!-- 영수증 세부사항 조회 -->
+	<select id="getReceiptDetail" parameterType="int" resultType="receiptVO" resultMap="receiptMap">
+			select a.receipt_no, receipt_code, supplier_business_no, store_name,  to_char(RECEIPT_DATE, 'yy/mm/dd') as RECEIPT_DATE, amount, vat, overlap, receipt_status, purpose, file_path,
+		        memo, business_no, file_save_name
+				from TB_RECEIPT a, TB_RECEIPT_FILE b
+				where a.receipt_no = b.receipt_no
+				and a.receipt_no = #{receiptNo}
+	</select>
 	
-
 </mapper>

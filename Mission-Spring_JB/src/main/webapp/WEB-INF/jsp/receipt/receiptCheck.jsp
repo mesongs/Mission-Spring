@@ -158,6 +158,39 @@ $(function(){
 		
 	}
 	
+	$(document).on("click", "#receiptSaveBtn", function (){
+		
+			var receiptKind =''
+			var html =''
+			
+			switch($('#receiptKind').val()){
+				case '1' : 
+					receiptKind = '세금계산서'
+					break;
+				case '2' : 
+					receiptKind = '계산서'
+					break;
+				case '3' : 
+					receiptKind = '카드영수증'
+					break;
+				case '4' : 
+					receiptKind = '간이영수증'
+					break;
+			}
+		
+			html += '입력하신 정보가 올바른지 확인해주세요.<br/>' 
+			html += '증빙구분 : ' + receiptKind + '<br/>'
+			html += '업체명 : ' + $('#storeName').val() + '<br/>'
+			html += '사업자등록번호 : ' +$('#supplierBusinessNo').val() + '<br/>'
+			html += '영수일시 : ' + $('#receiptDate').val() + '<br/>'
+			html += '영수금액 : ' + $('#amount').val()
+			
+			$('#confirm-modal-body-msg').html(html)
+			$('#myModal').modal('show') 
+		
+	})
+	
+	
 </script>
 
 </head>
@@ -241,6 +274,7 @@ $(function(){
 									<textarea class="form-control mb-10" name="memo" id="memo" rows="10" placeholder="기록하실 내용을 입력하세요." onfocus="this.placeholder = ''" onblur="this.placeholder = '기록하실 내용을 입력하세요.'" style="padding-left: 4px; color: #999999; margin-bottom: 20px;" ></textarea>
 								</div>
 								<div class="col" align="center">
+									<!-- <a href="javascript:doNext()" class="button submit_btn" id="receiptSaveBtn">저장</a> -->
 									<input type="submit" class="button submit_btn" id="receiptSaveBtn" value="저장">
 									<input type="submit" class="button submit_btn" id="receiptDelBtn" value="취소">
 									<!-- <a href="javascript:doNext()" class="button submit_btn" id="receiptSaveBtn">저장</a> -->

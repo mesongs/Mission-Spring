@@ -176,6 +176,14 @@ public class ReceiptServiceImpl implements ReceiptService {
 		
 		return perReceiptList;
 	}
+	
+	@Override
+	public ReceiptVO receiptDetail(int receiptNo) {
+		
+		ReceiptVO receipt = receiptDAO.getReceiptDetail(receiptNo);
+		
+		return receipt;
+	}
 
 	// 가장 먼저했던 이미지 서버에 저장, 썸네일 이미지 저장 => 저장된 이미지 ocr
 	/**

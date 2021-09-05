@@ -38,9 +38,9 @@ public class AccountServiceImpl implements AccountService {
 		String line = "";
 		// 리눅스에서 읽으려면, ${pageContext} 같은걸로 읽어야함
 		// @Autowired 서블릿컨텍스트/resourcespolicy/
-		String directoy = "C:\\Users\\HP\\git\\Mission-Spring_JB\\Mission-Spring_JB\\src\\main\\webapp\\resources\\policy\\";
+		//String directoy = "C:\\Users\\HP\\git\\Mission-Spring_JB\\Mission-Spring_JB\\src\\main\\webapp\\resources\\policy\\";
 //					       \\src\\main\\webapp\\resources\\policy\\"
-		
+		String directoy = servletContext.getRealPath("/resources/policy/");
 //		String directoy = servletContext.getContextPath();
 		// 아니면, 파일을 서버에 저장해놓고 읽으면됨
 		//String filePath = servletContext.getRealPath("/upload/");
@@ -96,8 +96,8 @@ public class AccountServiceImpl implements AccountService {
 		String[] policyNames = { "개인정보 이용 및 활용 동의", "고유식별정보 처리 동의" };
 
 		String line = "";
-		String directoy = "C:\\Users\\HP\\git\\Mission-Spring_JB\\Mission-Spring_JB\\src\\main\\webapp\\resources\\smsPolicy\\";
-
+		//String directoy = "C:\\Users\\HP\\git\\Mission-Spring_JB\\Mission-Spring_JB\\src\\main\\webapp\\resources\\smsPolicy\\";
+		String directoy = servletContext.getRealPath("/resources/smsPolicy/");
 		FileReader fr = null;
 		BufferedReader br = null;
 

@@ -284,10 +284,10 @@ $(function(){
 								<%-- <img src="${ receipt.filePath }" style="width: 300px;"> --%>
 								<!-- filePath = C:\Lecture\spring-workspace\newUpload\kopo-92782264-3bb0-451d-9fa9-c7b9787cc86f.JPG -->
 								
-								<img src="/testUpload/${ receipt.fileSaveName }" style="max-width:100%; height: 100%">
+								<%-- <img src="/testUpload/${ receipt.fileSaveName }" style="max-width:100%; height: 100%"> --%>
 								
 								<!-- 아래가 실제 서버 경로( fileSaveName select)  -->
-								<%-- <img src="${ pageContext.request.contextPath }/upload/${ receipt.fileSaveName }" style="width: 400px; height: 100%;"> --%>
+								<img src="${ pageContext.request.contextPath }/upload/${ receipt.fileSaveName }" style="width: 100%; height: 100%;">
 							</div>
 	
 							<div class="col">

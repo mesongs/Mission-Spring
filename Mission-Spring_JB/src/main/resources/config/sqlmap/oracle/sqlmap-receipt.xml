@@ -42,9 +42,9 @@
 		insert into TB_RECEIPT(RECEIPT_NO, RECEIPT_CODE, SUPPLIER_BUSINESS_NO, STORE_NAME, RECEIPT_DATE,
                       		  AMOUNT, VAT, PURPOSE, MEMO, BUSINESS_NO)
             		values(#{receiptNo},#{receiptKind}, #{supplierBusinessNo}, 
-            				#{storeName}, #{receiptDate}, #{amount}, #{vat}, #{purpose}, #{memo}, #{businessNo})
+            				#{storeName}, to_date(#{receiptDate}, 'yy/mm/dd'), #{amount}, #{vat}, #{purpose}, #{memo}, #{businessNo})
 	</insert>
-	
+
 	<insert id="receiptFileRegister" parameterType="receiptVO">
 		insert into tb_receipt_file(RECEIPT_NO, FILE_PATH, FILE_ORIGINAL_NAME, FILE_SAVE_NAME, FILE_SIZE)
             		values(#{receiptNo}, #{filePath}, #{fileOriginalName}, #{fileSaveName}, #{fileSize})
@@ -202,7 +202,7 @@
 	<!--회원 -반려된 영수증 세부사항에서 재등록(내용을 변경해서 업데이트할 수 있음, 사진 오류면 다시 찍어야함)  -->
 	<update id="reRegisterReject" parameterType="rejectReceiptVO">
 		update TB_RECEIPT set receipt_code = #{receiptKind}, store_name= #{storeName}, amount= #{amount} , vat = #{vat}, purpose= #{purpose},
-		 			   supplier_Business_No=#{supplierBusinessNo}, receipt_Date=#{receiptDate},
+		 			   supplier_Business_No=#{supplierBusinessNo}, receipt_Date=to_date(#{receiptDate}, 'yy/mm/dd'), memo=#{memo},
                        overlap=#{overlap}, reject_reason='-', receipt_status ='W' where RECEIPT_NO = #{receiptNo}
 	</update>
 	

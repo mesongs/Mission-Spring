@@ -1,8 +1,5 @@
 package kr.ac.kopo.receipt.controller;
 
-
-
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,9 +55,11 @@ public class receiptController {
 	}
 	
 	@PostMapping("/receipt/finalRegister")
-	public void finalRegister(ReceiptVO receipt) {
+	public String finalRegister(ReceiptVO receipt) {
 		
 		service.receiptResgister(receipt);
+		
+		return "receipt/receiptList";
 		
 	}
 	
@@ -289,6 +288,7 @@ public class receiptController {
 		// 회원이 반려된 영수증을 세부사항으로 가서 '재등록'
 		@PostMapping("/receipt/reRegisterReject")
 		public ModelAndView reRegister(RejectReceiptVO rejectReceipt) {
+			
 			
 			// 회원 반려 부분으로 다시
 			ModelAndView mav = new ModelAndView("receipt/rejectReceiptList");

@@ -43,8 +43,8 @@ public class ReceiptServiceImpl implements ReceiptService {
 	@Autowired
 	private ReceiptDAO receiptDAO;
 
-//	@Autowired
-//	ServletContext servletContext;
+	@Autowired
+	ServletContext servletContext;
 	
 	// 사용자 확인 후 영수증 등록 신청
 	@Transactional
@@ -53,7 +53,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 	
 		// pk가 될 영수증 번호 추출
 		int receiptNo = receiptDAO.getReceiptNo();
-	
+		
 		receipt.setReceiptNo(receiptNo); 
 		
 		String filePath = receipt.getFilePath();
@@ -270,7 +270,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 	@Override
 	public int reRegisterRejectService(RejectReceiptVO rejectReceipt) {
 		
-		//overlap이 2번이면, 중복의심!
+		//overlap이 2번이면, 중복의심!으로 update
 		if(rejectReceipt.getOverlap().equals("2")) {
 			rejectReceipt.setOverlap("Y");
 		}else {
@@ -343,11 +343,11 @@ public class ReceiptServiceImpl implements ReceiptService {
 		String saveFileName ="";
 		
 		// 로컬 테스트, 일단 업로드는 로컬에 하고, api로 넘기는 url을 다르게 설정해서 자동완성 시켜보기, 그 다음은 dbms서버 연결
-		String filePath = "C:\\Lecture\\spring-workspace\\newUpload\\";
+		// String filePath = "C:\\Lecture\\spring-workspace\\newUpload\\";
 		
 		// deploy했을 때 서버의 실제 경로를 가져오는 servletContext
 		// deploy했을 때 /var/lib/tomcat9/webapps/Mission-Spring_JB 이게 실제 경로임
-		//String filePath = servletContext.getRealPath("/upload/");
+		String filePath = servletContext.getRealPath("/upload/");
 		
 		MultipartFile mFile = multipartRequest.getFile(formFileName);
 
@@ -386,7 +386,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 
 				// BufferedImage thumnailImage = Scalr.resize(sourceImage,
 				// Scalr.Method.AUTOMATIC, Scalr.Mode.FIT_TO_WIDTH, 400);
-
+				
 				index = saveFileName.lastIndexOf(".");
 
 				// 썸네일 파일의 이름 설정
@@ -431,21 +431,21 @@ public class ReceiptServiceImpl implements ReceiptService {
 
 			MediaType mediaType = MediaType.parse("application/json");
 
-			RequestBody body = RequestBody.create(mediaType,
-					"{\n\t\"version\" : \"V1\"," + "\n\t\"requestId\" : \"test2\"," + "\n\t\"timestamp\" : 0,"
-							+ "\n\t\"images\" :[{\n\t\t\n\t\t\"format\" : \"jpg\","
-							+ "\n\t\t\"url\" : \"https://kr.object.ncloudstorage.com/testbucke/test8.jpg\","
-							+ "\n\t\t\"name\" : \"test8.jpg\"\n\t}]\n}");
+//			RequestBody body = RequestBody.create(mediaType,
+//					"{\n\t\"version\" : \"V1\"," + "\n\t\"requestId\" : \"test2\"," + "\n\t\"timestamp\" : 0,"
+//							+ "\n\t\"images\" :[{\n\t\t\n\t\t\"format\" : \"jpg\","
+//							+ "\n\t\t\"url\" : \"https://kr.object.ncloudstorage.com/testbucke/test8.jpg\","
+//							+ "\n\t\t\"name\" : \"test8.jpg\"\n\t}]\n}");
 			
 			//String testFilePath ="kopo-8aaa3f34-7aaa-46c8-9e6d-bd8584fde567.jpg";
 			// http://34.64.137.151:8080/Mission-Spring_JB/upload/kopo-8aaa3f34-7aaa-46c8-9e6d-bd8584fde567.jpg
 			
-			// 이걸로 api 요청해야함, 로컬 테스트를 위해 주석
-//			RequestBody body = RequestBody.create(mediaType,
-//			"{\n\t\"version\" : \"V1\"," + "\n\t\"requestId\" : \"test2\"," + "\n\t\"timestamp\" : 0,"
-//					+ "\n\t\"images\" :[{\n\t\t\n\t\t\"format\" : \"png\","
-//					+ "\n\t\t\"url\" : \"http://34.64.137.151:8080/Mission-Spring_JB/upload/"+ saveFileName + "\","
-//					+ "\n\t\t\"name\" : \""+ saveFileName +"\"\n\t}]\n}");
+			// 이걸로 api 요청해야함, 로컬 테스트를 위해 주석해놓은 것
+			RequestBody body = RequestBody.create(mediaType,
+			"{\n\t\"version\" : \"V1\"," + "\n\t\"requestId\" : \"test2\"," + "\n\t\"timestamp\" : 0,"
+					+ "\n\t\"images\" :[{\n\t\t\n\t\t\"format\" : \"png\","
+					+ "\n\t\t\"url\" : \"http://34.64.137.151:8080/Mission-Spring_JB/upload/"+ saveFileName + "\","
+					+ "\n\t\t\"name\" : \""+ saveFileName +"\"\n\t}]\n}");
 			
 			// 알아서 객체 생성? (request 객체 생성)
 			Request request = new Request.Builder().url(
@@ -453,7 +453,8 @@ public class ReceiptServiceImpl implements ReceiptService {
 					.post(body).addHeader("content-type", "application/json")
 					.addHeader("x-ocr-secret", "cHBIclVDQnZaV3NkQVJBUnRhaGdsaGxMTEllSEtzSkM=")
 					.addHeader("cache-control", "no-cache") //
-					.addHeader("postman-token", "31917011-c262-8273-4761-7a87eef0d3fa").build();
+//					.addHeader("postman-token", "31917011-c262-8273-4761-7a87eef0d3fa")
+					.build();
 
 			try {
 
@@ -639,9 +640,12 @@ public class ReceiptServiceImpl implements ReceiptService {
 					vat = 0;
 				}
 				
+				// 공급자사업자번호 '-'제거
+				String replaceSBNo = map.get("supplier_business_no").replaceAll("[^0-9]", "");
+				
 				receiptFile.setAmount(amount);
 				receiptFile.setVat(vat);
-				receiptFile.setSupplierBusinessNo(map.get("supplier_business_no"));
+				receiptFile.setSupplierBusinessNo(replaceSBNo);
 				receiptFile.setReceiptDate(map.get("receipt_date"));
 				receiptFile.setStoreName(map.get("store_name"));
 				

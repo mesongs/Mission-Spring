@@ -26,7 +26,8 @@
 	/* width: 610px; */
 	width: 410px;
 	top: 25px;
-	height: 430px;
+	height: 900px;
+	/* height: 430px; */
 	color: #999999;
 	margin-top: 26px;
 	text-align: center;
@@ -158,7 +159,7 @@ $(function(){
 		
 	}
 	
-	$(document).on("click", "#receiptSaveBtn", function (){
+	/* $(document).on("click", "#receiptSaveBtn", function (){
 		
 			var receiptKind =''
 			var html =''
@@ -188,7 +189,7 @@ $(function(){
 			$('#confirm-modal-body-msg').html(html)
 			$('#myModal').modal('show') 
 		
-	})
+	}) */
 	
 	
 </script>
@@ -251,10 +252,10 @@ $(function(){
 								</c:choose>
 	                        	
 								<span>영수금액</span>
-	                          	<input type="text" class="form-control" name="amount" id="amount" placeholder="영수금액" onfocus="this.placeholder = ''" onblur="this.placeholder = '영수금액'" value="${ receiptFile.amount }원">
+	                          	<input type="text" class="form-control" name="amount" id="amount" placeholder="영수금액" onfocus="this.placeholder = ''" onblur="this.placeholder = '영수금액'" value="${ receiptFile.amount }">
 								
 								<span>부가세</span>
-	                          	<input type="text" class="form-control" name="vat" id="vat" placeholder="부가세" onfocus="this.placeholder = ''" onblur="this.placeholder = '부가세'" value="${ receiptFile.vat }원">
+	                          	<input type="text" class="form-control" name="vat" id="vat" placeholder="부가세" onfocus="this.placeholder = ''" onblur="this.placeholder = '부가세'" value="${ receiptFile.vat }">
 								
 								<span>사용 목적</span>
 								<select name="purpose" id="purpose"  style="background-color: rgba(130, 139, 178, 0.25); margin-bottom: 20px;" required>
@@ -276,9 +277,9 @@ $(function(){
 								<div class="col" align="center">
 									<!-- <a href="javascript:doNext()" class="button submit_btn" id="receiptSaveBtn">저장</a> -->
 									<input type="submit" class="button submit_btn" id="receiptSaveBtn" value="저장">
-									<input type="submit" class="button submit_btn" id="receiptDelBtn" value="취소">
+									<!-- <input type="button" class="button submit_btn" id="receiptDelBtn" value="취소"> -->
 									<!-- <a href="javascript:doNext()" class="button submit_btn" id="receiptSaveBtn">저장</a> -->
-									<!-- <a href="javascript:cancel()" class="button submit_btn" id="receiptDelBtn">취소</a> -->
+									<a href="javascript:cancel()" class="button submit_btn" id="receiptDelBtn">취소</a>
 								</div>
 	
 							</div>

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import kr.ac.kopo.receipt.vo.AcceptRejectVO;
 import kr.ac.kopo.receipt.vo.ReceiptFileVO;
 import kr.ac.kopo.receipt.vo.ReceiptVO;
 import kr.ac.kopo.receipt.vo.searchDateVO;
@@ -32,4 +33,15 @@ public interface ReceiptDAO {
 	List<ReceiptVO> getPerReceiptList(int perReceipt);
 	
 	ReceiptVO getReceiptDetail(int receiptNo);
+	
+	List<ReceiptVO> getDaoMgWaitList();
+	
+	ReceiptVO mgDetailDao(int receiptNo);
+	
+	List<ReceiptVO> getMgReceiptDao(int perReceipt);
+	
+	int acceptDao(AcceptRejectVO acceptReject);
+	
+	int rejectDao(AcceptRejectVO acceptReject);
+	
 }

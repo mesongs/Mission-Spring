@@ -8,7 +8,7 @@
 						<div class="modal-content">
 						
 							<div class="modal-header">
-								<h5 class="modal-title" style="font-family:'Noto Sans KR', sans-serif; ">알림</h5>
+								<h5 id="title" class="modal-title" style="font-family:'Noto Sans KR', sans-serif; ">알림</h5>
 								<button type="button" class="close" data-dismiss="modal" style="padding-top: 5px;margin-top: 0px;">×</button>
 							</div>
 							<div class="modal-body" id="modal-body">

@@ -192,11 +192,14 @@ input::placeholder{
 }
 </style>
 
+
 <script>
 
 	$(document).ready(function(){
 		
+		
 		$('#allCheck').click(function(){
+			
 			
 			if($('#allCheck').prop('checked')){
 				
@@ -338,36 +341,41 @@ input::placeholder{
 			
 			$.ajax({
 				type : "get",
-				url : "${pageContext.request.contextPath}/receipt/getPerReceiptList",
+				url : "${pageContext.request.contextPath}/receipt/getPerMgReceiptList",
 				data : { perReceipt : perReceipt },
 				success : function(result){
 					
+					alert('직원 목록 개수 변경!')
 					let obj = JSON.parse(result);
 					
 			 		 $('#test').empty();
 			 		 
 					 if(obj.length >= 1){
 						 
-						 obj.forEach(function(perReceiptistList){
+						 obj.forEach(function(perMgReceiptistList){
 							 	 
-							 	 str="<tr>"
-							 	 str += "<td>" + '<input type="checkbox" class="testBox">' + "</td>" 
-							     str +="<td>" + perReceiptistList.receiptDate + "</td>"
-							     str +="<td>" + perReceiptistList.receiptName + "</td>"
-							     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/detail/" + perReceiptistList.receiptNo + ">" + perReceiptistList.storeName +"</a></td>"; 
+							 str="<tr>"
+							 	 str += "<td>" + '<input type="checkbox"class="testBox">' + "</td>" 
+							     str += "<td>" + perMgReceiptistList.regDate + "</td>"				
+							     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/mgDetail/" + perMgReceiptistList.receiptNo + ">" + perMgReceiptistList.userId +"</a></td>";
+							     str += "<td>" + perMgReceiptistList.receiptName + "</td>"
+							     str += "<td>" + perMgReceiptistList.storeName + "</td>"
+							     str += "<td>" + perMgReceiptistList.sum +"원</td>";
+							     str += "<td>" + perMgReceiptistList.purpose +"</td>";
 							     
-							     str +="<td>" + perReceiptistList.sum +"원</td>";
-							     str +="<td>" + perReceiptistList.purpose +"</td>";
-							     
-							     if(perReceiptistList.overlap == 'Y'){
-					 					
+							     if(perMgReceiptistList.overlap == 'Y'){
+				 					
 							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>"
 							     }else{
 				 					
 							    	 str += "<td>" + "</td>"
 				 				 }
-			 					 str +="<td>" + perReceiptistList.memo +"</td>";
-			 					 str +="</tr>"
+				 				 
+							     /* str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>" */
+							     /* str +="<td>" + processedList.overlap + "</td>" */
+							     
+			 					 str += "<td>" + perMgReceiptistList.memo +"</td>";
+			 					 str += "</tr>"
 			 					 $('#test').append(str);
 						 })
 					 }
@@ -386,13 +394,13 @@ input::placeholder{
 			
 		})
 		
-		processedList();
+		mgAllwaitList();
 		
-		function processedList(){
+		function mgAllwaitList(){
 			
 			$.ajax({
 				type : "get",
-				url : "${pageContext.request.contextPath}/receipt/processedAllList",
+				url : "${pageContext.request.contextPath}/receipt/getMgWaitList",
 				success : function(result){
 					
 					let obj = JSON.parse(result);
@@ -401,14 +409,14 @@ input::placeholder{
 			 		 
 					 if(obj.length >= 1){
 						 
-						 // for(receipt vo(=searchWaitList) : receiptList) 1.5버전 for문과 동일함
 						 obj.forEach(function(processedList){
-							 	 
+								
 							 	 str="<tr>"
-							 	 str += "<td>" + '<input type="checkbox" class="testBox">' + "</td>" 
-							     str += "<td>" + processedList.receiptDate + "</td>"
+							 	 str += "<td>" + '<input type="checkbox"class="testBox">' + "</td>" 
+							     str += "<td>" + processedList.regDate + "</td>"				
+							     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/mgDetail/" + processedList.receiptNo + ">" + processedList.userId +"</a></td>";
 							     str += "<td>" + processedList.receiptName + "</td>"
-							     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/detail/" + processedList.receiptNo + ">" + processedList.storeName +"</a></td>"; 
+							     str += "<td>" + processedList.storeName + "</td>"
 							     str += "<td>" + processedList.sum +"원</td>";
 							     str += "<td>" + processedList.purpose +"</td>";
 							     
@@ -426,16 +434,10 @@ input::placeholder{
 			 					 str += "<td>" + processedList.memo +"</td>";
 			 					 str += "</tr>"
 			 					 $('#test').append(str);
-			 					 
-			 					 
-			 					 
-			 					 
+
 			 					 // 받아온 overlap값이 'Y'이면, 경고 이미지 띄우기
 			 					 // 'N'이면, empty
 			 					 
-			 					 
-			 					 
-			 					
 						 })
 					 }
 					
@@ -448,7 +450,6 @@ input::placeholder{
 			})
 			
 		}
-		
 		
 		// datepicker를 활용한 날짜 조회
 		 $('#startDate').datepicker(
@@ -614,10 +615,10 @@ input::placeholder{
 	<jsp:include page="/WEB-INF/jsp/include/header.jsp"/>
 	<!--================Header Menu Area =================-->
 
-	<div class="comment-form-receipt" id="comment-custom-receipt" style="width: 1110px;">
+	<div class="comment-form-receipt" id="comment-custom-receipt" style="width: 1200px;">
 		<div class="row">
 			<div class="col">
-				<h4 style="font-family: 'Noto Sans KR', sans-serif;font-size: xx-large; margin-left: 32px;">증빙관리</h4>
+				<h4 style="font-family: 'Noto Sans KR', sans-serif;font-size: xx-large; margin-left: 70px;">증빙 승인/반려</h4>
 			</div>
 			<div class="col" align="right">
 				<span>
@@ -630,11 +631,10 @@ input::placeholder{
 		</div>
 		<div class="container">
 			<ul class="nav nav-tabs" style="margin-left: 50px;">
-				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/register">영수증 등록</a></li>
-				<li class="nav-item"><a class="nav-link active" aria-current="page" href="#">영수증 목록</a></li>
-				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/receiptWaitList">처리 대기</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">반려된 영수증</a></li>
-			</ul> 
+				<li class="nav-item"><a class="nav-link active" aria-current="page" href="#">처리 대기 목록</a></li>
+				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/mgProcessed">승인 목록</a></li>
+				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/mgReturn">반려 목록</a></li>
+			</ul>
 			
 			<section>
 					
@@ -642,7 +642,7 @@ input::placeholder{
 							 <section id="categoryAjax">
 								<div class="row">
 									<div class="col-2">
-										<select name="receiptKind" id="receiptKind" style="width: 150px; margin-bottom: 20px; color:#495057; height: 35px;border-top-width: 0px;padding-bottom: 0px; border-radius: 5px 5px 5px 5px; ">
+										<select name="receiptKind" id="receiptKind" style="width: 150px; margin-bottom: 20px; color:#495057; height: 35px;border-top-width: 0px;padding-bottom: 0px; border-radius: 5px 5px 5px 5px; height: 33px;">
 											<option value="">영수증 구분</option>
 											<option value="1">세금계산서</option>
 											<option value="2">계산서</option>
@@ -651,7 +651,7 @@ input::placeholder{
 										</select>
 									</div>
 									<div class="col-2">
-										<select name="overlap" id="overlap" style="width: 150px; margin-bottom: 20px; color: #495057; height: 35px; border-top-width: 0px;padding-bottom: 0px; border-radius: 5px 5px 5px 5px; " >
+										<select name="overlap" id="overlap" style="width: 150px; margin-bottom: 20px; color: #495057; height: 35px; border-top-width: 0px;padding-bottom: 0px; border-radius: 5px 5px 5px 5px; height: 33px;" >
 											<option value="">중복여부</option>
 											<option value="1">중복의심</option>
 											<option value="2">중복아님</option>
@@ -659,7 +659,12 @@ input::placeholder{
 									</div>
 									<div class="col" style="width: 200px">
 										<div>
-											<input type="search" placeholder="검색어 입력" name="searchWord" id="searchWord" value="" style="float: left; width: 150px; ">
+											<select name="type" id="type" style="width: 115px; margin-bottom: 20px; color: #495057; height: 35px; border-top-width: 0px;padding-bottom: 0px; border-radius: 5px 5px 5px 5px; float: left; height: 33px; padding-right: 0px;" >
+												<option value="">검색 구분</option>
+												<option value="1">User</option>
+												<option value="2">내용</option>
+											</select>
+											<input type="search" placeholder="검색어 입력" name="searchWord" id="searchWord" value="" style="float: left; width: 150px; margin-left: 5px; ">
 											<span style="float: left">
 											<!-- <button id="searchBtn" type="button" onclick="getSearchList()">검색</button> -->
 											<button id="searchBtn" name="searchBtn" type="button">검색</button>
@@ -681,10 +686,11 @@ input::placeholder{
 							<table>
 								<tr id="boardtable">
 									<th><input type="checkbox" class="testBox" id="allCheck" value="1"></th>
-									<th width="100px">사용일시</th>
+									<th width="100px">등록일시</th>
+									<th width="150px">아이디</th>
 									<th width="150px">구분</th>
 									<th width="200px">업체명</th>
-									<th width="200px">사용금액</th>
+									<th width="200px">합계금액</th>
 									<th width="150px">사용목적</th>
 									<th width="130px">중복여부</th>
 									<th width="600px">메모</th>
@@ -716,6 +722,7 @@ input::placeholder{
 		</div>
 
 	</div>
+	
 	
 	<!-- 여기다 만들어놓고, display = none, -->
 	<!--================ End Blog Post Area =================-->

@@ -251,10 +251,10 @@ $(function(){
 								</c:choose>
 	                        	
 								<span>영수금액</span>
-	                          	<input type="text" class="form-control" name="amount" id="amount" placeholder="영수금액" onfocus="this.placeholder = ''" onblur="this.placeholder = '영수금액'" value="${ receiptFile.amount }">
+	                          	<input type="text" class="form-control" name="amount" id="amount" placeholder="영수금액" onfocus="this.placeholder = ''" onblur="this.placeholder = '영수금액'" value="${ receiptFile.amount }원">
 								
 								<span>부가세</span>
-	                          	<input type="text" class="form-control" name="vat" id="vat" placeholder="부가세" onfocus="this.placeholder = ''" onblur="this.placeholder = '부가세'" value="${ receiptFile.vat }">
+	                          	<input type="text" class="form-control" name="vat" id="vat" placeholder="부가세" onfocus="this.placeholder = ''" onblur="this.placeholder = '부가세'" value="${ receiptFile.vat }원">
 								
 								<span>사용 목적</span>
 								<select name="purpose" id="purpose"  style="background-color: rgba(130, 139, 178, 0.25); margin-bottom: 20px;" required>

@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.ac.kopo.receipt.service.ReceiptService;
+import kr.ac.kopo.receipt.vo.AcceptRejectVO;
 import kr.ac.kopo.receipt.vo.ReceiptFileVO;
 import kr.ac.kopo.receipt.vo.ReceiptVO;
 import kr.ac.kopo.receipt.vo.searchDateVO;
@@ -75,7 +76,6 @@ public class receiptController {
 	public List<ReceiptVO> getwaitSearchList(@RequestParam("searchWord") String searchWord, Model model){
 		
 		List<ReceiptVO> searchWaitList = service.searchwaitList(searchWord);
-		
 		
 		return searchWaitList;
 	}
@@ -175,8 +175,90 @@ public class receiptController {
 	@RequestMapping("/receipt/replaceUnCheck")
 	public String listUnCheck() {
 		
-		
-		
 		return "receipt/replaceUnCheck";
 	}
+	
+	// 직원이 확인할 수 있는 처리 대기중인 모든 영수증 목록
+	@RequestMapping("/receipt/receiptManager")
+	public String receiptManageMent() {
+		
+		return "receipt/receiptManage";
+		
+	}
+	
+	@GetMapping("/receipt/getMgWaitList")
+	@ResponseBody
+	public List<ReceiptVO> getMgProcessedList(){
+		
+		List<ReceiptVO> mgWaitList = service.getMgWaitList();
+		
+		return mgWaitList;
+	}
+	
+	// 직원이 확인할 수 있는 처리 완료된 영수증 목록
+	@RequestMapping("/receipt/mgProcessed")
+	public String receiptmgProcessed() {
+		
+		return "receipt/receiptManageProcessed";
+	}
+	
+	// 직원이 승인 or 반려를 위해 들어가는 상세페이지
+	@RequestMapping("/receipt/mgDetail/{receiptNo}")
+	public ModelAndView getMgDetail(@PathVariable("receiptNo") int receiptNo) {
+		
+		ModelAndView mav = new ModelAndView("receipt/mgReceiptDetail");
+		ReceiptVO receipt = service.mgDetailService(receiptNo);
+		
+		mav.addObject("receipt", receipt);
+		
+		return mav;
+	}
+	
+	// 직원 처리 대기 목록 개수에 따른 조회 ajax
+	@GetMapping("/receipt/getPerMgReceiptList")
+	@ResponseBody
+	public List<ReceiptVO> getpPerMgReceipList(@RequestParam("perReceipt") int perReceipt){
+				
+		List<ReceiptVO> perMgReceiptList = service.getMgReceiptService(perReceipt);
+				
+		return perMgReceiptList;
+	}
+	
+	@PostMapping("/receipt/accept")
+	public ModelAndView receiptAcceptReject(AcceptRejectVO acceptReject) {
+
+		ModelAndView mav = new ModelAndView("receipt/receiptManage");
+		String msg = "";
+		System.out.println(acceptReject);
+		
+		// 정상 수행 확인
+		int cnt = service.acceptRejectService(acceptReject);
+		
+		if(cnt == 1) {
+			
+			if(acceptReject.getConfirm().equals("1")) {
+				
+				msg ="정상적으로 승인되었습니다.";
+				
+			}else {
+				
+				msg = "정상적으로 반려되었습니다.";
+			}
+			
+		}else {
+			
+			msg = "실패";
+		}
+		
+		
+		// 정상적으로 수행한 경우 모달창 띄우기
+		mav.addObject("msg", msg);
+		
+		return mav;
+		
+	}
+	
+	
+	
+	
 }

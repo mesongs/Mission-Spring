@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import kr.ac.kopo.receipt.vo.AcceptRejectVO;
 import kr.ac.kopo.receipt.vo.ReceiptFileVO;
 import kr.ac.kopo.receipt.vo.ReceiptVO;
 import kr.ac.kopo.receipt.vo.searchDateVO;
@@ -32,4 +33,13 @@ public interface ReceiptService {
 	List<ReceiptVO> getPerReceiptList(int perReceipt);
 	
 	ReceiptVO receiptDetail(int receiptNo);
+	
+	List<ReceiptVO> getMgWaitList();
+	
+	ReceiptVO mgDetailService(int receiptNo);
+	
+	List<ReceiptVO> getMgReceiptService(int perReceipt);
+	
+	int acceptRejectService(AcceptRejectVO acceptReject);
+	
 }

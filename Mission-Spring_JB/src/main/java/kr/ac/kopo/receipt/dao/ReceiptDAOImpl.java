@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import kr.ac.kopo.member.dao.MemberDAO;
+import kr.ac.kopo.receipt.vo.AcceptRejectVO;
 import kr.ac.kopo.receipt.vo.ReceiptFileVO;
 import kr.ac.kopo.receipt.vo.ReceiptVO;
 import kr.ac.kopo.receipt.vo.searchDateVO;
@@ -105,8 +106,43 @@ public class ReceiptDAOImpl implements ReceiptDAO {
 		
 		return receipt;
 	}
-	
-	
+
+	@Override
+	public List<ReceiptVO> getDaoMgWaitList() {
+		
+		List<ReceiptVO> mgWaitReceiptList = sqlSessionTemplate.selectList("receipt.receiptDAO.getMgReceiptList");
+		return mgWaitReceiptList;
+	}
+
+	@Override
+	public ReceiptVO mgDetailDao(int receiptNo) {
+		
+		ReceiptVO receipt = sqlSessionTemplate.selectOne("receipt.receiptDAO.getMgReceiptDetail", receiptNo);
+		return receipt;
+	}
+
+	@Override
+	public List<ReceiptVO> getMgReceiptDao(int perReceipt) {
+		
+		List<ReceiptVO> perMgReceiptList  = sqlSessionTemplate.selectList("receipt.receiptDAO.getPerMgReceiptList", perReceipt);
+		return perMgReceiptList;
+	}
+
+	@Override
+	public int acceptDao(AcceptRejectVO acceptReject) {
+		
+		int cnt = sqlSessionTemplate.update("receipt.receiptDAO.acceptUpdate", acceptReject);
+		return cnt;
+		
+	}
+
+	@Override
+	public int rejectDao(AcceptRejectVO acceptReject) {
+		
+		System.out.println("daoImpl에서 호출 : " + acceptReject);
+		int cnt = sqlSessionTemplate.update("receipt.receiptDAO.rejectUpdate", acceptReject);
+		return cnt;
+	}
 	
 	
 	

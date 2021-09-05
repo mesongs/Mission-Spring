@@ -61,8 +61,6 @@ public class AccountServiceImpl implements AccountService {
 				while ((line = br.readLine()) != null) {
 
 					text += line + "\n";
-					// text ="", 첫 번째 줄 읽어서 바로 넣어주는데.. 왜 공백이..
-					System.out.println(text);
 					
 				}
 

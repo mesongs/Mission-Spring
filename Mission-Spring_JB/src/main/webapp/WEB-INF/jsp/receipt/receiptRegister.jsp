@@ -210,6 +210,21 @@
 
 </head>
 
+<script>
+
+	$(function(){
+	
+		$('#myModal').modal('show');
+		$('#title').html('영수증 등록 가이드')
+		$('#alert-modal-body-msg').html('<img src="${ pageContext.request.contextPath }/resources/img/receiptGuide1.png" class="img-fluid rounded">')
+		$('#alert-modal-body-msg').append('<img src="${ pageContext.request.contextPath }/resources/img/receiptGuide2.png" class="img-fluid rounded">')
+		$('#alert-modal-body-msg').append('<img src="${ pageContext.request.contextPath }/resources/img/receiptGuide3.png" class="img-fluid rounded">')
+		$('#alert-modal-body-msg').append('<img src="${ pageContext.request.contextPath }/resources/img/receiptGuide4.png" class="img-fluid rounded">')
+		$('#alert-modal-body-msg').append('<img src="${ pageContext.request.contextPath }/resources/img/receiptGuide5.png" class="img-fluid rounded">')
+	})
+	
+
+</script>
 
 <body>
 	<!--================Header Menu Area =================-->

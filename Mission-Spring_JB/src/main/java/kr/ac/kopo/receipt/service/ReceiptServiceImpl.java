@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.ac.kopo.receipt.dao.ReceiptDAO;
+import kr.ac.kopo.receipt.vo.AcceptRejectVO;
 import kr.ac.kopo.receipt.vo.ReceiptFileVO;
 import kr.ac.kopo.receipt.vo.ReceiptVO;
 import kr.ac.kopo.receipt.vo.searchDateVO;
@@ -183,6 +184,70 @@ public class ReceiptServiceImpl implements ReceiptService {
 		ReceiptVO receipt = receiptDAO.getReceiptDetail(receiptNo);
 		
 		return receipt;
+	}
+	
+	@Override
+	public List<ReceiptVO> getMgWaitList() {
+		
+		List<ReceiptVO> mgWaitList = receiptDAO.getDaoMgWaitList();
+		
+		return mgWaitList;
+	}
+	
+	@Override
+	public ReceiptVO mgDetailService(int receiptNo) {
+		
+		ReceiptVO receipt = receiptDAO.mgDetailDao(receiptNo);
+		
+		return receipt;
+	}
+	
+	@Override
+	public List<ReceiptVO> getMgReceiptService(int perReceipt) {
+		
+		List<ReceiptVO> perMgReceiptList = receiptDAO.getMgReceiptDao(perReceipt);
+		return perMgReceiptList;
+	}
+	
+	@Override
+	public int acceptRejectService(AcceptRejectVO acceptReject) {
+		
+		// confirm의 값에 따라 1이면, 해당 영수증 번호 승인으로 update
+		int cnt = 0;
+		String rejectReason = "";
+		
+		if(acceptReject.getConfirm().equals("1")) {
+			// 승인
+			cnt = receiptDAO.acceptDao(acceptReject);
+			
+		}else {
+			// 반려
+			
+			switch (acceptReject.getRejectSelBox()) {
+			case "1":
+				rejectReason = "증빙자료와 관련없는 사진";
+				break;
+			case "2":
+				rejectReason = "필수정보 누락";
+				break;
+			case "3":
+				rejectReason = "인식할 수 없는 사진";
+				break;
+			case "4":
+				rejectReason = "일치하지 않는 정보";
+				break;
+			case "direct":
+				rejectReason = acceptReject.getRejectBoxDirect();
+				break;
+			}
+			
+			acceptReject.setRejectReason(rejectReason);
+			System.out.println("서비스단에서 호출 : " + acceptReject);
+			cnt = receiptDAO.rejectDao(acceptReject);
+		}
+		
+		return cnt;
+		
 	}
 
 	// 가장 먼저했던 이미지 서버에 저장, 썸네일 이미지 저장 => 저장된 이미지 ocr

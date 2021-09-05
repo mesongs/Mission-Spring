@@ -14,6 +14,7 @@ public class ReceiptVO {
 	private int amount; // 영수금액
 	private int vat; // 부가세
 	private int sum; // ocr로 추출한 합계
+	private String userId;
 	private String purpose;
 	private String memo;
 	private String receiptName; //가져올 때, 영수증명으로 가져옴
@@ -23,6 +24,7 @@ public class ReceiptVO {
 	private long fileSize;
 	private String fileOriginalName;
 	private String fileSaveName;
+	
 	public int getReceiptNo() {
 		return receiptNo;
 	}
@@ -144,6 +146,12 @@ public class ReceiptVO {
 		this.fileSaveName = fileSaveName;
 	}
 	
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 	@Override
 	public String toString() {
 		return "ReceiptVO [receiptNo=" + receiptNo + ", regDate=" + regDate + ", receiptKind=" + receiptKind

@@ -37,15 +37,25 @@
 		<!--================Hero Banner start =================-->
 		<section class="mb-30px">
 			<div class="container" align="center">
-				<img id="mainImage" src="${ pageContext.request.contextPath }/resources/img/indexMain2.png">
+				<c:choose>
+		          	<c:when test="${userVO.userStatus == 'S'}">
+		          	  <img id="mainImage" src="${ pageContext.request.contextPath }/resources/img/empMain.png">
+		          	</c:when>
+		          	<c:otherwise>
+			          <img id="mainImage" src="${ pageContext.request.contextPath }/resources/img/indexMain2.png">          		
+		          	</c:otherwise>
+          		</c:choose>
+				
 			</div>
 		</section>
 
 		<!--================Hero Banner end =================-->
 
 		<!--================ Start Blog Post Area =================-->
-
-		<section>
+		<c:choose>
+		          	<c:when test="${userVO.userStatus == 'Y' or empty userVO.userStatus}">
+		          	  
+		          	  <section>
 			<div class="container" align="center" class="cardMenuCon">
 				<div class="row">
 					<div class="col">
@@ -83,6 +93,10 @@
 				</div>
 			</div>
 		</section>
+		</c:when>
+		          
+         </c:choose>
+		
 	</main>
 
 	<!--================ Start Footer Area =================-->

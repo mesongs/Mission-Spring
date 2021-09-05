@@ -10,5 +10,6 @@
 		<typeAlias type="kr.ac.kopo.receipt.vo.ReceiptVO" alias="receiptVO" />
 		<typeAlias type="kr.ac.kopo.receipt.vo.searchDateVO" alias="searchDateVO" />
 		<typeAlias type="kr.ac.kopo.receipt.vo.AcceptRejectVO" alias="acceptRejectVO"/>
+		<typeAlias type="kr.ac.kopo.receipt.vo.RejectReceiptVO" alias="rejectReceiptVO"/>
 	</typeAliases>
 </configuration>

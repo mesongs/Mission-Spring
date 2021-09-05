@@ -11,10 +11,7 @@
 <head>
 <jsp:include page="/WEB-INF/jsp/include/head.jsp"/>
 
-  <!--datePicker-->
-  <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-  <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+
  
 
 <!-- <style>
@@ -191,12 +188,17 @@ input::placeholder{
     margin-right: -10px;
 }
 </style>
+	
+
 
 
 <script>
 
 	$(document).ready(function(){
 		
+		if('${ msg }')
+			$('#myModal').modal('show');
+			$('#alert-modal-body-msg').text('${ msg }');
 		
 		$('#allCheck').click(function(){
 			
@@ -345,7 +347,6 @@ input::placeholder{
 				data : { perReceipt : perReceipt },
 				success : function(result){
 					
-					alert('직원 목록 개수 변경!')
 					let obj = JSON.parse(result);
 					
 			 		 $('#test').empty();
@@ -452,7 +453,7 @@ input::placeholder{
 		}
 		
 		// datepicker를 활용한 날짜 조회
-		 $('#startDate').datepicker(
+		 /* $('#startDate').datepicker(
 			{
 			
 				 dateFormat:'yy/mm/dd',
@@ -487,7 +488,7 @@ input::placeholder{
 					$('#startDate').datepicker("option", "maxDate", selectedDate)
 			}
 			
-		});
+		}); */
 		
 		
 		$('#searchDate').click(function(){
@@ -724,7 +725,8 @@ input::placeholder{
 	</div>
 	
 	
-	<!-- 여기다 만들어놓고, display = none, -->
+	
+	<jsp:include page="/WEB-INF/jsp/include/modalAlert.jsp"/>
 	<!--================ End Blog Post Area =================-->
 
 	<!--================ Start Footer Area =================-->

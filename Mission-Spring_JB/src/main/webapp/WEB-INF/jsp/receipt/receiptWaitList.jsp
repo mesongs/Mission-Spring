@@ -195,7 +195,7 @@
 				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/register">영수증 등록</a></li>
 				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/processedList">영수증 목록</a></li>
 				<li class="nav-item"><a class="nav-link active" aria-current="page" href="#">처리 대기</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">반려된 영수증</a></li>
+				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/rejectReceiptList">반려된 영수증</a></li>
 			</ul>
 
 			<section>

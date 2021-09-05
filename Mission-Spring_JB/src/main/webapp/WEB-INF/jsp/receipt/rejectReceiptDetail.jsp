@@ -137,32 +137,18 @@ input[type=text] {
 </style>
 
 
-<script>
-
-	
-	
-</script>
-
 </head>
 
 <script>
 
 $(function(){
 	
-	
-	// 목록 이동 버튼
-	$('#receiptDelBtn').click(function(){
-		
-		location.href = '${ pageContext.request.contextPath }/receipt/receiptManager' 
-		
-	})
-	
-	$("#receiptKind").val('${receipt.receiptCode}').prop("selected", true)
+	$("#receiptKind").val('${rejectReceipt.receiptCode}').prop("selected", true)
 	//$("#purpose").val(${receiptFile.selectedPurposeNo}).prop("selected", true)
 	
 	let purposeNo = '';
 	
-	switch('${receipt.purpose}') {
+	switch('${rejectReceipt.purpose}') {
 	
 				  case '재료비':
 					  purposeNo = '1'
@@ -200,66 +186,9 @@ $(function(){
 		$("#purpose").val(purposeNo).prop("selected", true)
 
 	// js에서 숫자는 바로 인식가능, 문자열은 ''표시해야 문자열로 인식함, 숫자로 인식하려다 에러 생긴 것
-	$("#memo").val('${receipt.memo}')
+	$("#memo").val('${rejectReceipt.memo}')
 	
-	
-	$("input:radio[name=confirm]").click(function(){
-		 
-        if($("input[name=confirm]:checked").val() == "2"){
-        	
-        	$('#rejectDiv').css('display', 'block');
- 
-        }else{
-        	
-        	$('#rejectDiv').css('display', 'none');
-        	
-        }
-        
-    });
-		
-	// 반려사유 직접 입력 inputBox
-	$("#rejectBoxDirect").hide();
-		
-	
-	$("#rejectSelBox").change(function() {
-
-			//직접입력을 누를 때 나타남
-
-			if ($("#rejectSelBox").val() == "direct") {
-
-				$("#rejectBoxDirect").show();
-
-			} else {
-
-				$("#rejectBoxDirect").hide();
-
-			}
-
-		})
-		
-
-	})
-	
-	$(document).on("click", "#receiptSaveBtn", function (){
-		
-		
-		location.href = "${ pageContext.request.contextPath }/receipt/accept"
-		
-		// 승인 or 반려했을 때 요청하는 컨트롤러는 동일함
-		/* if($("input[name=confirm]:checked").val() == "1"){
-			
-			//form태그의 value를 넘기는지 확인
-			location.href = "${ pageContext.request.contextPath }/receipt/accept"
-			
-		}else{
-			
-			alert('반려누르고 클릭함')
-			
-		} */
-	})
-	
-	
-	
+})
 
 </script>
 
@@ -268,23 +197,24 @@ $(function(){
 	<jsp:include page="/WEB-INF/jsp/include/header.jsp"/>
 
 	<div class="comment-form-receipt" id="comment-custom-receipt">
-		<h4>승인/반려 관리</h4>
+		<h4>반려 상세</h4>
 		
 		<div class="container">
 			
 
 			<section>
-				<form method="post" action="${ pageContext.request.contextPath }/receipt/accept">
-					<input type="hidden" name="receiptNo" value="${ receipt.receiptNo }">
+				<!-- 반려된 영수증 재등록  -->
+				<form method="post" action="${ pageContext.request.contextPath }/receipt/reRegisterReject" >
+					<input type="hidden" name="receiptNo" value="${ rejectReceipt.receiptNo }">
 					<div class="container"> 
 						
 						<div class="row box">
 	
-							<div class="col fileUpload" style="background-color: rgba(130, 139, 178, 0.25); height: 880px; top: 25px; bottom: 0px;margin-top: 0px; padding-right: 0px; padding-left: 0px;  ">
+							<div class="col fileUpload" style="background-color: rgba(130, 139, 178, 0.25); height: 926px; top: 25px; bottom: 0px;margin-top: 0px; padding-right: 0px; padding-left: 0px;  ">
 								<%-- <img src="${ receipt.filePath }" style="width: 300px;"> --%>
 								<!-- filePath = C:\Lecture\spring-workspace\newUpload\kopo-92782264-3bb0-451d-9fa9-c7b9787cc86f.JPG -->
 								
-								<img src="/testUpload/${ receipt.fileSaveName }" style="max-width:100%; height: 100%">
+								<img src="/testUpload/${ rejectReceipt.fileSaveName }" style="max-width:100%; height: 100%">
 								
 								<!-- 아래가 실제 서버 경로( fileSaveName select)  -->
 								<%-- <img src="${ pageContext.request.contextPath }/upload/${ receipt.fileSaveName }" style="width: 400px; height: 100%;"> --%>
@@ -293,7 +223,7 @@ $(function(){
 							<div class="col">
 								<span>증빙 구분</span>
 								<!--넘어온 값에 따라 동적으로 selected https://dorongdogfoot.tistory.com/136  -->
-								<select name="receiptKind" id="receiptKind" style="background-color: rgba(130, 139, 178, 0.25); margin-bottom: 20px;" required>
+								<select name="receiptKind" id="receiptKind" required style="background-color: rgba(130, 139, 178, 0.25); margin-bottom: 20px;" required>
 									<option value="">영수증 구분</option>
 									<option value="001">세금계산서</option>
 									<option value="002">계산서</option>
@@ -301,64 +231,35 @@ $(function(){
 									<option value="004">간이영수증</option>
 								</select>
 								
-								<div>
-									<span>아이디</span>
-				                    <input type="text" class="form-control" name="userId" id="userId" placeholder="아이디" onfocus="this.placeholder = ''" onblur="this.placeholder = '아이디'" value="${receipt.userId }">
-								</div>	
-								
-								
-								
-	                        	<div style="width: 440px;">
-									<div style="float: left; width: 210px; margin-right: 10px;">
-										<span>업체명</span>
-	                          			<input type="text" class="form-control" name="storeName" id="storeName" placeholder="업체명" onfocus="this.placeholder = ''" onblur="this.placeholder = '업체명'" value="${ receipt.storeName }">
-									</div>
-									<div style="float: left; width: 210px; margin-left: 10px;">
-										<span>사업자등록번호</span>
-	                          	<input type="text" class="form-control" name="businessNo" id="businessNo" placeholder="사업자등록번호" onfocus="this.placeholder = ''" onblur="this.placeholder = '사업자번호'" value="${ receipt.supplierBusinessNo }">
-									</div>
-								</div>
+								<span>업체명</span>
+	                          	<input type="text" class="form-control" name="storeName" id="storeName" placeholder="업체명" onfocus="this.placeholder = ''" onblur="this.placeholder = '업체명'" value="${ rejectReceipt.storeName }">
 	                        	
-								<div style="width: 440px;">
-									<div style="float: left; width: 210px; margin-right: 10px;">
-										<span>영수일시</span>
-			                          	<input type="text" class="form-control" name="receiptDate" id="receiptDate" placeholder="영수일시" onfocus="this.placeholder = ''" onblur="this.placeholder = '영수일시'" value="${ receipt.receiptDate }">
-									</div>
-									<div style="float: left; width: 210px; margin-left: 10px;">
-										<span>등록일시</span>
-			                          	<input type="text" class="form-control" name="regDate" id="regDate" placeholder="영수일시" onfocus="this.placeholder = ''" onblur="this.placeholder = '영수일시'" value="${ receipt.regDate }">
-									</div>
-								</div>
+	                        	<span>사업자등록번호</span>
+	                          	<input type="text" class="form-control" name="supplierBusinessNo" id="supplierBusinessNo" placeholder="사업자등록번호" onfocus="this.placeholder = ''" onblur="this.placeholder = '사업자번호'" value="${ rejectReceipt.supplierBusinessNo }">
+	                        	
+	                        	<span>영수일시</span>
+	                          	<input type="text" class="form-control" name="receiptDate" id="receiptDate" placeholder="영수일시" onfocus="this.placeholder = ''" onblur="this.placeholder = '영수일시'" value="${ rejectReceipt.receiptDate }">
 								
-								<div>
-									<span>영수금액</span>
-				                    <input type="text" class="form-control" name="receiptAmount" id="receiptAmount" placeholder="영수금액" onfocus="this.placeholder = ''" onblur="this.placeholder = '영수금액'" value="${receipt.amount }원">
-								</div>	
+								<span>영수금액</span>
+	                          	<input type="text" class="form-control" name="amount" id="amount" placeholder="영수금액" onfocus="this.placeholder = ''" onblur="this.placeholder = '영수금액'" value="${rejectReceipt.amount }">
 								
-								<div>	
-									<span>부가세</span>
-				                  	<input type="text" class="form-control" name="receiptVat" id="receiptVat" placeholder="부가세" onfocus="this.placeholder = ''" onblur="this.placeholder = '부가세'" value="${receipt.vat }원">
-								</div>
+								<span>부가세</span>
+	                          	<input type="text" class="form-control" name="vat" id="vat" placeholder="부가세" onfocus="this.placeholder = ''" onblur="this.placeholder = '부가세'" value="${rejectReceipt.vat }">
 								
-								
-								<div style="width: 440px;">
-									<div style="float: left; width: 210px; margin-right: 10px;">
-										<span>중복 여부</span>
+								<span>중복 여부</span>
 										<select name="overlap" id="overlap"  style="background-color: rgba(130, 139, 178, 0.25); margin-bottom: 20px;">
 											<c:choose>
-												<c:when test="${ receipt.overlap eq 'N' }">
+												<c:when test="${ rejectReceipt.overlap eq 'N' }">
 													<option value="1" selected>중복아님</option>
 													<option value="2">중복의심</option>
 												</c:when>
-												<c:when test="${receipt.overlap eq 'Y'}">
+												<c:when test="${rejectReceipt.overlap eq 'Y'}">
 													<option value="1" selected>중복아님</option>
 													<option value="2" selected>중복의심</option>
 												</c:when>
 											</c:choose>
 										</select>
-									</div>
-									<div style="float: left; width: 210px; margin-left: 10px;">
-										<span>사용 목적</span>
+								<span>사용 목적</span>
 								<select name="purpose" id="purpose"  style="background-color: rgba(130, 139, 178, 0.25); margin-bottom: 20px;" required>
 									<option value="">사용목적을 선택하시거나 입력하세요.</option>
 									<option value="1">재료비</option>
@@ -370,53 +271,25 @@ $(function(){
 									<option value="7">공과금</option>
 									<option value="8">기타</option>
 								</select>
-									</div>
-								</div>
+								
+								
 								
 								<div class="form-group">
 									<span>메모</span>
 									<textarea class="form-control mb-10" name="memo" id="memo"rows="6" placeholder="기록하실 내용을 입력하세요." onfocus="this.placeholder = ''" onblur="this.placeholder = '기록하실 내용을 입력하세요.'" style="padding-left: 4px; color: #999999; margin-bottom: 20px;" ></textarea>
 								</div>
 								
-								<div id="confirmDiv" style="width: 440px;">
-									<span>확인</span>
-									<div style=" margin-top: 6px;">
-										<div style="float: left; width: 210px; margin-right: 10px;" >
-											<label><input type="radio" name="confirm" value="1" checked="checked">승인</label>
-										</div>
-										<div style="float: left; width: 210px; margin-right: 10px;">
-											<label><input type="radio" name="confirm" value="2">반려</label>
-										</div>
-									</div>
+								<span style="color: red;">반려사유</span>
+	                          	<input type="text" class="form-control" name="rejectReason" id="rejectReason" placeholder="반려사유" onfocus="this.placeholder = ''" onblur="this.placeholder = '반려사유'" value="${rejectReceipt.rejectReason }">
+								
+								
+								<div class="col" align="center">
+									<input type="submit" class="button submit_btn" id="receiptSaveBtn" value="재등록">
+									<a href="#" class="button submit_btn" id="receiptDelBtn">삭제</a>
 								</div>
-								
-								<div id=rejectDiv style="display: none;">
-									<span>반려 사유</span>
-									<select name="rejectSelBox" id="rejectSelBox" style="background-color: rgba(130, 139, 178, 0.25);">
-										<option value="">반려 사유를 입력해 주세요.</option>
-										<option value="1">증빙자료와 관련없는 사진</option>
-										<option value="2">필수정보 누락</option>
-										<option value="3">인식할 수 없는 사진</option>
-										<option value="4">일치하지 않는 정보</option>
-										<option value="direct">직접입력</option>
-									</select>
-									<!-- 직접입력 선택하면 나타나는 inputBox  -->
-									<!-- <input type="text" id="rejectBoxDirect" name="selboxDirect"/> -->
-									 <input type="text" class="form-control" name="rejectBoxDirect" id="rejectBoxDirect" style="margin-top: 20px;">
-								</div>
-								
-								
-								<div align="center" style="margin-top: 50px;">
-									
-									<!-- <a href="javascript:doNext()" class="button submit_btn" id="receiptSaveBtn">저장</a> -->
-									<input type="submit" class="button submit_btn" id="receiptSaveBtn" value="저장">
-									<input type="submit" class="button submit_btn" id="receiptDelBtn" value="목록">
-									<!-- <a href="#" class="button submit_btn" id="receiptDelBtn">목록</a> -->
-								</div>
-								
 	
 							</div>
-							
+	
 	
 						</div>
 	
@@ -432,10 +305,8 @@ $(function(){
 
 	</div>
 	
-	
-	
 	<!-- confirmModal -->
-	<!-- <div class="modal fade" id="myModal" role="dialog" style="text-align: center;">
+	<div class="modal fade" id="myModal" role="dialog" style="text-align: center;">
 				
 					<div class="modal-dialog">
 						<div class="modal-content">
@@ -453,7 +324,7 @@ $(function(){
 							</div>
 						</div>
 					</div>  
-				</div> -->
+				</div>
 
 
 	<!--================ End Blog Post Area =================-->

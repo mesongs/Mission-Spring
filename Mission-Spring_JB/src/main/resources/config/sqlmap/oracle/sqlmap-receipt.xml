@@ -21,6 +21,19 @@
 		<result column="user_id" property="userId"/>
 	</resultMap>
 	
+	<resultMap type="rejectReceiptVO" id="rejectReceiptMap">
+		<result column="reject_reason" property="rejectReason"/>
+		<result column="receipt_no" property="receiptNo" />
+		<result column="SUPPLIER_BUSINESS_NO" property="supplierBusinessNo" />
+		<result column="STORE_NAME" property="storeName" />
+		<result column="RECEIPT_DATE" property="receiptDate" />
+		<result column="REG_DATE" property="regDate" />
+		<result column="receipt_name" property="receiptName" />
+		<result column="file_path" property="filePath" />
+		<result column="file_save_name" property="fileSaveName"/>
+		<result column="receipt_code" property="receiptCode"/>
+	</resultMap>
+	
 	<select id="getReceiptNo" resultType="int">
 		SELECT RECEIPT_SEQ.NEXTVAL as receiptNo FROM DUAL
 	</select>
@@ -119,7 +132,7 @@
 	
 	<!-- 직원이 확인할 수 있는 처리 대기 목록 -->
 	<select id="getMgReceiptList" resultType="receiptVO" resultMap="receiptMap">
-			select c.BUSINESS_NO, c.store_name, c.user_id, c.memo, c.purpose, c.overlap, amount, vat, (amount+vat) as sum,
+			select * from(select c.BUSINESS_NO, c.store_name, c.user_id, c.memo, c.purpose, c.overlap, amount, vat, (amount+vat) as sum,
 	       		to_char(RECEIPT_DATE, 'yy/mm/dd') as RECEIPT_DATE, to_char(REG_DATE, 'yy/mm/dd') as REG_DATE,
 	       		c.receipt_no, d.receipt_name
 			from(select a.BUSINESS_NO, a.store_name, b.user_id, a.memo, a.purpose, a.overlap, amount, vat,
@@ -128,7 +141,7 @@
 							from tb_receipt a, tb_BUSINESS b
 							where a.BUSINESS_NO = b.BUSINESS_NO and receipt_status = 'W') c, TB_RECEIPT_KIND d
 			where c.receipt_code = d.receipt_code
-			order by receipt_no desc
+			order by receipt_no desc) where rownum <![CDATA[ <= ]]> 15
 	</select>
 	
 	<!-- 직원이 승인 or 반려하는 항목 -->
@@ -167,8 +180,30 @@
 		update TB_RECEIPT set receipt_status ='R', reject_reason= #{rejectReason} where receipt_no = #{receiptNo}
 	</update>
 	
+	<!-- 회원 - 반려된 영수증 목록 -->
+	<select id="rejectReceiptList" resultType="rejectReceiptVO" resultMap="rejectReceiptMap">
+		select * from (select receipt_no, SUPPLIER_BUSINESS_NO, STORE_NAME, to_char(RECEIPT_DATE, 'yy/mm/dd') as RECEIPT_DATE, to_char(REG_DATE, 'yy/mm/dd') as REG_DATE,
+	        receipt_status,AMOUNT, vat, AMOUNT+VAT AS SUM, MEMO, purpose, receipt_name, overlap, reject_reason
+			from TB_RECEIPT a, TB_RECEIPT_KIND b     
+			where a.RECEIPT_code = b.RECEIPT_code and
+			receipt_status ='R'
+			order by RECEIPT_DATE desc) where rownum <![CDATA[ <= ]]> 15
+	</select>
 	
+	<!-- 회원 - 반려된 영수증 세부사항 -->
+	<select id="rejectReceiptDetail" resultType="rejectReceiptVO" parameterType="int" resultMap="rejectReceiptMap">
+		select a.receipt_no, receipt_code, supplier_business_no, store_name,  to_char(RECEIPT_DATE, 'yy/mm/dd') as RECEIPT_DATE, amount, vat, overlap, receipt_status, purpose, file_path,
+		        memo, business_no, file_save_name, reject_reason
+				from TB_RECEIPT a, TB_RECEIPT_FILE b
+				where a.receipt_no = b.receipt_no
+				and a.receipt_no = #{receiptNo}
+	</select>
 	
-	
+	<!--회원 -반려된 영수증 세부사항에서 재등록(내용을 변경해서 업데이트할 수 있음, 사진 오류면 다시 찍어야함)  -->
+	<update id="reRegisterReject" parameterType="rejectReceiptVO">
+		update TB_RECEIPT set receipt_code = #{receiptKind}, store_name= #{storeName}, amount= #{amount} , vat = #{vat}, purpose= #{purpose},
+		 			   supplier_Business_No=#{supplierBusinessNo}, receipt_Date=#{receiptDate},
+                       overlap=#{overlap}, reject_reason='-', receipt_status ='W' where RECEIPT_NO = #{receiptNo}
+	</update>
 	
 </mapper>

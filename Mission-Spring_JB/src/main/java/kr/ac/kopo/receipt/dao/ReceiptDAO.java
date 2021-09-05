@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import kr.ac.kopo.receipt.vo.AcceptRejectVO;
 import kr.ac.kopo.receipt.vo.ReceiptFileVO;
 import kr.ac.kopo.receipt.vo.ReceiptVO;
+import kr.ac.kopo.receipt.vo.RejectReceiptVO;
 import kr.ac.kopo.receipt.vo.searchDateVO;
 
 public interface ReceiptDAO {
@@ -43,5 +44,11 @@ public interface ReceiptDAO {
 	int acceptDao(AcceptRejectVO acceptReject);
 	
 	int rejectDao(AcceptRejectVO acceptReject);
+	
+	List<RejectReceiptVO> rejectReceiptDao();
+
+	RejectReceiptVO rejectReceiptDetailDao(int receiptNo);
+	
+	int reRegisterRejectDao(RejectReceiptVO rejectReceipt);
 	
 }

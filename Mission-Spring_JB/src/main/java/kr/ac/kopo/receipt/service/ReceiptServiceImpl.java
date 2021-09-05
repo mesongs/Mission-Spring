@@ -28,6 +28,7 @@ import kr.ac.kopo.receipt.dao.ReceiptDAO;
 import kr.ac.kopo.receipt.vo.AcceptRejectVO;
 import kr.ac.kopo.receipt.vo.ReceiptFileVO;
 import kr.ac.kopo.receipt.vo.ReceiptVO;
+import kr.ac.kopo.receipt.vo.RejectReceiptVO;
 import kr.ac.kopo.receipt.vo.searchDateVO;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -242,12 +243,75 @@ public class ReceiptServiceImpl implements ReceiptService {
 			}
 			
 			acceptReject.setRejectReason(rejectReason);
-			System.out.println("서비스단에서 호출 : " + acceptReject);
+			
 			cnt = receiptDAO.rejectDao(acceptReject);
 		}
 		
 		return cnt;
 		
+	}
+	
+	@Override
+	public List<RejectReceiptVO> getRejectReceiptList() {
+		
+		List<RejectReceiptVO> rejectReceiptList = receiptDAO.rejectReceiptDao();
+		
+		return rejectReceiptList;
+	}
+	
+	@Override
+	public RejectReceiptVO rejectReceiptDetailService(int receiptNo) {
+		
+		RejectReceiptVO rejectReceipt = receiptDAO.rejectReceiptDetailDao(receiptNo);
+		return rejectReceipt;
+	}
+	
+	
+	@Override
+	public int reRegisterRejectService(RejectReceiptVO rejectReceipt) {
+		
+		//overlap이 2번이면, 중복의심!
+		if(rejectReceipt.getOverlap().equals("2")) {
+			rejectReceipt.setOverlap("Y");
+		}else {
+			rejectReceipt.setOverlap("N");
+		}
+		
+		String purpose ="";
+		
+		switch (rejectReceipt.getPurpose()) {
+		case "1":
+			purpose = "재료비";
+			break;
+		case "2":
+			purpose = "자재비";
+			break;
+		case "3":
+			purpose = "식비";
+			break;
+		case "4":
+			purpose = "접대비";
+			break;
+		case "5":
+			purpose = "세금";
+			break;
+		case "6":
+			purpose = "인건비";
+			break;
+		case "7":
+			purpose = "공과금";
+			break;
+		case "8":
+			purpose = "기타";
+			break;
+		}
+		
+		rejectReceipt.setPurpose(purpose);
+		
+		
+		int cnt = receiptDAO.reRegisterRejectDao(rejectReceipt);
+		
+		return cnt;
 	}
 
 	// 가장 먼저했던 이미지 서버에 저장, 썸네일 이미지 저장 => 저장된 이미지 ocr

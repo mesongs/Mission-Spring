@@ -22,6 +22,7 @@ import kr.ac.kopo.receipt.service.ReceiptService;
 import kr.ac.kopo.receipt.vo.AcceptRejectVO;
 import kr.ac.kopo.receipt.vo.ReceiptFileVO;
 import kr.ac.kopo.receipt.vo.ReceiptVO;
+import kr.ac.kopo.receipt.vo.RejectReceiptVO;
 import kr.ac.kopo.receipt.vo.searchDateVO;
 
 @Controller
@@ -121,7 +122,7 @@ public class receiptController {
 	}
 	
 	
-	// 세부사항 조회하기
+	// 회원 - 처리완료된 영수증 세부사항 조회하기
 	@RequestMapping("/receipt/detail/{receiptNo}")
 	public ModelAndView receiptDetail(@PathVariable("receiptNo") int receiptNo) {
 		
@@ -195,7 +196,7 @@ public class receiptController {
 		return mgWaitList;
 	}
 	
-	// 직원이 확인할 수 있는 처리 완료된 영수증 목록
+	// 직원이 확인할 수 있는 처리 '완료'된 영수증 목록
 	@RequestMapping("/receipt/mgProcessed")
 	public String receiptmgProcessed() {
 		
@@ -229,16 +230,15 @@ public class receiptController {
 
 		ModelAndView mav = new ModelAndView("receipt/receiptManage");
 		String msg = "";
-		System.out.println(acceptReject);
 		
-		// 정상 수행 확인
 		int cnt = service.acceptRejectService(acceptReject);
 		
+		// 정상 수행 확인
 		if(cnt == 1) {
 			
 			if(acceptReject.getConfirm().equals("1")) {
 				
-				msg ="정상적으로 승인되었습니다.";
+				msg = "정상적으로 승인되었습니다.";
 				
 			}else {
 				
@@ -250,15 +250,62 @@ public class receiptController {
 			msg = "실패";
 		}
 		
-		
-		// 정상적으로 수행한 경우 모달창 띄우기
+		// 수행 결과 모달창 띄우기
 		mav.addObject("msg", msg);
 		
 		return mav;
 		
 	}
 	
-	
-	
-	
+	 // 회원이 확인할 수 있는 반려된 영수증 탭 이동
+		@RequestMapping("/receipt/rejectReceiptList")
+		public String rejectReceipt(){
+			
+			return "receipt/rejectReceiptList";
+		}
+		
+		@GetMapping("/receipt/getRejectList")
+		@ResponseBody
+		public List<RejectReceiptVO> rejectReceiptList(){
+			
+			List<RejectReceiptVO> rejectReceiptList = service.getRejectReceiptList();
+			
+			return rejectReceiptList;
+		}
+		
+		// 회원 - 반려된 영수증에 대한 세부사항
+		@RequestMapping("/receipt/rejectDetail/{receiptNo}")
+		public ModelAndView rejectReceiptDetail(@PathVariable("receiptNo") int receiptNo) {
+			
+			ModelAndView mav = new ModelAndView("receipt/rejectReceiptDetail");
+			RejectReceiptVO rejectReceipt = service.rejectReceiptDetailService(receiptNo);
+			
+			System.out.println(rejectReceipt);
+			mav.addObject("rejectReceipt", rejectReceipt);
+			
+			return mav;
+		}
+		
+		// 회원이 반려된 영수증을 세부사항으로 가서 '재등록'
+		@PostMapping("/receipt/reRegisterReject")
+		public ModelAndView reRegister(RejectReceiptVO rejectReceipt) {
+			
+			// 회원 반려 부분으로 다시
+			ModelAndView mav = new ModelAndView("receipt/rejectReceiptList");
+			String msg ="";
+			
+			int cnt = service.reRegisterRejectService(rejectReceipt);
+			
+			if(cnt == 1) {
+				
+				msg = "영수증이 재등록 되었습니다.";
+			
+			}
+			
+			mav.addObject("msg", msg);
+			
+			return mav;
+			
+		}
+		
 }

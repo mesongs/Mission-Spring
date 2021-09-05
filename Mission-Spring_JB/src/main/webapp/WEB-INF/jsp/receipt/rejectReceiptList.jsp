@@ -12,9 +12,9 @@
 <jsp:include page="/WEB-INF/jsp/include/head.jsp"/>
 
   <!--datePicker-->
-  <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />
+ <!--  <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-  <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+  <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script> -->
  
 
 <!-- <style>
@@ -185,10 +185,16 @@ input::placeholder{
 
 <style>
 	.product-img2 {
-    max-width: 30px;
-    max-height: 50px;
-    margin-top: -5px;
-    margin-right: -10px;
+	    max-width: 30px;
+	    max-height: 50px;
+	    margin-top: -5px;
+	    margin-right: -10px;
+    }
+    .product-img3{
+	    max-width: 30px;
+	    max-height: 50px;
+	    margin-top: -5px;
+    }
 }
 </style>
 
@@ -196,6 +202,9 @@ input::placeholder{
 
 	$(document).ready(function(){
 		
+		if('${ msg }')
+			$('#myModal').modal('show');
+			$('#alert-modal-body-msg').text('${ msg }');
 		$('#allCheck').click(function(){
 			
 			if($('#allCheck').prop('checked')){
@@ -386,13 +395,13 @@ input::placeholder{
 			
 		})
 		
-		processedList();
+		rejectList();
 		
-		function processedList(){
+		function rejectList(){
 			
 			$.ajax({
 				type : "get",
-				url : "${pageContext.request.contextPath}/receipt/processedAllList",
+				url : "${pageContext.request.contextPath}/receipt/getRejectList",
 				success : function(result){
 					
 					let obj = JSON.parse(result);
@@ -401,14 +410,13 @@ input::placeholder{
 			 		 
 					 if(obj.length >= 1){
 						 
-						 // for(receipt vo(=searchWaitList) : receiptList) 1.5버전 for문과 동일함
 						 obj.forEach(function(processedList){
 							 	 
 							 	 str="<tr>"
 							 	 str += "<td>" + '<input type="checkbox" class="testBox">' + "</td>" 
 							     str += "<td>" + processedList.receiptDate + "</td>"
 							     str += "<td>" + processedList.receiptName + "</td>"
-							     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/detail/" + processedList.receiptNo + ">" + processedList.storeName +"</a></td>"; 
+							     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/rejectDetail/" + processedList.receiptNo + ">" + processedList.storeName +"</a></td>"; 
 							     str += "<td>" + processedList.sum +"원</td>";
 							     str += "<td>" + processedList.purpose +"</td>";
 							     
@@ -419,6 +427,10 @@ input::placeholder{
 				 					
 							    	 str += "<td>" + "</td>"
 				 				 }
+							     
+							     str += "<td>"+ '<img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/reject.jpg">' + processedList.rejectReason + "</td>";
+							     
+							     
 				 				 
 							     /* str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>" */
 							     /* str +="<td>" + processedList.overlap + "</td>" */
@@ -451,7 +463,7 @@ input::placeholder{
 		
 		
 		// datepicker를 활용한 날짜 조회
-		 $('#startDate').datepicker(
+		 /* $('#startDate').datepicker(
 			{
 			
 				 dateFormat:'yy/mm/dd',
@@ -486,7 +498,7 @@ input::placeholder{
 					$('#startDate').datepicker("option", "maxDate", selectedDate)
 			}
 			
-		});
+		}); */
 		
 		
 		$('#searchDate').click(function(){
@@ -631,9 +643,9 @@ input::placeholder{
 		<div class="container">
 			<ul class="nav nav-tabs" style="margin-left: 50px;">
 				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/register">영수증 등록</a></li>
-				<li class="nav-item"><a class="nav-link active" aria-current="page" href="#">영수증 목록</a></li>
+				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/processedList">영수증 목록</a></li>
 				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/receiptWaitList">처리 대기</a></li>
-				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/rejectReceiptList">반려된 영수증</a></li>
+				<li class="nav-item"><a class="nav-link active" aria-current="page" href="#">반려된 영수증</a></li>
 			</ul> 
 			
 			<section>
@@ -683,11 +695,12 @@ input::placeholder{
 									<th><input type="checkbox" class="testBox" id="allCheck" value="1"></th>
 									<th width="100px">사용일시</th>
 									<th width="150px">구분</th>
-									<th width="200px">업체명</th>
-									<th width="200px">사용금액</th>
+									<th width="150px">업체명</th>
+									<th width="150px">사용금액</th>
 									<th width="150px">사용목적</th>
 									<th width="130px">중복여부</th>
-									<th width="600px">메모</th>
+									<th width="350px">반려사유</th>
+									<th width="500px">메모</th>
 								</tr>
 								
 								<tbody id="test">
@@ -714,12 +727,10 @@ input::placeholder{
 				
 			</section>
 		</div>
-
 	</div>
 	
-	<!-- 여기다 만들어놓고, display = none, -->
-	<!--================ End Blog Post Area =================-->
-
+	<!-- Modal -->
+	<jsp:include page="/WEB-INF/jsp/include/modalAlert.jsp"/>
 	<!--================ Start Footer Area =================-->
 	<jsp:include page="/WEB-INF/jsp/include/footer.jsp"/>
 	<!--================ End Footer Area =================-->

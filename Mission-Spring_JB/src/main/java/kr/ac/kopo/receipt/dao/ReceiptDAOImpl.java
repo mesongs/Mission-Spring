@@ -13,6 +13,7 @@ import kr.ac.kopo.member.dao.MemberDAO;
 import kr.ac.kopo.receipt.vo.AcceptRejectVO;
 import kr.ac.kopo.receipt.vo.ReceiptFileVO;
 import kr.ac.kopo.receipt.vo.ReceiptVO;
+import kr.ac.kopo.receipt.vo.RejectReceiptVO;
 import kr.ac.kopo.receipt.vo.searchDateVO;
 
 @Repository
@@ -139,8 +140,29 @@ public class ReceiptDAOImpl implements ReceiptDAO {
 	@Override
 	public int rejectDao(AcceptRejectVO acceptReject) {
 		
-		System.out.println("daoImpl에서 호출 : " + acceptReject);
 		int cnt = sqlSessionTemplate.update("receipt.receiptDAO.rejectUpdate", acceptReject);
+		return cnt;
+	}
+
+	@Override
+	public List<RejectReceiptVO> rejectReceiptDao() {
+		
+		List<RejectReceiptVO> rejectReceiptList = sqlSessionTemplate.selectList("receipt.receiptDAO.rejectReceiptList");
+		
+		return rejectReceiptList;
+	}
+
+	@Override
+	public RejectReceiptVO rejectReceiptDetailDao(int receiptNo) {
+		RejectReceiptVO rejectReceipt = sqlSessionTemplate.selectOne("receipt.receiptDAO.rejectReceiptDetail", receiptNo);
+		return rejectReceipt;
+	}
+
+	@Override
+	public int reRegisterRejectDao(RejectReceiptVO rejectReceipt) {
+		
+		int cnt = sqlSessionTemplate.update("receipt.receiptDAO.reRegisterReject", rejectReceipt);
+		
 		return cnt;
 	}
 	

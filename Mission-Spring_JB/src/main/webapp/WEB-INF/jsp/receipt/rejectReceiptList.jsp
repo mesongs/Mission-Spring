@@ -187,14 +187,18 @@ input::placeholder{
 	.product-img2 {
 	    max-width: 30px;
 	    max-height: 50px;
-	    margin-top: -5px;
+	    margin-top: 0px;
 	    margin-right: -10px;
     }
+   
     .product-img3{
-	    max-width: 30px;
-	    max-height: 50px;
-	    margin-top: -5px;
-    }
+ 	max-width: 40px;
+    max-height: 25px;
+ 	margin-top: -5px;
+    margin-right: 0px;
+    
+ }
+    
 }
 </style>
 

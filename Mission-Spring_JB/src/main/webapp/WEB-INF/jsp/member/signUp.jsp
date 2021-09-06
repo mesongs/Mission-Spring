@@ -357,7 +357,8 @@ let emailCheck = true;
 		                          <input type="text" class="form-control" name="businessNo" id="businessNo" maxlength="10" placeholder="사업자번호" onfocus="this.placeholder = ''" onblur="this.placeholder = '사업자번호'" required="required">
 		                    </div>
 		                    <div class="form-group col-lg-6 col-md-6 name">
-		                            <a href="javascript:storeSearch();" class="search zipcode" id="storeSearch" style="padding-left: 20px; padding-top: 6px; ">사업장 조회</a>
+		                    		<a class="check email" href="javascript:storeSearch()" id="storeSearch">사업장 조회</a>
+		                            <!-- <a href="javascript:storeSearch();" class="search zipcode" id="storeSearch" style="padding-left: 20px; padding-top: 6px; ">사업장 조회</a> -->
 		                    </div>
 	                    </div>
 	                    

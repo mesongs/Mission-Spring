@@ -10,6 +10,16 @@
 <head>
 <jsp:include page="/WEB-INF/jsp/include/head.jsp"/>
 
+<style>
+
+.product-img3{
+ 	max-width: 20px;
+    max-height: 20px;
+ 	margin-top: -5px;
+    margin-right: 0px;
+ }
+
+</style>
   <!--datePicker-->
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>

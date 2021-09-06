@@ -308,12 +308,19 @@ public class receiptController {
 			
 		}
 
-		//홈택스 연동 페이지로 이동
+		// 홈택스 연동 페이지로 이동 (현재 카드 매입 내역 조회로감)
 		@RequestMapping("/receipt/homeTaxPage")
 		public String homeTaxPage() {
 			
 			
-			return "receipt/homeTax";
+			return "receipt/homeTaxCard";
+		}
+		
+		// 홈택스 현금영수증 내역 이동
+		@RequestMapping("/receipt/homeTaxCash")
+		public String homeTaxCash() {
+			
+			return "receipt/homeTaxCash";
 		}
  				
 }

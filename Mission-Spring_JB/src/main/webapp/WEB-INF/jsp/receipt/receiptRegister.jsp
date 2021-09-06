@@ -122,6 +122,13 @@
 	margin-right: 5px;
 }
 
+.product-img3{
+ 	max-width: 20px;
+    max-height: 20px;
+ 	margin-top: -5px;
+    margin-right: 0px;
+ }
+
 </style>
 
 

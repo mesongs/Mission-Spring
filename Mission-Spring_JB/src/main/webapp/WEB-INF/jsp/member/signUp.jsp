@@ -128,6 +128,57 @@ let emailCheck = true;
 
 <script>
 	
+	// 사업장 진위확인(사업주)
+	function storeSearch(){
+		
+		let storeMaster = $('#storeMaster').val()
+		let openDate = $('#openDate').val()
+		let businessNo = $('#businessNo').val()
+		
+		//컨트롤러로 넘기는 ajax
+		$.ajax({
+				type : "get",
+				url : '${ pageContext.request.contextPath }/member/storeSearch',
+				data : { storeMaster : storeMaster, openDate : openDate, businessNo : businessNo },
+				success : function(result){
+
+					let obj = JSON.parse(result);
+
+					console.log(obj.key)
+					
+					if(obj.key == '01'){
+						
+						$('#myModal').modal('show');
+						$('#alert-modal-body-msg').text('가입가능한 사업장번호 입니다.')
+						$('#storeSearch').html('사용가능')
+						$('#storeSearch').attr('disabled',true)
+						$('#storeSearch').css({'color' : 'black', 'background-color' : 'rgb(118, 118, 118)'})
+						// storeSearchCheck = true; // default로 false임, onsubmit()에 아래 유효성 체크 들어가야함
+						
+						/* if(!storeSearchCheck){
+							
+							$('#TestModal').modal('show')
+							$('#modal-body').html('사업장 조회를 클릭해주세요.')
+							
+							return false
+							
+						} */
+						
+					}else{
+						$('#myModal').modal('show');
+						$('#alert-modal-body-msg').text('사용하실 수 없는 사업장번호 입니다.')
+						
+					}
+					
+					
+				},error:function(request, status, error){
+		             alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		          }
+			})
+		
+		
+	}
+	
 	
 	function doCheck(){
 		
@@ -291,12 +342,23 @@ let emailCheck = true;
 	                        </div>
                         </div>
                         
-                        <div class="form-group col-lg-6 col-md-6 name">
-	                          <input type="text" class="form-control" name="businessNo" id="businessNo" maxlength="10" placeholder="사업자번호" onfocus="this.placeholder = ''" onblur="this.placeholder = '사업자번호'" required="required">
+                        
+	                    
+	                    <div class="form-group col-lg-6 col-md-6 name">
+	                          <input type="text" class="form-control" name="storeMaster" id="storeMaster" maxlength="9" placeholder="사업주명" onfocus="this.placeholder = ''" onblur="this.placeholder = '사업주명'" required="required">
 	                    </div>
 	                    
 	                    <div class="form-group col-lg-6 col-md-6 name">
-	                          <input type="text" class="form-control" name="storeName" id="storeName" maxlength="10" placeholder="상호명" onfocus="this.placeholder = ''" onblur="this.placeholder = '사업자번호'" required="required">
+	                          <input type="text" class="form-control" name="openDate" id="openDate" maxlength="8" placeholder="개업일자" onfocus="this.placeholder = ''" onblur="this.placeholder = '개업일자'" required="required">
+	                    </div>
+	                    
+	                    <div class="form-group form-inline">
+		                    <div class="form-group col-lg-6 col-md-6 name">
+		                          <input type="text" class="form-control" name="businessNo" id="businessNo" maxlength="10" placeholder="사업자번호" onfocus="this.placeholder = ''" onblur="this.placeholder = '사업자번호'" required="required">
+		                    </div>
+		                    <div class="form-group col-lg-6 col-md-6 name">
+		                            <a href="javascript:storeSearch();" class="search zipcode" id="storeSearch" style="padding-left: 20px; padding-top: 6px; ">사업장 조회</a>
+		                    </div>
 	                    </div>
 	                    
 	                    <div class="form-group form-inline">

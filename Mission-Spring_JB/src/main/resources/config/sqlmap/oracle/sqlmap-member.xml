@@ -41,8 +41,8 @@
 	</insert>
 	
 	<insert id="signUpBusiness" parameterType="memberVO">	
-		INSERT INTO TB_BUSINESS(business_no, store_name, zipCode, addr_road, addr_jibun, addr_detail, user_id)
-        	VALUES(#{businessNo}, #{storeName}, #{zipCode}, #{addrRoad}, #{addrJibun}, #{addrDetail}, #{userId})
+		INSERT INTO TB_BUSINESS(business_no, store_name, zipCode, addr_road, addr_jibun, addr_detail, user_id, open_date)
+        	VALUES(#{businessNo}, #{storeName}, #{zipCode}, #{addrRoad}, #{addrJibun}, #{addrDetail}, #{userId}, to_date(#{openDate}, 'yy/mm/dd'))
 	</insert>
 	
 	

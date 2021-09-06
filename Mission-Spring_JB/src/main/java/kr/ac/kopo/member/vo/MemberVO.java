@@ -22,7 +22,16 @@ public class MemberVO {
 	private String addrRoad;
 	private String addrJibun;
 	private String addrDetail;
+	private String openDate;
 	
+	
+	
+	public String getOpenDate() {
+		return openDate;
+	}
+	public void setOpenDate(String openDate) {
+		this.openDate = openDate;
+	}
 	public String getUserId() {
 		return userId;
 	}
@@ -125,14 +134,14 @@ public class MemberVO {
 	public void setAddrDetail(String addrDetail) {
 		this.addrDetail = addrDetail;
 	}
-	
 	@Override
 	public String toString() {
 		return "MemberVO [userId=" + userId + ", userPassword=" + userPassword + ", name=" + name + ", type=" + type
 				+ ", phone=" + phone + ", emailId=" + emailId + ", domain=" + domain + ", fRrn=" + fRrn + ", bRrn="
 				+ bRrn + ", taxAgentEmailId=" + taxAgentEmailId + ", taxAgentDomain=" + taxAgentDomain + ", businessNo="
 				+ businessNo + ", storeName=" + storeName + ", zipCode=" + zipCode + ", addrRoad=" + addrRoad
-				+ ", addrJibun=" + addrJibun + ", addrDetail=" + addrDetail + "]";
+				+ ", addrJibun=" + addrJibun + ", addrDetail=" + addrDetail + ", openDate=" + openDate + "]";
 	}
+	
 	
 }

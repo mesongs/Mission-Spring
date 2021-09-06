@@ -562,9 +562,9 @@ input::placeholder{
 							 	<div style="border: 3px solid; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; ">
 								 	<div class="row" style="height: 50px; width: 1050px; ;">
 								 		<div class="col-2" style="background-color: rgba(130,139,178,0.25); width: 20%; text-align:center; display:table-cell; vertical-align:middle; line-height:50px;font-size: 20px;left: 15px;">사업자등록번호</div>
-								 		<div class="col-4" style="width: 20%; text-align:center; display:table-cell; vertical-align:middle; line-height:50px;font-size: 20px;">6052355236</div> <!--UserVO가 가지고 있는 값  -->
+								 		<div class="col-4" style="width: 20%; text-align:center; display:table-cell; vertical-align:middle; line-height:50px;font-size: 20px;">${userVO.businessNo}</div> <!--UserVO가 가지고 있는 값  -->
 								 		<div class="col-2" style="background-color: rgba(130,139,178,0.25); width: 20%; text-align:center; display:table-cell; vertical-align:middle; line-height:50px;font-size: 20px;">상호</div>
-								 		<div class="col-4" style="width: 20%; text-align:center; display:table-cell; vertical-align:middle; line-height:50px;font-size: 20px;">종범상회</div>
+								 		<div class="col-4" style="width: 20%; text-align:center; display:table-cell; vertical-align:middle; line-height:50px;font-size: 20px;">${userVO.storeName}</div>
 								 	</div>
 							 	</div>
 								<div class="row" style="margin-top: 30px;">
@@ -657,13 +657,25 @@ input::placeholder{
 								<tbody id="test">
 								 	<tr>
 								 		<td><input type="checkbox" class="testBox" id="allCheck" value="1"></td>
-								 		<td>2021-01-26</td>
+								 		<td>2021-03-23 17:05:03</td>
 								 		<td>605-25-91876</td>
 								 		<td>대양슈퍼</td>
 								 		<td>소매</td>
-								 		<td>80,910원</td>
-								 		<td>8,090원</td>
-								 		<td>89,000원</td>
+								 		<td>80,910</td>
+								 		<td>8,090</td>
+								 		<td>89,000</td>
+								 		<td>147369422</td>
+								 		<td>불공제</td>
+								 	</tr>
+								 	<tr>
+								 		<td><input type="checkbox" class="testBox" id="allCheck" value="1"></td>
+								 		<td>2021-03-23 17:05:03</td>
+								 		<td>605-25-91876</td>
+								 		<td>대양슈퍼</td>
+								 		<td>소매</td>
+								 		<td>80,910</td>
+								 		<td>8,090</td>
+								 		<td>89,000</td>
 								 		<td>147369422</td>
 								 		<td>불공제</td>
 								 	</tr>
@@ -692,7 +704,7 @@ input::placeholder{
 
 	</div>
 	
-	<!-- 여기다 만들어놓고, display = none, -->
+	
 	<!--================ End Blog Post Area =================-->
 
 	<!--================ Start Footer Area =================-->

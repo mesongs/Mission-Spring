@@ -5,6 +5,7 @@ public class LoginVO {
 	private String id;
 	private String password;
 	private String businessNo;
+	private String storeName;
 	private String name;
 	private String phone;
 	private String email; // 자신의 email
@@ -12,6 +13,14 @@ public class LoginVO {
 	private String bankingAgreement;
 	private String homtaxAgreement;
 	private String userStatus; // role 구분
+	
+
+	public String getStoreName() {
+		return storeName;
+	}
+	public void setStoreName(String storeName) {
+		this.storeName = storeName;
+	}
 	public String getId() {
 		return id;
 	}
@@ -75,9 +84,12 @@ public class LoginVO {
 	
 	@Override
 	public String toString() {
-		return "LoginVO [id=" + id + ", password=" + password + ", businessNo=" + businessNo + ", name=" + name
-				+ ", phone=" + phone + ", email=" + email + ", taxAgentEmail=" + taxAgentEmail + ", bankingAgreement="
-				+ bankingAgreement + ", homtaxAgreement=" + homtaxAgreement + ", userStatus=" + userStatus + "]";
+		return "LoginVO [id=" + id + ", password=" + password + ", businessNo=" + businessNo + ", storeName="
+				+ storeName + ", name=" + name + ", phone=" + phone + ", email=" + email + ", taxAgentEmail="
+				+ taxAgentEmail + ", bankingAgreement=" + bankingAgreement + ", homtaxAgreement=" + homtaxAgreement
+				+ ", userStatus=" + userStatus + "]";
 	}
+	
+	
 	
 }

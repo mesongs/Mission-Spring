@@ -202,13 +202,23 @@ input::placeholder{
     margin-right: 0px;
  }
  
+  .product-img4{
+ 	max-width: 20px;
+    max-height: 20px;
+    margin-left : 18px;
+    margin-top : 3px;
+    margin-right: 0px;
+ }
+ 
 }
 </style>
 
 <script>
 
 	$(document).ready(function(){
+		
 		document.getElementById('searchDay').value = new Date().toISOString().substring(0, 10);
+		
 		
 		$('#allCheck').click(function(){
 			
@@ -543,7 +553,11 @@ input::placeholder{
 			<div class="col">
 				<h4 style="font-family: 'Noto Sans KR', sans-serif;font-size: xx-large; margin-left: 32px;">홈택스 - 카드 매입내역 조회</h4>
 			</div>
-			
+			<%-- <div class="col">
+				<div style="background-color: #27b2a5; color:#fff; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; ">
+						<img class="product-img4" src="${ pageContext.request.contextPath }/resources/img/gd.png">홈택스에 등록하신 사업용 카드의 '매입 내역'을 확인하실 수 있습니다. 개인사업자가 가사경비가 아닌 사업관련 경비의 지출용도로만 쓰는 신용카드
+				</div>
+			</div> --%>
 		</div>
 		<div class="container">
 			<ul class="nav nav-tabs" style="margin-left: 50px;">
@@ -557,15 +571,24 @@ input::placeholder{
 			<section>
 					
 					<div class="container" style="margin-left: 36px;"> 
-					
+							
+							<div class="row" style="margin-top: 30px; margin-right: 12px; margin-left: 12px;">
+							 	<div style="width:500px; background-color: #27b2a5; color:#fff; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; ">
+									<span style="margin-left: 6px;"><img class="product-img4" src="${ pageContext.request.contextPath }/resources/img/gd.png" style="margin-left: 3px; margin-bottom: 6px;">홈택스에 등록하신 사업용 카드의 '매입 내역'을 확인하실 수 있습니다.</span>
+								</div>
+							</div>
+							
+							<div class="row" style="margin-top: 30px; margin-right: 12px; margin-left: 12px;">
 							 	<div style="border: 3px solid; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; ">
 								 	<div class="row" style="height: 50px; width: 1050px; ;">
 								 		<div class="col-2" style="background-color: rgba(130,139,178,0.25); width: 20%; text-align:center; display:table-cell; vertical-align:middle; line-height:50px;font-size: 20px;left: 15px;">사업자등록번호</div>
-								 		<div class="col-4" style="width: 20%; text-align:center; display:table-cell; vertical-align:middle; line-height:50px;font-size: 20px;">6052355236</div> <!--UserVO가 가지고 있는 값  -->
+								 		<div class="col-4" style="width: 20%; text-align:center; display:table-cell; vertical-align:middle; line-height:50px;font-size: 20px;">${userVO.businessNo}</div> <!--UserVO가 가지고 있는 값  -->
 								 		<div class="col-2" style="background-color: rgba(130,139,178,0.25); width: 20%; text-align:center; display:table-cell; vertical-align:middle; line-height:50px;font-size: 20px;">상호</div>
-								 		<div class="col-4" style="width: 20%; text-align:center; display:table-cell; vertical-align:middle; line-height:50px;font-size: 20px;">종범상회</div>
+								 		<div class="col-4" style="width: 20%; text-align:center; display:table-cell; vertical-align:middle; line-height:50px;font-size: 20px;">${userVO.storeName}</div>
 								 	</div>
 							 	</div>
+							</div>
+							 	
 								<div class="row" style="margin-top: 30px;">
 									<div class="col-7" style="float: left;">
 										<span style="float: left;">조회기간</span>
@@ -671,7 +694,7 @@ input::placeholder{
 
 	</div>
 	
-	<!-- 여기다 만들어놓고, display = none, -->
+	<jsp:include page="/WEB-INF/jsp/include/modalAlert.jsp"/>
 	<!--================ End Blog Post Area =================-->
 
 	<!--================ Start Footer Area =================-->

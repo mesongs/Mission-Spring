@@ -159,7 +159,7 @@ $(function(){
 		
 	}
 	
-	/* $(document).on("click", "#receiptSaveBtn", function (){
+	$(document).on("click", "#receiptSaveBtn", function (){
 		
 			var receiptKind =''
 			var html =''
@@ -188,12 +188,21 @@ $(function(){
 			
 			$('#confirm-modal-body-msg').html(html)
 			$('#myModal').modal('show') 
+			
+			
 		
-	}) */
+	})
 	
 	
 </script>
-
+<script>
+	// 모달창에서 확인 버튼 누르면, form에 action과 method 삽입
+	function clickSubmit(formName) {
+		formName.action = "${ pageContext.request.contextPath }/receipt/finalRegister";
+		formName.method = "post";
+		formName.submit();
+	}
+</script>
 </head>
 
 
@@ -205,7 +214,9 @@ $(function(){
 		<h4>영수증 등록</h4>
 		<div class="container">
 			<section>
-				<form method="post" action="${ pageContext.request.contextPath }/receipt/finalRegister">
+				<%-- <form method="post" action="${ pageContext.request.contextPath }/receipt/finalRegister"> --%>
+				<!-- 모달창 실행 후 form에 있는 내용을 submit -->
+				<form name="checkInfo">
 					<input type="hidden" name="filePath" value="${ receiptFile.filePath }">
 					<input type="hidden" name="fileSize" value="${ receiptFile.fileSize }">
 					<input type="hidden" name="fileOriginalName" value="${ receiptFile.fileOriginalName }">
@@ -276,7 +287,7 @@ $(function(){
 								</div>
 								<div class="col" align="center">
 									<!-- <a href="javascript:doNext()" class="button submit_btn" id="receiptSaveBtn">저장</a> -->
-									<input type="submit" class="button submit_btn" id="receiptSaveBtn" value="저장">
+									<input type="button" class="button submit_btn" id="receiptSaveBtn" value="저장">
 									<!-- <input type="button" class="button submit_btn" id="receiptDelBtn" value="취소"> -->
 									<!-- <a href="javascript:doNext()" class="button submit_btn" id="receiptSaveBtn">저장</a> -->
 									<a href="javascript:cancel()" class="button submit_btn" id="receiptDelBtn">취소</a>
@@ -313,7 +324,7 @@ $(function(){
 								<p id="confirm-modal-body-msg" style="margin-bottom: 0px"></p>
 							</div>
 							<div class="modal-footer">
-								<a href="#" class="btn btn-default" style="background-color: #27b2a5; color: #fff">확인</a>
+								<button type="button" class="btn btn-default" onclick="clickSubmit(checkInfo)" style="background-color: #27b2a5; color: #fff">확인</button>
 								<button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
 							</div>
 						</div>

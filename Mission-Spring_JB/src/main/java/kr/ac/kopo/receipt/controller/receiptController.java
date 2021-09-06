@@ -307,5 +307,13 @@ public class receiptController {
 			return mav;
 			
 		}
-		
+
+		//홈택스 연동 페이지로 이동
+		@RequestMapping("/receipt/homeTaxPage")
+		public String homeTaxPage() {
+			
+			
+			return "receipt/homeTax";
+		}
+ 				
 }

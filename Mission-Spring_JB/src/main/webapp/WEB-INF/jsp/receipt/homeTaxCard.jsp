@@ -656,19 +656,30 @@ input::placeholder{
 							<table style="margin-top: 30px;">
 								<tr id="boardtable">
 									<th><input type="checkbox" class="testBox" id="allCheck" value="1"></th>
-									<th width="170px" style="text-align: center;">승인번호</th>
-									<th width="180px" style="text-align: center;">가맹점 사업자번호</th>
+									<th width="170px">매입일시</th>
+									<th width="130px">승인번호</th>
+									<th width="200px">가맹점 사업자번호</th>
 									<th width="180px">가맹점명</th>
-									<th width="110px">공급가액</th>
-									<th width="110px">세액</th>
-									<th width="150px">합계</th>
-									<th width="130px">가맹점유형</th>
+									<th width="120px">공급가액</th>
+									<th width="100px">세액</th>
+									<th width="140px">합계</th>
+									<th width="150px">가맹점유형</th>
 									<th width="100px">업종</th>
-									<th width="100px">공제여부</th>
 								</tr>
 								
 								<tbody id="test">
-								 
+								 	<tr>
+								 		<td><input type="checkbox" class="testBox" id="allCheck" value="1"></td>
+								 		<td>2021-03-23 17:05:03</td>
+								 		<td>324209823</td>
+								 		<td>605-25-91876</td>
+								 		<td>대양슈퍼</td>
+								 		<td>80,910</td>
+								 		<td>8,090</td>
+								 		<td>89,000</td>
+								 		<td>일반과세자</td>
+								 		<td>도,소매</td>
+								 	</tr>
 								</tbody>
 							</table>
 							</div>

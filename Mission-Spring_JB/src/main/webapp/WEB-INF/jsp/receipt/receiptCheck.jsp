@@ -329,7 +329,7 @@ $(function(){
 							</div>
 						</div>
 					</div>  
-				</div>
+	</div>
 
 
 	<!--================ End Blog Post Area =================-->

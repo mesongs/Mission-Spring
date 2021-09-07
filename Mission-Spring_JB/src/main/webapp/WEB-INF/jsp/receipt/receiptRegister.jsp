@@ -215,6 +215,53 @@
     });
 </script>
 
+
+<script>
+	function doHomeTaxConnect(){
+		// 모달 다른거 불러오는 방법?, form태그로 api서버에 요청보내야함
+		$('#confirmMyModal').modal('show');
+
+	}
+	
+	function clickHomeTaxConnect(){
+		// 모달창 확인 누르면, 회원이 입력한 정보를 homeTaxId homeTaxPassword businessNo로 전송
+		let homeTaxId = $('#homeTaxId').val()
+		let homeTaxPassword = $('#homeTaxPassword').val()
+		let businessNo = $('#businessNo').val()
+		
+		
+		location.href = "${pageContext.request.contextPath}/receipt/homeTaxMain"
+	}
+		
+		
+		/* $.ajax({
+				type : "get",
+				url : "${pageContext.request.contextPath}/receipt/getPerReceiptList",
+				data : { homeTaxId : homeTaxId, homeTaxPassword : homeTaxPassword, businessNo:businessNo},
+				success : function(result){
+					
+					// 홈택스 api서버로 바로 요청하기
+					
+				},
+				
+				error:function(request, status, error){
+				    alert("code:"+ request.status +"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				}
+				
+				
+			}) */
+		
+		// form태그로 전송할 필요없겠는데,
+		//formName.action = "${ pageContext.request.contextPath }/receipt/homeTaxConnect";
+		//formName.method = "post";
+		//formName.submit();
+		
+		// post로 모달에 있는 폼
+				
+//	}
+
+</script>
+
 </head>
 
 <script>
@@ -250,7 +297,8 @@
 				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/processedList">영수증 목록</a></li>
 				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/receiptWaitList">처리 대기</a></li>
 				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/rejectReceiptList">반려된 영수증</a></li>
-				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/homeTaxPage"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/homeTax.png">홈택스 연동</a></li>
+				<%-- <li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/homeTaxPage"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/homeTax.png">홈택스 연동</a></li> --%>
+				<li class="nav-item"><a class="nav-link" href="javascript:doHomeTaxConnect()"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/homeTax.png">홈택스 연동</a></li>
 			</ul>
 
 			<section id="ajaxReplace">
@@ -323,7 +371,43 @@
 		<img src="" id="thumb" style="max-width: 100%; height: 100%;"/>
 	</section>
 	
+	<!-- confirmModal -->
+	<div class="modal fade" id="confirmMyModal" role="dialog" style="text-align: center;">
+				
+					<div class="modal-dialog">
+						<div class="modal-content">
+						
+							<div class="modal-header">
+								<h5 class="modal-title" style="font-family:'Noto Sans KR', sans-serif; ">홈택스 연동</h5>
+								<button type="button" class="close" data-dismiss="modal" style="padding-top: 5px;margin-top: 0px;">×</button>
+							</div>
+							<div class="modal-body" id="modal-body">
+								<form name="homeTaxInfo">
+									<table style="margin: auto; border-collapse: separate; border-spacing: 0 10px;">
+										<tr>
+											<th>홈택스ID</th>
+											<td><input type="text" class="form-control" name="homeTaxId" id="homeTaxId" style="float: left; width: 200px;"></td>
+										</tr>
+										<tr>
+											<th>비밀번호</th>
+											<td><input type="password" class="form-control" name="homeTaxPassword" id="homeTaxPassword" style="float: left; width: 200px;"></td>
+										</tr>
+										<tr style="margin-bottom: 50px;">
+											<th>사업자번호</th>
+											<td><input type="text" class="form-control" name="businessNo" id="businessNo" style="float: left; width: 200px;"></td>
+										</tr>
+									</table>
+								</form>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" onclick="clickHomeTaxConnect()" style="background-color: #27b2a5; color: #fff">확인</button>
+								<button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+							</div>
+						</div>
+					</div>  
+	</div>
 	<!-- Modal -->
+	
 	<jsp:include page="/WEB-INF/jsp/include/modalAlert.jsp"/>
 	
 	<!--================ End Blog Post Area =================-->

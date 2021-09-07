@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,6 +21,7 @@ import kr.ac.kopo.receipt.vo.AcceptRejectVO;
 import kr.ac.kopo.receipt.vo.ReceiptFileVO;
 import kr.ac.kopo.receipt.vo.ReceiptVO;
 import kr.ac.kopo.receipt.vo.RejectReceiptVO;
+import kr.ac.kopo.receipt.vo.homeTaxVO;
 import kr.ac.kopo.receipt.vo.searchDateVO;
 
 @Controller
@@ -316,11 +318,23 @@ public class receiptController {
 			return "receipt/homeTaxCard";
 		}
 		
-		// 홈택스 현금영수증 내역 이동
+		// 홈택스 현금영수증 매입내역 이동
 		@RequestMapping("/receipt/homeTaxCash")
 		public String homeTaxCash() {
 			
 			return "receipt/homeTaxCash";
+		}
+		
+		// 홈택스 Main으로 이동
+		@GetMapping("/receipt/homeTaxMain") 
+		public String homeTaxConnect() {
+			
+				// form태그로 전송하는 값 잘넘어옴
+				//System.out.println(homeTaxVO);
+				
+				// 테스트
+				return "receipt/homeTaxMain";
+			
 		}
  				
 }

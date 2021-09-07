@@ -650,7 +650,7 @@ input::placeholder{
 				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/receiptWaitList">처리 대기</a></li>
 				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/rejectReceiptList">반려된 영수증</a></li>
 				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/homeTaxPage"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/homeTax.png">홈택스 연동</a></li>
-				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/homeTaxCash"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/homeTax.png">현금영수증 부분 테스트</a></li>
+				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/homeTaxCash"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/homeTax.png">현금영수증 테스트</a></li>
 			</ul> 
 			
 			<section>
@@ -725,16 +725,12 @@ input::placeholder{
 								</select>
 							</div>
 						</div>
-	
-						
 					</div>
-				
 			</section>
 		</div>
 
 	</div>
 	
-	<!-- 여기다 만들어놓고, display = none, -->
 	<!--================ End Blog Post Area =================-->
 
 	<!--================ Start Footer Area =================-->

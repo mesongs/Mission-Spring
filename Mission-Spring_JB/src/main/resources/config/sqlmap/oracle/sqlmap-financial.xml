@@ -9,13 +9,14 @@
 		<result column="deal_date" property="dealDate"></result>
 		<result column="deal_time" property="dealTime"></result>
 		<result column="card_name" property="cardName"></result>
+		<result column="approval_amount" property="approvalAmount"></result>
 	</resultMap>
 	
 <!--<insert id="insertTable" parameterType="HashMap" statementType="CALLABLE">
   			{ CALL procedure명 (#{a}, #{b}, #{c}, #{d}) } 
  	</insert> -->
 	
-  <!-- 여신금융api에 요청한 데이터 insert -->
+  <!-- 여신금융api에 요청한 데이터 insert[배치] -->
   <insert id="salesInsertBatch" parameterType="salesVO">
   	<foreach item="item" index="index" collection="list" separator=" " open="INSERT ALL " close="SELECT * FROM DUAL">
   			into TB_CARD_SALES(
@@ -62,5 +63,14 @@
 	   order by deal_date
 	</select>
 	
+	
+	<select id="cardApprovalTop5" parameterType="String" resultType="SalesReportVO" resultMap="salesReportMap">
+		select card_name, sum(approval_amount) as approval_amount from tb_card_sales
+		where deal_date between to_date('2021-07-12', 'yyyy-mm-dd') and to_date('2021-07-16','yyyy-mm-dd')
+		and business_no=#{businessNo}
+		group by card_name
+		order by approval_amount desc
+	
+	</select>
 	
 </mapper>

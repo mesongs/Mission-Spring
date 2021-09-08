@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+ <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -165,6 +166,7 @@ polyline{
 <script>
 	
 $(document).ready(function(){
+
 	
 	let myChartOne = document.getElementById('myChartOne').getContext('2d');
 	let barChart = new Chart(myChartOne, {
@@ -387,9 +389,12 @@ $(document).ready(function(){
 			</ul>
 			
 			<section>
-					
+					<c:forEach items="${ map }" var="firstMap">
+						${ firstMap }
+					</c:forEach>
 					<div class="container" style="margin-left: 36px;"> 
 							<div class="row">
+								
 								<div class="col-md-6">
 									<canvas id="myChartOne3"></canvas>
 								</div>

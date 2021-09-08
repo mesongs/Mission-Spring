@@ -88,7 +88,7 @@ public class FinancialServiceImpl implements FinancialService {
 			
 			
 			// 반환값이 List
-//			financialDAO.getSalesReportDao(salesList);
+			financialDAO.batchInsertSalesDao(salesList);
 			
 			
 			// 
@@ -99,21 +99,29 @@ public class FinancialServiceImpl implements FinancialService {
 		}
 		
 	}
-
+	
+	// 처음에는 result set을 가져와서 서비스에서 parsing하려고했음..  그런담에 view에 넘겨주려했음
 	@Override
-	public ReturnSalesVO getSalesInfo(String businessNo) {
+	public HashMap<String, Object> getSalesInfo(String businessNo) {
 		
-		// 우선, 가공할 데이터를 가져온다 => 가공 후 returnSalesReportVO에 가공된 값을 저장
-		List<SalesReportVO> salesReportList = financialDAO.getSalesReportDao(businessNo);
+		HashMap<String, Object> map = new HashMap<>();
 		
-		System.out.println("서비스단으로 가져온 data" + salesReportList);
 		
-		ReturnSalesVO returnSalesVO = new ReturnSalesVO();
+//		List<SalesReportVO> salesReportList = financialDAO.getSalesReportDao(businessNo);	
 		
-		return returnSalesVO;
+		
+//		여기서 dao를 여러 개 호출함, 호출한 값을 map에 저장해서 반환
+		
+//		최근 7일간 카드사별 결제금액 top5 (파라미터 : 날짜 + 사업장번호 )
+//		파라미터를 날짜도 추가해야함 일주일 전 ~ 오늘 날짜
+		List<SalesReportVO> cardApprovalTop5List = financialDAO.getCardApprovalTop5Dao(businessNo);
+		
+		map.put("cardApprovalTop5List", cardApprovalTop5List);
+		
+		return map;
 	}
 
-
+	
 	
 	
 	

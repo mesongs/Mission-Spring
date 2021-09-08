@@ -1,7 +1,6 @@
 package kr.ac.kopo.financial.service;
 
-import kr.ac.kopo.financial.vo.ReturnSalesVO;
-
+import java.util.HashMap;
 
 public interface FinancialService {
 	
@@ -9,5 +8,6 @@ public interface FinancialService {
 	void batchInsertSalesService(String businessNo, String dealDate);
 	
 	// 매출 시각화 데이터 처리 후 리턴
-	ReturnSalesVO getSalesInfo(String businessNo);
+	HashMap<String, Object> getSalesInfo(String businessNo);
+	
 }

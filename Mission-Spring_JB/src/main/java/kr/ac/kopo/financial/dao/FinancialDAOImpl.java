@@ -24,6 +24,7 @@ public class FinancialDAOImpl implements FinancialDAO {
 		
 	}
 
+	// 이전에 시도했던 것
 	@Override
 	public List<SalesReportVO> getSalesReportDao(String businessNo) {
 		
@@ -31,6 +32,16 @@ public class FinancialDAOImpl implements FinancialDAO {
 		
 		return salesReportList;
 	}
+
+	@Override
+	public List<SalesReportVO> getCardApprovalTop5Dao(String businessNo) {
+		
+		List<SalesReportVO> cardApprovalTop5List = sqlSessionTemplate.selectList("financial.financialDAO.cardApprovalTop5", businessNo);
+		
+		return cardApprovalTop5List;
+	}
+	
+	
 	
 	
 	

@@ -10,9 +10,16 @@ public class SalesReportVO {
 	private String dealTime;
 	private String byTime; // 시간대
 	private String cardName;
+	private int approvalAmount;
 	private String visitedCount;
 	private String customerKind;
 	
+	public int getApprovalAmount() {
+		return approvalAmount;
+	}
+	public void setApprovalAmount(int approvalAmount) {
+		this.approvalAmount = approvalAmount;
+	}
 	public String getDealDate() {
 		return dealDate;
 	}
@@ -51,8 +58,11 @@ public class SalesReportVO {
 	}
 	@Override
 	public String toString() {
-		return "salesReportVO [dealDate=" + dealDate + ", dealTime=" + dealTime + ", byTime=" + byTime + ", cardName="
-				+ cardName + ", visitedCount=" + visitedCount + ", customerKind=" + customerKind + "]";
+		return "SalesReportVO [dealDate=" + dealDate + ", dealTime=" + dealTime + ", byTime=" + byTime + ", cardName="
+				+ cardName + ", approvalAmount=" + approvalAmount + ", visitedCount=" + visitedCount + ", customerKind="
+				+ customerKind + "]";
 	}
+	
+	
 	
 }

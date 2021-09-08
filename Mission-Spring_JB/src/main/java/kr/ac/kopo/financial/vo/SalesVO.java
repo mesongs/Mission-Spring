@@ -1,7 +1,8 @@
 package kr.ac.kopo.financial.vo;
 
-public class salesVO {
-
+public class SalesVO {
+	
+	// 여신금융협회 api요청 VO
 	private String businessNo;
 	private String dealDate;
 	private String dealTime;

@@ -385,18 +385,21 @@
 								<form name="homeTaxInfo">
 									<table style="margin: auto; border-collapse: separate; border-spacing: 0 10px;">
 										<tr>
-											<th>홈택스ID</th>
+											<th style="padding-right: 10px;">홈택스ID</th>
 											<td><input type="text" class="form-control" name="homeTaxId" id="homeTaxId" style="float: left; width: 200px;"></td>
 										</tr>
 										<tr>
-											<th>비밀번호</th>
+											<th style="padding-right: 10px;">비밀번호</th>
 											<td><input type="password" class="form-control" name="homeTaxPassword" id="homeTaxPassword" style="float: left; width: 200px;"></td>
 										</tr>
 										<tr style="margin-bottom: 50px;">
-											<th>사업자번호</th>
+											<th style="padding-right: 10px;">사업자번호</th>
 											<td><input type="text" class="form-control" name="businessNo" id="businessNo" style="float: left; width: 200px;"></td>
 										</tr>
 									</table>
+									<div style="width:100%; margin-top: 20px;margin-bottom: 20px; background-color: #27b2a5; color:#fff; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; ">
+										<span style="margin-left: 6px; font-size:16px;"><img class="product-img4" src="${ pageContext.request.contextPath }/resources/img/gd.png" style="width:20px; margin-right: 3px;margin-top: 2px; margin-left: 3px; margin-bottom: 6px;">홈택스 연동을 통해 사업자 카드 매입 내역 조회 서비스와 현금 영수증 매입 내역 조회 서비스를 이용하실 수 있습니다.</span>
+									</div>
 								</form>
 							</div>
 							<div class="modal-footer">

@@ -3,28 +3,64 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="receipt.receiptDAO">
+<mapper namespace="financial.financialDAO">
 	
-	<resultMap type="receiptVO" id="receiptMap">
-		<result column="receipt_no" property="receiptNo" />
-		<result column="SUPPLIER_BUSINESS_NO" property="supplierBusinessNo" />
-		<result column="STORE_NAME" property="storeName" />
-		<result column="RECEIPT_DATE" property="receiptDate" />
-		<result column="REG_DATE" property="regDate" />
-		<result column="receipt_name" property="receiptName" />
-		<result column="receipt_code" property="receiptCode"/>
-		<result column="receipt_status" property="receiptStatus" />
-		<result column="business_no" property="businessNo" />
-		<result column="file_path" property="filePath" />
-		<result column="file_save_name" property="fileSaveName"/>
-		<result column="receipt_code" property="receiptCode"/>
-		<result column="user_id" property="userId"/>
+	<resultMap type="salesReportVO" id="salesReportMap">
+		<result column="deal_date" property="dealDate"></result>
+		<result column="deal_time" property="dealTime"></result>
+		<result column="card_name" property="cardName"></result>
 	</resultMap>
 	
-<!-- <insert id="insertTable" parameterType="HashMap" statementType="CALLABLE">
+<!--<insert id="insertTable" parameterType="HashMap" statementType="CALLABLE">
   			{ CALL procedure명 (#{a}, #{b}, #{c}, #{d}) } 
  	</insert> -->
 	
+  <!-- 여신금융api에 요청한 데이터 insert -->
+  <insert id="salesInsertBatch" parameterType="salesVO">
+  	<foreach item="item" index="index" collection="list" separator=" " open="INSERT ALL " close="SELECT * FROM DUAL">
+  			into TB_CARD_SALES(
+  				   approval_no, 
+  				   DEAL_DATE, 
+  				   DEAL_TIME, 
+  				   CARD_name, 
+  				   CARD_NUMBER, 
+  				   APPROVAL_AMOUNT, 
+  				   INSTALLMENT_PERIOD, 
+  				   BUSINESS_NO)
+  			values(#{item.approvalNo},
+  				   #{item.dealDate},
+  				   #{item.dealTime},
+  				   #{item.cardName},
+  				   #{item.cardNumber},
+  				   #{item.approvalAmount},
+  				   #{item.installmentPeriod}, 
+  				   #{item.businessNo})
+  	</foreach>
+  </insert>
+
+  	<!-- 세진이가 알려준 것 map으로 받아온 것 insert -->
+  	<!-- <foreach collection="paramap" item="map" separator="," open="insert All" close="select * from dual"> 
+    into sj_auto_account()
+    values(#{map.id},) -->
+	
+	
+	<select id="salesReportResult" parameterType="String" resultType="SalesReportVO" resultMap="salesReportMap">
+	   select deal_date, 
+       deal_time,
+       case
+       when to_TIMESTAMP(deal_date||deal_time, 'yy/mm/dd hh24:mi:ss') BETWEEN to_TIMESTAMP(deal_date||' 06:00:01', 'yy/mm/dd hh24:mi:ss') and to_TIMESTAMP(deal_date||' 11:00:00', 'yy/mm/dd hh24:mi:ss') then 'morning,'
+       when to_TIMESTAMP(deal_date||deal_time, 'yy/mm/dd hh24:mi:ss') BETWEEN to_TIMESTAMP(deal_date||' 11:00:01', 'yy/mm/dd hh24:mi:ss') and to_TIMESTAMP(deal_date||' 14:00:00', 'yy/mm/dd hh24:mi:ss') then 'AFTERNOON1'
+       when to_TIMESTAMP(deal_date||deal_time, 'yy/mm/dd hh24:mi:ss') BETWEEN to_TIMESTAMP(deal_date||' 14:00:01', 'yy/mm/dd hh24:mi:ss') and to_TIMESTAMP(deal_date||' 17:00:00', 'yy/mm/dd hh24:mi:ss') then 'AFTERNOON2'
+       when to_TIMESTAMP(deal_date||deal_time, 'yy/mm/dd hh24:mi:ss') BETWEEN to_TIMESTAMP(deal_date||' 17:00:01', 'yy/mm/dd hh24:mi:ss') and to_TIMESTAMP(deal_date||' 23:59:59', 'yy/mm/dd hh24:mi:ss') then 'EVENING'
+       end as byTime,
+       card_name, 
+       visitedCount, 
+       customerKind
+	   from (SELECT DEAL_DATE, DEAL_TIME, CARD_NAME, CARD_NUMBER, APPROVAL_AMOUNT, BUSINESS_NO, (CARD_NAME||CARD_NUMBER) AS FULLNAME FROM TB_CARD_SALES WHERE DEAL_DATE between 20210715 and 20210716) a,
+	   (SELECT (CARD_NAME||CARD_NUMBER) AS FULLNAME, count(*) as visitedCount, DECODE(COUNT(*), 1, '신규고객', '기존고객') AS customerKind FROM TB_CARD_SALES GROUP BY (CARD_NAME||CARD_NUMBER)) b
+	   where A.FULLNAME=B.FULLNAME and BUSINESS_NO=#{businessNo}
+	   order by deal_date
+	</select>
 	
 	
 </mapper>

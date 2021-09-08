@@ -2,6 +2,8 @@ package kr.ac.kopo;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
@@ -14,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import kr.ac.kopo.financial.service.FinancialService;
+import kr.ac.kopo.financial.vo.SalesReportVO;
 import kr.ac.kopo.member.service.MemberService;
 import kr.ac.kopo.member.vo.LoginVO;
 import kr.ac.kopo.member.vo.MemberVO;
@@ -44,6 +48,9 @@ public class MybatisTest {
 	private ReceiptService receiptService;
 	
 	@Autowired
+	private FinancialService financialService;
+	
+	@Autowired
 	private MemberService memberService;
 
 	@Ignore
@@ -60,45 +67,13 @@ public class MybatisTest {
 	}
 	
 	@Test
-	public void 영수증최종등록(HttpSession session) throws Exception{
+	public void 매출보고서() throws Exception{
 		
-		int receiptNo = sessionTemplate.selectOne("receipt.receiptDAO.getReceiptNo");
+		String businessNo = "6052355236";
 		
-		ReceiptVO receipt = new ReceiptVO();
+		List<SalesReportVO> salesReportList = financialService.getSalesInfo(businessNo);
 		
-		LoginVO login = new LoginVO();
-		
-		login.setBusinessNo("126346");
-		
-		LoginVO userVO = memberService.login(login);
-		
-		session.setAttribute("userVO", userVO);
-
-
-		receipt.setFileSize(12322);
-		receipt.setFilePath("123");
-		receipt.setFileSaveName("214214");
-		receipt.setFileOriginalName("214214");
-		receipt.setPurpose("1");
-		receipt.setMemo("123");
-		receipt.setAmount(123);
-		receipt.setReceiptKind("1");
-		receipt.setStoreName("종범");
-		receipt.setSupplierBusinessNo("650");
-		receipt.setReceiptDate("23");
-		receipt.setAmount(123);
-		receipt.setVat(456);
-		
-		
-		//receiptNo는 직접 안넣어줘도 됨
-		
-		receiptService.receiptResgister(receipt);
-		
-		
-		System.out.println("영수증 seq 번호 : " + receiptNo);
-		
-		
-	
+		System.out.println(salesReportList);
 		
 	}
 	

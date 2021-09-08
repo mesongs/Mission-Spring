@@ -28,7 +28,7 @@
             <ul class="nav navbar-nav menu_nav justify-content-center" id="menuContent">
               <!--사용자의 agreement가 'N'일 경우 agreement 실행  -->
               <li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/account/agreement">계좌관리</a></li> 
-              <li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/financial/sales">사업보고서</a></li> 
+              <li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/financial/slaesReport">사업보고서</a></li> 
               
               <c:choose>
               	<c:when test="${userVO.userStatus == 'S'}">

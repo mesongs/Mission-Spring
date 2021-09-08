@@ -1,26 +1,38 @@
 package kr.ac.kopo.financial.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import kr.ac.kopo.financial.vo.salesVO;
+import kr.ac.kopo.financial.vo.SalesReportVO;
+import kr.ac.kopo.financial.vo.SalesVO;
 
 @Repository
 public class FinancialDAOImpl implements FinancialDAO {
 
-//	@Autowired
-//	private SqlSessionTemplate sqlSessionTemplate;
+	@Autowired
+	private SqlSessionTemplate sqlSessionTemplate;
 
 	@Override
-	public void getSalesReportDao(List<salesVO> salesList) {
+	public void batchInsertSalesDao(List<SalesVO> salesList) {
 		
-		//List를 전달해서 프로시저로 insert
-		
+//		sqlSessionTemplate.insert("financial.financialDAO.salesInsertBatch", salesListMap);
+		sqlSessionTemplate.insert("financial.financialDAO.salesInsertBatch", salesList);
 		
 	}
+
+	@Override
+	public List<SalesReportVO> getSalesReportDao(String businessNo) {
+		
+		List<SalesReportVO> salesReportList = sqlSessionTemplate.selectList("financial.financialDAO.salesReportResult", businessNo);
+		
+		return salesReportList;
+	}
+	
+	
 	
 	
 	

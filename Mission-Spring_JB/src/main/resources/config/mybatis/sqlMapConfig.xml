@@ -11,5 +11,8 @@
 		<typeAlias type="kr.ac.kopo.receipt.vo.searchDateVO" alias="searchDateVO" />
 		<typeAlias type="kr.ac.kopo.receipt.vo.AcceptRejectVO" alias="acceptRejectVO"/>
 		<typeAlias type="kr.ac.kopo.receipt.vo.RejectReceiptVO" alias="rejectReceiptVO"/>
+		<typeAlias type="kr.ac.kopo.financial.vo.SalesVO" alias="salesVO"/>
+		<typeAlias type="kr.ac.kopo.financial.vo.SalesReportVO" alias="SalesReportVO"/>
+		<typeAlias type="kr.ac.kopo.financial.vo.ReturnSalesVO" alias="returnSalesVO"/>
 	</typeAliases>
 </configuration>

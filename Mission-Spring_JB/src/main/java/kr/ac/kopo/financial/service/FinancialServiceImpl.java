@@ -1,6 +1,7 @@
 package kr.ac.kopo.financial.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.ac.kopo.financial.dao.FinancialDAO;
-import kr.ac.kopo.financial.vo.salesVO;
-import kr.ac.kopo.member.dao.MemberDAO;
+import kr.ac.kopo.financial.vo.ReturnSalesVO;
+import kr.ac.kopo.financial.vo.SalesReportVO;
+import kr.ac.kopo.financial.vo.SalesVO;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -24,10 +26,9 @@ public class FinancialServiceImpl implements FinancialService {
 	private FinancialDAO financialDAO;
 	
 	@Override
-	public List<salesVO> getSalesReportService(String businessNo, String dealDate) {
+	public void batchInsertSalesService(String businessNo, String dealDate) {
 		
-		salesVO salesVO = new salesVO();
-		List<salesVO> salesList = new ArrayList<salesVO>();
+		List<SalesVO> salesList = new ArrayList<SalesVO>();
 		
 		OkHttpClient client = new OkHttpClient();
 		
@@ -58,6 +59,8 @@ public class FinancialServiceImpl implements FinancialService {
 			System.out.println("결과값 사이즈 : " + result.size());
 			
 			for(int i=0; i < result.size(); i++) {
+				// 객체 새로 만들어서 List에 add
+				SalesVO salesVO = new SalesVO();
 				
 				salesVO.setBusinessNo(result.get(i).path("businessNo").asText());
 				salesVO.setDealDate(result.get(i).path("dealDate").asText());
@@ -66,24 +69,48 @@ public class FinancialServiceImpl implements FinancialService {
 				salesVO.setCardName(result.get(i).path("cardName").asText());
 				salesVO.setCardNumber(result.get(i).path("cardNumber").asText());
 				salesVO.setApprovalAmount(result.get(i).path("approvalAmount").asInt());
-				salesVO.setInstallmentPeriod(result.get(i).path("approvalAmount").asText());
+				salesVO.setInstallmentPeriod(result.get(i).path("installmentPeriod").asText());
 				
 				salesList.add(salesVO);
 			}
 			
-			//financialDAO.디비에 리스트insert();
 			System.out.println(salesList.get(0));
 			System.out.println(salesList.get(1));
 			System.out.println(salesList.get(2));
+			
+			
+			HashMap<String, Object> salesListMap = new HashMap<>();
+
+			salesListMap.put("salesList", salesList);
+			
+			// List를 map에 담아서 보내야 에러가 발생하지 않음
+//			financialDAO.getSalesReportDao(salesListMap);
+			
+			
+			// 반환값이 List
+//			financialDAO.getSalesReportDao(salesList);
+			
+			
+			// 
+			// 리스트를 map에 넣음
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
+	}
+
+	@Override
+	public ReturnSalesVO getSalesInfo(String businessNo) {
 		
+		// 우선, 가공할 데이터를 가져온다 => 가공 후 returnSalesReportVO에 가공된 값을 저장
+		List<SalesReportVO> salesReportList = financialDAO.getSalesReportDao(businessNo);
 		
+		System.out.println("서비스단으로 가져온 data" + salesReportList);
 		
-		return null;
+		ReturnSalesVO returnSalesVO = new ReturnSalesVO();
+		
+		return returnSalesVO;
 	}
 
 

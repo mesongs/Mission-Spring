@@ -246,17 +246,17 @@ input::placeholder{
 			<div class="container" align="center" class="cardMenuCon">
 				<div class="row">
 					<div class="col">
-						<div class="single-recent-blog-post card-view">
-							<div class="cardMenu">
-								<a href="#"> <img src="${ pageContext.request.contextPath }/resources/img/money.png"style="margin-top: -13px; width: 200px;">
+						<div align="right" class="single-recent-blog-post card-view">
+							<div class="cardMenu" style="border: 0px;">
+								<a href="${ pageContext.request.contextPath }/receipt/homeTaxPage"> <img src="${ pageContext.request.contextPath }/resources/img/bz1.png"style="margin-top: 0px; width: 250px; margin-top: 30px;">
 								</a>
 							</div>
 						</div>
 					</div>
 					<div class="col">
-						<div class="single-recent-blog-post card-view">
-							<div class="cardMenu">
-								<a href="#"><img src="${ pageContext.request.contextPath }/resources/img/receipt.png" style="margin-top: 13px; width: 200px;"></a>
+						<div align="left" class="single-recent-blog-post card-view">
+							<div class="cardMenu" style="border: 0px; ">
+								<a href="${ pageContext.request.contextPath }/receipt/homeTaxCash"><img src="${ pageContext.request.contextPath }/resources/img/cash1.png" style="margin-top: 0px; width: 250px;margin-top: 30px;margin-left: 30px;margin-right: 30px;"></a>
 							</div>
 						</div>
 					</div>

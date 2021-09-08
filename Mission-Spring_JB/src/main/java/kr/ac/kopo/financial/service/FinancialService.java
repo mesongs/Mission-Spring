@@ -1,12 +1,13 @@
 package kr.ac.kopo.financial.service;
 
-import java.util.List;
+import kr.ac.kopo.financial.vo.ReturnSalesVO;
 
-import kr.ac.kopo.financial.vo.salesVO;
 
 public interface FinancialService {
-
-	// 회원의 매출 내역을 가져옴
-	List<salesVO> getSalesReportService(String businessNo, String dealDate);
 	
+	// 배치 처리
+	void batchInsertSalesService(String businessNo, String dealDate);
+	
+	// 매출 시각화 데이터 처리 후 리턴
+	ReturnSalesVO getSalesInfo(String businessNo);
 }

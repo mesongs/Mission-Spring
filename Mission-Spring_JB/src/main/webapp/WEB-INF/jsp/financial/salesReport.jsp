@@ -3,11 +3,17 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <link rel="stylesheet"
 	href="${ pageContext.request.contextPath }/resources/css/form.css?after">
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js" integrity="sha512-Wt1bJGtlnMtGP0dqNFH1xlkLBNpEodaiQ8ZN5JLA5wpc1sUlk/O5uuOMNgvzddzkpvZ9GLyYNa8w2s7rqiTk5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+
 <head>
 <jsp:include page="/WEB-INF/jsp/include/head.jsp" />
+
 
 <style>
 #comment-custom-receipt {
@@ -129,7 +135,238 @@
     margin-right: 0px;
  }
 
+.chart div {
+      font: 10px sans-serif;
+      background-color: steelblue;
+      text-align: right;
+      padding: 3px;
+      margin: 1px;
+      color: white;
+    }
+    
+svg {
+	width: 100%;
+	height: 400px;
+}
+
+path.slice{
+	stroke-width:2px;
+}
+
+polyline{
+	opacity: .3;
+	stroke: black;
+	stroke-width: 2px;
+	fill: none;
+}
 </style>
+
+
+<script>
+	
+$(document).ready(function(){
+	
+	let myChartOne = document.getElementById('myChartOne').getContext('2d');
+	let barChart = new Chart(myChartOne, {
+		
+		type : 'bar',
+		data: {
+			
+			labels : ['학원', '연구원', '출판사', '미디어사', '위니브'],
+			datasets : [{
+				
+				label : '매출액',
+				data : [
+					
+					10,
+					100,
+					100,
+					200,
+					1000
+					
+				]
+				
+			}]
+			
+			
+		}
+		
+		
+	})
+	
+	let myChartOne2 = document.getElementById('myChartOne2').getContext('2d');
+	let barChart2 = new Chart(myChartOne2, {
+		
+		type : 'bar',
+		data: {
+			
+			labels : ['학원', '연구원', '출판사', '미디어사', '위니브'],
+			datasets : [{
+				
+				label : '매출액',
+				data : [
+					
+					10,
+					100,
+					100,
+					200,
+					1000
+					
+				]
+				
+			}]
+			
+			
+		}
+		
+		
+	})
+	
+	let myChartOne3 = document.getElementById('myChartOne3').getContext('2d');
+	let barChart3 = new Chart(myChartOne3, {
+		
+		type : 'bar',
+		data: {
+			
+			labels : ['학원', '연구원', '출판사', '미디어사', '위니브'],
+			datasets : [{
+				
+				label : '매출액',
+				data : [
+					
+					10,
+					100,
+					100,
+					200,
+					1000
+					
+				]
+				
+			}]
+			
+			
+		}
+		
+		
+	})
+	
+	let myChartOne4 = document.getElementById('myChartOne4').getContext('2d');
+	let barChart4 = new Chart(myChartOne4, {
+		
+		type : 'bar',
+		data: {
+			
+			labels : ['학원', '연구원', '출판사', '미디어사', '위니브'],
+			datasets : [{
+				
+				label : '매출액',
+				data : [
+					
+					10,
+					100,
+					100,
+					200,
+					1000
+					
+				]
+				
+			}]
+		}
+		
+		
+	})
+	
+	let myChartOne5 = document.getElementById('myChartOne5').getContext('2d');
+	let barChart5 = new Chart(myChartOne5, {
+		
+		type : 'doughnut',
+		data: {
+			
+			labels : ['학원', '연구원', '출판사', '미디어사', '위니브'],
+			datasets : [{
+				
+				label : '매출액',
+				data : [
+					
+					10,
+					100,
+					100,
+					200,
+					1000
+					
+				]
+				
+			}]
+			
+			
+		}
+		
+		
+	})
+	
+	let myChartOne6 = document.getElementById('myChartOne6').getContext('2d');
+	let barChart6 = new Chart(myChartOne6, {
+		
+		type : 'doughnut',
+		data: {
+			
+			labels : ['학원', '연구원', '출판사', '미디어사', '위니브'],
+			datasets : [{
+				
+				label : '매출액',
+				data : [
+					
+					10,
+					100,
+					100,
+					200,
+					1000
+					
+				]
+				
+			}]
+			
+			
+		}
+		
+		
+	})
+	
+	let myChartOne7 = document.getElementById('myChartOne7').getContext('2d');
+	let barChart7 = new Chart(myChartOne7, {
+		
+		type : 'doughnut',
+		data: {
+			
+			labels : ['학원', '연구원', '출판사', '미디어사', '위니브'],
+			datasets : [{
+				
+				label : '매출액',
+				data : [
+					
+					10,
+					100,
+					100,
+					200,
+					1000
+					
+				]
+				
+			}]
+			
+			
+		}
+		
+		
+	})
+		
+		
+})
+	
+	
+	
+
+</script>
 
 </head>
 
@@ -138,9 +375,7 @@
 	<!--================Header Menu Area =================-->
 	<jsp:include page="/WEB-INF/jsp/include/header.jsp" />
 	<!--================Header Menu Area =================-->
-
-
-
+		  
 	<!--================ Start Blog Post Area =================-->
 
 	<div class="comment-form-receipt" id="comment-custom-receipt">
@@ -150,6 +385,46 @@
 				<li class="nav-item"><a class="nav-link active" aria-current="page" href="#">매출내역</a></li>
 				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/processedList">매입내역</a></li>
 			</ul>
+			
+			<section>
+					
+					<div class="container" style="margin-left: 36px;"> 
+							<div class="row">
+								<div class="col-md-6">
+									<canvas id="myChartOne3"></canvas>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-8">
+									<canvas id="myChartOne4"></canvas>
+								</div>
+								<div class="col-md-4">
+									<canvas id="myChartOne5"></canvas>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<canvas id="myChartOne"></canvas>
+								</div>
+								<div class="col-md-6">
+									<canvas id="myChartOne2"></canvas>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4">
+									<canvas id="myChartOne6"></canvas>
+								</div>
+								<div class="col-md-4">
+									<canvas id="myChartOne7"></canvas>
+								</div>
+							</div>
+							
+							
+					</div>
+			</section>
+			
+			
+			
 		</div>
 	</div>
 	

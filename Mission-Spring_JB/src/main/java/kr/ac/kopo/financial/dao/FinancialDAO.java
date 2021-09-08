@@ -2,9 +2,13 @@ package kr.ac.kopo.financial.dao;
 
 import java.util.List;
 
-import kr.ac.kopo.financial.vo.salesVO;
+import kr.ac.kopo.financial.vo.SalesReportVO;
+import kr.ac.kopo.financial.vo.SalesVO;
 
 public interface FinancialDAO {
 	
-	void getSalesReportDao(List<salesVO> salesList);
+	void batchInsertSalesDao(List<SalesVO> salesList);
+	
+	List<SalesReportVO> getSalesReportDao(String businessNo);
+	
 }

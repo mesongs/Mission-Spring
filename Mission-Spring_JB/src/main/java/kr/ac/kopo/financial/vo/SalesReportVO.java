@@ -4,8 +4,8 @@ public class SalesReportVO {
 	
 	// 사업장에서 발생한 카드 매출 데이터
 	// sql로부터 얻어오는 resultSet VO
-	// 서비스단에서 처리할 데이터
-	
+	// 서비스단에서 처리할 데이터(이전에 하려고 했던 방식)
+	// 이거는 지워도 될 듯?
 	private String dealDate;
 	private String dealTime;
 	private String byTime; // 시간대

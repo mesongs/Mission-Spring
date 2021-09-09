@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import kr.ac.kopo.financial.dao.FinancialDAO;
+import kr.ac.kopo.financial.vo.ReturnSalesVO;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:config/spring/spring-mvc.xml"})
 public class BoardTest {
@@ -19,6 +22,11 @@ public class BoardTest {
 //	@Autowired
 //	private SqlSessionTemplate sqlSessionTemplate;
 
+	@Autowired
+	private FinancialDAO financialDAO;
+	
+	@Autowired
+	private SqlSessionTemplate sqlSessionTemplate;
 	
 	// BoardDAOImpl 객체가 자동주입 되고있는 거임
 	// BoardDAO에 해당하는 값
@@ -80,7 +88,14 @@ public class BoardTest {
 //		
 //	}
 	
-	
+	@Test
+	public void 최근7일매출() throws Exception{
+		
+		
+		List<ReturnSalesVO> lastWeekSales = financialDAO.getLastWeekSales("6052355236");
+		System.out.println(lastWeekSales);
+		
+	}
 	
 
 }

@@ -8,9 +8,9 @@
 <link rel="stylesheet"
 	href="${ pageContext.request.contextPath }/resources/css/form.css?after">
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js" integrity="sha512-Wt1bJGtlnMtGP0dqNFH1xlkLBNpEodaiQ8ZN5JLA5wpc1sUlk/O5uuOMNgvzddzkpvZ9GLyYNa8w2s7rqiTk5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js" integrity="sha512-Wt1bJGtlnMtGP0dqNFH1xlkLBNpEodaiQ8ZN5JLA5wpc1sUlk/O5uuOMNgvzddzkpvZ9GLyYNa8w2s7rqiTk5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+ -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
 <head>
 <jsp:include page="/WEB-INF/jsp/include/head.jsp" />
@@ -160,215 +160,241 @@ polyline{
 	stroke-width: 2px;
 	fill: none;
 }
+
+.container div{
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	border-top-right-radius: 5px;
+	border-top
+
+}
 </style>
 
 
 <script>
 	
-$(document).ready(function(){
 
-	
-	let myChartOne = document.getElementById('myChartOne').getContext('2d');
-	let barChart = new Chart(myChartOne, {
+	$(function(){
 		
-		type : 'bar',
-		data: {
+		let lastWeekArr = []; // 지난 주 날짜
+		let lastWeekSalesArr = []; //지난 주 매출액
+		
+		let weekBeforeArr = [];	// 지지난 주 날짜
+		let weekBeforeSalesArr =[]; // 지지난 주 매출액
+		
+		let customerKindArr = [];
+		let customerCountArr = [];
+		let customerSaleArr = [];
+		
+		
+		<c:forEach items="${ lastWeekSalesList }" var="lastWeekSalesList">
+			lastWeekArr.push(${ lastWeekSalesList.lastWeek })
+			lastWeekSalesArr.push(${ lastWeekSalesList.lastWeekSales})
+		</c:forEach>
+		
+		<c:forEach items="${ weekBeforeSalesList }" var="weekBeforeSalesList">
+			weekBeforeArr.push(${ weekBeforeSalesList.weekBeforeLast })
+			weekBeforeSalesArr.push(${ weekBeforeSalesList.weekBeforeLastSales })
+		</c:forEach>
 			
-			labels : ['학원', '연구원', '출판사', '미디어사', '위니브'],
-			datasets : [{
+			
+		<c:forEach items="${ customerKindSaleList }" var="customerKindSaleList">
+			customerKindArr.push("${ customerKindSaleList.customerKind }")
+			customerCountArr.push(${ customerKindSaleList.customerCount })
+			customerSaleArr.push(${ customerKindSaleList.customerSale })
+		</c:forEach>
+		
+		
+			
+			let myChartOne3 = document.getElementById('myChartOne3').getContext('2d');
+			let barChart3 = new Chart(myChartOne3, {
 				
-				label : '매출액',
-				data : [
+				type : 'bar',
+				data: {
 					
-					10,
-					100,
-					100,
-					200,
-					1000
+					labels : lastWeekArr,
+					datasets : [{
+						 
+						label : '매출액', // 각 그래프에서 나타내는 값 ex) 매출액 : 10만원,
+						data : lastWeekSalesArr
+						
+					}]
 					
+					
+				},
+				options : {
+					title : {
+						display : true,
+						text : '일별 사업장 매출 현황',
+						fontSize : 20
+					},
+					legend : {
+						display : false,
+					}
+					
+					
+				}
+				
+				
+			})
+		
+			let myChartOne4 = document.getElementById('myChartOne4').getContext('2d');
+			let barChart4 = new Chart(myChartOne4, {
+				
+				type : 'line',
+				data: {
+					
+					labels : lastWeekArr,
+					datasets : [{
+						 
+						label : lastWeekArr,
+						data : lastWeekSalesArr
+						
+					}, 
+					{
+						label : weekBeforeArr,
+						data : weekBeforeSalesArr
+					}
+					
+					]
+					
+					
+				},
+				options : {
+					title : {
+						display : true,
+						text : '전 주 대비 최근 7일간 매출 추이',
+						fontSize : 20
+					},
+					legend : {
+						display : false,
+					}
+					
+					
+				}
+				
+				
+			})
+			
+			
+			
+			let myChartOne5 = document.getElementById('myChartOne5').getContext('2d');
+			let barChart5 = new Chart(myChartOne5, {
+				
+				type : 'doughnut',
+				data: {
+					
+					labels : customerKindArr,
+					datasets : [{
+						
+						
+						data : customerCountArr
+						
+					}
+					]
+					
+					
+				},
+				options : {
+					title : {
+						display : true,   
+						text : '신규 고객 / 재방문 고객 비율',
+						fontSize : 20,
+					},
+					legend : {
+						position : 'bottom'
+						
+					}
+					
+					
+				}
+				
+				
+			})
+			
+			
+			
+			
+			
+			
+			
+			
+		let myChartOne = document.getElementById('myChartOne').getContext('2d');
+		let barChart = new Chart(myChartOne, {
+			
+			type : 'bar',
+			data: {
+				
+				labels : ['새벽', '아침', '점심', '오후', '저녁'],
+				datasets : [{
+					
+					label : '전 날',
+					data : [
+						
+						${bytimeSale.morningSale},
+						${bytimeSale.AFTERNOON1Sale},
+						${bytimeSale.AFTERNOON2Sale},
+						${bytimeSale.EVENINGSale}
+						
+					]
+					
+				}, 
+				{
+					label : '전 전날',
+					data : [
+						
+						${bytimeSale2.morningSale},
+						${bytimeSale2.AFTERNOON1Sale},
+						${bytimeSale2.AFTERNOON2Sale},
+						${bytimeSale2.EVENINGSale}
+						
+					]
+					
+				}
+				
 				]
 				
-			}]
+				
+			},
+			options : {
+				title : {
+					display : true,
+					text : '시간대별 매출 분석',
+					fontSize : 20,
+				},
+				legend : {
+					display : true,
+					position : 'right'
+				},
+				tooltips : {
+					enabled : false
+				}
+				
+			}
 			
 			
-		}
+		})
 		
 		
-	})
+		
+		
+		
+		
+		
+		
+		
+	}) 
 	
-	let myChartOne2 = document.getElementById('myChartOne2').getContext('2d');
-	let barChart2 = new Chart(myChartOne2, {
 		
-		type : 'bar',
-		data: {
-			
-			labels : ['학원', '연구원', '출판사', '미디어사', '위니브'],
-			datasets : [{
-				
-				label : '매출액',
-				data : [
-					
-					10,
-					100,
-					100,
-					200,
-					1000
-					
-				]
-				
-			}]
-			
-			
-		}
-		
-		
-	})
 	
-	let myChartOne3 = document.getElementById('myChartOne3').getContext('2d');
-	let barChart3 = new Chart(myChartOne3, {
 		
-		type : 'bar',
-		data: {
-			
-			labels : ['학원', '연구원', '출판사', '미디어사', '위니브'],
-			datasets : [{
-				
-				label : '매출액',
-				data : [
-					
-					10,
-					100,
-					100,
-					200,
-					1000
-					
-				]
-				
-			}]
-			
-			
-		}
-		
-		
-	})
-	
-	let myChartOne4 = document.getElementById('myChartOne4').getContext('2d');
-	let barChart4 = new Chart(myChartOne4, {
-		
-		type : 'bar',
-		data: {
-			
-			labels : ['학원', '연구원', '출판사', '미디어사', '위니브'],
-			datasets : [{
-				
-				label : '매출액',
-				data : [
-					
-					10,
-					100,
-					100,
-					200,
-					1000
-					
-				]
-				
-			}]
-		}
-		
-		
-	})
-	
-	let myChartOne5 = document.getElementById('myChartOne5').getContext('2d');
-	let barChart5 = new Chart(myChartOne5, {
-		
-		type : 'doughnut',
-		data: {
-			
-			labels : ['학원', '연구원', '출판사', '미디어사', '위니브'],
-			datasets : [{
-				
-				label : '매출액',
-				data : [
-					
-					10,
-					100,
-					100,
-					200,
-					1000
-					
-				]
-				
-			}]
-			
-			
-		}
-		
-		
-	})
-	
-	let myChartOne6 = document.getElementById('myChartOne6').getContext('2d');
-	let barChart6 = new Chart(myChartOne6, {
-		
-		type : 'doughnut',
-		data: {
-			
-			labels : ['학원', '연구원', '출판사', '미디어사', '위니브'],
-			datasets : [{
-				
-				label : '매출액',
-				data : [
-					
-					10,
-					100,
-					100,
-					200,
-					1000
-					
-				]
-				
-			}]
-			
-			
-		}
-		
-		
-	})
-	
-	let myChartOne7 = document.getElementById('myChartOne7').getContext('2d');
-	let barChart7 = new Chart(myChartOne7, {
-		
-		type : 'doughnut',
-		data: {
-			
-			labels : ['학원', '연구원', '출판사', '미디어사', '위니브'],
-			datasets : [{
-				
-				label : '매출액',
-				data : [
-					
-					10,
-					100,
-					100,
-					200,
-					1000
-					
-				]
-				
-			}]
-			
-			
-		}
-		
-		
-	})
-		
-		
-})
+
 	
 	
 	
 
 </script>
+
 
 </head>
 
@@ -388,14 +414,54 @@ $(document).ready(function(){
 				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/processedList">매입내역</a></li>
 			</ul>
 			
+			
 			<section>
-					<c:forEach items="${ map }" var="firstMap">
-						${ firstMap }
+					<c:forEach items="${ customerKindSaleList }" var="customerKindSaleList">
+						${ customerKindSaleList.customerKind }
+						${ customerKindSaleList.customerCount }
+						${ customerKindSaleList.customerSale }
 					</c:forEach>
+					
+					${perCutomerSale}
+					<c:forEach items="${ lastWeekSalesList }" var="lastWeekSalesList">
+						${ lastWeekSalesList.lastWeek }
+						${ lastWeekSalesList.lastWeekSales }
+					</c:forEach>
+					
+					<c:forEach items="${ weekBeforeSalesList }" var="weekBeforeSalesList">
+						${ weekBeforeSalesList.weekBeforeLast }
+						${ weekBeforeSalesList.weekBeforeLastSales }
+					</c:forEach>
+					
+			
+					${ returnSalesVO.dayBefore }
+					${ returnSalesVO.yesterday }
+					${ returnSalesVO.dod }
+					<br>
+					<c:forEach items="${ cardApprovalTop5List }" var="cardApprovalTop">
+						${ cardApprovalTop.cardName }
+						${ cardApprovalTop.approvalAmount }
+					</c:forEach>
+					
 					<div class="container" style="margin-left: 36px;"> 
 							<div class="row">
-								
-								<div class="col-md-6">
+								<div class="col-md-5">
+									<table>
+										<tr>
+											<th id="salesComma">매출액</th>
+											<td>${ returnSalesVO.yesterday }</td>
+										</tr>
+										<tr>
+											<th>전 전날 매출액</th>
+											<td>${ returnSalesVO.dayBefore }</td>
+										</tr>
+										<tr>
+											<th>매출액 증감률</th>
+											<td>${ returnSalesVO.dod }</td>
+										</tr>
+									</table>
+								</div>
+								<div class="col-md-7">
 									<canvas id="myChartOne3"></canvas>
 								</div>
 							</div>
@@ -403,16 +469,71 @@ $(document).ready(function(){
 								<div class="col-md-8">
 									<canvas id="myChartOne4"></canvas>
 								</div>
-								<div class="col-md-4">
+								<div class="col-4">
+									<table>
+										<tr>
+											<th>최근 7일간 카드사별 결제금액 TOP5</th>
+										</tr>
+										<c:forEach items="${ cardApprovalTop5List }" var="cardApprovalTop">
+											<tr>
+												<td>${ cardApprovalTop.cardName }</td>
+												<td>${ cardApprovalTop.approvalAmount }원</td>
+											</tr>
+										</c:forEach>
+									</table>
+								</div>
+								
+							</div>
+							<div class="row">
+								<div class="col-md-6">
 									<canvas id="myChartOne5"></canvas>
 								</div>
+								<div class="col-md-6">
+									<table>
+										<tr>
+											<th>고객 분석</th>
+										</tr>
+										<tr>
+											<th>평균 객단가</th>
+											<td>${ perCutomerSale }원</td>
+										</tr>
+											
+										<c:forEach items="${ customerKindSaleList }" var="customerKindSaleList">
+											<tr>
+												<th>${ customerKindSaleList.customerKind }</th>
+												<td>${ customerKindSaleList.customerSale }원</td>
+											</tr>
+										</c:forEach>
+									</table>
+								</div>
+								
+								
 							</div>
+							
+							
 							<div class="row">
 								<div class="col-md-6">
 									<canvas id="myChartOne"></canvas>
 								</div>
 								<div class="col-md-6">
-									<canvas id="myChartOne2"></canvas>
+									<table>
+										<tr>
+											<th>아침(06시 ~ 11시)</th>
+											<td>${bytimeSale.morningSale}원</td>
+										</tr>
+										<tr>
+											<th>점심(11시 ~ 14시)</th>
+											<td>${bytimeSale.AFTERNOON1Sale}원</td>
+										</tr>
+										<tr>
+											<th>오후(14시 ~ 17시)</th>
+											<td>${bytimeSale.AFTERNOON2Sale}원</td>
+										</tr>
+										<tr>
+											<th>저녁(17시 ~ 22시)</th>
+											<td>${bytimeSale.EVENINGSale}원</td>
+										</tr>
+									</table>
 								</div>
 							</div>
 							<div class="row">

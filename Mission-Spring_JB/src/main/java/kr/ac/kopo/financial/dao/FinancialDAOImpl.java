@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import kr.ac.kopo.financial.vo.ReturnSalesVO;
 import kr.ac.kopo.financial.vo.SalesReportVO;
 import kr.ac.kopo.financial.vo.SalesVO;
 
@@ -24,28 +25,76 @@ public class FinancialDAOImpl implements FinancialDAO {
 		
 	}
 
-	// 이전에 시도했던 것
-	@Override
-	public List<SalesReportVO> getSalesReportDao(String businessNo) {
-		
-		List<SalesReportVO> salesReportList = sqlSessionTemplate.selectList("financial.financialDAO.salesReportResult", businessNo);
-		
-		return salesReportList;
-	}
+	// 이전에 시도했던 것(result set뽑아오는거)
+//	@Override
+//	public List<SalesReportVO> getSalesReportDao(String businessNo) {
+//		
+//		List<SalesReportVO> salesReportList = sqlSessionTemplate.selectList("financial.financialDAO.salesReportResult", businessNo);
+//		
+//		return salesReportList;
+//	}
 
 	@Override
-	public List<SalesReportVO> getCardApprovalTop5Dao(String businessNo) {
+	public List<ReturnSalesVO> getCardApprovalTop5Dao(String businessNo) {
 		
-		List<SalesReportVO> cardApprovalTop5List = sqlSessionTemplate.selectList("financial.financialDAO.cardApprovalTop5", businessNo);
+		List<ReturnSalesVO> cardApprovalTop5List = sqlSessionTemplate.selectList("financial.financialDAO.cardApprovalTop5", businessNo);
 		
 		return cardApprovalTop5List;
 	}
+
+	@Override
+	public ReturnSalesVO getSalesSum(String businessNo) {
+		
+		ReturnSalesVO returnSalesVO = sqlSessionTemplate.selectOne("financial.financialDAO.salesResult", businessNo);
+		
+		return returnSalesVO;
+	}
+
+	@Override
+	public List<ReturnSalesVO> getLastWeekSales(String businessNo) {
+		
+		List<ReturnSalesVO> lastWeekSales = sqlSessionTemplate.selectList("financial.financialDAO.lastWeekSales", businessNo);
+		
+		return lastWeekSales;
+	}
 	
-	
-	
-	
-	
-	
+	@Override 
+	public List<ReturnSalesVO> getWeekBeforeSales(String businessNo) {
+		
+		List<ReturnSalesVO> weekBeforeSales = sqlSessionTemplate.selectList("financial.financialDAO.weekBeforeLast", businessNo);
+		return weekBeforeSales;
+	}
+
+	@Override
+	public int getPerCustomerSale(String businessNo) {
+		
+		int perCustomerSale = sqlSessionTemplate.selectOne("financial.financialDAO.perCutomerSale", businessNo);
+		return perCustomerSale;
+	}
+
+	@Override
+	public ReturnSalesVO getByTime(String businessNo) {
+		
+		ReturnSalesVO returnSalesVO = sqlSessionTemplate.selectOne("financial.financialDAO.byTimeSale", businessNo);
+		
+		return returnSalesVO;
+	}
+
+	@Override
+	public ReturnSalesVO getByTime2(String businessNo) {
+		
+		ReturnSalesVO returnSalesVO = sqlSessionTemplate.selectOne("financial.financialDAO.byTimeSale2", businessNo);
+		
+		return returnSalesVO;
+	}
+
+	@Override
+	public List<ReturnSalesVO> getCustomerKindSaleList(String businessNo) {
+		
+		List<ReturnSalesVO> customerKindSaleList = sqlSessionTemplate.selectList("financial.financialDAO.customerKindSale", businessNo);
+		
+		return customerKindSaleList;
+	}
 	
 	
 	

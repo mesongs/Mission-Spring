@@ -5,11 +5,21 @@
 
 <mapper namespace="financial.financialDAO">
 	
-	<resultMap type="salesReportVO" id="salesReportMap">
+	<resultMap type="returnSalesVO" id="returnSalesMap">
 		<result column="deal_date" property="dealDate"></result>
 		<result column="deal_time" property="dealTime"></result>
 		<result column="card_name" property="cardName"></result>
 		<result column="approval_amount" property="approvalAmount"></result>
+		<result column="lastWeek_sales" property="lastWeekSales"></result>
+		<result column="week_before_last" property="weekBeforeLast"></result>
+		<result column="week_before_last_sales" property="weekBeforeLastSales"></result>
+		<result column="morning_sale" property="morningSale"></result>
+		<result column="AFTERNOON1_sale" property="AFTERNOON1Sale"></result>
+		<result column="AFTERNOON2_sale" property="AFTERNOON2Sale"></result>
+		<result column="EVENING_sale" property="EVENINGSale"></result>
+		<result column="customer_kind" property="customerKind"></result>
+		<result column="customer_count" property="customerCount"></result>
+		<result column="customer_sale" property="customerSale"></result>
 	</resultMap>
 	
 <!--<insert id="insertTable" parameterType="HashMap" statementType="CALLABLE">
@@ -45,7 +55,7 @@
     values(#{map.id},) -->
 	
 	
-	<select id="salesReportResult" parameterType="String" resultType="SalesReportVO" resultMap="salesReportMap">
+	<select id="salesReportResult" parameterType="String" resultType="SalesReportVO" resultMap="returnSalesMap">
 	   select deal_date, 
        deal_time,
        case
@@ -64,13 +74,114 @@
 	</select>
 	
 	
-	<select id="cardApprovalTop5" parameterType="String" resultType="SalesReportVO" resultMap="salesReportMap">
-		select card_name, sum(approval_amount) as approval_amount from tb_card_sales
-		where deal_date between to_date('2021-07-12', 'yyyy-mm-dd') and to_date('2021-07-16','yyyy-mm-dd')
+	<!-- 최근 7일간 카드사별 결제금액 top5 (파라미터 : 날짜 + 사업장번호 )  -->
+	<select id="cardApprovalTop5" parameterType="String" resultType="returnSalesVO" resultMap="returnSalesMap">
+		select card_name, approval_amount from(select card_name, sum(approval_amount) as approval_amount from tb_card_sales
+		where deal_date between to_date('2020-11-18', 'yyyy-mm-dd') and to_date('2020-11-26','yyyy-mm-dd')
 		and business_no=#{businessNo}
 		group by card_name
-		order by approval_amount desc
+		order by approval_amount desc)
+		where rownum <![CDATA[ <= ]]> 5
+	</select>
 	
+	<!-- 전전날 매출액 / 전날 매출액 / 매출액 증감률 -->
+	<select id="salesResult" parameterType="String" resultType="returnSalesVO">
+		select day_before as dayBefore, yesterday, round((yesterday - day_before) / day_before * 100,1)||'%' as dod from 
+		(select (select decode(sum(approval_amount),null,0,sum(approval_amount)) from tb_card_sales
+		where deal_date ='20201125' and business_no=#{businessNo}) as day_before,
+		(select decode(sum(approval_amount),null,0,sum(approval_amount)) from tb_card_sales
+		where deal_date ='20201126' and business_no=#{businessNo}) as yesterday
+		from dual)
+	</select>
+	
+	<!-- 최근 7일간 매출액, 리턴값은 List<returnSalesVO> -->
+	<select id="lastWeekSales" parameterType="String" resultType="returnSalesVO" resultMap="returnSalesMap">
+		select deal_date as lastWeek, sum(approval_amount) as lastWeek_sales from tb_card_sales
+		where deal_date between to_date('2020-11-19', 'yyyy-mm-dd') and to_date('2020-11-26','yyyy-mm-dd')
+		and business_no=#{businessNo}
+		group by deal_date
+		order by deal_date asc
+	</select>
+	
+	<!-- 저저번주 매출액 -->
+	<select id="weekBeforeLast" parameterType="String" resultType="returnSalesVO" resultMap="returnSalesMap">
+		select deal_date as week_before_last, sum(approval_amount) as week_before_last_sales from tb_card_sales
+		where deal_date between to_date('2020-11-10', 'yyyy-mm-dd') and to_date('2020-11-17','yyyy-mm-dd')
+		and business_no=#{businessNo}
+		group by deal_date
+	</select>
+	
+	<!-- 고객평균 객단가 -->
+	<select id="perCutomerSale" parameterType="String" resultType="int">
+		select trunc(sum(approval_amount)/ count(*)) as cutomerAverage from TB_CARD_SALES 
+		where deal_date = '20201126' and business_no=#{businessNo}
+	</select>
+	
+	<!-- 전날 시간대별 판매금액 -->
+	<select id="byTimeSale" parameterType="String" resultType="returnSalesVO" resultMap="returnSalesMap">
+		select
+		(select decode(sum(approval_amount),null, 0, sum(approval_amount))
+		from tb_card_sales
+		where to_TIMESTAMP(deal_date||deal_time, 'yy/mm/dd hh24:mi:ss')
+		between to_TIMESTAMP('20201126 06:00:01', 'yy/mm/dd hh24:mi:ss')
+		and  to_TIMESTAMP('20201126 11:00:00', 'yy/mm/dd hh24:mi:ss') and business_no =#{businessNo}) as morning_sale,
+		(select decode(sum(approval_amount),null,0,sum(approval_amount))
+		from tb_card_sales
+		where to_TIMESTAMP(deal_date||deal_time, 'yy/mm/dd hh24:mi:ss') 
+		between to_TIMESTAMP('20201126 11:00:01', 'yy/mm/dd hh24:mi:ss')
+		and  to_TIMESTAMP('20201126 14:00:00', 'yy/mm/dd hh24:mi:ss') and business_no =#{businessNo}) as AFTERNOON1_sale, 
+		(select decode(sum(approval_amount),null,0,sum(approval_amount))
+		from tb_card_sales
+		where to_TIMESTAMP(deal_date||deal_time, 'yy/mm/dd hh24:mi:ss') 
+		between to_TIMESTAMP('20201126 14:00:01', 'yy/mm/dd hh24:mi:ss')
+		and  to_TIMESTAMP('20201126 17:00:00', 'yy/mm/dd hh24:mi:ss') and business_no =#{businessNo}) as AFTERNOON2_sale,
+		(select decode(sum(approval_amount),null,0,sum(approval_amount))
+		from tb_card_sales
+		where to_TIMESTAMP(deal_date||deal_time, 'yy/mm/dd hh24:mi:ss')
+		between to_TIMESTAMP('20201126 17:00:01', 'yy/mm/dd hh24:mi:ss')
+		and  to_TIMESTAMP('20201126 23:59:59', 'yy/mm/dd hh24:mi:ss') and business_no =#{businessNo}) as EVENING_sale
+		from dual
+	</select>
+	
+	<!-- 전 전날 시간대별 판매금액  -->
+	<select id="byTimeSale2" parameterType="String" resultType="returnSalesVO" resultMap="returnSalesMap">
+		select
+		(select decode(sum(approval_amount),null, 0, sum(approval_amount))
+		from tb_card_sales
+		where to_TIMESTAMP(deal_date||deal_time, 'yy/mm/dd hh24:mi:ss')
+		between to_TIMESTAMP('20201125 06:00:01', 'yy/mm/dd hh24:mi:ss')
+		and  to_TIMESTAMP('20201125 11:00:00', 'yy/mm/dd hh24:mi:ss') and business_no ='6052355236') as morning_sale,
+		(select decode(sum(approval_amount),null,0,sum(approval_amount))
+		from tb_card_sales
+		where to_TIMESTAMP(deal_date||deal_time, 'yy/mm/dd hh24:mi:ss') 
+		between to_TIMESTAMP('20201126 11:00:01', 'yy/mm/dd hh24:mi:ss')
+		and  to_TIMESTAMP('20201126 14:00:00', 'yy/mm/dd hh24:mi:ss') and business_no ='6052355236') as AFTERNOON1_sale, 
+		(select decode(sum(approval_amount),null,0,sum(approval_amount))
+		from tb_card_sales
+		where to_TIMESTAMP(deal_date||deal_time, 'yy/mm/dd hh24:mi:ss') 
+		between to_TIMESTAMP('20201125 14:00:01', 'yy/mm/dd hh24:mi:ss')
+		and  to_TIMESTAMP('20201125 17:00:00', 'yy/mm/dd hh24:mi:ss') and business_no ='6052355236') as AFTERNOON12_sale,
+		(select decode(sum(approval_amount),null,0,sum(approval_amount))
+		from tb_card_sales
+		where to_TIMESTAMP(deal_date||deal_time, 'yy/mm/dd hh24:mi:ss')
+		between to_TIMESTAMP('20201125 17:00:01', 'yy/mm/dd hh24:mi:ss')
+		and  to_TIMESTAMP('20201125 23:59:59', 'yy/mm/dd hh24:mi:ss') and business_no ='6052355236') as EVENING_sale
+		from dual
+	</select>
+	
+	<!-- 고객 종류별 결제금액 / 기존고객, 신규고객 수 -->
+	<select id="customerKindSale" parameterType="String" resultType="returnSalesVO" resultMap="returnSalesMap">
+		select chk as customer_kind, sum(customer_count) as customer_count, sum(approvalSum) as customer_sale from(SELECT DEAL_DATE, CARD_NAME, COUNT(APPROVAL_AMOUNT) as customer_count, SUM(APPROVAL_AMOUNT) as approvalSum, CHK FROM 
+		(
+		SELECT A.DEAL_DATE, A.DEAL_TIME, A.CARD_NAME, A.CARD_NUMBER, A.APPROVAL_AMOUNT, A.BUSINESS_NO, B.CHK FROM 
+		(SELECT DEAL_DATE, DEAL_TIME, CARD_NAME, CARD_NUMBER, APPROVAL_AMOUNT, BUSINESS_NO, (CARD_NAME||CARD_NUMBER) AS FULLNAME FROM TB_CARD_SALES WHERE DEAL_DATE='20201126' and business_no ='6052355236') A, 
+		(SELECT (CARD_NAME||CARD_NUMBER) AS FULLNAME, DECODE(COUNT(*), 1, '신규고객', '기존고객') AS CHK FROM TB_CARD_SALES
+		where business_no ='6052355236'
+		GROUP BY (CARD_NAME||CARD_NUMBER)) B
+		WHERE A.FULLNAME=B.FULLNAME
+		)
+		GROUP BY DEAL_DATE, CARD_NAME, CHK)
+		group by chk
 	</select>
 	
 </mapper>

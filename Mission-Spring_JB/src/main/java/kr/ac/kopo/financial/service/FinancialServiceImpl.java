@@ -36,7 +36,7 @@ public class FinancialServiceImpl implements FinancialService {
 		  .url("http://34.145.45.161:9999/jb/sales?dealDate="+ dealDate + "&businessNo=" + businessNo)
 		  .get()
 		  .addHeader("cache-control", "no-cache")
-		  .addHeader("postman-token", "1bf3046c-0bd9-ac1b-fd51-bb8df70e0f9a")
+//		  .addHeader("postman-token", "1bf3046c-0bd9-ac1b-fd51-bb8df70e0f9a")
 		  .build();
 		
 		try {
@@ -56,6 +56,7 @@ public class FinancialServiceImpl implements FinancialService {
 			JsonNode root = mapper.readTree(getResult);
 			JsonNode result = root.path("result");
 			
+			
 			System.out.println("결과값 사이즈 : " + result.size());
 			
 			for(int i=0; i < result.size(); i++) {
@@ -70,7 +71,7 @@ public class FinancialServiceImpl implements FinancialService {
 				salesVO.setCardNumber(result.get(i).path("cardNumber").asText());
 				salesVO.setApprovalAmount(result.get(i).path("approvalAmount").asInt());
 				salesVO.setInstallmentPeriod(result.get(i).path("installmentPeriod").asText());
-				
+//				vo에 값 셋팅하기
 				salesList.add(salesVO);
 			}
 			
@@ -79,20 +80,16 @@ public class FinancialServiceImpl implements FinancialService {
 			System.out.println(salesList.get(2));
 			
 			
-			HashMap<String, Object> salesListMap = new HashMap<>();
+//			HashMap<String, Object> salesListMap = new HashMap<>();
 
-			salesListMap.put("salesList", salesList);
+//			salesListMap.put("salesList", salesList);
 			
-			// List를 map에 담아서 보내야 에러가 발생하지 않음
+			// List를 map에 담아서 보내야 에러가 발생하지 않음, list로 넣어도됨
 //			financialDAO.getSalesReportDao(salesListMap);
 			
 			
-			// 반환값이 List
+			// 이걸로 실행하면됨
 			financialDAO.batchInsertSalesDao(salesList);
-			
-			
-			// 
-			// 리스트를 map에 넣음
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -100,12 +97,12 @@ public class FinancialServiceImpl implements FinancialService {
 		
 	}
 	
-	// 처음에는 result set을 가져와서 서비스에서 parsing하려고했음..  그런담에 view에 넘겨주려했음
+	// 처음에는 result set을 가져와서 서비스에서 parsing하려고 했음..  그런담에 view에 넘겨주려했음
+	// DB에서 처리한 값 map에 넣어서 반환
 	@Override
 	public HashMap<String, Object> getSalesInfo(String businessNo) {
 		
 		HashMap<String, Object> map = new HashMap<>();
-		
 		
 //		List<SalesReportVO> salesReportList = financialDAO.getSalesReportDao(businessNo);	
 		
@@ -114,11 +111,34 @@ public class FinancialServiceImpl implements FinancialService {
 		
 //		최근 7일간 카드사별 결제금액 top5 (파라미터 : 날짜 + 사업장번호 )
 //		파라미터를 날짜도 추가해야함 일주일 전 ~ 오늘 날짜
-		List<SalesReportVO> cardApprovalTop5List = financialDAO.getCardApprovalTop5Dao(businessNo);
+		List<ReturnSalesVO> cardApprovalTop5List = financialDAO.getCardApprovalTop5Dao(businessNo);
 		
-		map.put("cardApprovalTop5List", cardApprovalTop5List);
+//		전 날 매출액, 전 전날 매출액, 증감률
+		ReturnSalesVO returnSalesVO = financialDAO.getSalesSum(businessNo); 
+		
+		List<ReturnSalesVO> lastWeekSalesList =financialDAO.getLastWeekSales(businessNo);
+		List<ReturnSalesVO> weekBeforeSalesList = financialDAO.getWeekBeforeSales(businessNo);
+		
+		int perCutomerSale = financialDAO.getPerCustomerSale(businessNo);
+		ReturnSalesVO bytimeSale = financialDAO.getByTime(businessNo);
+		ReturnSalesVO bytimeSale2 = financialDAO.getByTime2(businessNo);
+		
+		
+		List<ReturnSalesVO> getCustomerKindSaleList = financialDAO.getCustomerKindSaleList(businessNo);
+		
+		map.put("cardApprovalTop5List", cardApprovalTop5List); 
+		map.put("returnSalesVO", returnSalesVO);
+		map.put("lastWeekSalesList", lastWeekSalesList);
+		map.put("weekBeforeSalesList", weekBeforeSalesList);
+		map.put("perCutomerSale", perCutomerSale);
+		map.put("bytimeSale", bytimeSale);
+		map.put("bytimeSale2", bytimeSale2);
+		map.put("getCustomerKindSaleList", getCustomerKindSaleList);
+		
+		
 		
 		return map;
+		
 	}
 
 	

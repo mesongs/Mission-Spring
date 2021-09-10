@@ -316,7 +316,7 @@ let checkEasyPassword = false;
 	<jsp:include page="/WEB-INF/jsp/include/header.jsp"/>
 	<!--================Header Menu Area =================-->
 	
-	<div class="container" style="margin: auto; margin-top: 60px; margin-left: 430px; margin-right: 430px;">
+	<div class="container" style="margin: auto; margin-top: 60px;">
 	<div class="comment-form-receipt" id="comment-custom-receipt" style="margin-top: 0px; margin-top: 70px; margin-left: 0px; margin: auto;">
 		<div class="row">
 			<div class="col">

@@ -24,6 +24,57 @@
  
 </style>    
 
+<script>
+
+let ws;
+
+function openSocket(){
+	
+    if(ws!==undefined && ws.readyState!==WebSocket.CLOSED){
+        writeResponse("WebSocket is already opened.");
+        return;
+    }
+    // 웹소켓 객체 만드는 코드
+    ws=new WebSocket("ws://localhost:9999/Mission-Spring/echo");
+    
+    ws.onopen=function(event){
+        if(event.data===undefined) return;
+        
+        console.log("onopen : " + event.data)
+        //writeResponse(event.data);
+    };
+    // 메세지 받으면 실행되는 함수
+    ws.onmessage=function(event){
+       console.log("onmessage : " + event.data)
+     
+        writeResponse(event.data);
+    };
+    ws.onclose=function(event){
+       console.log("onclose : " + event.data)
+        //writeResponse("Connection closed");
+    }
+}
+
+ function closeSocket(){
+     ws.close();
+ }
+ 
+ function writeResponse(text){
+	 alert(text)
+     $('#webSocketTest').val(text)
+ }
+ 
+//send 메소드, 유저쪽에서는 send하는게 아니고 받기만 하니까
+ function send(){
+        let text="웹소켓 테스트" + "," + 'admin';
+        ws.send(text);
+        text="";
+    }
+
+ openSocket()
+
+</script>
+
 <footer class="footer-area section-padding" id="footer-area">
     <div class="container">
       <div class="row">
@@ -33,6 +84,7 @@
             <p>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.
             </p>
+            <p id="webSocketTest"></p>
           </div>
         </div>
         <div class="col-lg-4  col-md-6 col-sm-6">

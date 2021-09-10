@@ -173,9 +173,26 @@ polyline{
 
 <script>
 	
-
 	$(function(){
 		
+		var today = new Date();
+		
+		var getYesterday = (today.getDay() - 1); // 인덱스로 표현된 요일 (0~6)
+		var yesterDayMonth = ('0' + (today.getMonth() + 1)).slice(-2);
+		var yesterday = ('0' + (today.getDate() - 1)).slice(-2);
+		
+		var	getDayBefore = (today.getDay() - 2);
+	    var dayBeforeMonth = ('0' + (today.getMonth() + 1)).slice(-2);
+	    var dayBeforeDay = ('0' + (today.getDate() - 2)).slice(-2);
+		
+		var yesterdayString = yesterDayMonth  + '-' + yesterday;
+	    var dayBeforeDayString = dayBeforeMonth + '-' + dayBeforeDay;
+	    
+	    var week = new Array('일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일');
+		
+	   	var yesterdayOfWeek = week[getYesterday]
+	    var dayBeforeDayOfWeek = week[getDayBefore]
+	   	
 		let lastWeekArr = []; // 지난 주 날짜
 		let lastWeekSalesArr = []; //지난 주 매출액
 		
@@ -186,9 +203,16 @@ polyline{
 		let customerCountArr = [];
 		let customerSaleArr = [];
 		
+//		yesterdayString + "(" + yesterdayOfWeek + ")" , dayBeforeDayString + "(" + dayBeforeDayOfWeek + ")", 
+//		$('#salesComma').val(yesterdayString + "(" + yesterdayOfWeek + ")")
+		document.getElementById("yesterdaySales").innerHTML=yesterdayString + "(" + yesterdayOfWeek + ")";
+		document.getElementById("dayBeforeSales").innerHTML=dayBeforeDayString + "(" + dayBeforeDayOfWeek + ")";
+		
+		 
+		
 		
 		<c:forEach items="${ lastWeekSalesList }" var="lastWeekSalesList">
-			lastWeekArr.push(${ lastWeekSalesList.lastWeek })
+			lastWeekArr.push("${ lastWeekSalesList.lastWeek }")
 			lastWeekSalesArr.push(${ lastWeekSalesList.lastWeekSales})
 		</c:forEach>
 		
@@ -217,12 +241,15 @@ polyline{
 						 
 						label : '매출액', // 각 그래프에서 나타내는 값 ex) 매출액 : 10만원,
 						data : lastWeekSalesArr
+						,
+						backgroundColor : '#27b2a5'
 						
 					}]
 					
 					
 				},
 				options : {
+					responsive: false,
 					title : {
 						display : true,
 						text : '일별 사업장 매출 현황',
@@ -230,7 +257,48 @@ polyline{
 					},
 					legend : {
 						display : false,
+					},
+					scales : {
+						 xAxes: [{
+					            barPercentage: 0.4,
+					            gridLines: {
+					                color: "rgba(0, 0, 0, 0)"
+					            },
+					            ticks : {
+									fontSize : 12
+								}
+					        }],
+						yAxes : [{
+							
+							ticks : {
+								stepSize: 300000,
+								beginAtZero: true,
+								fontSize : 14
+							}
+						}]
+						
+					},
+					animation: {
+						duration: 1,
+						onComplete: function () {
+							var chartInstance = this.chart,
+								ctx = chartInstance.ctx;
+							ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+							ctx.fillStyle = 'black';
+							ctx.textAlign = 'center';
+							ctx.textBaseline = 'bottom';
+
+							this.data.datasets.forEach(function (dataset, i) {
+								var meta = chartInstance.controller.getDatasetMeta(i);
+								meta.data.forEach(function (bar, index) {
+									var data = dataset.data[index];							
+									ctx.fillText(data, bar._model.x, bar._model.y - 5);
+								});
+							});
+						}
 					}
+					
+					
 					
 					
 				}
@@ -247,13 +315,15 @@ polyline{
 					labels : lastWeekArr,
 					datasets : [{
 						 
-						label : lastWeekArr,
-						data : lastWeekSalesArr
-						
+						label : '지난주 매출액',
+						data : lastWeekSalesArr,
+						backgroundColor : 'rgba(39, 178, 165, 0.6)',
+						pointRadius : 0
 					}, 
 					{
-						label : weekBeforeArr,
-						data : weekBeforeSalesArr
+						label : '2주 전 매출액',
+						data : weekBeforeSalesArr,
+						pointRadius : 0
 					}
 					
 					]
@@ -268,6 +338,26 @@ polyline{
 					},
 					legend : {
 						display : false,
+					}
+					,scales : {
+						 xAxes: [{
+							 barPercentage: 0.8,
+					            gridLines: {
+					                color: "rgba(0, 0, 0, 0)"
+					            },
+					            ticks : {
+									fontSize : 12
+								}
+					        }],
+						yAxes : [{
+							
+							ticks : {
+								stepSize: 400000,
+								beginAtZero: true,
+								fontSize : 14
+							}
+						}]
+						
 					}
 					
 					
@@ -287,9 +377,10 @@ polyline{
 					labels : customerKindArr,
 					datasets : [{
 						
-						
-						data : customerCountArr
-						
+						data : customerCountArr,
+						backgroundColor:
+		                        ['#27b2a5',
+		                        'rgb(59,132,116)']
 					}
 					]
 					
@@ -314,10 +405,7 @@ polyline{
 			
 			
 			
-			
-			
-			
-			
+	   
 			
 		let myChartOne = document.getElementById('myChartOne').getContext('2d');
 		let barChart = new Chart(myChartOne, {
@@ -327,8 +415,8 @@ polyline{
 				
 				labels : ['새벽', '아침', '점심', '오후', '저녁'],
 				datasets : [{
-					
-					label : '전 날',
+					 
+					label : yesterdayString + "(" + yesterdayOfWeek + ")" ,
 					data : [
 						
 						${bytimeSale.morningSale},
@@ -336,11 +424,12 @@ polyline{
 						${bytimeSale.AFTERNOON2Sale},
 						${bytimeSale.EVENINGSale}
 						
-					]
+					],
+					backgroundColor : 'rgb(43,63,60)'
 					
-				}, 
+				},
 				{
-					label : '전 전날',
+					label : dayBeforeDayString + "(" + dayBeforeDayOfWeek + ")",
 					data : [
 						
 						${bytimeSale2.morningSale},
@@ -348,14 +437,16 @@ polyline{
 						${bytimeSale2.AFTERNOON2Sale},
 						${bytimeSale2.EVENINGSale}
 						
-					]
+					],
+					backgroundColor : '#27b2a5'
+				
 					
 				}
 				
 				]
 				
 				
-			},
+			}, 
 			options : {
 				title : {
 					display : true,
@@ -365,10 +456,27 @@ polyline{
 				legend : {
 					display : true,
 					position : 'right'
-				},
-				tooltips : {
-					enabled : false
+				},scales : {
+					 xAxes: [{
+						 barPercentage: 0.8,
+				            gridLines: {
+				                color: "rgba(0, 0, 0, 0)"
+				            },
+				            ticks : {
+								fontSize : 12
+							}
+				        }],
+					yAxes : [{
+						
+						ticks : {
+							stepSize: 200000,
+							beginAtZero: true,
+							fontSize : 14
+						}
+					}]
+					
 				}
+				
 				
 			}
 			
@@ -416,44 +524,19 @@ polyline{
 			
 			
 			<section>
-					<c:forEach items="${ customerKindSaleList }" var="customerKindSaleList">
-						${ customerKindSaleList.customerKind }
-						${ customerKindSaleList.customerCount }
-						${ customerKindSaleList.customerSale }
-					</c:forEach>
 					
-					${perCutomerSale}
-					<c:forEach items="${ lastWeekSalesList }" var="lastWeekSalesList">
-						${ lastWeekSalesList.lastWeek }
-						${ lastWeekSalesList.lastWeekSales }
-					</c:forEach>
-					
-					<c:forEach items="${ weekBeforeSalesList }" var="weekBeforeSalesList">
-						${ weekBeforeSalesList.weekBeforeLast }
-						${ weekBeforeSalesList.weekBeforeLastSales }
-					</c:forEach>
-					
-			
-					${ returnSalesVO.dayBefore }
-					${ returnSalesVO.yesterday }
-					${ returnSalesVO.dod }
-					<br>
-					<c:forEach items="${ cardApprovalTop5List }" var="cardApprovalTop">
-						${ cardApprovalTop.cardName }
-						${ cardApprovalTop.approvalAmount }
-					</c:forEach>
 					
 					<div class="container" style="margin-left: 36px;"> 
 							<div class="row">
 								<div class="col-md-5">
 									<table>
 										<tr>
-											<th id="salesComma">매출액</th>
-											<td>${ returnSalesVO.yesterday }</td>
+											<th id="yesterdaySales"></th>
+											<td>${ returnSalesVO.yesterday }원</td>
 										</tr>
 										<tr>
-											<th>전 전날 매출액</th>
-											<td>${ returnSalesVO.dayBefore }</td>
+											<th id="dayBeforeSales"></th>
+											<td>${ returnSalesVO.dayBefore }원</td>
 										</tr>
 										<tr>
 											<th>매출액 증감률</th>
@@ -462,7 +545,8 @@ polyline{
 									</table>
 								</div>
 								<div class="col-md-7">
-									<canvas id="myChartOne3"></canvas>
+									<%-- <canvas id="myChartOne3"></canvas> --%>
+									<canvas id="myChartOne3" width="500" height="200"></canvas>
 								</div>
 							</div>
 							<div class="row">
@@ -482,7 +566,6 @@ polyline{
 										</c:forEach>
 									</table>
 								</div>
-								
 							</div>
 							<div class="row">
 								<div class="col-md-6">

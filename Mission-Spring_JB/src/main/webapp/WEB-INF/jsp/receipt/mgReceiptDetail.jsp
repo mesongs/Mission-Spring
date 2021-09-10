@@ -137,18 +137,75 @@ input[type=text] {
 </style>
 
 
-<script>
-
-	
-	
-</script>
-
 </head>
 
+
 <script>
 
-$(function(){
+let ws;
+
+function openSocket(){
 	
+    if(ws!==undefined && ws.readyState!==WebSocket.CLOSED){
+        writeResponse("WebSocket is already opened.");
+        return;
+    }
+    // 웹소켓 객체 만드는 코드
+    ws=new WebSocket("ws://localhost:9999/Mission-Spring/echo");
+    
+    ws.onopen=function(event){
+        if(event.data===undefined) return;
+        
+        console.log("onopen : " + event.data)
+        //writeResponse(event.data);
+    };
+    // 메세지가 보내졌을 때 실행
+    ws.onmessage=function(event){
+       console.log("onmessage : " + event.data)
+        writeResponse(event.data);
+    };
+    ws.onclose=function(event){
+       console.log("onclose : " + event.data)
+        //writeResponse("Connection closed");
+    }
+}
+
+ function closeSocket(){
+     ws.close();
+ }
+ 
+// function writeResponse(text){
+//     
+// }
+ 
+//send 메소드, 관리자가 보내는 부분
+ function send(){
+    //  let text="웹소켓 테스트" + "," + 'admin';
+        ws.send(text);
+    //  text="";
+    }
+
+ openSocket()
+
+ function clickWebSocketSend(formName){
+	 
+	// user에게 승인 / 반려 결과 전송
+	
+ 	// 전달하는 인자값에 따라, 회원님이 등록하신 영수증이 승인 / 반려 되었습니다. 
+ 	
+ 	var chk = // 반려 승인 체크된 값에 따라~
+	
+	send();
+	
+	formName.action = "${ pageContext.request.contextPath }/receipt/accept";
+	formName.method = "post";
+	formName.submit();
+	 
+ }
+ 
+ 
+ 
+$(function(){
 	
 	// 목록 이동 버튼
 	$('#receiptDelBtn').click(function(){
@@ -242,7 +299,6 @@ $(function(){
 	
 	$(document).on("click", "#receiptSaveBtn", function (){
 		
-		
 		location.href = "${ pageContext.request.contextPath }/receipt/accept"
 		
 		// 승인 or 반려했을 때 요청하는 컨트롤러는 동일함
@@ -274,7 +330,8 @@ $(function(){
 			
 
 			<section>
-				<form method="post" action="${ pageContext.request.contextPath }/receipt/accept">
+				<%-- <form method="post" action="${ pageContext.request.contextPath }/receipt/accept"> --%>
+					<form name="acceptResultInfo">
 					<input type="hidden" name="receiptNo" value="${ receipt.receiptNo }">
 					<div class="container"> 
 						
@@ -400,7 +457,7 @@ $(function(){
 										<option value="4">일치하지 않는 정보</option>
 										<option value="direct">직접입력</option>
 									</select>
-									<!-- 직접입력 선택하면 나타나는 inputBox  -->
+									<!-- 직접입력 선택하면 나타나는 inputBox -->
 									<!-- <input type="text" id="rejectBoxDirect" name="selboxDirect"/> -->
 									 <input type="text" class="form-control" name="rejectBoxDirect" id="rejectBoxDirect" style="margin-top: 20px;">
 								</div>
@@ -410,7 +467,9 @@ $(function(){
 									
 									<!-- <a href="javascript:doNext()" class="button submit_btn" id="receiptSaveBtn">저장</a> -->
 									<input type="submit" class="button submit_btn" id="receiptSaveBtn" value="저장">
-									<input type="submit" class="button submit_btn" id="receiptDelBtn" value="목록">
+									<input type="button" class="button submit_btn" id="receiptDelBtn" value="목록">
+									<button type="button" class="button submit_btn" onclick="send()">웹소켓</button>
+									<button type="button" class="button submit_btn" onclick="clickWebSocketSend(acceptResultInfo)">저장클릭</button>
 									<!-- <a href="#" class="button submit_btn" id="receiptDelBtn">목록</a> -->
 								</div>
 								

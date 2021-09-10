@@ -84,6 +84,15 @@
 		where rownum <![CDATA[ <= ]]> 5
 	</select>
 	
+	<!-- 서버  -->
+	<!-- select card_name, approval_amount from(select card_name, sum(approval_amount) as approval_amount from tb_card_sales
+		where deal_date between to_char(to_date('20201118', 'yyyy-mm-dd'), 'yyyymmdd') and to_char(to_date('20201126','yyyy-mm-dd'), 'yyyymmdd')
+		and business_no='6052355236'
+		group by card_name
+		order by approval_amount desc)
+		where rownum <= 5 -->
+	
+	
 	<!-- 전전날 매출액 / 전날 매출액 / 매출액 증감률 -->
 	<select id="salesResult" parameterType="String" resultType="returnSalesVO">
 		select day_before as dayBefore, yesterday, round((yesterday - day_before) / day_before * 100,1)||'%' as dod from 
@@ -96,13 +105,20 @@
 	
 	<!-- 최근 7일간 매출액, 리턴값은 List<returnSalesVO> -->
 	<select id="lastWeekSales" parameterType="String" resultType="returnSalesVO" resultMap="returnSalesMap">
-		select deal_date as lastWeek, sum(approval_amount) as lastWeek_sales from tb_card_sales
+		select to_char(to_date(deal_date, 'yy/mm/dd'), 'yy-mm-dd') as lastWeek, sum(approval_amount) as lastWeek_sales from tb_card_sales
 		where deal_date between to_date('2020-11-19', 'yyyy-mm-dd') and to_date('2020-11-26','yyyy-mm-dd')
 		and business_no=#{businessNo}
 		group by deal_date
 		order by deal_date asc
 	</select>
 	
+	<!-- 최근 7일간 매출 서버  -->
+	<!-- select to_char(to_date(deal_date, 'yy/mm/dd'), 'yy-mm-dd') as lastWeek, sum(approval_amount) as lastWeek_sales from tb_card_sales
+		 where deal_date between to_char(to_date('20201119', 'yyyy-mm-dd'),'yyyymmdd') and  to_char(to_date('20201126', 'yyyy-mm-dd'),'yyyymmdd')
+		 and business_no='6052355236'
+		 group by deal_date
+		 order by deal_date asc; -->
+		 
 	<!-- 저저번주 매출액 -->
 	<select id="weekBeforeLast" parameterType="String" resultType="returnSalesVO" resultMap="returnSalesMap">
 		select deal_date as week_before_last, sum(approval_amount) as week_before_last_sales from tb_card_sales

@@ -163,16 +163,30 @@
 	    <version>1.4.7</version>
 	</dependency>
   	
-  	<!-- 이미지 파일의 크기를 변경하는 기능을 제공하는 것(썸네일)  -->
+  	<!-- 이미지 파일의 크기를 변경하는 기능을 제공하는 것(썸네일) -->
   	<!-- https://mvnrepository.com/artifact/org.imgscalr/imgscalr-lib -->
-<dependency>
-    <groupId>org.imgscalr</groupId>
-    <artifactId>imgscalr-lib</artifactId>
-    <version>4.2</version>
-</dependency>
-  	
-  	
-  
+	<dependency>
+	    <groupId>org.imgscalr</groupId>
+	    <artifactId>imgscalr-lib</artifactId>
+	    <version>4.2</version>
+	</dependency>
+  		
+      <!-- spring-websocket -->
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-websocket</artifactId>
+          <version>5.3.6</version>
+      </dependency>
+      <!-- javax.websocket-api -->
+      <dependency>
+          <groupId>javax.websocket</groupId>
+          <artifactId>javax.websocket-api</artifactId>
+          <version>1.1</version>
+          <scope>provided</scope>
+      </dependency>
+      
+		
+ 
   </dependencies>
   
   

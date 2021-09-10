@@ -33,7 +33,7 @@
 										
 									</div>
 									<div class="col" align="right">
-											  	<button type="submit" id="excelBtn" style="padding-left: 0px;"><img class="product-img" src="/Mission-Spring/resources/img/excel.png">Excel 다운로드</button>
+											  	<button type="submit" id="excelBtn" style="padding-left: 0px;"><img class="product-img" src="${ pageContext.request.contextPath }/resources/img/excel.png">Excel 다운로드</button>
 									</div>
 								</div>
 							</section>

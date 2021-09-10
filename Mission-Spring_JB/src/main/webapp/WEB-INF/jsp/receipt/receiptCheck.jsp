@@ -138,14 +138,12 @@ input[type=text] {
 
 </style>
 
-
 <script>
 	
 $(function(){
 	
 	$("#receiptKind").val(${receiptFile.selectedReceiptNo}).prop("selected", true)
 	$("#purpose").val(${receiptFile.selectedPurposeNo}).prop("selected", true)
-	
 	
 	// js에서 숫자는 바로 인식가능, 문자열은 ''표시해야 문자열로 인식함, 숫자로 인식하려다 에러 생긴 것
 	console.log('${receiptFile.inputMemo}')

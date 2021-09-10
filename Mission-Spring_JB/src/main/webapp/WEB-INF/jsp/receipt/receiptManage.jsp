@@ -558,7 +558,7 @@ input::placeholder{
 //	$(document).on("click", "button[name='searchBtn']", function () {
 	  
 	  $(document).on("click", "#searchBtn", function (){
-
+	   
 	   $.ajax({
 		 type : "POST",
 		 url : "${ pageContext.request.contextPath }/receipt/processedListSearch",

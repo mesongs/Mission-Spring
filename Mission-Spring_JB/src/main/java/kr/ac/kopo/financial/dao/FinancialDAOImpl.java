@@ -54,7 +54,6 @@ public class FinancialDAOImpl implements FinancialDAO {
 	public List<ReturnSalesVO> getLastWeekSales(String businessNo) {
 		
 		List<ReturnSalesVO> lastWeekSales = sqlSessionTemplate.selectList("financial.financialDAO.lastWeekSales", businessNo);
-		
 		return lastWeekSales;
 	}
 	

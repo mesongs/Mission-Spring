@@ -193,7 +193,7 @@
 	<!-- 회원 - 반려된 영수증 세부사항 -->
 	<select id="rejectReceiptDetail" resultType="rejectReceiptVO" parameterType="int" resultMap="rejectReceiptMap">
 		select a.receipt_no, receipt_code, supplier_business_no, store_name,  to_char(RECEIPT_DATE, 'yy/mm/dd') as RECEIPT_DATE, amount, vat, overlap, receipt_status, purpose, file_path,
-		        memo, business_no, file_save_name, reject_reason
+		        memo, business_no, file_save_name, reject_reason						
 				from TB_RECEIPT a, TB_RECEIPT_FILE b
 				where a.receipt_no = b.receipt_no
 				and a.receipt_no = #{receiptNo}

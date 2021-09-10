@@ -117,6 +117,8 @@ public class FinancialServiceImpl implements FinancialService {
 		ReturnSalesVO returnSalesVO = financialDAO.getSalesSum(businessNo); 
 		
 		List<ReturnSalesVO> lastWeekSalesList =financialDAO.getLastWeekSales(businessNo);
+		
+		
 		List<ReturnSalesVO> weekBeforeSalesList = financialDAO.getWeekBeforeSales(businessNo);
 		
 		int perCutomerSale = financialDAO.getPerCustomerSale(businessNo);

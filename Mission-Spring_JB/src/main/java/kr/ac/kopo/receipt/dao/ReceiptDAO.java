@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import kr.ac.kopo.receipt.vo.AcceptRejectVO;
+import kr.ac.kopo.receipt.vo.HomeTaxCashVO;
 import kr.ac.kopo.receipt.vo.ReceiptFileVO;
 import kr.ac.kopo.receipt.vo.ReceiptVO;
 import kr.ac.kopo.receipt.vo.RejectReceiptVO;
@@ -50,5 +51,6 @@ public interface ReceiptDAO {
 	RejectReceiptVO rejectReceiptDetailDao(int receiptNo);
 	
 	int reRegisterRejectDao(RejectReceiptVO rejectReceipt);
+	
 	
 }

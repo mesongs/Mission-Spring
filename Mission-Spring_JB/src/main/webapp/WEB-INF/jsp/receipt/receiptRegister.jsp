@@ -10,6 +10,20 @@
 <jsp:include page="/WEB-INF/jsp/include/head.jsp" />
 
 <style>
+.product-img4{
+ 	max-width: 20px;
+    max-height: 20px;
+    margin-left : 18px;
+    margin-top : 3px;
+    margin-right: 0px;
+ }
+.product-img3{
+	max-width: 30px;
+    max-height: 30px;
+ 	margin-top: -5px;
+    margin-right: 0px;
+ }
+
 #comment-custom-receipt {
 	/* max-width: 700px; */
 	width: 1000px;
@@ -122,12 +136,6 @@
 	margin-right: 5px;
 }
 
-.product-img3{
- 	max-width: 20px;
-    max-height: 20px;
- 	margin-top: -5px;
-    margin-right: 0px;
- }
 
 </style>
 
@@ -223,15 +231,15 @@
 
 	}
 	
-	function clickHomeTaxConnect(){
+	function clickHomeTaxConnect(formName){
 		// 모달창 확인 누르면, 회원이 입력한 정보를 homeTaxId homeTaxPassword businessNo로 전송
-		let homeTaxId = $('#homeTaxId').val()
-		let homeTaxPassword = $('#homeTaxPassword').val()
-		let businessNo = $('#businessNo').val()
+		formName.action = "${pageContext.request.contextPath}/receipt/homeTaxConnect";
+		formName.method = "post";
+		formName.submit();
 		
-		
-		location.href = "${pageContext.request.contextPath}/receipt/homeTaxMain"
 	}
+	
+	
 		
 		
 		/* $.ajax({
@@ -293,15 +301,17 @@
 		<h4>증빙관리</h4>
 		<div class="container">
 			<ul class="nav nav-tabs" style="margin-left: 50px;">
-				<li class="nav-item"><a class="nav-link active" aria-current="page" href="#">영수증 등록</a></li>
-				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/processedList">영수증 목록</a></li>
-				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/receiptWaitList">처리 대기</a></li>
-				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/rejectReceiptList">반려된 영수증</a></li>
-				<%-- <li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/homeTaxPage"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/homeTax.png">홈택스 연동</a></li> --%>
-				<li class="nav-item"><a class="nav-link" href="javascript:doHomeTaxConnect()"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/homeTax.png">홈택스 연동</a></li>
+				<li class="nav-item"><a class="nav-link active" aria-current="page" href="#"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/pictureReceipt.jpg">증빙자료 직접 등록</a></li>
+				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/processedList">처리 완료 목록</a></li>
+				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/receiptWaitList">처리 대기 목록</a></li>
+				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/rejectReceiptList">반려 목록</a></li>
+				<li class="nav-item"><a class="nav-link" href="javascript:doHomeTaxConnect()"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/autoCollect.png">증빙자료 수집/조회</a></li>
 			</ul>
-
+			
 			<section id="ajaxReplace">
+			<div style="margin-top: 30px;margin-left: 66px;margin-bottom: 30px; width:500px; background-color: #27b2a5; color:#fff; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; width:790px;">
+									<span style="margin-left: 6px;"><img class="product-img4" src="${ pageContext.request.contextPath }/resources/img/gd.png" style="margin-left: 3px; margin-bottom: 6px;">사업자 카드가 아닌 개인카드, 가족명의 카드를 사용하여 매입한 영수증, 수기로 작성한 세금계산서를 등록해주세요. </span>
+								</div>
 				<form method="post" enctype="multipart/form-data">
 
 					<div class="container">
@@ -378,7 +388,7 @@
 						<div class="modal-content">
 						
 							<div class="modal-header">
-								<h5 class="modal-title" style="font-family:'Noto Sans KR', sans-serif; ">홈택스 연동</h5>
+								<h5 class="modal-title" style="font-family:'Noto Sans KR', sans-serif; "><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/homeTax.png">홈택스 연동</h5>
 								<button type="button" class="close" data-dismiss="modal" style="padding-top: 5px;margin-top: 0px;">×</button>
 							</div>
 							<div class="modal-body" id="modal-body">
@@ -386,11 +396,11 @@
 									<table style="margin: auto; border-collapse: separate; border-spacing: 0 10px;">
 										<tr>
 											<th style="padding-right: 10px;">홈택스ID</th>
-											<td><input type="text" class="form-control" name="homeTaxId" id="homeTaxId" style="float: left; width: 200px;"></td>
+											<td><input type="text" class="form-control" name="hometaxId" id="hometaxId" style="float: left; width: 200px;"></td>
 										</tr>
 										<tr>
 											<th style="padding-right: 10px;">비밀번호</th>
-											<td><input type="password" class="form-control" name="homeTaxPassword" id="homeTaxPassword" style="float: left; width: 200px;"></td>
+											<td><input type="password" class="form-control" name="hometaxPassword" id="hometaxPassword" style="float: left; width: 200px;"></td>
 										</tr>
 										<tr style="margin-bottom: 50px;">
 											<th style="padding-right: 10px;">사업자번호</th>
@@ -398,12 +408,12 @@
 										</tr>
 									</table>
 									<div style="width:100%; margin-top: 20px;margin-bottom: 20px; background-color: #27b2a5; color:#fff; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; ">
-										<span style="margin-left: 6px; font-size:16px;"><img class="product-img4" src="${ pageContext.request.contextPath }/resources/img/gd.png" style="width:20px; margin-right: 3px;margin-top: 2px; margin-left: 3px; margin-bottom: 6px;">홈택스 연동을 통해 사업자 카드 매입 내역 조회 서비스와 현금 영수증 매입 내역 조회 서비스를 이용하실 수 있습니다.</span>
+										<span style="margin-left: 6px; font-size:16px;"><img class="product-img4" src="${ pageContext.request.contextPath }/resources/img/gd.png" style="width:20px; margin-right: 3px;margin-top: 2px; margin-left: 3px; margin-bottom: 6px;">연동을 통해 사업자 카드 매입 내역 조회 / 현금 영수증 매입 내역 조회 / 전자(세금계산서) 조회 서비스를 이용하실 수 있습니다.</span>
 									</div>
 								</form>
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-default" onclick="clickHomeTaxConnect()" style="background-color: #27b2a5; color: #fff">확인</button>
+								<button type="button" class="btn btn-default" onclick="clickHomeTaxConnect(homeTaxInfo)" style="background-color: #27b2a5; color: #fff">확인</button>
 								<button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
 							</div>
 						</div>
@@ -412,7 +422,6 @@
 	<!-- Modal -->
 	
 	<jsp:include page="/WEB-INF/jsp/include/modalAlert.jsp"/>
-	
 	<!--================ End Blog Post Area =================-->
 
 	<!--================ Start Footer Area =================-->

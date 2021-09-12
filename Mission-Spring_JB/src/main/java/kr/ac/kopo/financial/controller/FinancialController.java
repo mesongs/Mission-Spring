@@ -41,18 +41,13 @@ public class FinancialController {
 		ModelAndView mav = new ModelAndView("financial/salesReport");
 //		
 		HashMap<String, Object> map = financialService.getSalesInfo(businessNo);
-//		
 
-		
-//		keySet 여러 키 순회해서
-//		keySet 사이즈 => 객체를 몇 개 만들어야할지
-//		루프 돌면서 리스트 객체 생성?
-		
 		List<ReturnSalesVO> cardApprovalTop5List = (List<ReturnSalesVO>)map.get("cardApprovalTop5List");
 		ReturnSalesVO returnSalesVO = (ReturnSalesVO)map.get("returnSalesVO");
 		List<ReturnSalesVO> lastWeekSalesList = (List<ReturnSalesVO>) map.get("lastWeekSalesList");
 		List<ReturnSalesVO> weekBeforeSalesList = (List<ReturnSalesVO>) map.get("weekBeforeSalesList");
 		List<ReturnSalesVO> customerKindSaleList = (List<ReturnSalesVO>)map.get("getCustomerKindSaleList");
+		List<ReturnSalesVO> weekCustomerKindSaleList = (List<ReturnSalesVO>)map.get("getWeekCustomerKindSaleList");
 		
 		int perCutomerSale = (int)map.get("perCutomerSale");
 		
@@ -81,6 +76,9 @@ public class FinancialController {
 		
 		// 신규 + 재방문객 수, 신규고객 매출 + 재방문객 매출
 		mav.addObject("customerKindSaleList", customerKindSaleList);
+		
+		// 일주일간 신규 + 재방문객 수, 신규고객 매출 + 재방문객 매출
+		mav.addObject("weekCustomerKindSaleList", weekCustomerKindSaleList);
 		
 		return mav;
 		

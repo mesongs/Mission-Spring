@@ -192,8 +192,8 @@ input::placeholder{
  }
  
  .product-img3{
- 	max-width: 20px;
-    max-height: 20px;
+ 	max-width: 30px;
+    max-height: 30px;
  	margin-top: -5px;
     margin-right: 0px;
  }
@@ -213,9 +213,32 @@ input::placeholder{
     height: 241px;
  
 }
+
+ .addHover:hover {
+    width:400px;
+    transform:scale(1.1);
+    transition: transform.5s;
+    }
+    
+
+.nav-tabs .nav-link.active {
+    color: #007BFF;
+}
+    
+
 </style>
 
 <script>
+
+$(document).ready(function(){
+	
+	$('#myModal').modal('show');
+	$('#title').html('과세기간 및 신고납부 안내');
+	$('#alert-modal-body-msg').html('<img src="${ pageContext.request.contextPath }/resources/img/taxbilDateDetail.png" style="width:920px; height:390px;" class="img-fluid rounded">')
+	
+})
+
+
 </script>
 
 </head>
@@ -226,21 +249,21 @@ input::placeholder{
 	<!--================Header Menu Area =================-->
 	<jsp:include page="/WEB-INF/jsp/include/header.jsp"/>
 	<!--================Header Menu Area =================-->
-
+	
 	<div class="comment-form-receipt" id="comment-custom-receipt" style="width: 1110px;">
 		<div class="row">
 			<div class="col">
-				<h4 style="font-family: 'Noto Sans KR', sans-serif;font-size: xx-large; margin-left: 32px;">홈택스</h4>
+				<h4 style="font-family: 'Noto Sans KR', sans-serif;font-size: xx-large; margin-left: 32px;">증빙관리</h4>
 			</div>
 		</div>
 		<div class="container">
 			<ul class="nav nav-tabs" style="margin-left: 50px;">
-				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/register">영수증 등록</a></li>
-				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/processedList">영수증 목록</a></li>
-				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/receiptWaitList">처리 대기</a></li>
-				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/rejectReceiptList">반려된 영수증</a></li>
-				<li class="nav-item"><a class="nav-link active" aria-current="page" href="#"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/homeTax.png">홈택스 연동</a></li>
-			</ul> 
+				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/register"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/pictureReceipt.jpg">증빙자료 직접 등록</a></li>
+				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/processedList">처리 완료 목록</a></li>
+				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/receiptWaitList">처리 대기 목록</a></li>
+				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/rejectReceiptList">반려 목록</a></li>
+				<li class="nav-item"><a class="nav-link active" aria-current="page" href="#"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/autoCollect.png">증빙자료 수집/조회</a></li>
+			</ul>
 			
 			 <section>
 			<div class="container" align="center" class="cardMenuCon">
@@ -248,7 +271,7 @@ input::placeholder{
 					<div class="col">
 						<div align="right" class="single-recent-blog-post card-view">
 							<div class="cardMenu" style="border: 0px;">
-								<a href="${ pageContext.request.contextPath }/receipt/homeTaxPage"> <img src="${ pageContext.request.contextPath }/resources/img/bz1.png"style="margin-top: 0px; width: 250px; margin-top: 30px;">
+								<a href="${ pageContext.request.contextPath }/receipt/homeTaxPage"> <img class="addHover" src="${ pageContext.request.contextPath }/resources/img/bz1.png"style="margin-top: 0px; width: 250px; margin-top: 30px;">
 								</a>
 							</div>
 						</div>
@@ -256,7 +279,14 @@ input::placeholder{
 					<div class="col">
 						<div align="left" class="single-recent-blog-post card-view">
 							<div class="cardMenu" style="border: 0px; ">
-								<a href="${ pageContext.request.contextPath }/receipt/homeTaxCash"><img src="${ pageContext.request.contextPath }/resources/img/cash1.png" style="margin-top: 0px; width: 250px;margin-top: 30px;margin-left: 30px;margin-right: 30px;"></a>
+								<a href="${ pageContext.request.contextPath }/receipt/homeTaxCash"><img class="addHover" src="${ pageContext.request.contextPath }/resources/img/cash1.png" style="margin-top: 0px; width: 250px;margin-top: 30px;margin-left: 40px;margin-right: 30px;"></a>
+							</div>
+						</div>
+					</div>
+					<div class="col">
+						<div align="left" class="single-recent-blog-post card-view">
+							<div class="cardMenu" style="border: 0px; ">
+								<a href="${pageContext.request.contextPath }/receipt/homeTaxDigitalInvoice"><img class="addHover" src="${ pageContext.request.contextPath }/resources/img/taxBil.png" style="margin-top: 0px; width: 250px;margin-top: 30px;margin-right: 30px;"></a>
 							</div>
 						</div>
 					</div>
@@ -268,8 +298,29 @@ input::placeholder{
 
 	</div>
 	
-	<jsp:include page="/WEB-INF/jsp/include/modalAlert.jsp"/>
+	<%-- <jsp:include page="/WEB-INF/jsp/include/modalAlert.jsp"/> --%>
 	<!--================ End Blog Post Area =================-->
+
+	<div class="modal fade" id="myModal" role="dialog" style="text-align: center;">
+					
+					<!-- <div class="modal-dialog"> -->
+					<div class="modal-dialog" style="max-width: 100%; width: auto; display: table;">
+						<div class="modal-content">
+						
+							<div class="modal-header">
+								<h5 id="title" class="modal-title" style="font-family:'Noto Sans KR', sans-serif; ">알림</h5>
+								<button type="button" class="close" data-dismiss="modal" style="padding-top: 5px;margin-top: 0px;">×</button>
+							</div>
+							<div class="modal-body" id="modal-body">
+								<p id="alert-modal-body-msg" style="margin-bottom: 0px"></p>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal" style="background-color: #27b2a5; color: #fff">확인</button>
+							</div>
+						</div>
+					</div>
+	</div>
+
 
 	<!--================ Start Footer Area =================-->
 	<jsp:include page="/WEB-INF/jsp/include/footer.jsp"/>

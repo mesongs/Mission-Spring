@@ -23,7 +23,7 @@ public class WebSocket {
     private static final List<Session> sessionList = new ArrayList<Session>();
     
     public WebSocket() {
-        System.out.println("웹소켓(서버) 객체생성");
+        //System.out.println("웹소켓(서버) 객체생성");
     }
     
     @RequestMapping(value="/chat.do")
@@ -60,7 +60,6 @@ public class WebSocket {
                 }
             }
         }catch (Exception e) {
-            // TODO: handle exception
             System.out.println(e.getMessage());
         }
     }
@@ -90,7 +89,7 @@ public class WebSocket {
     //웹 소켓이 닫혔을 때 호출(또는 브라우저가 닫혔을 때 호출)
     @OnClose // 클라이언트와 웹소켓과의 연결이 끊기면 실행되는 메소드
     public void onClose(Session session) {
-       System.out.println("onClose 메소드");
+//       System.out.println("onClose 메소드");
         //logger.info("Session "+session.getId()+" has ended");
         sessionList.remove(session);
     }

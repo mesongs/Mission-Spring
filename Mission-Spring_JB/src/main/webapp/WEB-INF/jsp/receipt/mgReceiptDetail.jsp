@@ -48,6 +48,25 @@
 	background-color: #27b2a5;
 }
 
+#webSocketBtn{
+	width : 180px;
+	padding-right: 25px;
+	padding-left: 25px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	border: 0px;
+    margin-right: 20px;
+	font-size: x-large;
+	-webkit-border-radius: 30px;
+	-moz-border-radius: 30px;
+	-ms-border-radius: 30px;
+	border-radius: 30px;
+	color: #fff;
+	background-color: #27b2a5;
+	
+
+}
+
 #receiptDelBtn{
 	
 	width : 180px;
@@ -180,28 +199,46 @@ function openSocket(){
  
 //send 메소드, 관리자가 보내는 부분
  function send(){
-    //  let text="웹소켓 테스트" + "," + 'admin';
-        ws.send(text);
-    //  text="";
+    
+	let check = $("input[name=confirm]:checked").val();
+	
+	switch(check) {
+	
+	  case '1':
+		  sendMessage = "회원님이 신청하신 영수증이 승인되었습니다."
+		  break
+
+	  case '2':
+		  sendMessage = "회원님이 신청하신 영수증이 반려되었습니다."
+	      break								
+	}
+	
+	let text=sendMessage + "," + 'admin';
+//	let text="웹소켓 테스트123" + "," + 'admin';
+    ws.send(text);
+    text="";
+    
+    // form태그에 submit숨겨놓고, 웹소켓 send() 실행한 후, trigger로 작동
+    $("#formSubmit").trigger('click');
+    
     }
 
  openSocket()
-
- function clickWebSocketSend(formName){
-	 
-	// user에게 승인 / 반려 결과 전송
-	
- 	// 전달하는 인자값에 따라, 회원님이 등록하신 영수증이 승인 / 반려 되었습니다. 
- 	
- 	var chk = // 반려 승인 체크된 값에 따라~
-	
-	send();
-	
-	formName.action = "${ pageContext.request.contextPath }/receipt/accept";
-	formName.method = "post";
-	formName.submit();
-	 
- }
+ 
+ // send()를 바로 실행하니까 문제없는데..
+/*  function clickWebSocketSend(formName){
+		 
+		// user에게 승인 / 반려 결과 전송
+		
+	 	// 전달하는 인자값에 따라, 회원님이 등록하신 영수증이 승인 / 반려 되었습니다. 
+	 	alert('clickWebSocketSend 클릭하면 웹소켓 실행')
+		
+		send()
+	 	
+		formName.action = "${ pageContext.request.contextPath }/receipt/accept";
+		formName.method = "post";
+		formName.submit();
+	 } */
  
  
  
@@ -330,8 +367,8 @@ $(function(){
 			
 
 			<section>
-				<%-- <form method="post" action="${ pageContext.request.contextPath }/receipt/accept"> --%>
-					<form name="acceptResultInfo">
+				<!-- <form name="acceptResultInfo"> -->
+				<form method="post" action="${ pageContext.request.contextPath }/receipt/accept">
 					<input type="hidden" name="receiptNo" value="${ receipt.receiptNo }">
 					<div class="container"> 
 						
@@ -466,10 +503,11 @@ $(function(){
 								<div align="center" style="margin-top: 50px;">
 									
 									<!-- <a href="javascript:doNext()" class="button submit_btn" id="receiptSaveBtn">저장</a> -->
-									<input type="submit" class="button submit_btn" id="receiptSaveBtn" value="저장">
+									<!-- <input type="submit" class="button submit_btn" id="receiptSaveBtn" value="저장"> -->
+									<input type="button" id="webSocketBtn" class="button submit_btn" onclick="send()" value="저장">
 									<input type="button" class="button submit_btn" id="receiptDelBtn" value="목록">
-									<button type="button" class="button submit_btn" onclick="send()">웹소켓</button>
-									<button type="button" class="button submit_btn" onclick="clickWebSocketSend(acceptResultInfo)">저장클릭</button>
+									<input type="submit" id="formSubmit" class="button submit_btn" id="receiptSaveBtn" value="저장" style="display: none;">
+									<!-- <button type="button" class="button submit_btn" onclick="clickWebSocketSend(acceptResultInfo)">저장클릭</button> -->
 									<!-- <a href="#" class="button submit_btn" id="receiptDelBtn">목록</a> -->
 								</div>
 								

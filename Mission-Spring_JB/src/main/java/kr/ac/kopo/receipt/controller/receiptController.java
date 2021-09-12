@@ -3,6 +3,8 @@ package kr.ac.kopo.receipt.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,12 +18,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import kr.ac.kopo.member.vo.LoginVO;
 import kr.ac.kopo.receipt.service.ReceiptService;
 import kr.ac.kopo.receipt.vo.AcceptRejectVO;
+import kr.ac.kopo.receipt.vo.HomeTaxCashVO;
 import kr.ac.kopo.receipt.vo.ReceiptFileVO;
 import kr.ac.kopo.receipt.vo.ReceiptVO;
 import kr.ac.kopo.receipt.vo.RejectReceiptVO;
-import kr.ac.kopo.receipt.vo.homeTaxVO;
+import kr.ac.kopo.receipt.vo.HomeTaxInfoVO;
 import kr.ac.kopo.receipt.vo.searchDateVO;
 
 @Controller
@@ -325,16 +329,51 @@ public class receiptController {
 			return "receipt/homeTaxCash";
 		}
 		
+		// 홈택스 전자(세금) 계산서 이동
+		@RequestMapping("/receipt/homeTaxDigitalInvoice")
+		public String homeTaxDigital() {
+					
+			return "receipt/homeTaxDigital";
+		}
+		
 		// 홈택스 Main으로 이동
-		@GetMapping("/receipt/homeTaxMain") 
-		public String homeTaxConnect() {
-			
-				// form태그로 전송하는 값 잘넘어옴
-				//System.out.println(homeTaxVO);
+		// post로 로그인 정보를 받아오자 form 방식
+		@PostMapping("/receipt/homeTaxConnect") 
+		public String homeTaxConnect(HomeTaxInfoVO homeTaxInfo) {
+				
+			    // 반환값은 뭐여야 하지? 로그인이 성공적으로 되었다 라는 걸 확인하고 성공한 경우에만 페이지 넘겨야함
+				// 로그인 실패한 경우에는 redirect
+				service.homeTaxConnectService(homeTaxInfo);
+				
+				return "receipt/homeTaxMain";
+		}
+		
+		// 테스트용으로 만들어놓은 get방식
+		@GetMapping("/receipt/homeTaxConnect") 
+		public String TesthomeTaxConnect() {
 				
 				// 테스트
 				return "receipt/homeTaxMain";
+		}
+		
+		// 회원의 현금 영수증(매입) 정보를 가져옴
+		@RequestMapping("/receipt/getHomeTaxCashInfo")
+		@ResponseBody
+		public List<HomeTaxCashVO> getHomeTaxCashInfo(HttpSession session, @RequestParam("purchaseDate") String purchaseDate) {
+			
+			
+			System.out.println("구매날짜" + purchaseDate);
+			
+			LoginVO userVO = (LoginVO)session.getAttribute("userVO");
+			String businessNo = userVO.getBusinessNo();
+			
+			List<HomeTaxCashVO> getHomeTaxCashList = service.getHomeTaxCashInfoService(purchaseDate, businessNo);
+			
+			return getHomeTaxCashList;
 			
 		}
+		
+		
+		
  				
 }

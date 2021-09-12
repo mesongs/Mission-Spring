@@ -127,6 +127,7 @@ public class FinancialServiceImpl implements FinancialService {
 		
 		
 		List<ReturnSalesVO> getCustomerKindSaleList = financialDAO.getCustomerKindSaleList(businessNo);
+		List<ReturnSalesVO> getWeekCustomerKindSaleList = financialDAO.getWeekCustomerKindSaleList(businessNo);
 		
 		map.put("cardApprovalTop5List", cardApprovalTop5List); 
 		map.put("returnSalesVO", returnSalesVO);
@@ -136,8 +137,7 @@ public class FinancialServiceImpl implements FinancialService {
 		map.put("bytimeSale", bytimeSale);
 		map.put("bytimeSale2", bytimeSale2);
 		map.put("getCustomerKindSaleList", getCustomerKindSaleList);
-		
-		
+		map.put("getWeekCustomerKindSaleList", getWeekCustomerKindSaleList);
 		
 		return map;
 		

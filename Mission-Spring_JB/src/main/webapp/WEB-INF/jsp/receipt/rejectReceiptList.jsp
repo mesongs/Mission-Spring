@@ -192,12 +192,15 @@ input::placeholder{
     }
    
     .product-img3{
- 	max-width: 40px;
-    max-height: 25px;
+ 	max-width: 30px;
+    max-height: 30px;
  	margin-top: -5px;
     margin-right: 0px;
-    
  }
+ 
+ .nav-tabs .nav-link.active {
+    color: #007BFF;
+}
     
 }
 </style>
@@ -646,11 +649,11 @@ input::placeholder{
 		</div>
 		<div class="container">
 			<ul class="nav nav-tabs" style="margin-left: 50px;">
-				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/register">영수증 등록</a></li>
-				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/processedList">영수증 목록</a></li>
-				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/receiptWaitList">처리 대기</a></li>
-				<li class="nav-item"><a class="nav-link active" aria-current="page" href="#">반려된 영수증</a></li>
-				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/homeTaxPage"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/homeTax.png">홈택스 연동</a></li>
+				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/register"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/pictureReceipt.jpg">증빙자료 직접 등록</a></li>
+				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/processedList">처리 완료 목록</a></li>
+				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/receiptWaitList">처리 대기 목록</a></li>
+				<li class="nav-item"><a class="nav-link active" aria-current="page" href="#">반려 목록</a></li>
+				<li class="nav-item"><a class="nav-link" href="javascript:doHomeTaxConnect()"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/autoCollect.png">증빙자료 자동 수집/조회</a></li>
 			</ul> 
 			
 			<section>

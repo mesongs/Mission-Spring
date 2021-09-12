@@ -30,6 +30,11 @@ public interface FinancialDAO {
 	// 전 전날 시간대별 매출액
 	ReturnSalesVO getByTime2(String businessNo);
 	
-	// 고객 종류별 결제금액 / 기존고객, 신규고객 수
+	// (전 날)고객 종류별 결제금액 / 기존고객, 신규고객 수
 	List<ReturnSalesVO> getCustomerKindSaleList(String businessNo);
+	
+	// (최근 7일간) 고객 종류별 결제금액 / 기존고객, 신규고객 수
+	List<ReturnSalesVO> getWeekCustomerKindSaleList(String businessNo);
+	
+	
 }

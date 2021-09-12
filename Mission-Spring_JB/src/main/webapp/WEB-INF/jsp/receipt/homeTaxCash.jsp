@@ -184,6 +184,11 @@ input::placeholder{
 </style> -->
 
 <style>
+
+ .nav-tabs .nav-link.active {
+	color: #007BFF;
+}
+
 	.product-img2 {
     max-width: 30px;
     max-height: 50px;
@@ -196,13 +201,35 @@ input::placeholder{
  }
  
  .product-img3{
- 	max-width: 20px;
-    max-height: 20px;
+ 	max-width: 30px;
+    max-height: 30px;
  	margin-top: -5px;
     margin-right: 0px;
+ 
  }
  
-}
+  #collectBtn{
+ 
+ 	height : 35px;
+ 	margin-left: 6px;
+ 	border-top-left-radius: 5px;
+ 	border-top-right-radius: 5px;
+ 	border-bottom-left-radius: 5px;
+ 	border-bottom-right-radius: 5px;
+ 	background-color: rgb(2,2,2);
+ 	color : #fff;
+ 	border-color: rgb(2,2,2);
+ 	
+ }
+ 
+ #searchHometaxCash{
+ 	border-top-left-radius: 5px;
+ 	border-top-right-radius: 5px;
+ 	border-bottom-left-radius: 5px;
+ 	border-bottom-right-radius: 5px;
+ 
+ }
+
 </style>
 
 <script>
@@ -347,119 +374,18 @@ input::placeholder{
 			
 		})
 		
-		//processedList();
 		
-		function processedList(){
+		// 홈택스에 현금영수증 api 요청
+		$('#searchHometaxCash').click(function(){
 			
-			$.ajax({
-				type : "get",
-				url : "${pageContext.request.contextPath}/receipt/processedAllList",
-				success : function(result){
-					
-					let obj = JSON.parse(result);
-					
-			 		 $('#test').empty();
-			 		 
-					 if(obj.length >= 1){
-						 
-						 // for(receipt vo(=searchWaitList) : receiptList) 1.5버전 for문과 동일함
-						 obj.forEach(function(processedList){
-							 	 
-							 	 str="<tr>"
-							 	 str += "<td>" + '<input type="checkbox" class="testBox">' + "</td>" 
-							     str += "<td>" + processedList.receiptDate + "</td>"
-							     str += "<td>" + processedList.receiptName + "</td>"
-							     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/detail/" + processedList.receiptNo + ">" + processedList.storeName +"</a></td>"; 
-							     str += "<td>" + processedList.sum +"원</td>";
-							     str += "<td>" + processedList.purpose +"</td>";
-							     
-							     if(processedList.overlap == 'Y'){
-				 					
-							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>"
-							     }else{
-				 					
-							    	 str += "<td>" + "</td>"
-				 				 }
-				 				 
-							     /* str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>" */
-							     /* str +="<td>" + processedList.overlap + "</td>" */
-							     
-			 					 str += "<td>" + processedList.memo +"</td>";
-			 					 str += "</tr>"
-			 					 $('#test').append(str);
-			 					 
-			 					 
-			 					 
-			 					 
-			 					 // 받아온 overlap값이 'Y'이면, 경고 이미지 띄우기
-			 					 // 'N'이면, empty
-			 					 
-			 					 
-			 					 
-			 					
-						 })
-					 }
-					
-				},
-				error:function(request, status, error){
-				    alert("code:"+ request.status +"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-				}
-				
-				
-			})
-			
-		}
-		
-		
-		// datepicker를 활용한 날짜 조회
-		 $('#startDate').datepicker(
-			{
-			
-				 dateFormat:'yy/mm/dd',
-	             changeMonth: true,
-	             changeYear: true,
-	             dayNames: ['일요일','월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
-	     		 dayNamesMin : ['일','월','화','수','목','금','토'],
-	     		 monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-			
-				 // 시작일 선택 후 닫힐 때, 종료일의 최소 선택 가능 날짜는 시작일
-				 // 시작일 이후로만 선택 가능한 종료일
-				 onClose:function(selectedDate){
-				
-					// 종료일 태그에 mindate 속성 추가
-					$('#endDate').datepicker("option","minDate", selectedDate)
-			}
-			
-		});
-		
-		$('#endDate').datepicker({
-			
-				dateFormat:'yy/mm/dd',
-	            changeMonth: true,
-	            changeYear: true,
-	            dayNames: ['일요일','월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
-	    		dayNamesMin : ['일','월','화','수','목','금','토'],
-	    		monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-				
-				// 종료일 선택 후 닫힐 때, 시작일의 최대 선택 가능 날짜는 종료일
-				onClose:function(selectedDate){
-					
-					$('#startDate').datepicker("option", "maxDate", selectedDate)
-			}
-			
-		});
-		
-		
-		$('#searchDate').click(function(){
-			
-			let startDate = $('#startDate').val();
- 			let endDate = $('#endDate').val(); 
-			
+			let purchaseDate = $('#searchMonth').val();
+			alert(purchaseDate)
 			//조회 버튼 누르면, 기간에 해당하는 값만 조회함
 			$.ajax({
 				type : "get",
-				data : {startDate : startDate, endDate : endDate },
-				url : "${pageContext.request.contextPath}/receipt/selectDate",
+				data : { purchaseDate : purchaseDate },
+				url : "${pageContext.request.contextPath}/receipt/getHomeTaxCashInfo",
+				
 				success : function(result){
 					
 					let obj = JSON.parse(result);
@@ -504,25 +430,19 @@ input::placeholder{
 		})
 		
 		
-		/* $('#searchDay').datepicker(
-				{
+		
+			
+			$(document).on('change','.testBox', function(){
+				   
+				   if($("input[type=checkbox]").is(":checked")){
+					   $("#collectBtn").attr('style', "display:block;");
+
+				   }else{
+					   $("#collectBtn").attr('style', "display:none;");
+					   
+				   }
 				
-					 dateFormat:'yy/mm/dd',
-		             changeMonth: true,
-		             changeYear: true,
-		             dayNames: ['일요일','월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
-		     		 dayNamesMin : ['일','월','화','수','목','금','토'],
-		     		 monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-				
-					 // 시작일 선택 후 닫힐 때, 종료일의 최소 선택 가능 날짜는 시작일
-					 // 시작일 이후로만 선택 가능한 종료일
-					 onClose:function(selectedDate){
-					
-						// 종료일 태그에 mindate 속성 추가
-						$('#endDate').datepicker("option","minDate", selectedDate)
-				}
-				
-			}); */
+			})
 		
 	
 	})
@@ -541,18 +461,16 @@ input::placeholder{
 	<div class="comment-form-receipt" id="comment-custom-receipt" style="width: 1110px;">
 		<div class="row">
 			<div class="col">
-				<h4 style="font-family: 'Noto Sans KR', sans-serif;font-size: xx-large; margin-left: 32px;">홈택스 - 현금영수증 매입내역 조회</h4>
+				<h4 style="font-family: 'Noto Sans KR', sans-serif;font-size: xx-large; margin-left: 32px;">증빙자료 수집/조회</h4>
 			</div>
 			
 		</div>
 		<div class="container">
 			<ul class="nav nav-tabs" style="margin-left: 50px;">
-				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/register">영수증 등록</a></li>
-				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/processedList">영수증 목록</a></li>
-				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/receiptWaitList">처리 대기</a></li>
-				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/rejectReceiptList">반려된 영수증</a></li>
-				<li class="nav-item"><a class="nav-link"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/homeTax.png">홈택스 연동</a></li>
-				<li class="nav-item"><a class="nav-link active" aria-current="page" href="#"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/homeTax.png">현금영수증 부분 테스트</a></li>
+				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/homeTaxPage"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/card2.jpg">사업용 신용카드 매입내역 조회</a></li>
+				<li class="nav-item"><a class="nav-link active" aria-current="page" href="#"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/cash2.png">현금영수증 매입내역 조회</a></li>
+				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath }/receipt/homeTaxDigitalInvoice"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/cal2.png">전자(세금)계산서 조회</a></li>
+				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/receipt/homeTaxConnect">목록</a></li>
 			</ul> 
 			
 			<section>
@@ -569,7 +487,7 @@ input::placeholder{
 							 	</div>
 								<div class="row" style="margin-top: 30px;">
 									<div class="col-7" style="float: left;">
-										<span style="float: left;">조회기간</span>
+										<span style="float: left; font-weight: bold; color: rgb(2,2,2);">조회기간</span>
 										<label style="float: left;"><input type="radio" name="searchDateDay" value="1" style="margin-left: 10px;" checked="checked"> 일별</label> 
 										<label style="float: left;"><input type="radio" name="searchDateDay" value="2" style="margin-left: 10px;"> 월별</label>
 										<label style="float: left;"><input type="radio" name="searchDateDay" value="3"style="margin-left: 10px;"> 분기별</label>
@@ -610,11 +528,14 @@ input::placeholder{
 												<option value="8">2020년 4분기</option>
 											</select>
 											<span style="float: left">
-												<button id="searchBtn" name="searchBtn" type="button" style="height : 35px;;margin-left: 6px; border-top-left-radius: 5px;border-bottom-left-radius: 5px;">조회</button>
+												<button id="searchHometaxCash" name="searchHometaxCash" type="button" style="height : 35px;;margin-left: 6px; border-top-left-radius: 5px;border-bottom-left-radius: 5px;">조회</button>
+											</span>
+											<span style="float: left">
+												<button id="collectBtn" name="collectBtn" type="button" style="display: none;">수집</button>
 											</span>
 									</div>
 									<div class="col" style="width: 200px; " align="right" >
-										<div >
+										<div>
 											<input type="search" placeholder="검색어 입력" name="searchWord" id="searchWord" style="float: left; width: 150px; ">
 											<span style="float: left">
 											<button id="searchBtn" name="searchBtn" type="button">검색</button>

@@ -11,6 +11,7 @@
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js" integrity="sha512-Wt1bJGtlnMtGP0dqNFH1xlkLBNpEodaiQ8ZN5JLA5wpc1sUlk/O5uuOMNgvzddzkpvZ9GLyYNa8w2s7rqiTk5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
  -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script src="https://rawgit.com/beaver71/Chart.PieceLabel.js/master/build/Chart.PieceLabel.min.js"></script>
 
 <head>
 <jsp:include page="/WEB-INF/jsp/include/head.jsp" />
@@ -196,6 +197,9 @@ polyline{
 		let lastWeekArr = []; // 지난 주 날짜
 		let lastWeekSalesArr = []; //지난 주 매출액
 		
+		let cardNameArr = [];
+		let cardSalesArr = [];
+		
 		let weekBeforeArr = [];	// 지지난 주 날짜
 		let weekBeforeSalesArr =[]; // 지지난 주 매출액
 		
@@ -203,13 +207,17 @@ polyline{
 		let customerCountArr = [];
 		let customerSaleArr = [];
 		
+		let weekCustomerKindArr = [];
+		let weekCustomerCountArr = [];
+		let weekCustomerSaleArr = [];
+		
 //		yesterdayString + "(" + yesterdayOfWeek + ")" , dayBeforeDayString + "(" + dayBeforeDayOfWeek + ")", 
 //		$('#salesComma').val(yesterdayString + "(" + yesterdayOfWeek + ")")
 		document.getElementById("yesterdaySales").innerHTML=yesterdayString + "(" + yesterdayOfWeek + ")";
 		document.getElementById("dayBeforeSales").innerHTML=dayBeforeDayString + "(" + dayBeforeDayOfWeek + ")";
 		
+		document.getElementById("reportDayByTime").innerHTML=yesterdayString + "(" + yesterdayOfWeek + ")";
 		 
-		
 		
 		<c:forEach items="${ lastWeekSalesList }" var="lastWeekSalesList">
 			lastWeekArr.push("${ lastWeekSalesList.lastWeek }")
@@ -221,6 +229,12 @@ polyline{
 			weekBeforeSalesArr.push(${ weekBeforeSalesList.weekBeforeLastSales })
 		</c:forEach>
 			
+		// 카드사별 결제금액 top5	cardApprovalTop5List => 카드사마다 실제 사업자의 계좌로 입금되는 날짜는 상이함
+		<c:forEach items="${ cardApprovalTop5List }" var="cardApprovalTop">
+			cardNameArr.push("${ cardApprovalTop.cardName }")
+			cardSalesArr.push(${ cardApprovalTop.approvalAmount })
+		</c:forEach>
+			
 			
 		<c:forEach items="${ customerKindSaleList }" var="customerKindSaleList">
 			customerKindArr.push("${ customerKindSaleList.customerKind }")
@@ -228,7 +242,13 @@ polyline{
 			customerSaleArr.push(${ customerKindSaleList.customerSale })
 		</c:forEach>
 		
-		
+		<c:forEach items="${ weekCustomerKindSaleList }" var="weekCustomerKindSaleList">
+			weekCustomerKindArr.push("${ weekCustomerKindSaleList.customerKind }")
+			weekCustomerCountArr.push(${ weekCustomerKindSaleList.customerCount })
+			weekCustomerSaleArr.push(${ weekCustomerKindSaleList.customerSale })
+		</c:forEach>
+			
+			
 			
 			let myChartOne3 = document.getElementById('myChartOne3').getContext('2d');
 			let barChart3 = new Chart(myChartOne3, {
@@ -297,6 +317,7 @@ polyline{
 							});
 						}
 					}
+
 					
 					
 					
@@ -366,6 +387,52 @@ polyline{
 				
 			})
 			
+			let cardSalesYop5Chart = document.getElementById('cardSalesYop5Chart').getContext('2d');
+			let cardPieChart = new Chart(cardSalesYop5Chart, {
+				
+				type : 'pie',
+				data: {
+					 
+					labels : cardNameArr,
+					datasets : [{
+						
+						data : cardSalesArr,
+						backgroundColor: [ "rgb(79,186,140)", "#27b2a5", "rgb(43,63,60)", "rgb(179,221,210)", "rgb(152,175,173)"]
+					} 
+					]
+					
+					
+				},
+				options : {
+					responsive : false,
+					title : {
+						display : true,   
+						text : '최근 7일간 카드사별 결제금액 TOP5',
+						fontSize : 20,
+					},
+					legend : {
+						position : 'right'
+						 
+						
+					},
+					pieceLabel: { 
+						mode:"percentage",
+						position:"default",
+						fontSize: 12,
+						fontColor : 'rgb(2,2,2)',
+						fontStyle: 'bold'
+						}
+
+				
+
+						
+					
+					
+				}
+				
+				
+			})
+			
 			
 			
 			let myChartOne5 = document.getElementById('myChartOne5').getContext('2d');
@@ -389,13 +456,22 @@ polyline{
 				options : {
 					title : {
 						display : true,   
-						text : '신규 고객 / 재방문 고객 비율',
+						text : '전 일 신규 고객 / 재방문 고객 비율',
 						fontSize : 20,
 					},
 					legend : {
 						position : 'bottom'
 						
-					}
+					},pieceLabel: { 
+						mode:"percentage",
+						position:"default",
+						fontSize: 12,
+						fontColor : 'rgb(2,2,2)',
+						fontStyle: 'bold'
+						}
+
+
+						
 					
 					
 				}
@@ -403,8 +479,82 @@ polyline{
 				
 			})
 			
-			
-			
+//			 weekCustomerCountArr 
+		
+		let weekCustomerKind = document.getElementById('weekCustomerKind').getContext('2d');
+			let weekCustomerKindChart = new Chart(weekCustomerKind, {
+				
+				type : 'bar',
+				data: {
+					
+					labels : weekCustomerKindArr,
+					datasets : [{
+						
+						data : weekCustomerSaleArr,
+						backgroundColor:
+		                        ['#27b2a5',
+		                        'rgb(59,132,116)']
+					}
+					]
+					
+					
+				},
+				options : {
+					title : {
+						display : true,   
+						text : '최근 7일간 신규 고객 / 재방문 고객 결제금액',
+						fontSize : 20,
+					},
+					legend : {
+						display : false
+						
+					},
+					animation: {
+						duration: 1,
+						onComplete: function () {
+							var chartInstance = this.chart,
+								ctx = chartInstance.ctx;
+							ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+							ctx.fillStyle = 'black';
+							ctx.textAlign = 'center';
+							ctx.textBaseline = 'bottom';
+
+							this.data.datasets.forEach(function (dataset, i) {
+								var meta = chartInstance.controller.getDatasetMeta(i);
+								meta.data.forEach(function (bar, index) {
+									var data = dataset.data[index];							
+									ctx.fillText(data, bar._model.x, bar._model.y - 5);
+								});
+							});
+						}
+					},
+					scales : {
+						 xAxes: [{
+					            barPercentage: 0.7,
+					            gridLines: {
+					                color: "rgba(0, 0, 0, 0)"
+					            },
+					            ticks : {
+									fontSize : 12
+								}
+					        }],
+						yAxes : [{
+							
+							ticks : {
+								stepSize: 1000000,
+								beginAtZero: true,
+								fontSize : 14
+							}
+						}]
+						
+					}
+					
+						
+				}
+				
+				
+			})
+		
 	   
 			
 		let myChartOne = document.getElementById('myChartOne').getContext('2d');
@@ -415,7 +565,7 @@ polyline{
 				
 				labels : ['새벽', '아침', '점심', '오후', '저녁'],
 				datasets : [{
-					 
+					
 					label : yesterdayString + "(" + yesterdayOfWeek + ")" ,
 					data : [
 						
@@ -476,6 +626,7 @@ polyline{
 					}]
 					
 				}
+
 				
 				
 			}
@@ -529,6 +680,7 @@ polyline{
 					<div class="container" style="margin-left: 36px;"> 
 							<div class="row">
 								<div class="col-md-5">
+								<div class="single-sidebar-widget newsletter-widget" style="background: #f9f9ff; padding: 48px 30px; height: 295px;">
 									<table>
 										<tr>
 											<th id="yesterdaySales"></th>
@@ -543,39 +695,32 @@ polyline{
 											<td>${ returnSalesVO.dod }</td>
 										</tr>
 									</table>
+									</div>
 								</div>
 								<div class="col-md-7">
 									<%-- <canvas id="myChartOne3"></canvas> --%>
+									<div class="single-sidebar-widget newsletter-widget" style="background: #f9f9ff; padding: 48px 30px; height: 295px;">
 									<canvas id="myChartOne3" width="500" height="200"></canvas>
+									</div>
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-md-8">
+								<div class="col-md-7">
+								<div class="single-sidebar-widget newsletter-widget" style="background: #f9f9ff; padding: 48px 30px; height: 295px;margin-top: 30px;">
 									<canvas id="myChartOne4"></canvas>
 								</div>
-								<div class="col-4">
-									<table>
-										<tr>
-											<th>최근 7일간 카드사별 결제금액 TOP5</th>
-										</tr>
-										<c:forEach items="${ cardApprovalTop5List }" var="cardApprovalTop">
-											<tr>
-												<td>${ cardApprovalTop.cardName }</td>
-												<td>${ cardApprovalTop.approvalAmount }원</td>
-											</tr>
-										</c:forEach>
-									</table>
+								</div>
+								<div class="col-5">
+								<div class="single-sidebar-widget newsletter-widget" style="background: #f9f9ff; padding: 48px 30px; height: 295px; margin-top: 30px;">
+									<canvas id="cardSalesYop5Chart" width="300" height="200"></canvas>
+								</div>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-md-6">
+								<div class="single-sidebar-widget newsletter-widget" style="background: #f9f9ff; padding: 48px 30px; height: 295px; margin-top: 30px; margin-bottom: 30px;">
 									<canvas id="myChartOne5"></canvas>
-								</div>
-								<div class="col-md-6">
 									<table>
-										<tr>
-											<th>고객 분석</th>
-										</tr>
 										<tr>
 											<th>평균 객단가</th>
 											<td>${ perCutomerSale }원</td>
@@ -588,18 +733,30 @@ polyline{
 											</tr>
 										</c:forEach>
 									</table>
+									</div>
 								</div>
 								
+								<div class="col-md-6">
+										<div class="single-sidebar-widget newsletter-widget" style="background: #f9f9ff; padding: 48px 30px; height: 295px; margin-top: 30px; margin-bottom: 30px;">
+											<canvas id="weekCustomerKind"></canvas>
+										</div>
+								</div>
 								
 							</div>
 							
 							
 							<div class="row">
-								<div class="col-md-6">
+								<div class="col-md-8">
+								<div class="single-sidebar-widget newsletter-widget" style="background: #f9f9ff; padding: 48px 30px;">
 									<canvas id="myChartOne"></canvas>
+									</div>
 								</div>
-								<div class="col-md-6">
+								<div class="col-md-4">
+								<div class="single-sidebar-widget newsletter-widget" style="background: #f9f9ff; padding: 48px 30px;">
 									<table>
+										<tr>
+											<th id="reportDayByTime"></th>
+										</tr>
 										<tr>
 											<th>아침(06시 ~ 11시)</th>
 											<td>${bytimeSale.morningSale}원</td>
@@ -617,6 +774,7 @@ polyline{
 											<td>${bytimeSale.EVENINGSale}원</td>
 										</tr>
 									</table>
+									</div>
 								</div>
 							</div>
 							<div class="row">
@@ -630,6 +788,7 @@ polyline{
 							
 							
 					</div>
+					
 			</section>
 			
 			

@@ -68,7 +68,7 @@
        visitedCount, 
        customerKind
 	   from (SELECT DEAL_DATE, DEAL_TIME, CARD_NAME, CARD_NUMBER, APPROVAL_AMOUNT, BUSINESS_NO, (CARD_NAME||CARD_NUMBER) AS FULLNAME FROM TB_CARD_SALES WHERE DEAL_DATE between 20210715 and 20210716) a,
-	   (SELECT (CARD_NAME||CARD_NUMBER) AS FULLNAME, count(*) as visitedCount, DECODE(COUNT(*), 1, '신규고객', '기존고객') AS customerKind FROM TB_CARD_SALES GROUP BY (CARD_NAME||CARD_NUMBER)) b
+	   (SELECT (CARD_NAME||CARD_NUMBER) AS FULLNAME, count(*) as visitedCount, DECODE(COUNT(*), 1, '신규고객', '재방문고객') AS customerKind FROM TB_CARD_SALES GROUP BY (CARD_NAME||CARD_NUMBER)) b
 	   where A.FULLNAME=B.FULLNAME and BUSINESS_NO=#{businessNo}
 	   order by deal_date
 	</select>
@@ -166,38 +166,54 @@
 		from tb_card_sales
 		where to_TIMESTAMP(deal_date||deal_time, 'yy/mm/dd hh24:mi:ss')
 		between to_TIMESTAMP('20201125 06:00:01', 'yy/mm/dd hh24:mi:ss')
-		and  to_TIMESTAMP('20201125 11:00:00', 'yy/mm/dd hh24:mi:ss') and business_no ='6052355236') as morning_sale,
+		and  to_TIMESTAMP('20201125 11:00:00', 'yy/mm/dd hh24:mi:ss') and business_no =#{businessNo}) as morning_sale,
 		(select decode(sum(approval_amount),null,0,sum(approval_amount))
 		from tb_card_sales
 		where to_TIMESTAMP(deal_date||deal_time, 'yy/mm/dd hh24:mi:ss') 
 		between to_TIMESTAMP('20201126 11:00:01', 'yy/mm/dd hh24:mi:ss')
-		and  to_TIMESTAMP('20201126 14:00:00', 'yy/mm/dd hh24:mi:ss') and business_no ='6052355236') as AFTERNOON1_sale, 
+		and  to_TIMESTAMP('20201126 14:00:00', 'yy/mm/dd hh24:mi:ss') and business_no =#{businessNo}) as AFTERNOON1_sale, 
 		(select decode(sum(approval_amount),null,0,sum(approval_amount))
 		from tb_card_sales
 		where to_TIMESTAMP(deal_date||deal_time, 'yy/mm/dd hh24:mi:ss') 
 		between to_TIMESTAMP('20201125 14:00:01', 'yy/mm/dd hh24:mi:ss')
-		and  to_TIMESTAMP('20201125 17:00:00', 'yy/mm/dd hh24:mi:ss') and business_no ='6052355236') as AFTERNOON12_sale,
+		and  to_TIMESTAMP('20201125 17:00:00', 'yy/mm/dd hh24:mi:ss') and business_no =#{businessNo}) as AFTERNOON12_sale,
 		(select decode(sum(approval_amount),null,0,sum(approval_amount))
 		from tb_card_sales
 		where to_TIMESTAMP(deal_date||deal_time, 'yy/mm/dd hh24:mi:ss')
 		between to_TIMESTAMP('20201125 17:00:01', 'yy/mm/dd hh24:mi:ss')
-		and  to_TIMESTAMP('20201125 23:59:59', 'yy/mm/dd hh24:mi:ss') and business_no ='6052355236') as EVENING_sale
+		and  to_TIMESTAMP('20201125 23:59:59', 'yy/mm/dd hh24:mi:ss') and business_no =#{businessNo}) as EVENING_sale
 		from dual
 	</select>
 	
-	<!-- 고객 종류별 결제금액 / 기존고객, 신규고객 수 -->
+	<!-- (전 날) 고객 종류별 결제금액 / 기존고객, 신규고객 수 -->
 	<select id="customerKindSale" parameterType="String" resultType="returnSalesVO" resultMap="returnSalesMap">
 		select chk as customer_kind, sum(customer_count) as customer_count, sum(approvalSum) as customer_sale from(SELECT DEAL_DATE, CARD_NAME, COUNT(APPROVAL_AMOUNT) as customer_count, SUM(APPROVAL_AMOUNT) as approvalSum, CHK FROM 
 		(
 		SELECT A.DEAL_DATE, A.DEAL_TIME, A.CARD_NAME, A.CARD_NUMBER, A.APPROVAL_AMOUNT, A.BUSINESS_NO, B.CHK FROM 
 		(SELECT DEAL_DATE, DEAL_TIME, CARD_NAME, CARD_NUMBER, APPROVAL_AMOUNT, BUSINESS_NO, (CARD_NAME||CARD_NUMBER) AS FULLNAME FROM TB_CARD_SALES WHERE DEAL_DATE='20201126' and business_no ='6052355236') A, 
-		(SELECT (CARD_NAME||CARD_NUMBER) AS FULLNAME, DECODE(COUNT(*), 1, '신규고객', '기존고객') AS CHK FROM TB_CARD_SALES
-		where business_no ='6052355236'
+		(SELECT (CARD_NAME||CARD_NUMBER) AS FULLNAME, DECODE(COUNT(*), 1, '신규고객', '재방문고객') AS CHK FROM TB_CARD_SALES
+		where business_no =#{businessNo}
 		GROUP BY (CARD_NAME||CARD_NUMBER)) B
 		WHERE A.FULLNAME=B.FULLNAME
 		)
 		GROUP BY DEAL_DATE, CARD_NAME, CHK)
 		group by chk
+	</select>
+	
+	<!--  (최근 7일간) 고객 종류별 결제금액 / 기존고객, 신규고객 수 -->
+	<select id="WeekCustomerKindSale" parameterType="String" resultType="returnSalesVO" resultMap="returnSalesMap">
+		select chk as customer_kind, sum(customer_count) as customer_count, sum(approvalSum) as customer_sale from(SELECT DEAL_DATE, CARD_NAME, COUNT(APPROVAL_AMOUNT) as customer_count, SUM(APPROVAL_AMOUNT) as approvalSum, CHK FROM 
+			(
+			SELECT A.DEAL_DATE, A.DEAL_TIME, A.CARD_NAME, A.CARD_NUMBER, A.APPROVAL_AMOUNT, A.BUSINESS_NO, B.CHK FROM 
+			(SELECT DEAL_DATE, DEAL_TIME, CARD_NAME, CARD_NUMBER, APPROVAL_AMOUNT, BUSINESS_NO, (CARD_NAME||CARD_NUMBER) AS FULLNAME FROM TB_CARD_SALES WHERE deal_date between to_date('2020-11-18', 'yy/mm/dd') and to_date('2020-11-26','yy/mm/dd')
+			and business_no =#{businessNo}) A, 
+			(SELECT (CARD_NAME||CARD_NUMBER) AS FULLNAME, DECODE(COUNT(*), 1, '신규고객', '재방문고객') AS CHK FROM TB_CARD_SALES
+			where business_no =#{businessNo}
+			GROUP BY (CARD_NAME||CARD_NUMBER)) B
+			WHERE A.FULLNAME=B.FULLNAME
+			)
+			GROUP BY DEAL_DATE, CARD_NAME, CHK)
+			group by chk
 	</select>
 	
 </mapper>

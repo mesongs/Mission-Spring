@@ -1,5 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<!-- toastr css 라이브러리 -->
+<link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
 
 <style>
 
@@ -24,7 +30,10 @@
  
 </style>    
 
+
+
 <script>
+
 
 let ws;
 
@@ -46,7 +55,6 @@ function openSocket(){
     // 메세지 받으면 실행되는 함수
     ws.onmessage=function(event){
        console.log("onmessage : " + event.data)
-     
         writeResponse(event.data);
     };
     ws.onclose=function(event){
@@ -57,22 +65,62 @@ function openSocket(){
 
  function closeSocket(){
      ws.close();
+     
  }
  
+ // 클라이언트가 받은 메세지를 쓰는 부분
  function writeResponse(text){
-	 alert(text)
-     $('#webSocketTest').val(text)
+	 
+	 toastr.options = {
+			  "closeButton": true,
+			  "debug": false,
+			  "newestOnTop": true,
+			  "progressBar": false,
+			  "positionClass": "toast-bottom-right",
+			  "preventDuplicates": false,
+			  "onclick" : function (){ location.href ="${ pageContext.request.contextPath }/receipt/rejectReceiptList" },
+			  "showDuration": "600",
+			  "hideDuration": "1000",
+			  "timeOut": "10000",
+			  "extendedTimeOut": "1000",
+			  "showEasing": "swing",
+			  "hideEasing": "linear",
+			  "showMethod": "fadeIn",
+			  "hideMethod": "fadeOut"
+	}
+	 
+	
+	 
+	 var findString = "승인";
+	 
+	 // 반려된거 클릭
+
+	 if(text.indexOf(findString) != -1) {
+
+		toastr["info"](text, "알림")
+		 
+	 	}else { // 반려된 경우
+		 
+		 toastr["warning"](text, "알림")
+	 }
+
+	 
+	 
+	
+	 
+	 
+	 
  }
  
 //send 메소드, 유저쪽에서는 send하는게 아니고 받기만 하니까
- function send(){
-        let text="웹소켓 테스트" + "," + 'admin';
-        ws.send(text);
-        text="";
-    }
+// function send(){
+//        let text="웹소켓 테스트" + "," + 'admin';
+//        ws.send(text);
+//        text="";
+//    }
 
  openSocket()
-
+ 
 </script>
 
 <footer class="footer-area section-padding" id="footer-area">

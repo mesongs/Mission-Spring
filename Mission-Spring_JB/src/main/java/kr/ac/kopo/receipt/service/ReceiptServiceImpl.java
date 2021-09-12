@@ -24,8 +24,12 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import kr.ac.kopo.receipt.dao.ReceiptDAO;
 import kr.ac.kopo.receipt.vo.AcceptRejectVO;
+import kr.ac.kopo.receipt.vo.HomeTaxCashVO;
+import kr.ac.kopo.receipt.vo.HomeTaxInfoVO;
 import kr.ac.kopo.receipt.vo.ReceiptFileVO;
 import kr.ac.kopo.receipt.vo.ReceiptVO;
 import kr.ac.kopo.receipt.vo.RejectReceiptVO;
@@ -36,6 +40,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import sun.util.calendar.BaseCalendar.Date;
 
 @Service
 public class ReceiptServiceImpl implements ReceiptService {
@@ -312,6 +317,102 @@ public class ReceiptServiceImpl implements ReceiptService {
 		int cnt = receiptDAO.reRegisterRejectDao(rejectReceipt);
 		
 		return cnt;
+	}
+	
+	
+	@Override
+	public void homeTaxConnectService(HomeTaxInfoVO homeTaxInfo) {
+		
+		System.out.println("토큰화 하기 전 : " + homeTaxInfo);
+		
+		String tokenizerHomeTaxInfo = createToken(homeTaxInfo);
+		
+		System.out.println("토큰화 후 : " + tokenizerHomeTaxInfo);
+		
+		
+		//검증까지 한 번 해보자
+	}
+	
+	// 토큰 생성하는 함수
+	public static String createToken(HomeTaxInfoVO homeTaxInfo) {
+		
+		// 비밀키
+		String key="jbhana";
+		
+		// 헤더에는 타입과 알고리즘
+		Map<String, Object> headers = new HashMap<>();
+		headers.put("typ", "JWT");
+		headers.put("alg", "HS256");
+		
+		Map<String, Object> payloads = new HashMap<>();
+		payloads.put("hometaxId", homeTaxInfo.getHometaxId());
+		payloads.put("hometaxPassword", homeTaxInfo.getHometaxPassword());
+		payloads.put("businessNo", homeTaxInfo.getBusinessNo());
+		
+		java.util.Date now = new java.util.Date();
+		now.setTime(now.getTime());
+		
+		String jwt = Jwts.builder()
+				.setHeader(headers)
+				.setClaims(payloads)
+				.signWith(SignatureAlgorithm.HS256, key.getBytes())
+				.compact();
+		
+		return jwt;
+		
+	}
+	
+	// 회원 현금영수증 조회
+	@Override
+	public List<HomeTaxCashVO> getHomeTaxCashInfoService(String purchaseDate, String businessNo) {
+		
+		OkHttpClient client = new OkHttpClient();
+		
+		List<HomeTaxCashVO> getHomeTaxCashList = new ArrayList<>();
+		
+		Request request = new Request.Builder()
+		  .url("http://35.185.213.190:9999/jb/hometax-cash?purchaseDate="+ purchaseDate + "&businessNo="+ businessNo +"")
+		  .get()
+		  .addHeader("cache-control", "no-cache")
+		  .build();
+
+		try {
+			
+			Response response = client.newCall(request).execute();
+			ResponseBody responseBody = response.body();
+			String result = responseBody.string();
+			
+			System.out.println("요청한 result 값? " + result);
+			
+			ObjectMapper mapper = new ObjectMapper();
+			
+			
+			JsonNode root = mapper.readTree(result);
+			JsonNode getResult = root.path("result");
+			System.out.println("getResult : " + getResult);
+			System.out.println("getResult.get(0) : " + getResult.get(0));
+			
+			// js로 넘겨줄 때 리스트로 넘겨주고싶음
+			// String으로 값을 넘겨줘보자
+			// js에서 파싱하기
+			String testResult= getResult.get(0).asText();
+			// map을 list로 바꾸자
+			
+			
+			
+			List<HomeTaxCashVO> getHomeTaxCashList = (List<HomeTaxCashVO>) testResult;
+			
+			
+			
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		
+		
+		return getHomeTaxCashList;
 	}
 
 	// 가장 먼저했던 이미지 서버에 저장, 썸네일 이미지 저장 => 저장된 이미지 ocr

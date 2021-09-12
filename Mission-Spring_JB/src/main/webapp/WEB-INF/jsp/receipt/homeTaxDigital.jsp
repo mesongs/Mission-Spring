@@ -217,7 +217,7 @@ input::placeholder{
     margin-right: 0px;
  }
  
-  #collectBtn{
+ #collectBtn{
  
  	height : 35px;
  	margin-left: 6px;
@@ -230,8 +230,7 @@ input::placeholder{
  	border-color: rgb(2,2,2);
  	
  }
- 
-}
+
 </style>
 
 <script>
@@ -284,23 +283,7 @@ input::placeholder{
 		// 체크 상태 변화될 때마다 수정사항 표시
 		/*$("input[type=checkbox]").change(function(){*/
 		
-		$(document).on('change','.testBox', function(){
-			   
-			   if($("input[type=checkbox]").is(":checked")){
-				   
-				   $.get("${ pageContext.request.contextPath }/receipt/replaceCheck", function(data){
-					   $('#categoryAjax').replaceWith(data)
-				   })
-				   
-			   }else{
-				   
-				   $.get("${ pageContext.request.contextPath }/receipt/replaceUnCheck", function(data){
-					   $('#categoryAjax').replaceWith(data)
-				   })
-				   
-			   }
-			
-		})
+		
 		
 		
 		// 목록 개수 ajax
@@ -442,43 +425,7 @@ input::placeholder{
 		}
 		
 		
-		// datepicker를 활용한 날짜 조회
-		 $('#startDate').datepicker(
-			{
-			
-				 dateFormat:'yy/mm/dd',
-	             changeMonth: true,
-	             changeYear: true,
-	             dayNames: ['일요일','월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
-	     		 dayNamesMin : ['일','월','화','수','목','금','토'],
-	     		 monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-			
-				 // 시작일 선택 후 닫힐 때, 종료일의 최소 선택 가능 날짜는 시작일
-				 // 시작일 이후로만 선택 가능한 종료일
-				 onClose:function(selectedDate){
-				
-					// 종료일 태그에 mindate 속성 추가
-					$('#endDate').datepicker("option","minDate", selectedDate)
-			}
-			
-		});
-		
-		$('#endDate').datepicker({
-			
-				dateFormat:'yy/mm/dd',
-	            changeMonth: true,
-	            changeYear: true,
-	            dayNames: ['일요일','월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
-	    		dayNamesMin : ['일','월','화','수','목','금','토'],
-	    		monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-				
-				// 종료일 선택 후 닫힐 때, 시작일의 최대 선택 가능 날짜는 종료일
-				onClose:function(selectedDate){
-					
-					$('#startDate').datepicker("option", "maxDate", selectedDate)
-			}
-			
-		});
+
 		
 		
 		$('#searchDate').click(function(){
@@ -535,37 +482,19 @@ input::placeholder{
 		})
 		
 		
-		/* $('#searchDay').datepicker(
-				{
-				
-					 dateFormat:'yy/mm/dd',
-		             changeMonth: true,
-		             changeYear: true,
-		             dayNames: ['일요일','월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
-		     		 dayNamesMin : ['일','월','화','수','목','금','토'],
-		     		 monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-				
-					 // 시작일 선택 후 닫힐 때, 종료일의 최소 선택 가능 날짜는 시작일
-					 // 시작일 이후로만 선택 가능한 종료일
-					 onClose:function(selectedDate){
-					
-						// 종료일 태그에 mindate 속성 추가
-						$('#endDate').datepicker("option","minDate", selectedDate)
-				}
-				
-			}); */
-		
-			$(document).on('change','.testBox', function(){
-				   
-				   if($("input[type=checkbox]").is(":checked")){
-					   $("#collectBtn").attr('style', "display:block;");
+		$(document).on('change','.testBox', function(){
+			   
+			   if($("input[type=checkbox]").is(":checked")){
+				   $("#collectBtn").attr('style', "display:block;");
 
-				   }else{
-					   $("#collectBtn").attr('style', "display:none;");
-					   
-				   }
-				
-			})
+			   }else{
+				   $("#collectBtn").attr('style', "display:none;");
+				   
+			   }
+			
+		})
+		
+			
 			
 	
 	})
@@ -586,17 +515,12 @@ input::placeholder{
 			<div class="col">
 				<h4 style="font-family: 'Noto Sans KR', sans-serif;font-size: xx-large; margin-left: 32px;">증빙자료 수집/조회</h4>
 			</div>
-			<%-- <div class="col">
-				<div style="background-color: #27b2a5; color:#fff; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; ">
-						<img class="product-img4" src="${ pageContext.request.contextPath }/resources/img/gd.png">홈택스에 등록하신 사업용 카드의 '매입 내역'을 확인하실 수 있습니다. 개인사업자가 가사경비가 아닌 사업관련 경비의 지출용도로만 쓰는 신용카드
-				</div>
-			</div> --%>
 		</div>
 		<div class="container">
 			<ul class="nav nav-tabs" style="margin-left: 50px;">
-				<li class="nav-item"><a class="nav-link active" aria-current="page" href="#"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/card2.jpg">사업용 신용카드 매입내역 조회</a></li>
+				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath }/receipt/homeTaxPage"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/card2.jpg">사업용 신용카드 매입내역 조회</a></li>
 				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath }/receipt/homeTaxCash"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/cash2.png">현금영수증 매입내역 조회</a></li>
-				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath }/receipt/homeTaxDigitalInvoice"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/cal2.png">전자(세금)계산서 조회</a></li>
+				<li class="nav-item"><a class="nav-link active" aria-current="page" href="#"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/cal2.png">전자(세금)계산서 조회</a></li>
 				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/receipt/homeTaxConnect">목록</a></li>
 			</ul>
 			
@@ -604,8 +528,8 @@ input::placeholder{
 					<div class="container" style="margin-left: 36px;"> 
 							
 							<div class="row" style="margin-top: 30px; margin-right: 12px; margin-left: 12px;">
-							 	<div style="width:500px; background-color: #27b2a5; color:#fff; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; ">
-									<span style="margin-left: 6px;"><img class="product-img4" src="${ pageContext.request.contextPath }/resources/img/gd.png" style="margin-left: 3px; margin-bottom: 6px;">홈택스에 등록하신 사업용 카드의 '매입 내역'을 확인하실 수 있습니다.</span>
+							 	<div style="width:460px; background-color: #27b2a5; color:#fff; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; ">
+									<span style="margin-left: 6px;"><img class="product-img4" src="${ pageContext.request.contextPath }/resources/img/gd.png" style="margin-left: 3px; margin-bottom: 6px;">사업자 명의로 발행된 전자(세금)계산서를 조회하실 수 있습니다.</span>
 								</div>
 							</div>
 							
@@ -620,7 +544,28 @@ input::placeholder{
 							 	</div>
 							</div>
 							 	
-								<div class="row" style="margin-top: 40px;">
+							 	<div class="row" style="margin-top: 30px;">
+							 		<div class="col-7" style="float: left;">
+							 			<span style="float: left; font-weight: bold; color: rgb(2,2,2); margin-bottom: 10px;">분류</span>
+							 			<label style="float: left;"><input type="radio" name="digitalKind" value="1" style="margin-left: 10px;" checked="checked">전자세금계산서</label> 
+										<label style="float: left;"><input type="radio" name="digitalKind" value="2" style="margin-left: 10px;">전자계산서</label>
+							 		</div>
+							 		<div class="col" style="width: 200px; " align="right" >
+										<div style="margin-left: 206px;">
+											<input type="search" placeholder="사업자등록번호 검색" name="searchWord" id="searchWord" style="float: left; width: 170px; ">
+											<span style="float: left">
+											<button id="searchBtn" name="searchBtn" type="button">검색</button>
+											</span>
+										</div>
+									</div>
+							 		
+							 		<div class="col-7" style="float: left;">
+							 			<span style="float: left; font-weight: bold; color: rgb(2,2,2); margin-bottom: 10px;">구분</span>
+							 			<label style="float: left;"><input type="radio" name="purchaseRadio" value="1" style="margin-left: 10px;" checked="checked">매입</label> 
+										<label style="float: left;"><input type="radio" name="purchaseRadio" value="2" style="margin-left: 10px;">매출</label>
+							 		</div>
+							 	</div>
+								<div class="row">
 									<div class="col-7" style="float: left;">
 										<span style="float: left; font-weight: bold; color: rgb(2,2,2);">조회기간</span>
 										<label style="float: left;"><input type="radio" name="searchDateDay" value="1" style="margin-left: 10px;" checked="checked"> 일별</label> 
@@ -671,11 +616,6 @@ input::placeholder{
 									</div>
 									
 									<div class="col" align="right">
-											<select name="taxAccept" id="taxAccept" style="margin-right: 10px;margin-left: 15px; width: 120px; margin-bottom: 20px; color:#495057; height: 35px;border-top-width: 0px;padding-bottom: 0px;">
-												<option value="">공제여부</option>
-												<option value="1">공제대상</option>
-												<option value="2">불공제대상</option>
-											</select>
 											<button type="submit" id="excelBtn" style="float : right;"><img class="product-img" src="${ pageContext.request.contextPath }/resources/img/excel.png">Excel 다운로드</button>
 									</div>
 									
@@ -690,29 +630,27 @@ input::placeholder{
 							<table style="margin-top: 30px;">
 								<tr id="boardtable">
 									<th><input type="checkbox" class="testBox" id="allCheck" value="1"></th>
-									<th width="170px">매입일시</th>
+									<th width="170px">작성일(공급일)</th>
+									<th width="130px">발급일</th>
+									<th width="150px">거래처</th>
+									<th width="200px">사업자등록번호</th>
 									<th width="130px">승인번호</th>
-									<th width="200px">가맹점 사업자번호</th>
-									<th width="180px">가맹점명</th>
 									<th width="120px">공급가액</th>
 									<th width="100px">세액</th>
 									<th width="140px">합계</th>
-									<th width="150px">가맹점유형</th>
-									<th width="100px">업종</th>
 								</tr>
 								
 								<tbody id="test">
 								 	<tr>
 								 		<td><input type="checkbox" class="testBox" id="allCheck" value="1"></td>
-								 		<td>2021-03-23 17:05:03</td>
-								 		<td>324209823</td>
-								 		<td>605-25-91876</td>
-								 		<td>대양슈퍼</td>
+								 		<td>2021-06-30</td>
+								 		<td>2021-07-10</td>
+								 		<td>사오수산</td>
+								 		<td>609-919-2931</td>
+								 		<td>777209823</td>
 								 		<td>80,910</td>
 								 		<td>8,090</td>
 								 		<td>89,000</td>
-								 		<td>일반과세자</td>
-								 		<td>도,소매</td>
 								 	</tr>
 								</tbody>
 							</table>

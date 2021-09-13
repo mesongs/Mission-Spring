@@ -18,6 +18,47 @@
 
 
 <style>
+	
+  body{
+  
+  color :rgb(2,2,2);
+  
+  }
+	
+ .panel{
+ 	margin-bottom : 20px;
+ 	border-radius : 4px;
+ 	box-shadow : 0px 1px 3px 2px rgb(0 0 0 / 11%);
+ }
+ 
+ .panel-body{
+ 	
+ 	padding-left: 15px;
+    padding-bottom: 14px;
+    font-size: 18px;
+ 	
+ 
+ }
+
+	.panel-default > .panel-heading{
+		background-color : #E9EDF1;
+		border-color : #ddd;
+	
+	
+	}
+
+ .panel-heading{
+ 	font-weight :bold;
+ 	color : #3a414e;
+ 	font-size: 25px;
+    letter-spacing: 0.025em;
+    height: 66px;
+    line-height: 45px;
+ 	padding : 10px 15px;
+ 	border-top-left-radius:3px;
+ 	border-top-right-radius:3px;
+ }
+
 #comment-custom-receipt {
 	/* max-width: 700px; */
 	width: 1000px;
@@ -169,12 +210,66 @@ polyline{
 	border-top
 
 }
+
+ .reportDayByTime{
+	
+    padding-right: 34px;
+
+}
 </style>
 
+<script>
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+</script>
 
 <script>
 	
 	$(function(){
+		
+		// 전 날 매출금액
+		var commaYesterDaySales = numberWithCommas(${ returnSalesVO.yesterday })
+		var commaDayBeforeSales = numberWithCommas(${ returnSalesVO.dayBefore });
+
+		document.getElementById("commaYesterDaySales").innerHTML=commaYesterDaySales + "원" ;
+		document.getElementById("commaDayBeforeSales").innerHTML=commaDayBeforeSales + "원" ;
+		
+		var calDayBeforeYesterday = ${ returnSalesVO.dayBefore } - ${ returnSalesVO.yesterday }
+		
+		
+		
+		var salesDod = numberWithCommas(calDayBeforeYesterday)
+		
+		if( calDayBeforeYesterday > 0){
+			
+			document.getElementById("salesDod").innerHTML = "매출액이 "+ salesDod + "원 감소했습니다.";
+			
+		}else{
+			
+			document.getElementById("salesDod").innerHTML = "매출액이 "+ salesDod + "원 증가했습니다.";
+		}
+		
+		
+		
+		var morningSale = numberWithCommas(${bytimeSale.morningSale})
+		var AFTERNOON1Sale = numberWithCommas(${bytimeSale.AFTERNOON1Sale})
+		var AFTERNOON2Sale = numberWithCommas(${bytimeSale.AFTERNOON2Sale})
+		var EVENINGSale = numberWithCommas(${bytimeSale.EVENINGSale})
+		
+		document.getElementById("morningSale").innerHTML = morningSale + "원";
+		document.getElementById("AFTERNOON1Sale").innerHTML = AFTERNOON1Sale + "원";
+		document.getElementById("AFTERNOON2Sale").innerHTML = AFTERNOON2Sale + "원";
+		document.getElementById("EVENINGSale").innerHTML = EVENINGSale + "원";
+		
+		
+		var customerkindArrComma = [];
+		
+		
+		
+		
 		
 		var today = new Date();
 		
@@ -216,8 +311,9 @@ polyline{
 		document.getElementById("yesterdaySales").innerHTML=yesterdayString + "(" + yesterdayOfWeek + ")";
 		document.getElementById("dayBeforeSales").innerHTML=dayBeforeDayString + "(" + dayBeforeDayOfWeek + ")";
 		
-		document.getElementById("reportDayByTime").innerHTML=yesterdayString + "(" + yesterdayOfWeek + ")";
-		 
+		
+		
+
 		
 		<c:forEach items="${ lastWeekSalesList }" var="lastWeekSalesList">
 			lastWeekArr.push("${ lastWeekSalesList.lastWeek }")
@@ -240,7 +336,23 @@ polyline{
 			customerKindArr.push("${ customerKindSaleList.customerKind }")
 			customerCountArr.push(${ customerKindSaleList.customerCount })
 			customerSaleArr.push(${ customerKindSaleList.customerSale })
+			customerkindArrComma.push(numberWithCommas(${ customerKindSaleList.customerSale }))
 		</c:forEach>
+			
+		
+
+		
+		var perCutomerSale = numberWithCommas(${perCutomerSale});
+		
+		
+		document.getElementById("perCutomerSale").innerHTML=perCutomerSale + "원" ;
+		document.getElementById("신규고객").innerHTML=customerkindArrComma[0] + "원" ;
+		document.getElementById("재방문고객").innerHTML=customerkindArrComma[1] + "원" ;
+		
+		
+		/////////////////////////////////////////////
+		/////////////////////////////////////////////
+		/////////////////////////////////////////////
 		
 		<c:forEach items="${ weekCustomerKindSaleList }" var="weekCustomerKindSaleList">
 			weekCustomerKindArr.push("${ weekCustomerKindSaleList.customerKind }")
@@ -271,7 +383,7 @@ polyline{
 				options : {
 					responsive: false,
 					title : {
-						display : true,
+						display : false,
 						text : '일별 사업장 매출 현황',
 						fontSize : 20
 					},
@@ -339,12 +451,12 @@ polyline{
 						label : '지난주 매출액',
 						data : lastWeekSalesArr,
 						backgroundColor : 'rgba(39, 178, 165, 0.6)',
-						pointRadius : 0
+						pointRadius : 3
 					}, 
 					{
 						label : '2주 전 매출액',
 						data : weekBeforeSalesArr,
-						pointRadius : 0
+						pointRadius : 3
 					}
 					
 					]
@@ -353,7 +465,7 @@ polyline{
 				},
 				options : {
 					title : {
-						display : true,
+						display : false,
 						text : '전 주 대비 최근 7일간 매출 추이',
 						fontSize : 20
 					},
@@ -367,7 +479,7 @@ polyline{
 					                color: "rgba(0, 0, 0, 0)"
 					            },
 					            ticks : {
-									fontSize : 12
+									fontSize : 13
 								}
 					        }],
 						yAxes : [{
@@ -406,14 +518,16 @@ polyline{
 				options : {
 					responsive : false,
 					title : {
-						display : true,   
+						display : false,   
 						text : '최근 7일간 카드사별 결제금액 TOP5',
 						fontSize : 20,
 					},
 					legend : {
-						position : 'right'
-						 
-						
+						position : 'right',
+						labels: {
+	                         fontSize: 15,
+	                         fontColor: 'rgb(2,2,2)'
+	                         }
 					},
 					pieceLabel: { 
 						mode:"percentage",
@@ -421,13 +535,8 @@ polyline{
 						fontSize: 12,
 						fontColor : 'rgb(2,2,2)',
 						fontStyle: 'bold'
-						}
+					}
 
-				
-
-						
-					
-					
 				}
 				
 				
@@ -444,7 +553,7 @@ polyline{
 					labels : customerKindArr,
 					datasets : [{
 						
-						data : customerCountArr,
+						data : customerSaleArr,
 						backgroundColor:
 		                        ['#27b2a5',
 		                        'rgb(59,132,116)']
@@ -455,20 +564,24 @@ polyline{
 				},
 				options : {
 					title : {
-						display : true,   
+						display : false,   
 						text : '전 일 신규 고객 / 재방문 고객 비율',
 						fontSize : 20,
 					},
 					legend : {
-						position : 'bottom'
+						position : 'bottom',
+						labels: {
+	                         fontSize: 15,
+	                         fontColor: 'rgb(2,2,2)'
+	                         }
 						
-					},pieceLabel: { 
+					},pieceLabel: {
 						mode:"percentage",
 						position:"default",
-						fontSize: 12,
+						fontSize: 17,
 						fontColor : 'rgb(2,2,2)',
 						fontStyle: 'bold'
-						}
+					}
 
 
 						
@@ -479,7 +592,7 @@ polyline{
 				
 			})
 			
-//			 weekCustomerCountArr 
+//	 	weekCustomerCountArr 
 		
 		let weekCustomerKind = document.getElementById('weekCustomerKind').getContext('2d');
 			let weekCustomerKindChart = new Chart(weekCustomerKind, {
@@ -499,9 +612,10 @@ polyline{
 					
 					
 				},
-				options : {
+				options : { 
+					responsive : false,
 					title : {
-						display : true,   
+						display : false,   
 						text : '최근 7일간 신규 고객 / 재방문 고객 결제금액',
 						fontSize : 20,
 					},
@@ -530,12 +644,12 @@ polyline{
 					},
 					scales : {
 						 xAxes: [{
-					            barPercentage: 0.7,
+					            barPercentage: 0.4,
 					            gridLines: {
 					                color: "rgba(0, 0, 0, 0)"
 					            },
 					            ticks : {
-									fontSize : 12
+									fontSize : 15
 								}
 					        }],
 						yAxes : [{
@@ -570,9 +684,9 @@ polyline{
 					data : [
 						
 						${bytimeSale.morningSale},
-						${bytimeSale.AFTERNOON1Sale},
-						${bytimeSale.AFTERNOON2Sale},
-						${bytimeSale.EVENINGSale}
+		                ${bytimeSale.AFTERNOON1Sale},
+		                ${bytimeSale.AFTERNOON2Sale},
+		                ${bytimeSale.EVENINGSale}
 						
 					],
 					backgroundColor : 'rgb(43,63,60)'
@@ -599,13 +713,17 @@ polyline{
 			}, 
 			options : {
 				title : {
-					display : true,
+					display : false,
 					text : '시간대별 매출 분석',
 					fontSize : 20,
 				},
 				legend : {
 					display : true,
-					position : 'right'
+					position : 'bottom',
+					 labels: {
+                         fontSize: 15,
+                         fontColor: 'rgb(2,2,2)'
+                         }
 				},scales : {
 					 xAxes: [{
 						 barPercentage: 0.8,
@@ -634,8 +752,56 @@ polyline{
 			
 		})
 		
-		
-		
+
+		let customerAnaly = document.getElementById('customerAnalysis').getContext('2d');
+		let customerAnalyChart = new Chart(customerAnaly, {
+			
+			type : 'polarArea',
+			data: {
+				
+				labels : ['아침', '점심', '오후', '저녁'],
+				datasets : [{
+					
+					data : [
+						
+						${bytimeSale.morningSale},
+				        ${bytimeSale.AFTERNOON1Sale},
+				        ${bytimeSale.AFTERNOON2Sale},
+				        ${bytimeSale.EVENINGSale}
+						
+					],
+					backgroundColor: [ "rgb(79,186,140)", "#27b2a5", "rgb(43,63,60)", "rgb(179,221,210)"]
+					
+				}
+				]
+				
+				
+			},
+
+			options : {
+				legend : {
+					display : false
+				},
+				scale: {
+				      ticks: {
+				        display: false
+				      }
+
+				},
+				pieceLabel: { 
+					mode:"percentage",
+					position:"default",
+					fontSize: 12,
+					fontColor : 'rgb(2,2,2)',
+					fontStyle: 'bold'
+				}
+					
+				
+				
+			}
+			
+			
+		})
 		
 		
 		
@@ -678,68 +844,101 @@ polyline{
 					
 					
 					<div class="container" style="margin-left: 36px;"> 
-							<div class="row">
-								<div class="col-md-5">
-								<div class="single-sidebar-widget newsletter-widget" style="background: #f9f9ff; padding: 48px 30px; height: 295px;">
-									<table>
-										<tr>
-											<th id="yesterdaySales"></th>
-											<td>${ returnSalesVO.yesterday }원</td>
-										</tr>
-										<tr>
-											<th id="dayBeforeSales"></th>
-											<td>${ returnSalesVO.dayBefore }원</td>
-										</tr>
-										<tr>
-											<th>매출액 증감률</th>
-											<td>${ returnSalesVO.dod }</td>
-										</tr>
-									</table>
-									</div>
-								</div>
-								<div class="col-md-7">
-									<%-- <canvas id="myChartOne3"></canvas> --%>
-									<div class="single-sidebar-widget newsletter-widget" style="background: #f9f9ff; padding: 48px 30px; height: 295px;">
-									<canvas id="myChartOne3" width="500" height="200"></canvas>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-7">
-								<div class="single-sidebar-widget newsletter-widget" style="background: #f9f9ff; padding: 48px 30px; height: 295px;margin-top: 30px;">
-									<canvas id="myChartOne4"></canvas>
-								</div>
-								</div>
-								<div class="col-5">
-								<div class="single-sidebar-widget newsletter-widget" style="background: #f9f9ff; padding: 48px 30px; height: 295px; margin-top: 30px;">
-									<canvas id="cardSalesYop5Chart" width="300" height="200"></canvas>
-								</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-6">
-								<div class="single-sidebar-widget newsletter-widget" style="background: #f9f9ff; padding: 48px 30px; height: 295px; margin-top: 30px; margin-bottom: 30px;">
-									<canvas id="myChartOne5"></canvas>
-									<table>
-										<tr>
-											<th>평균 객단가</th>
-											<td>${ perCutomerSale }원</td>
-										</tr>
-											
-										<c:forEach items="${ customerKindSaleList }" var="customerKindSaleList">
-											<tr>
-												<th>${ customerKindSaleList.customerKind }</th>
-												<td>${ customerKindSaleList.customerSale }원</td>
-											</tr>
-										</c:forEach>
-									</table>
-									</div>
-								</div>
-								
-								<div class="col-md-6">
-										<div class="single-sidebar-widget newsletter-widget" style="background: #f9f9ff; padding: 48px 30px; height: 295px; margin-top: 30px; margin-bottom: 30px;">
-											<canvas id="weekCustomerKind"></canvas>
+							<div class="row" style="margin-bottom: 25px;">
+								<div class="col-md-4">
+									<div class="panel panel-default">
+										<div class="panel-heading">전 일 매출현황</div>
+										<div class="panel-body">
+											<span id="yesterdaySales"></span><br>
+											<span id="commaYesterDaySales"></span>
 										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="panel panel-default">
+										<div class="panel-heading">전 전일 매출액</div>
+										<div class="panel-body">
+											<span id="dayBeforeSales"></span><br>
+											<span id="commaDayBeforeSales"></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="panel panel-default">
+										<div class="panel-heading">주간 매출 현황</div>
+										<div class="panel-body">
+											<span>${ returnSalesVO.dod }</span><br>
+												<span id="salesDod"></span>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="col-md-7">
+									<div class="panel panel-default" style="width:536px; height: 340px;">
+										<div class="panel-heading">일별 사업장 매출 현황</div>
+										<div class="panel-body" style="margin-top: 30px;">
+											<canvas id="myChartOne3" width="500" height="200"></canvas>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-5">
+									<div class="panel panel-default" style="width:374px">
+										<div class="panel-heading">주간 카드사별 결제금액 TOP5</div>
+										<div class="panel-body" style="margin-top: 30px;">
+											<canvas id="cardSalesYop5Chart" width="300" height="200"></canvas>
+											<span style="font-size: 9px;">
+												*카드사별 결제대금 지급일 상이(2영업일 : 하나,신한,삼성 3영업일 : 현대,BC,롯데,KB)
+												 
+											</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<div class="panel panel-default">
+										<div class="panel-heading">전 주 대비 최근 7일간 매출 추이</div>
+											<div class="panel-body" style="margin-top: 30px;">
+												<canvas id="myChartOne4" style="display: block;width: 763px;height: 291px;"></canvas>
+											</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="panel panel-default">
+										<div class="panel-heading">전 일 신규 고객 / 재방문 고객 비율</div>
+											<div class="panel-body" style="margin-top: 30px;">
+												<canvas id="myChartOne5"></canvas>
+												<div align="center">
+													<table>
+														<tr>
+															<th style="padding-right: 41px;">평균 객단가</th>
+															<td id="perCutomerSale"></td>
+														</tr>
+															<c:forEach items="${ customerKindSaleList }" var="customerKindSaleList">
+																<tr>
+																	<th style="padding-right: 41px;">${ customerKindSaleList.customerKind }</th>
+																	<td id="${ customerKindSaleList.customerKind }"></td>
+																</tr>
+															</c:forEach>
+													</table>
+												</div>
+											</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="panel panel-default" style="height: 421px;">
+										
+										<div class="panel-heading">주간 신규 고객 / 재방문 고객 결제금액</div>
+											<div>
+											<div class="panel-body" style="margin-top: 30px;">
+												<canvas id="weekCustomerKind" style="width: 393px; height: 259px; margin-top: 60px; " ></canvas>
+											</div>
+											</div>
+									</div>
 								</div>
 								
 							</div>
@@ -747,44 +946,48 @@ polyline{
 							
 							<div class="row">
 								<div class="col-md-8">
-								<div class="single-sidebar-widget newsletter-widget" style="background: #f9f9ff; padding: 48px 30px;">
-									<canvas id="myChartOne"></canvas>
+									<div class="panel panel-default">
+										<div class="panel-heading">전 일 시간대별 매출 현황</div>
+											<div class="panel-body" style="margin-top: 30px;">
+												<canvas id="myChartOne"></canvas>
+											</div>
 									</div>
 								</div>
 								<div class="col-md-4">
-								<div class="single-sidebar-widget newsletter-widget" style="background: #f9f9ff; padding: 48px 30px;">
-									<table>
+								
+								<div class="panel panel-default" style="height: 412px;">
+										<div class="panel-heading">전 일 시간대별 고객 분석</div>
+											<div class="panel-body" style="margin-top: 30px;">
+										<table>
 										<tr>
 											<th id="reportDayByTime"></th>
 										</tr>
 										<tr>
-											<th>아침(06시 ~ 11시)</th>
-											<td>${bytimeSale.morningSale}원</td>
+											<th class="reportDayByTime">아침(06시 ~ 11시)</th>
+											<td id="morningSale"></td>
 										</tr>
 										<tr>
-											<th>점심(11시 ~ 14시)</th>
-											<td>${bytimeSale.AFTERNOON1Sale}원</td>
+											<th class="reportDayByTime">점심(11시 ~ 14시)</th>
+											<td id="AFTERNOON1Sale"></td>
 										</tr>
 										<tr>
-											<th>오후(14시 ~ 17시)</th>
-											<td>${bytimeSale.AFTERNOON2Sale}원</td>
+											<th class="reportDayByTime">오후(14시 ~ 17시)</th>
+											<td id="AFTERNOON2Sale"></td>
 										</tr>
 										<tr>
-											<th>저녁(17시 ~ 22시)</th>
-											<td>${bytimeSale.EVENINGSale}원</td>
+											<th class="reportDayByTime">저녁(17시 ~ 22시)</th>
+											<td id="EVENINGSale"></td>
 										</tr>
 									</table>
+												
+										<canvas id="customerAnalysis" style="margin-top: 20px;"></canvas>		
+												
+											</div>
 									</div>
+								
 								</div>
 							</div>
-							<div class="row">
-								<div class="col-md-4">
-									<canvas id="myChartOne6"></canvas>
-								</div>
-								<div class="col-md-4">
-									<canvas id="myChartOne7"></canvas>
-								</div>
-							</div>
+							
 							
 							
 					</div>

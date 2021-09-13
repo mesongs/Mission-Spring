@@ -185,7 +185,13 @@ input::placeholder{
 
 <style>
 
+#searchHometaxCard{
+	border-top-left-radius: 5px;
+ 	border-top-right-radius: 5px;
+ 	border-bottom-left-radius: 5px;
+ 	border-bottom-right-radius: 5px;
 
+}
  
  .nav-tabs .nav-link.active {
     color: #007BFF;
@@ -281,26 +287,7 @@ input::placeholder{
 											});
 		
 		
-		// 체크 상태 변화될 때마다 수정사항 표시
-		/*$("input[type=checkbox]").change(function(){*/
 		
-		$(document).on('change','.testBox', function(){
-			   
-			   if($("input[type=checkbox]").is(":checked")){
-				   
-				   $.get("${ pageContext.request.contextPath }/receipt/replaceCheck", function(data){
-					   $('#categoryAjax').replaceWith(data)
-				   })
-				   
-			   }else{
-				   
-				   $.get("${ pageContext.request.contextPath }/receipt/replaceUnCheck", function(data){
-					   $('#categoryAjax').replaceWith(data)
-				   })
-				   
-			   }
-			
-		})
 		
 		
 		// 목록 개수 ajax
@@ -378,13 +365,16 @@ input::placeholder{
 			
 		})
 		
-		//processedList();
 		
-		function processedList(){
+		$('#searchHometaxCard').click(function(){
 			
+			let searchMonth = $('#searchMonth').val();
+			
+			// 조회 버튼 누르면, 기간에 해당하는 값만 조회함
 			$.ajax({
 				type : "get",
-				url : "${pageContext.request.contextPath}/receipt/processedAllList",
+				data : { searchMonth : searchMonth },
+				url : "${pageContext.request.contextPath}/receipt/getHomeTaxCardInfo",
 				success : function(result){
 					
 					let obj = JSON.parse(result);
@@ -394,132 +384,30 @@ input::placeholder{
 					 if(obj.length >= 1){
 						 
 						 // for(receipt vo(=searchWaitList) : receiptList) 1.5버전 for문과 동일함
-						 obj.forEach(function(processedList){
+						 obj.forEach(function(getHomeTaxCardList){
 							 	 
+							 //    가맹점명 cardName cardNumber section amount vat sum
 							 	 str="<tr>"
 							 	 str += "<td>" + '<input type="checkbox" class="testBox">' + "</td>" 
-							     str += "<td>" + processedList.receiptDate + "</td>"
-							     str += "<td>" + processedList.receiptName + "</td>"
-							     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/detail/" + processedList.receiptNo + ">" + processedList.storeName +"</a></td>"; 
-							     str += "<td>" + processedList.sum +"원</td>";
-							     str += "<td>" + processedList.purpose +"</td>";
+							     str +="<td>" + getHomeTaxCardList.purchaseDate + "</td>"
+							     str +="<td>" + getHomeTaxCardList.cardApprovalNo + "</td>"
+							     str +="<td>" + getHomeTaxCardList.supplierBusinessNo + "</td>"
 							     
-							     if(processedList.overlap == 'Y'){
-				 					
-							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>"
-							     }else{
-				 					
-							    	 str += "<td>" + "</td>"
-				 				 }
-				 				 
-							     /* str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>" */
-							     /* str +="<td>" + processedList.overlap + "</td>" */
+							     str +="<td>" + getHomeTaxCardList.supplierStoreName + "</td>"
+							     str +="<td>" + getHomeTaxCardList.cardName + "</td>"
+							     str +="<td>" + getHomeTaxCardList.cardNumber + "</td>"
 							     
-			 					 str += "<td>" + processedList.memo +"</td>";
-			 					 str += "</tr>"
-			 					 $('#test').append(str);
-			 					 
-			 					 
-			 					 
-			 					 
-			 					 // 받아온 overlap값이 'Y'이면, 경고 이미지 띄우기
-			 					 // 'N'이면, empty
-			 					 
-			 					 
-			 					 
-			 					
-						 })
-					 }
-					
-				},
-				error:function(request, status, error){
-				    alert("code:"+ request.status +"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-				}
-				
-				
-			})
-			
-		}
-		
-		
-		// datepicker를 활용한 날짜 조회
-		 $('#startDate').datepicker(
-			{
-			
-				 dateFormat:'yy/mm/dd',
-	             changeMonth: true,
-	             changeYear: true,
-	             dayNames: ['일요일','월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
-	     		 dayNamesMin : ['일','월','화','수','목','금','토'],
-	     		 monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-			
-				 // 시작일 선택 후 닫힐 때, 종료일의 최소 선택 가능 날짜는 시작일
-				 // 시작일 이후로만 선택 가능한 종료일
-				 onClose:function(selectedDate){
-				
-					// 종료일 태그에 mindate 속성 추가
-					$('#endDate').datepicker("option","minDate", selectedDate)
-			}
-			
-		});
-		
-		$('#endDate').datepicker({
-			
-				dateFormat:'yy/mm/dd',
-	            changeMonth: true,
-	            changeYear: true,
-	            dayNames: ['일요일','월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
-	    		dayNamesMin : ['일','월','화','수','목','금','토'],
-	    		monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-				
-				// 종료일 선택 후 닫힐 때, 시작일의 최대 선택 가능 날짜는 종료일
-				onClose:function(selectedDate){
-					
-					$('#startDate').datepicker("option", "maxDate", selectedDate)
-			}
-			
-		});
-		
-		
-		$('#searchDate').click(function(){
-			
-			let startDate = $('#startDate').val();
- 			let endDate = $('#endDate').val(); 
-			
-			//조회 버튼 누르면, 기간에 해당하는 값만 조회함
-			$.ajax({
-				type : "get",
-				data : {startDate : startDate, endDate : endDate },
-				url : "${pageContext.request.contextPath}/receipt/selectDate",
-				success : function(result){
-					
-					let obj = JSON.parse(result);
-					
-			 		 $('#test').empty();
-			 		 
-					 if(obj.length >= 1){
-						 
-						 // for(receipt vo(=searchWaitList) : receiptList) 1.5버전 for문과 동일함
-						 obj.forEach(function(searchDateList){
-							 	 
-							 	 str="<tr>"
-							 	 str += "<td>" + '<input type="checkbox" class="testBox">' + "</td>" 
-							     str +="<td>" + searchDateList.receiptDate + "</td>"
-							     str +="<td>" + searchDateList.receiptName + "</td>"
-							     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/detail/" + searchDateList.receiptNo + ">" + searchDateList.storeName +"</a></td>"; 
+							     str +="<td>" + getHomeTaxCardList.section + "</td>"
+							    
+							     str +="<td>" + getHomeTaxCardList.amount + "원</td>"
+							     str +="<td>" + getHomeTaxCardList.vat + "원</td>"
+							     str +="<td>" + getHomeTaxCardList.sum + "원</td>"
 							     
-							     str +="<td>" + searchDateList.sum +"원</td>";
-							     str +="<td>" + searchDateList.purpose +"</td>";
-							     
-							     if(searchDateList.overlap == 'Y'){
-					 					
-							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>"
-							     }else{
-				 					
-							    	 str += "<td>" + "</td>"
-				 				 }
-			 					 str +="<td>" + searchDateList.memo +"</td>";
+							  	 
 			 					 str +="</tr>"
+			 					 
+			 					   
+			 					 
 			 					 $('#test').append(str);
 						 })
 					 }
@@ -535,25 +423,7 @@ input::placeholder{
 		})
 		
 		
-		/* $('#searchDay').datepicker(
-				{
-				
-					 dateFormat:'yy/mm/dd',
-		             changeMonth: true,
-		             changeYear: true,
-		             dayNames: ['일요일','월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
-		     		 dayNamesMin : ['일','월','화','수','목','금','토'],
-		     		 monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-				
-					 // 시작일 선택 후 닫힐 때, 종료일의 최소 선택 가능 날짜는 시작일
-					 // 시작일 이후로만 선택 가능한 종료일
-					 onClose:function(selectedDate){
-					
-						// 종료일 태그에 mindate 속성 추가
-						$('#endDate').datepicker("option","minDate", selectedDate)
-				}
-				
-			}); */
+		
 		
 			$(document).on('change','.testBox', function(){
 				   
@@ -663,7 +533,7 @@ input::placeholder{
 												<option value="8">2020년 4분기</option>
 											</select>
 											<span style="float: left">
-												<button id="searchBtn" name="searchBtn" type="button" style="height : 35px;;margin-left: 6px; border-top-left-radius: 5px;border-bottom-left-radius: 5px;">조회</button>
+												<button id="searchHometaxCard" name="searchHometaxCard" type="button" style="height : 35px;;margin-left: 6px; border-top-left-radius: 5px;border-bottom-left-radius: 5px;">조회</button>
 											</span>
 											<span style="float: left">
 												<button id="collectBtn" name="collectBtn" type="button" style="display: none;">수집</button>
@@ -681,7 +551,7 @@ input::placeholder{
 									
 								</div>
 			
-							
+						
 						
 						<!-- <div class="table-scroll-wrapper" style="overflow:auto; overflow-y:hidden"> -->
 
@@ -691,14 +561,15 @@ input::placeholder{
 								<tr id="boardtable">
 									<th><input type="checkbox" class="testBox" id="allCheck" value="1"></th>
 									<th width="170px">매입일시</th>
-									<th width="130px">승인번호</th>
-									<th width="200px">가맹점 사업자번호</th>
+									<th width="120px">승인번호</th>
+									<th width="180px">공급자사업자번호</th>
 									<th width="180px">가맹점명</th>
-									<th width="120px">공급가액</th>
-									<th width="100px">세액</th>
-									<th width="140px">합계</th>
-									<th width="150px">가맹점유형</th>
+									<th width="140px">카드명</th>
+									<th width="120px">카드번호</th>
 									<th width="100px">업종</th>
+									<th width="110px">공급가액</th>
+									<th width="100px">부가세</th>
+									<th width="150px">매입금액</th>
 								</tr>
 								
 								<tbody id="test">

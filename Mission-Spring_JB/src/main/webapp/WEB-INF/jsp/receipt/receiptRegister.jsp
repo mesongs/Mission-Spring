@@ -404,7 +404,7 @@
 										</tr>
 										<tr style="margin-bottom: 50px;">
 											<th style="padding-right: 10px;">사업자번호</th>
-											<td><input type="text" class="form-control" name="businessNo" id="businessNo" style="float: left; width: 200px;"></td>
+											<td><input type="text" class="form-control" name="businessNo" id="businessNo" style="float: left; width: 200px;" value="${userVO.businessNo }"></td>
 										</tr>
 									</table>
 									<div style="width:100%; margin-top: 20px;margin-bottom: 20px; background-color: #27b2a5; color:#fff; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; ">

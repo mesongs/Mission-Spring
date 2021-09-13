@@ -201,6 +201,10 @@ input::placeholder{
  .nav-tabs .nav-link.active {
     color: #007BFF;
 }
+ .nav-link .active{
+ 	font-size: 19px;
+ 
+ }
     
 }
 </style>
@@ -652,12 +656,11 @@ input::placeholder{
 				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/register"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/pictureReceipt.jpg">증빙자료 직접 등록</a></li>
 				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/processedList">처리 완료 목록</a></li>
 				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/receiptWaitList">처리 대기 목록</a></li>
-				<li class="nav-item"><a class="nav-link active" aria-current="page" href="#">반려 목록</a></li>
+				<li class="nav-item"><a class="nav-link active" aria-current="page" href="#" style="padding-bottom: 10px";>반려 목록</a></li>
 				<li class="nav-item"><a class="nav-link" href="javascript:doHomeTaxConnect()"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/autoCollect.png">증빙자료 자동 수집/조회</a></li>
 			</ul> 
 			
 			<section>
-					
 					<div class="container" style="margin-left: 36px;"> 
 							 <section id="categoryAjax">
 								<div class="row">

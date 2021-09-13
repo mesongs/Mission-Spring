@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import kr.ac.kopo.member.vo.LoginVO;
 import kr.ac.kopo.receipt.service.ReceiptService;
 import kr.ac.kopo.receipt.vo.AcceptRejectVO;
+import kr.ac.kopo.receipt.vo.HomeTaxCardVO;
 import kr.ac.kopo.receipt.vo.HomeTaxCashVO;
 import kr.ac.kopo.receipt.vo.ReceiptFileVO;
 import kr.ac.kopo.receipt.vo.ReceiptVO;
@@ -339,13 +340,25 @@ public class receiptController {
 		// 홈택스 Main으로 이동
 		// post로 로그인 정보를 받아오자 form 방식
 		@PostMapping("/receipt/homeTaxConnect") 
-		public String homeTaxConnect(HomeTaxInfoVO homeTaxInfo) {
+		public String homeTaxConnect(HomeTaxInfoVO homeTaxInfo, Model model) {
 				
 			    // 반환값은 뭐여야 하지? 로그인이 성공적으로 되었다 라는 걸 확인하고 성공한 경우에만 페이지 넘겨야함
 				// 로그인 실패한 경우에는 redirect
-				service.homeTaxConnectService(homeTaxInfo);
+				String valid = service.homeTaxConnectService(homeTaxInfo);
+				String msg ="";
 				
-				return "receipt/homeTaxMain";
+				if(valid.equals("success")) {
+					
+					// 인증 성공한 경우
+					System.out.println(" 로그인 성공 시 받아온 값 " + valid);
+					return "receipt/homeTaxMain";
+					
+				}else {
+					System.out.println(" 로그인 실패 시 받아온 값 " + valid);
+ 					return "redirect:/receipt/register";
+				}
+				
+				
 		}
 		
 		// 테스트용으로 만들어놓은 get방식
@@ -361,9 +374,6 @@ public class receiptController {
 		@ResponseBody
 		public List<HomeTaxCashVO> getHomeTaxCashInfo(HttpSession session, @RequestParam("purchaseDate") String purchaseDate) {
 			
-			
-			System.out.println("구매날짜" + purchaseDate);
-			
 			LoginVO userVO = (LoginVO)session.getAttribute("userVO");
 			String businessNo = userVO.getBusinessNo();
 			
@@ -371,6 +381,18 @@ public class receiptController {
 			
 			return getHomeTaxCashList;
 			
+		}
+		
+		@RequestMapping("/receipt/getHomeTaxCardInfo")
+		@ResponseBody
+		public List<HomeTaxCardVO> getHomeTaxCardInfo(HttpSession session, @RequestParam("searchMonth") String searchMonth){
+			
+			LoginVO userVO = (LoginVO)session.getAttribute("userVO");
+			String businessNo = userVO.getBusinessNo();
+			
+			List<HomeTaxCardVO> getHomeTaxCardList = service.getHomeTaxCardInfoService(searchMonth, businessNo);
+			
+			return getHomeTaxCardList;
 		}
 		
 		

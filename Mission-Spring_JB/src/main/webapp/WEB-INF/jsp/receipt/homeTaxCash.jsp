@@ -379,7 +379,7 @@ input::placeholder{
 		$('#searchHometaxCash').click(function(){
 			
 			let purchaseDate = $('#searchMonth').val();
-			alert(purchaseDate)
+			
 			//조회 버튼 누르면, 기간에 해당하는 값만 조회함
 			$.ajax({
 				type : "get",
@@ -389,32 +389,32 @@ input::placeholder{
 				success : function(result){
 					
 					let obj = JSON.parse(result);
+					alert(obj)
 					
 			 		 $('#test').empty();
 			 		 
 					 if(obj.length >= 1){
 						 
 						 // for(receipt vo(=searchWaitList) : receiptList) 1.5버전 for문과 동일함
-						 obj.forEach(function(searchDateList){
+						 obj.forEach(function(hometaxCashDateList){
 							 	 
 							 	 str="<tr>"
 							 	 str += "<td>" + '<input type="checkbox" class="testBox">' + "</td>" 
-							     str +="<td>" + searchDateList.receiptDate + "</td>"
-							     str +="<td>" + searchDateList.receiptName + "</td>"
-							     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/detail/" + searchDateList.receiptNo + ">" + searchDateList.storeName +"</a></td>"; 
+							     str +="<td>" + hometaxCashDateList.purchaseDate + "</td>"
 							     
-							     str +="<td>" + searchDateList.sum +"원</td>";
-							     str +="<td>" + searchDateList.purpose +"</td>";
+							     str +="<td>" + hometaxCashDateList.supplierBusinessNo + "</td>"
+							     str +="<td>" + hometaxCashDateList.supplierStoreName + "</td>"
 							     
-							     if(searchDateList.overlap == 'Y'){
-					 					
-							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>"
-							     }else{
-				 					
-							    	 str += "<td>" + "</td>"
-				 				 }
-			 					 str +="<td>" + searchDateList.memo +"</td>";
+							     str +="<td>" + hometaxCashDateList.section + "</td>";
+							     str +="<td>" + hometaxCashDateList.amount +"원</td>";
+			 					 str +="<td>" + hometaxCashDateList.vat +"원</td>";
+							     
+							     str +="<td>" + hometaxCashDateList.sum +"원</td>";
+							     str +="<td>" + hometaxCashDateList.storeKind +"</td>";
+							     str +="<td>" + hometaxCashDateList.cashApprovalNo +"</td>";
+			 					 str +="<td>" + hometaxCashDateList.deduction +"</td>";
 			 					 str +="</tr>"
+			 					 
 			 					 $('#test').append(str);
 						 })
 					 }
@@ -564,39 +564,42 @@ input::placeholder{
 							<table style="margin-top: 30px;">
 								<tr id="boardtable">
 									<th><input type="checkbox" class="testBox" id="allCheck" value="1"></th>
-									<th width="170px">매입일시</th>
-									<th width="180px">가맹점 사업자번호</th>
-									<th width="110px">가맹점명</th>
-									<th width="100px">업종명</th>
+									<th width="140px">매입일시</th>
+									<th width="190px">가맹점 사업자번호</th>
+									<th width="120px">가맹점명</th>
+									<th width="90px">업종명</th>
 									<th width="110px">공급가액</th>
-									<th width="150px">부가세</th>
+									<th width="100px">부가세</th>
 									<th width="150px">매입금액</th>
+									<th width="140px">유형</th>
 									<th width="130px">승인번호</th>
-									<th width="100px">공제여부</th>
+									<th width="110px">공제여부</th>
 								</tr>
 								
 								<tbody id="test">
 								 	<tr>
 								 		<td><input type="checkbox" class="testBox" id="allCheck" value="1"></td>
-								 		<td>2021-03-23 17:05:03</td>
+								 		<td>20210323 17:05:03</td>
 								 		<td>605-25-91876</td>
 								 		<td>대양슈퍼</td>
 								 		<td>소매</td>
 								 		<td>80,910</td>
 								 		<td>8,090</td>
 								 		<td>89,000</td>
+								 		<td>일반과세자</td>
 								 		<td>147369422</td>
 								 		<td>불공제</td>
 								 	</tr>
 								 	<tr>
 								 		<td><input type="checkbox" class="testBox" id="allCheck" value="1"></td>
-								 		<td>2021-03-23 17:05:03</td>
+								 		<td>20210323 17:05:03</td>
 								 		<td>605-25-91876</td>
 								 		<td>대양슈퍼</td>
 								 		<td>소매</td>
 								 		<td>80,910</td>
 								 		<td>8,090</td>
 								 		<td>89,000</td>
+								 		<td>일반과세자</td>
 								 		<td>147369422</td>
 								 		<td>불공제</td>
 								 	</tr>

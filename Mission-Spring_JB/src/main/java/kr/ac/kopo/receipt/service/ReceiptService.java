@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import kr.ac.kopo.receipt.vo.AcceptRejectVO;
+import kr.ac.kopo.receipt.vo.HomeTaxCardVO;
 import kr.ac.kopo.receipt.vo.HomeTaxCashVO;
 import kr.ac.kopo.receipt.vo.HomeTaxInfoVO;
 import kr.ac.kopo.receipt.vo.ReceiptFileVO;
@@ -51,8 +52,12 @@ public interface ReceiptService {
 
 	int reRegisterRejectService(RejectReceiptVO rejectReceipt);
 	
-	void homeTaxConnectService(HomeTaxInfoVO homeTaxInfo);
+	String homeTaxConnectService(HomeTaxInfoVO homeTaxInfo);
 	
 	List<HomeTaxCashVO> getHomeTaxCashInfoService(String purchaseDate, String businessNo);
+	
+	List<HomeTaxCardVO> getHomeTaxCardInfoService(String searchMonth, String businessNo);
+	
+	
 	
 }

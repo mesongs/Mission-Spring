@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,11 +24,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import kr.ac.kopo.receipt.dao.ReceiptDAO;
 import kr.ac.kopo.receipt.vo.AcceptRejectVO;
+import kr.ac.kopo.receipt.vo.HomeTaxCardVO;
 import kr.ac.kopo.receipt.vo.HomeTaxCashVO;
 import kr.ac.kopo.receipt.vo.HomeTaxInfoVO;
 import kr.ac.kopo.receipt.vo.ReceiptFileVO;
@@ -321,16 +324,40 @@ public class ReceiptServiceImpl implements ReceiptService {
 	
 	
 	@Override
-	public void homeTaxConnectService(HomeTaxInfoVO homeTaxInfo) {
+	public String homeTaxConnectService(HomeTaxInfoVO homeTaxInfo) {
 		
 		System.out.println("토큰화 하기 전 : " + homeTaxInfo);
 		
+		String valid = "";
 		String tokenizerHomeTaxInfo = createToken(homeTaxInfo);
 		
 		System.out.println("토큰화 후 : " + tokenizerHomeTaxInfo);
 		
+		OkHttpClient client = new OkHttpClient();
+
+		Request request = new Request.Builder()
+		  .url("http://35.185.213.190:9999/jb/hometax-auth?token="+ tokenizerHomeTaxInfo)
+		  .get()
+		  .addHeader("cache-control", "no-cache")
+		  .build();
 		
-		//검증까지 한 번 해보자
+		try {
+			Response response = client.newCall(request).execute();
+			ResponseBody responseBody = response.body();
+			String result = responseBody.string();
+			
+			ObjectMapper mapper = new ObjectMapper();
+			
+			JsonNode root = mapper.readTree(result);
+			valid = root.path("result").asText();
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+	}
+		
+		return valid;
+		
 	}
 	
 	// 토큰 생성하는 함수
@@ -362,12 +389,25 @@ public class ReceiptServiceImpl implements ReceiptService {
 		
 	}
 	
-	// 회원 현금영수증 조회
+	// 회원 홈택스 현금영수증 조회
 	@Override
 	public List<HomeTaxCashVO> getHomeTaxCashInfoService(String purchaseDate, String businessNo) {
 		
-		OkHttpClient client = new OkHttpClient();
+		String cashApprovalNo;
+		String purchaseDateTime;
+		String supplierBusinessNo;
+		String supplierStoreName;
+		String purchaseTime;
+		String storeKind;
+		String section;
+		String deduction;
+		int amount;
+		int vat;
+		int sum;
+		String purchaseGetDate;
+		String purchaseGetTime;
 		
+		OkHttpClient client = new OkHttpClient();
 		List<HomeTaxCashVO> getHomeTaxCashList = new ArrayList<>();
 		
 		Request request = new Request.Builder()
@@ -382,29 +422,61 @@ public class ReceiptServiceImpl implements ReceiptService {
 			ResponseBody responseBody = response.body();
 			String result = responseBody.string();
 			
-			System.out.println("요청한 result 값? " + result);
+//			System.out.println("바로 형변환하기 : "+ getHomeTaxCashList2);
+//			System.out.println("요청한 result 값? " + result);
 			
 			ObjectMapper mapper = new ObjectMapper();
 			
-			
 			JsonNode root = mapper.readTree(result);
+
 			JsonNode getResult = root.path("result");
-			System.out.println("getResult : " + getResult);
-			System.out.println("getResult.get(0) : " + getResult.get(0));
 			
-			// js로 넘겨줄 때 리스트로 넘겨주고싶음
-			// String으로 값을 넘겨줘보자
-			// js에서 파싱하기
-			String testResult= getResult.get(0).asText();
-			// map을 list로 바꾸자
+//			System.out.println("getResult : " + getResult);
+//			System.out.println("getResult.get(0) : " + getResult.get(0));
+//			System.out.println("getResult.get(1) : " + getResult.get(1));
+//			System.out.println(getResult.size());
 			
 			
 			
-			List<HomeTaxCashVO> getHomeTaxCashList = (List<HomeTaxCashVO>) testResult;
+			for(int i=0; i< getResult.size() ; i++) {
+				
+				// vo로 바로 변경이 안되서 object로 형변환 한 후 vo로 변환했는데 잘안됨..
+//				ObjectNode obj = (ObjectNode)getResult.get(i);
+//				HomeTaxCashVO homeTaxCashVO = (HomeTaxCashVO)obj;
+				
+				// findValue로 값 하나씩 찾아서 vo에 멤버변수에 매핑해서 vo로 변환 => List에 추가해서 반환
+				
+				cashApprovalNo = getResult.get(i).findValue("cashApprovalNo").asText();
+				supplierBusinessNo = getResult.get(i).findValue("supplierBusinessNo").asText();
+				purchaseGetDate = getResult.get(i).findValue("purchaseDate").asText();
+				purchaseGetTime = getResult.get(i).findValue("purchaseTime").asText();
+				purchaseDateTime = purchaseGetDate + " " + purchaseGetTime;
+				supplierStoreName = getResult.get(i).findValue("supplierStoreName").asText(); ;
+				storeKind = getResult.get(i).findValue("storeKind").asText();
+				section = getResult.get(i).findValue("section").asText();
+				deduction = getResult.get(i).findValue("deduction").asText();
+				amount = getResult.get(i).findValue("amount").asInt();
+				vat = getResult.get(i).findValue("vat").asInt();
+				sum = getResult.get(i).findValue("sum").asInt();
+				
+				HomeTaxCashVO homeTaxCashVO = new HomeTaxCashVO();
+				
+				homeTaxCashVO.setCashApprovalNo(cashApprovalNo);
+				homeTaxCashVO.setSupplierBusinessNo(supplierBusinessNo);
+				homeTaxCashVO.setPurchaseDate(purchaseDateTime);
+				homeTaxCashVO.setSupplierStoreName(supplierStoreName);
+				homeTaxCashVO.setStoreKind(storeKind);
+				homeTaxCashVO.setSection(section);
+				homeTaxCashVO.setDeduction(deduction);
+				homeTaxCashVO.setAmount(amount);
+				homeTaxCashVO.setVat(vat);
+				homeTaxCashVO.setSum(sum);
+				
+				getHomeTaxCashList.add(homeTaxCashVO);
+				
+			}
 			
-			
-			
-			
+			//result는 배열임 => 배열에 있는 요소 하나씩 접근해서 vo로 변환하고 .add
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -413,6 +485,98 @@ public class ReceiptServiceImpl implements ReceiptService {
 		
 		
 		return getHomeTaxCashList;
+	}
+	
+	// 회원 홈택스 사업자 카드 매입내역 조회
+	@Override
+	public List<HomeTaxCardVO> getHomeTaxCardInfoService(String searchMonth, String businessNo) {
+		
+		String cardApprovalNo; //
+
+		// 날짜랑 시간 가져옴
+		String purchaseGetDate;
+		String purchaseGetTime;
+		String purchaseDateTime;
+		String supplierStoreName;
+		String supplierBusinessNo;
+		String cardName;
+		String cardNumber;
+		String storeKind;
+		String section;
+		String deduction;
+		int amount;
+		int vat;
+		int sum;
+		
+		OkHttpClient client = new OkHttpClient();
+		List<HomeTaxCardVO> getHomeTaxCardList = new ArrayList<>();
+		
+		Request request = new Request.Builder()
+		  .url("http://35.185.213.190:9999/jb/hometax-card?purchaseDate="+ searchMonth +"&businessNo=" + businessNo)
+		  .get()
+		  .addHeader("cache-control", "no-cache")
+		  .build();
+		
+		try {
+			Response response = client.newCall(request).execute();
+			ResponseBody responseBody = response.body();
+			String result = responseBody.string();
+			
+			ObjectMapper mapper = new ObjectMapper();
+			JsonNode root = mapper.readTree(result);
+			JsonNode getResult = root.path("result");
+			
+			for(int i=0; i< getResult.size() ; i++) {
+				
+				// vo로 바로 변경이 안되서 object로 형변환 한 후 vo로 변환했는데 잘안됨..
+//				ObjectNode obj = (ObjectNode)getResult.get(i);
+//				HomeTaxCashVO homeTaxCashVO = (HomeTaxCashVO)obj;
+				
+				// findValue로 값 하나씩 찾아서 vo에 멤버변수에 매핑해서 vo로 변환 => List에 추가해서 반환
+				
+				cardApprovalNo = getResult.get(i).findValue("cardApprovalNo").asText();
+				supplierBusinessNo = getResult.get(i).findValue("supplierBusinessNo").asText();
+				purchaseGetDate = getResult.get(i).findValue("purchaseDate").asText();
+				purchaseGetTime = getResult.get(i).findValue("purchaseTime").asText();
+				purchaseDateTime = purchaseGetDate + " " + purchaseGetTime;
+				
+				supplierStoreName = getResult.get(i).findValue("supplierStoreName").asText();
+				
+				cardName = getResult.get(i).findValue("cardName").asText();
+				storeKind = getResult.get(i).findValue("storeKind").asText();
+				cardNumber = getResult.get(i).findValue("cardNumber").asText();
+				deduction = getResult.get(i).findValue("deduction").asText();
+				section =  getResult.get(i).findValue("section").asText();
+				amount = getResult.get(i).findValue("amount").asInt();
+				vat = getResult.get(i).findValue("vat").asInt();
+				sum = getResult.get(i).findValue("sum").asInt();
+				
+				HomeTaxCardVO homeTaxCardVO = new HomeTaxCardVO();
+				
+				homeTaxCardVO.setCardApprovalNo(cardApprovalNo);
+				homeTaxCardVO.setSupplierBusinessNo(supplierBusinessNo);
+				homeTaxCardVO.setPurchaseDate(purchaseDateTime);
+				homeTaxCardVO.setSupplierStoreName(supplierStoreName); 
+				homeTaxCardVO.setCardName(cardName);
+				homeTaxCardVO.setCardNumber(cardNumber);
+				homeTaxCardVO.setStoreKind(storeKind);
+				homeTaxCardVO.setSection(section);
+				homeTaxCardVO.setDeduction(deduction);
+				homeTaxCardVO.setAmount(amount);
+				homeTaxCardVO.setVat(vat);
+				homeTaxCardVO.setSum(sum);
+				
+				getHomeTaxCardList.add(homeTaxCardVO);
+				
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		return getHomeTaxCardList;
 	}
 
 	// 가장 먼저했던 이미지 서버에 저장, 썸네일 이미지 저장 => 저장된 이미지 ocr

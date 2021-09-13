@@ -230,8 +230,10 @@ input::placeholder{
 
 <script>
 
+
+
 $(document).ready(function(){
-	
+		
 	$('#myModal').modal('show');
 	$('#title').html('과세기간 및 신고납부 안내');
 	$('#alert-modal-body-msg').html('<img src="${ pageContext.request.contextPath }/resources/img/taxbilDateDetail.png" style="width:920px; height:390px;" class="img-fluid rounded">')
@@ -321,7 +323,7 @@ $(document).ready(function(){
 					</div>
 	</div>
 
-
+	
 	<!--================ Start Footer Area =================-->
 	<jsp:include page="/WEB-INF/jsp/include/footer.jsp"/>
 	<!--================ End Footer Area =================-->

@@ -36,5 +36,8 @@ public interface FinancialDAO {
 	// (최근 7일간) 고객 종류별 결제금액 / 기존고객, 신규고객 수
 	List<ReturnSalesVO> getWeekCustomerKindSaleList(String businessNo);
 	
+	ReturnSalesVO getMonthSales(String businessNo);
+	
+	
 	
 }

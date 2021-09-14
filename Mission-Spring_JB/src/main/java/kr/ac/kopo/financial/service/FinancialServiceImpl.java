@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,9 +28,16 @@ public class FinancialServiceImpl implements FinancialService {
 	private FinancialDAO financialDAO;
 	
 	@Override
-	public void batchInsertSalesService(String businessNo, String dealDate) {
+	public void batchInsertSalesService() {
 		
 		List<SalesVO> salesList = new ArrayList<SalesVO>();
+		
+		// 스케줄러에서 파라미터 못 넘겨서 서비스에서 선언
+		// 날짜는 전 일로, 매번 전 날 카드 매출 데이터를 insert함
+		String dealDate ="20210102";
+		
+		// 여기서 다른 서비스 호출해서 회원 list 가져온 뒤, 회원들의 정보를 insert
+		String businessNo = "6052355236";
 		
 		OkHttpClient client = new OkHttpClient();
 		
@@ -36,7 +45,6 @@ public class FinancialServiceImpl implements FinancialService {
 		  .url("http://34.145.45.161:9999/jb/sales?dealDate="+ dealDate + "&businessNo=" + businessNo)
 		  .get()
 		  .addHeader("cache-control", "no-cache")
-//		  .addHeader("postman-token", "1bf3046c-0bd9-ac1b-fd51-bb8df70e0f9a")
 		  .build();
 		
 		try {
@@ -75,9 +83,9 @@ public class FinancialServiceImpl implements FinancialService {
 				salesList.add(salesVO);
 			}
 			
-			System.out.println(salesList.get(0));
-			System.out.println(salesList.get(1));
-			System.out.println(salesList.get(2));
+//			System.out.println(salesList.get(0));
+//			System.out.println(salesList.get(1));
+//			System.out.println(salesList.get(2));
 			
 			
 //			HashMap<String, Object> salesListMap = new HashMap<>();
@@ -97,6 +105,10 @@ public class FinancialServiceImpl implements FinancialService {
 		
 	}
 	
+	
+	
+	
+	
 	// 처음에는 result set을 가져와서 서비스에서 parsing하려고 했음..  그런담에 view에 넘겨주려했음
 	// DB에서 처리한 값 map에 넣어서 반환
 	@Override
@@ -115,6 +127,10 @@ public class FinancialServiceImpl implements FinancialService {
 		
 //		전 날 매출액, 전 전날 매출액, 증감률
 		ReturnSalesVO returnSalesVO = financialDAO.getSalesSum(businessNo); 
+		
+//		지지난 달 매출액, 지난 달 매출액 매출액, 월 매출액 증감률
+		
+		ReturnSalesVO monthSalesVO = financialDAO.getMonthSales(businessNo);
 		
 		List<ReturnSalesVO> lastWeekSalesList =financialDAO.getLastWeekSales(businessNo);
 		
@@ -138,6 +154,7 @@ public class FinancialServiceImpl implements FinancialService {
 		map.put("bytimeSale2", bytimeSale2);
 		map.put("getCustomerKindSaleList", getCustomerKindSaleList);
 		map.put("getWeekCustomerKindSaleList", getWeekCustomerKindSaleList);
+		map.put("monthSalesVO", monthSalesVO);
 		
 		return map;
 		

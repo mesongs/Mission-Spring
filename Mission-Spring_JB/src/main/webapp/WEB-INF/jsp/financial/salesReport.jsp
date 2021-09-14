@@ -25,6 +25,19 @@
   
   }
 	
+ .addBold{
+ 
+ 	font-weight: bold;
+ }	
+ 
+ .upDownImg	{
+ 
+    height: 12px;
+    margin-bottom: 4px;
+    margin-left: 3px;
+    width: 15px;
+ }				
+	
  .panel{
  	margin-bottom : 20px;
  	border-radius : 4px;
@@ -39,10 +52,14 @@
  	
  
  }
+ 
+ 
+ 
 
-	.panel-default > .panel-heading{
-		background-color : #E9EDF1;
-		border-color : #ddd;
+ .panel-default > .panel-heading{
+	
+	background-color : #E9EDF1;
+	border-color : #ddd;
 	
 	
 	}
@@ -50,7 +67,7 @@
  .panel-heading{
  	font-weight :bold;
  	color : #3a414e;
- 	font-size: 25px;
+ 	font-size: 23px;
     letter-spacing: 0.025em;
     height: 66px;
     line-height: 45px;
@@ -230,26 +247,54 @@ function numberWithCommas(x) {
 	
 	$(function(){
 		
-		// 전 날 매출금액
+		// 전 일 매출금액
 		var commaYesterDaySales = numberWithCommas(${ returnSalesVO.yesterday })
 		var commaDayBeforeSales = numberWithCommas(${ returnSalesVO.dayBefore });
-
+	
+		
 		document.getElementById("commaYesterDaySales").innerHTML=commaYesterDaySales + "원" ;
-		document.getElementById("commaDayBeforeSales").innerHTML=commaDayBeforeSales + "원" ;
+
 		
 		var calDayBeforeYesterday = ${ returnSalesVO.dayBefore } - ${ returnSalesVO.yesterday }
 		
+		// 전 월 증감액
+		var calLastLastSales =  ${ monthSalesVO.lastMonthSales } - ${ monthSalesVO.lastLastMonthSales }
+		  
+		var commaSalesMom = numberWithCommas(calLastLastSales)
+		
+		
+		
+		
+		if(commaSalesMom.indexOf("-")){
+			
+			commaSalesMom.replace("-", "")	
+			
+		}
+			
+		
+		if(calLastLastSales < 0){
+			document.getElementById("salesMom").innerHTML = '전 월 대비 '+ '<span class="addBold">' + commaSalesMom + '원 감소</span>';
+			
+		}else{
+			
+			document.getElementById("salesMom").innerHTML = '전 월 대비 '+ '<span class="addBold">' + commaSalesMom + '원 증가</span>';
+		}
 		
 		
 		var salesDod = numberWithCommas(calDayBeforeYesterday)
 		
-		if( calDayBeforeYesterday > 0){
+		if(salesDod.indexOf("-")){
 			
-			document.getElementById("salesDod").innerHTML = "매출액이 "+ salesDod + "원 감소했습니다.";
+			salesDod.replace("-", "")	
+			
+		}
+		
+		if( calDayBeforeYesterday > 0){
+			document.getElementById("salesDod").innerHTML = '전 일 대비 '+ '<span class="addBold">' + salesDod + '원 감소</span>';
 			
 		}else{
 			
-			document.getElementById("salesDod").innerHTML = "매출액이 "+ salesDod + "원 증가했습니다.";
+			document.getElementById("salesDod").innerHTML = '전 일 대비 '+ '<span class="addBold">' + salesDod + '원 증가</span>';
 		}
 		
 		
@@ -309,7 +354,10 @@ function numberWithCommas(x) {
 //		yesterdayString + "(" + yesterdayOfWeek + ")" , dayBeforeDayString + "(" + dayBeforeDayOfWeek + ")", 
 //		$('#salesComma').val(yesterdayString + "(" + yesterdayOfWeek + ")")
 		document.getElementById("yesterdaySales").innerHTML=yesterdayString + "(" + yesterdayOfWeek + ")";
-		document.getElementById("dayBeforeSales").innerHTML=dayBeforeDayString + "(" + dayBeforeDayOfWeek + ")";
+		
+		var commaLastMonthSales = numberWithCommas(${monthSalesVO.lastMonthSales});
+		
+		document.getElementById("lastMonthSalesSum").innerHTML=commaLastMonthSales+"원";
 		
 		
 		
@@ -339,11 +387,7 @@ function numberWithCommas(x) {
 			customerkindArrComma.push(numberWithCommas(${ customerKindSaleList.customerSale }))
 		</c:forEach>
 			
-		
-
-		
 		var perCutomerSale = numberWithCommas(${perCutomerSale});
-		
 		
 		document.getElementById("perCutomerSale").innerHTML=perCutomerSale + "원" ;
 		document.getElementById("신규고객").innerHTML=customerkindArrComma[0] + "원" ;
@@ -784,17 +828,19 @@ function numberWithCommas(x) {
 				},
 				scale: {
 				      ticks: {
-				        display: false
-				      }
-
+				          display: false
+				        }
 				},
 				pieceLabel: { 
-					mode:"percentage",
-					position:"default",
+					mode:"label",
+					position:"outside",
 					fontSize: 12,
 					fontColor : 'rgb(2,2,2)',
 					fontStyle: 'bold'
 				}
+				
+
+		
 					
 				
 				
@@ -846,29 +892,56 @@ function numberWithCommas(x) {
 					<div class="container" style="margin-left: 36px;"> 
 							<div class="row" style="margin-bottom: 25px;">
 								<div class="col-md-4">
-									<div class="panel panel-default">
-										<div class="panel-heading">전 일 매출현황</div>
-										<div class="panel-body">
-											<span id="yesterdaySales"></span><br>
-											<span id="commaYesterDaySales"></span>
+									<div class="panel panel-default" style="height: 200px">
+										<div class="panel-heading">전 일 매출 현황</div>
+										<div class="panel-body" style="font-size: 20px; font-size: 20px;margin-top: 15px; padding-right: 15px;">
+											<span id="yesterdaySales"></span>
+											<sapn> : </sapn>
+											<span class="addBold" id="commaYesterDaySales"></span><br>
+											<span style="float: left;">전 일 대비 증감률 : </span>
+											<span style="float: left; margin-left: 5px;" class="addBold">${ returnSalesVO.dod }</span>
+											<span style="float: left">
+												<c:if test="${ returnSalesVO.dayBefore gt returnSalesVO.yesterday}">
+													<img class="upDownImg" src="${ pageContext.request.contextPath }/resources/img/down.png">
+												</c:if>
+												<c:if test="${ returnSalesVO.dayBefore lt returnSalesVO.yesterday}">
+													<img class="upDownImg" src="${ pageContext.request.contextPath }/resources/img/up.png">												
+												</c:if>
+											</span><br>
+											<span id="salesDod"></span>
 										</div>
 									</div>
 								</div>
 								<div class="col-md-4">
-									<div class="panel panel-default">
-										<div class="panel-heading">전 전일 매출액</div>
-										<div class="panel-body">
-											<span id="dayBeforeSales"></span><br>
-											<span id="commaDayBeforeSales"></span>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-4">
-									<div class="panel panel-default">
+									<div class="panel panel-default" style="height: 200px">
 										<div class="panel-heading">주간 매출 현황</div>
-										<div class="panel-body">
-											<span>${ returnSalesVO.dod }</span><br>
-												<span id="salesDod"></span>
+										<div class="panel-body" style="font-size: 20px; font-size: 20px;margin-top: 15px; padding-right: 15px;">
+											<span>주간 매출 합계 : </span>
+											<span class="addBold">4,806,000원</span><br>
+											<span style="float: left;">전 주 대비 증감률 : </span>
+											<span class="addBold" style="float: left; margin-left: 5px;"> 12%</span><span style="float: left"><img class="upDownImg" src="${ pageContext.request.contextPath }/resources/img/up.png"></span><br>
+											<span>전 주 대비 <span class="addBold">641,000원 감소</span></span>
+									</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="panel panel-default" style="height: 200px">
+										<div class="panel-heading">월간 매출 현황</div>
+										<div class="panel-body" style="font-size: 20px; font-size: 20px;margin-top: 15px; padding-right: 15px;">
+											<span>월간 매출 합계 : </span>
+											<span class="addBold" id="lastMonthSalesSum"></span><br>
+											<span style="float: left">전 월 대비 증감률 : </span>
+											<span style="float: left;" class="addBold">${monthSalesVO.mom}</span>
+											<span style="float: left">
+												<c:if test="${ monthSalesVO.lastLastMonthSales gt monthSalesVO.lastMonthSales}">
+													<img class="upDownImg" src="${ pageContext.request.contextPath }/resources/img/down.png">
+												</c:if>
+												<c:if test="${ monthSalesVO.lastLastMonthSales lt monthSalesVO.lastMonthSales}">
+													<img class="upDownImg" src="${ pageContext.request.contextPath }/resources/img/up.png">												
+												</c:if>
+											</span><br>
+											
+											<span id="salesMom"></span>
 										</div>
 									</div>
 								</div>
@@ -980,7 +1053,7 @@ function numberWithCommas(x) {
 										</tr>
 									</table>
 												
-										<canvas id="customerAnalysis" style="margin-top: 20px;"></canvas>		
+										<canvas id="customerAnalysis" style="margin-top: 30px;"></canvas>		
 												
 											</div>
 									</div>

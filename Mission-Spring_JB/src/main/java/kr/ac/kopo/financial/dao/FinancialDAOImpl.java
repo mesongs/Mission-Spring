@@ -100,6 +100,14 @@ public class FinancialDAOImpl implements FinancialDAO {
 		List<ReturnSalesVO> customerKindSaleList = sqlSessionTemplate.selectList("financial.financialDAO.WeekCustomerKindSale",businessNo);
 		return customerKindSaleList;
 	}
+
+	@Override
+	public ReturnSalesVO getMonthSales(String businessNo) {
+		ReturnSalesVO monthSalesVO = sqlSessionTemplate.selectOne("financial.financialDAO.monthSalesResult", businessNo);
+		
+		return monthSalesVO;
+	}
+	
 	
 	
 }

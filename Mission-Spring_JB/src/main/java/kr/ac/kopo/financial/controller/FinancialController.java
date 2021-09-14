@@ -8,6 +8,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -32,11 +33,6 @@ public class FinancialController {
 		LoginVO userVO = (LoginVO)session.getAttribute("userVO");
 		String businessNo = userVO.getBusinessNo();
 
-//		현재 날짜별로 insert하는데, 하나with에 가입한 모든 회원들의 전 날 카드 통합 매출내역을 조회해야함
-//		String dealDate = "202011";
-//		financialService.batchInsertSalesService(businessNo, dealDate);
-		
-		// 여기부터는 매출보고서에 필요한 것 select해서 map으로 가져오기
 		///////////////////////////////////////////////////////////////////////////////////////
 		ModelAndView mav = new ModelAndView("financial/salesReport");
 //		
@@ -53,7 +49,7 @@ public class FinancialController {
 		
 		ReturnSalesVO bytimeSale = (ReturnSalesVO)map.get("bytimeSale");
 		ReturnSalesVO bytimeSale2 = (ReturnSalesVO)map.get("bytimeSale2");
-		
+		ReturnSalesVO monthSalesVO = (ReturnSalesVO)map.get("monthSalesVO"); 
 		
 		// 최근 7일간 카드사별 결제 금액 top5
 		mav.addObject("cardApprovalTop5List", cardApprovalTop5List);
@@ -80,24 +76,40 @@ public class FinancialController {
 		// 일주일간 신규 + 재방문객 수, 신규고객 매출 + 재방문객 매출
 		mav.addObject("weekCustomerKindSaleList", weekCustomerKindSaleList);
 		
+		// 월 매출액 합계
+		mav.addObject("monthSalesVO", monthSalesVO);
+		
 		return mav;
 		
 	}
 	
-// 	스프링 스케줄러로 배치 처리, 지금은 위에서 수동으로 작동하게 넣어놓았음
+// 	스프링 스케줄러로 여신금융협회 사업장 '카드매출' 데이터 배치 처리
 //	회원들의 사업장에서 발생한 카드 통합 매출 정보를 여신~으로부터 가져와서 insert
-//	public void cardBatchInsert(HttpSession session) {
+//	초(0~59) 분(0~59) 시(0~23) 일(1~31) 월(1~12) 요일(0~6)
+//	여기 파라미터 있으면 작동안됨
+//	@Scheduled(cron = "0 41 17 * * *")
+//	public void cardBatchInsert() {
 //		
-//		LoginVO userVO = (LoginVO)session.getAttribute("userVO");
-//		String businessNo = userVO.getBusinessNo();
+////		System.out.println("매일 오후 17시:41분:00초에 호출됩니다.");
+//		// 서비스를 호출할 때 인자 없이 호출하고..서비스단에서
+////		HttpSession session = request.getSession(); 
+//		
+////		LoginVO userVO = (LoginVO)session.getAttribute("userVO");
+////		String businessNo = userVO.getBusinessNo();
 //		
 //		// 매일 해당 날짜 -1일로 api요청 / 월별 요청도 가능
-//		String dealDate = "20210714";
+////		String dealDate = "20210102";
 //		
 //		// 회원들의 사업장번호를 모두 select해서 전달해서 받아와야함
-//		financialService.batchInsertSalesService(businessNo, dealDate);
 //		
+//		financialService.batchInsertSalesService();
 //	}
+	
+	
+	// 홈택스 매입(현금영수증 내역, 카드 내역, 세금계산서 내역 한 달 주기 insert) 
+	
+	
+
 	
 	
 	

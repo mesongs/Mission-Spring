@@ -23,6 +23,28 @@ public class ReturnSalesVO {
 	private int customerCount;
 	private int customerSale;
 	
+	private int lastLastMonthSales; 
+	private int lastMonthSales;
+	private String mom;
+	
+	public int getLastLastMonthSales() {
+		return lastLastMonthSales;
+	}
+	public void setLastLastMonthSales(int lastLastMonthSales) {
+		this.lastLastMonthSales = lastLastMonthSales;
+	}
+	public int getLastMonthSales() {
+		return lastMonthSales;
+	}
+	public void setLastMonthSales(int lastMonthSales) {
+		this.lastMonthSales = lastMonthSales;
+	}
+	public String getMom() {
+		return mom;
+	}
+	public void setMom(String mom) {
+		this.mom = mom;
+	}
 	public String getCustomerKind() {
 		return customerKind;
 	}

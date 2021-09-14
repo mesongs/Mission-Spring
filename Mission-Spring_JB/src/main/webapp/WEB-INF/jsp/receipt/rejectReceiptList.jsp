@@ -205,8 +205,20 @@ input::placeholder{
  	font-size: 19px;
  
  }
-    
+  #boardtable{
+ 	height: 60px;
+    font-size: 18px;
+    font-weight: bold;
+ }
+ 
+ .styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
 }
+ 
+ 
+ 
+    
+
 </style>
 
 <script>
@@ -433,13 +445,13 @@ input::placeholder{
 							     
 							     if(processedList.overlap == 'Y'){
 				 					
-							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>"
+							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.png">' + "</td>"
 							     }else{
 				 					
 							    	 str += "<td>" + "</td>"
 				 				 }
 							     
-							     str += "<td>"+ '<img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/reject.jpg">' + processedList.rejectReason + "</td>";
+							     str += "<td>"+ '<img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/reject.png">' + processedList.rejectReason + "</td>";
 							     
 							     
 				 				 
@@ -701,7 +713,8 @@ input::placeholder{
 
 						<div class="row" style="width: 1500px">
 							<div class="col" style="margin-bottom: 50px;">
-							<table>
+							<table class="styled-table">
+								<thead>
 								<tr id="boardtable">
 									<th><input type="checkbox" class="testBox" id="allCheck" value="1"></th>
 									<th width="100px">사용일시</th>
@@ -713,6 +726,7 @@ input::placeholder{
 									<th width="350px">반려사유</th>
 									<th width="500px">메모</th>
 								</tr>
+								</thead>
 								
 								<tbody id="test">
 								 

@@ -630,27 +630,31 @@ input::placeholder{
 							<table style="margin-top: 30px;">
 								<tr id="boardtable">
 									<th><input type="checkbox" class="testBox" id="allCheck" value="1"></th>
-									<th width="170px">작성일(공급일)</th>
-									<th width="130px">발급일</th>
-									<th width="150px">거래처</th>
-									<th width="200px">사업자등록번호</th>
-									<th width="130px">승인번호</th>
-									<th width="120px">공급가액</th>
-									<th width="100px">세액</th>
-									<th width="140px">합계</th>
+									<th width="120px">작성일자</th>
+									<th width="120px">발급일자</th>
+									<th width="140px">구분</th>
+									<th width="180px">사업자등록번호</th>
+									<th width="150px">가맹점명</th>
+									<th width="120px">공급자명</th>
+									<th width="110px">공급가액</th>
+									<th width="100px">부가세</th>
+									<th width="150px">합계금액</th>
+									<th width="90px">업종</th>
 								</tr>
 								
 								<tbody id="test">
 								 	<tr>
 								 		<td><input type="checkbox" class="testBox" id="allCheck" value="1"></td>
-								 		<td>2021-06-30</td>
-								 		<td>2021-07-10</td>
+								 		<td>20210630</td>
+								 		<td>20210710</td>
+								 		<td>세금계산서</td>
+								 		<td>6099192931</td>
 								 		<td>사오수산</td>
-								 		<td>609-919-2931</td>
-								 		<td>777209823</td>
+								 		<td>박종범</td>
 								 		<td>80,910</td>
 								 		<td>8,090</td>
 								 		<td>89,000</td>
+								 		<td>도매</td>
 								 	</tr>
 								</tbody>
 							</table>

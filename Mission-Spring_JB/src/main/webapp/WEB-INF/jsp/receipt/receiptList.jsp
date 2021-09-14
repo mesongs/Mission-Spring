@@ -5,7 +5,7 @@
 <html lang="en">
 
 <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/form.css?after">
-<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/list.css?before">
+<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/list.css?after">
 
 
 <head>
@@ -185,9 +185,7 @@ input::placeholder{
 
 <style>
 
-.nav-tabs .nav-link.active {
-    color: #007BFF;
-}
+
 
 
 	.product-img2 {
@@ -208,7 +206,17 @@ input::placeholder{
     margin-right: 0px;
  }
  
+ #boardtable{
+ 	height: 60px;
+    font-size: 18px;
+    font-weight: bold;
+ }
+ 
+ .styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
 }
+
+ 
 </style>
 
 <script>
@@ -305,7 +313,7 @@ input::placeholder{
 							     str +="<td>" + receiptKindList.purpose +"</td>";
 							     if(receiptKindList.overlap == 'Y'){
 					 					
-							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>"
+							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.png">' + "</td>"
 							     }else{
 				 					
 							    	 str += "<td>" + "</td>"
@@ -380,7 +388,7 @@ input::placeholder{
 							     
 							     if(perReceiptistList.overlap == 'Y'){
 					 					
-							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>"
+							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.png">' + "</td>"
 							     }else{
 				 					
 							    	 str += "<td>" + "</td>"
@@ -433,7 +441,7 @@ input::placeholder{
 							     
 							     if(processedList.overlap == 'Y'){
 				 					
-							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>"
+							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.png">' + "</td>"
 							     }else{
 				 					
 							    	 str += "<td>" + "</td>"
@@ -540,7 +548,7 @@ input::placeholder{
 							     
 							     if(searchDateList.overlap == 'Y'){
 					 					
-							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>"
+							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.png">' + "</td>"
 							     }else{
 				 					
 							    	 str += "<td>" + "</td>"
@@ -605,7 +613,7 @@ input::placeholder{
 					     
 					     if(searchprocessedList.overlap == 'Y'){
 			 					
-					    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>"
+					    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.png">' + "</td>"
 					     }else{
 		 					
 					    	 str += "<td>" + "</td>"
@@ -695,11 +703,12 @@ input::placeholder{
 							</section>
 							
 						
-						<div class="table-scroll-wrapper" style="overflow:auto; overflow-y:hidden">
+						<div class="table-scroll-wrapper" style="overflow:auto; overflow-y:hidden;">
 
 						<div class="row" style="width: 1500px">
 							<div class="col" style="margin-bottom: 50px;">
-							<table>
+							<table class="styled-table">
+								<thead>
 								<tr id="boardtable">
 									<th><input type="checkbox" class="testBox" id="allCheck" value="1"></th>
 									<th width="100px">사용일시</th>
@@ -710,7 +719,7 @@ input::placeholder{
 									<th width="130px">중복여부</th>
 									<th width="600px">메모</th>
 								</tr>
-								
+								</thead>
 								<tbody id="test">
 								 
 								</tbody>

@@ -42,7 +42,7 @@
 		          	  <img id="mainImage" src="${ pageContext.request.contextPath }/resources/img/empMain.png">
 		          	</c:when>
 		          	<c:otherwise>
-			          <img id="mainImage" src="${ pageContext.request.contextPath }/resources/img/indexMain2.png">          		
+			          <img id="mainImage" src="${ pageContext.request.contextPath }/resources/img/indexMain3.png">          		
 		          	</c:otherwise>
           		</c:choose>
 				

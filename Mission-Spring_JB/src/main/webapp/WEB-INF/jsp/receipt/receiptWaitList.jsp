@@ -21,6 +21,17 @@
  	margin-top: -5px;
     margin-right: 0px;
  }
+ 
+   #boardtable{
+ 	height: 60px;
+    font-size: 18px;
+    font-weight: bold;
+ }
+ 
+ .styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+ 
 
 </style>
   <!--datePicker-->
@@ -251,24 +262,19 @@
 
 						<div class="row" style="width: 1000px">
 							<div class="col" style="margin-bottom: 50px;">
-							<table>
-								<tr>
+							<table class="styled-table">
+								<thead>
+								<tr id="boardtable">
 									<th><input type="checkbox" id="allCheck" value="1"></th>
 									<th width="100px">등록일</th>
 									<th width="150px">구분</th>
 									<th width="150px">사용목적</th>
 									<th width="600px">메모</th>
 								</tr>
-								
+								</thead>
 								<tbody id="test">
 								 	
-									<%-- <tr> <!--회원이 보유한 영수증 리스트 출력  -->
-										<td><input type="checkbox"></td>
-										<td>07/08</td>
-										<td><a href="<%=request.getContextPath()%>/receiptDetail.jsp">세금계산서</a></td>
-										<td>재료비</td>
-										<td>재료 구매를 위한 지출</td>
-									</tr> --%>
+									
 									
 								</tbody>	
 									

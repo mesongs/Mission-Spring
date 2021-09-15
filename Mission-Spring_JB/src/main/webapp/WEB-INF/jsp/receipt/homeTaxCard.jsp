@@ -185,6 +185,14 @@ input::placeholder{
 
 <style>
 
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+table tbody th, table td {
+    border-bottom: none;
+}
+
 #searchHometaxCard{
 	border-top-left-radius: 5px;
  	border-top-right-radius: 5px;
@@ -557,7 +565,7 @@ input::placeholder{
 
 						<div class="row" style="width: 1080px">
 							<div class="col" style="margin-bottom: 50px;">
-							<table style="margin-top: 30px;">
+							<table style="margin-top: 30px;" class="styled-table">
 								<tr id="boardtable">
 									<th><input type="checkbox" class="testBox" id="allCheck" value="1"></th>
 									<th width="170px">매입일시</th>

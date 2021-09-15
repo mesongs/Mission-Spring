@@ -186,7 +186,21 @@ input::placeholder{
     max-height: 50px;
     margin-top: -5px;
     margin-right: -10px;
-}
+	}
+
+	#boardtable{
+		
+	height: 60px;
+    font-size: 18px;
+    font-weight: bold;
+	
+	}
+	
+	.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+	
+	}
+
 </style>
 	
 
@@ -291,7 +305,7 @@ input::placeholder{
 							     str +="<td>" + receiptKindList.purpose +"</td>";
 							     if(receiptKindList.overlap == 'Y'){
 					 					
-							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>"
+							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.png">' + "</td>"
 							     }else{
 				 					
 							    	 str += "<td>" + "</td>"
@@ -366,7 +380,7 @@ input::placeholder{
 							     
 							     if(perMgReceiptistList.overlap == 'Y'){
 				 					
-							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>"
+							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.png">' + "</td>"
 							     }else{
 				 					
 							    	 str += "<td>" + "</td>"
@@ -423,7 +437,7 @@ input::placeholder{
 							     
 							     if(processedList.overlap == 'Y'){
 				 					
-							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>"
+							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.png">' + "</td>"
 							     }else{
 				 					
 							    	 str += "<td>" + "</td>"
@@ -523,7 +537,7 @@ input::placeholder{
 							     
 							     if(searchDateList.overlap == 'Y'){
 					 					
-							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>"
+							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.png">' + "</td>"
 							     }else{
 				 					
 							    	 str += "<td>" + "</td>"
@@ -586,7 +600,7 @@ input::placeholder{
 					     
 					     if(searchprocessedList.overlap == 'Y'){
 			 					
-					    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>"
+					    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.png">' + "</td>"
 					     }else{
 		 					
 					    	 str += "<td>" + "</td>"
@@ -684,7 +698,7 @@ input::placeholder{
 
 						<div class="row" style="width: 1500px">
 							<div class="col" style="margin-bottom: 50px;">
-							<table>
+							<table class="styled-table">
 								<tr id="boardtable">
 									<th><input type="checkbox" class="testBox" id="allCheck" value="1"></th>
 									<th width="100px">등록일시</th>

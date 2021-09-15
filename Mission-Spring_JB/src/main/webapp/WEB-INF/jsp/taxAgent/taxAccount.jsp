@@ -5,16 +5,16 @@
 <html lang="en">
 
 <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/form.css?after">
-<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/list.css?before">
+<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/list.css?after">
 
 
 <head>
 <jsp:include page="/WEB-INF/jsp/include/head.jsp"/>
 
   <!--datePicker-->
- <!--  <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-  <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script> -->
+  <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
  
 
 <!-- <style>
@@ -185,32 +185,28 @@ input::placeholder{
 
 <style>
 
-	table tbody th, table td {
-    border-bottom: none;
-}
+
+
 
 	.product-img2 {
-	    max-width: 30px;
-	    max-height: 50px;
-	    margin-top: 0px;
-	    margin-right: -10px;
-    }
-   
-    .product-img3{
+    max-width: 30px;
+    max-height: 50px;
+    margin-top: -5px;
+    margin-right: -10px;
+}
+
+ .testbox2{
+ 	display: none;
+ }
+ 
+ .product-img3{
  	max-width: 30px;
     max-height: 30px;
  	margin-top: -5px;
     margin-right: 0px;
  }
  
- .nav-tabs .nav-link.active {
-    color: #007BFF;
-}
- .nav-link .active{
- 	font-size: 19px;
- 
- }
-  #boardtable{
+ #boardtable{
  	height: 60px;
     font-size: 18px;
     font-weight: bold;
@@ -219,20 +215,22 @@ input::placeholder{
  .styled-table tbody tr:nth-of-type(even) {
     background-color: #f3f3f3;
 }
- 
- 
- 
-    
 
+ 
 </style>
 
 <script>
 
 	$(document).ready(function(){
 		
-		if('${ msg }')
-			$('#myModal').modal('show');
-			$('#alert-modal-body-msg').text('${ msg }');
+		$('#excelBtn').click(function(){
+			
+		
+			// 체크한 값만 다운로드 하기
+			
+		})
+		
+		
 		$('#allCheck').click(function(){
 			
 			if($('#allCheck').prop('checked')){
@@ -323,7 +321,7 @@ input::placeholder{
 							     str +="<td>" + receiptKindList.purpose +"</td>";
 							     if(receiptKindList.overlap == 'Y'){
 					 					
-							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>"
+							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.png">' + "</td>"
 							     }else{
 				 					
 							    	 str += "<td>" + "</td>"
@@ -398,7 +396,7 @@ input::placeholder{
 							     
 							     if(perReceiptistList.overlap == 'Y'){
 					 					
-							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>"
+							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.png">' + "</td>"
 							     }else{
 				 					
 							    	 str += "<td>" + "</td>"
@@ -423,13 +421,13 @@ input::placeholder{
 			
 		})
 		
-		rejectList();
+		processedList();
 		
-		function rejectList(){
+		function processedList(){
 			
 			$.ajax({
 				type : "get",
-				url : "${pageContext.request.contextPath}/receipt/getRejectList",
+				url : "${pageContext.request.contextPath}/receipt/processedAllList",
 				success : function(result){
 					
 					let obj = JSON.parse(result);
@@ -438,13 +436,14 @@ input::placeholder{
 			 		 
 					 if(obj.length >= 1){
 						 
+						 // for(receipt vo(=searchWaitList) : receiptList) 1.5버전 for문과 동일함
 						 obj.forEach(function(processedList){
 							 	 
 							 	 str="<tr>"
 							 	 str += "<td>" + '<input type="checkbox" class="testBox">' + "</td>" 
 							     str += "<td>" + processedList.receiptDate + "</td>"
 							     str += "<td>" + processedList.receiptName + "</td>"
-							     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/rejectDetail/" + processedList.receiptNo + ">" + processedList.storeName +"</a></td>"; 
+							     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/detail/" + processedList.receiptNo + ">" + processedList.storeName +"</a></td>"; 
 							     str += "<td>" + processedList.sum +"원</td>";
 							     str += "<td>" + processedList.purpose +"</td>";
 							     
@@ -455,10 +454,6 @@ input::placeholder{
 				 					
 							    	 str += "<td>" + "</td>"
 				 				 }
-							     
-							     str += "<td>"+ '<img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/reject.png">' + processedList.rejectReason + "</td>";
-							     
-							     
 				 				 
 							     /* str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>" */
 							     /* str +="<td>" + processedList.overlap + "</td>" */
@@ -491,7 +486,7 @@ input::placeholder{
 		
 		
 		// datepicker를 활용한 날짜 조회
-		 /* $('#startDate').datepicker(
+		 $('#startDate').datepicker(
 			{
 			
 				 dateFormat:'yy/mm/dd',
@@ -526,7 +521,7 @@ input::placeholder{
 					$('#startDate').datepicker("option", "maxDate", selectedDate)
 			}
 			
-		}); */
+		});
 		
 		
 		$('#searchDate').click(function(){
@@ -561,7 +556,7 @@ input::placeholder{
 							     
 							     if(searchDateList.overlap == 'Y'){
 					 					
-							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>"
+							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.png">' + "</td>"
 							     }else{
 				 					
 							    	 str += "<td>" + "</td>"
@@ -614,7 +609,9 @@ input::placeholder{
 				 obj.forEach(function(searchprocessedList){
 					 	 
 					 	 str="<tr>"
-					 	 str += "<td>" + '<input type="checkbox" class="testBox">' + "</td>" 
+					 	 str += "<td " + 'class="testbox2">' + searchprocessedList.receiptNo + "</td>"
+					 	 str += "<td>" + '<input type="checkbox" class="testBox">' + "</td>"
+
 					     str +="<td>" + searchprocessedList.receiptDate + "</td>"
 					     str +="<td>" + searchprocessedList.receiptName + "</td>"
 					     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/detail/" + searchprocessedList.receiptNo + ">" + searchprocessedList.storeName +"</a></td>"; 
@@ -624,7 +621,7 @@ input::placeholder{
 					     
 					     if(searchprocessedList.overlap == 'Y'){
 			 					
-					    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>"
+					    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.png">' + "</td>"
 					     }else{
 		 					
 					    	 str += "<td>" + "</td>"
@@ -653,11 +650,11 @@ input::placeholder{
 	<!--================Header Menu Area =================-->
 	<jsp:include page="/WEB-INF/jsp/include/header.jsp"/>
 	<!--================Header Menu Area =================-->
-
+	
 	<div class="comment-form-receipt" id="comment-custom-receipt" style="width: 1110px;">
 		<div class="row">
 			<div class="col">
-				<h4 style="font-family: 'Noto Sans KR', sans-serif;font-size: xx-large; margin-left: 32px;">증빙관리</h4>
+				<h4 style="font-family: 'Noto Sans KR', sans-serif;font-size: xx-large; margin-left: 32px;">기장대리</h4>
 			</div>
 			<div class="col" align="right">
 				<span>
@@ -671,10 +668,10 @@ input::placeholder{
 		<div class="container">
 			<ul class="nav nav-tabs" style="margin-left: 50px;">
 				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/register"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/pictureReceipt.jpg">증빙자료 직접 등록</a></li>
-				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/processedList">처리 완료 목록</a></li>
+				<li class="nav-item"><a class="nav-link active" aria-current="page" href="#" style="padding-bottom: 10px";>처리 완료 목록</a></li>
 				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/receiptWaitList">처리 대기 목록</a></li>
-				<li class="nav-item"><a class="nav-link active" aria-current="page" href="#" style="padding-bottom: 10px";>반려 목록</a></li>
-				<li class="nav-item"><a class="nav-link" href="javascript:doHomeTaxConnect()"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/autoCollect.png">증빙자료 자동 수집/조회</a></li>
+				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/rejectReceiptList">반려 목록</a></li>
+				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/receipt/homeTaxConnect"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/autoCollect.png">증빙자료 수집/조회</a></li>
 			</ul> 
 			
 			<section>
@@ -708,13 +705,13 @@ input::placeholder{
 										
 									</div>
 									<div class="col" align="right">
-											  	<button type="submit" id="excelBtn" style="padding-left: 0px;"><img class="product-img" src="${ pageContext.request.contextPath }/resources/img/excel.png">Excel 다운로드</button>
+											  	<button type="button" id="excelBtn" style="padding-left: 0px;"><img class="product-img" src="${ pageContext.request.contextPath }/resources/img/excel.png">Excel 다운로드</button>
 									</div>
 								</div>
 							</section>
 							
 						
-						<div class="table-scroll-wrapper" style="overflow:auto; overflow-y:hidden">
+						<div class="table-scroll-wrapper" style="overflow:auto; overflow-y:hidden;">
 
 						<div class="row" style="width: 1500px">
 							<div class="col" style="margin-bottom: 50px;">
@@ -724,15 +721,13 @@ input::placeholder{
 									<th><input type="checkbox" class="testBox" id="allCheck" value="1"></th>
 									<th width="100px">사용일시</th>
 									<th width="150px">구분</th>
-									<th width="150px">업체명</th>
-									<th width="150px">사용금액</th>
+									<th width="200px">업체명</th>
+									<th width="200px">사용금액</th>
 									<th width="150px">사용목적</th>
 									<th width="130px">중복여부</th>
-									<th width="350px">반려사유</th>
-									<th width="500px">메모</th>
+									<th width="600px">메모</th>
 								</tr>
 								</thead>
-								
 								<tbody id="test">
 								 
 								</tbody>
@@ -751,16 +746,14 @@ input::placeholder{
 								</select>
 							</div>
 						</div>
-	
-						
 					</div>
-				
 			</section>
 		</div>
+
 	</div>
 	
-	<!-- Modal -->
-	<jsp:include page="/WEB-INF/jsp/include/modalAlert.jsp"/>
+	<!--================ End Blog Post Area =================-->
+
 	<!--================ Start Footer Area =================-->
 	<jsp:include page="/WEB-INF/jsp/include/footer.jsp"/>
 	<!--================ End Footer Area =================-->

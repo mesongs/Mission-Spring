@@ -230,7 +230,13 @@ input::placeholder{
  	border-color: rgb(2,2,2);
  	
  }
+table tbody th, table td {
+    border-bottom: none;
+}
 
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
 </style>
 
 <script>
@@ -627,7 +633,7 @@ input::placeholder{
 
 						<div class="row" style="width: 1080px">
 							<div class="col" style="margin-bottom: 50px;">
-							<table style="margin-top: 30px;">
+							<table style="margin-top: 30px" class="styled-table">
 								<tr id="boardtable">
 									<th><input type="checkbox" class="testBox" id="allCheck" value="1"></th>
 									<th width="120px">작성일자</th>

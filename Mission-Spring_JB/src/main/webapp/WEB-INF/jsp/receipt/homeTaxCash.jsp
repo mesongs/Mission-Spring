@@ -184,6 +184,13 @@ input::placeholder{
 </style> -->
 
 <style>
+table tbody th, table td {
+    border-bottom: none;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
 
  .nav-tabs .nav-link.active {
 	color: #007BFF;
@@ -389,7 +396,6 @@ input::placeholder{
 				success : function(result){
 					
 					let obj = JSON.parse(result);
-					alert(obj)
 					
 			 		 $('#test').empty();
 			 		 
@@ -561,7 +567,7 @@ input::placeholder{
 
 						<div class="row" style="width: 1080px">
 							<div class="col" style="margin-bottom: 50px;">
-							<table style="margin-top: 30px;">
+							<table style="margin-top: 30px;" class="styled-table">
 								<tr id="boardtable">
 									<th><input type="checkbox" class="testBox" id="allCheck" value="1"></th>
 									<th width="140px">매입일시</th>

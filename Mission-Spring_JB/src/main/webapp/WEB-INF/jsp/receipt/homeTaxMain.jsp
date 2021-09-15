@@ -236,7 +236,7 @@ $(document).ready(function(){
 		
 	$('#myModal').modal('show');
 	$('#title').html('과세기간 및 신고납부 안내');
-	$('#alert-modal-body-msg').html('<img src="${ pageContext.request.contextPath }/resources/img/taxbilDateDetail.png" style="width:920px; height:390px;" class="img-fluid rounded">')
+	$('#alert-modal-body-msg').html('<img src="${ pageContext.request.contextPath }/resources/img/taxbilDateDetail.png" style="width:1001px; height:420px;" class="img-fluid rounded">')
 	
 })
 

@@ -186,7 +186,9 @@ input::placeholder{
 <style>
 
 
-
+	table tbody th, table td {
+    border-bottom: none;
+}
 
 	.product-img2 {
     max-width: 30px;
@@ -516,6 +518,16 @@ input::placeholder{
 		});
 		
 		
+		$('#excelBtn').click(function(){
+			
+			 // 엑셀 다운로드 버튼
+			 location.href ="${ pageContext.request.contextPath }/receipt/getListExcelFile";
+		
+		})
+		
+		
+		
+		
 		$('#searchDate').click(function(){
 			
 			let startDate = $('#startDate').val();
@@ -631,6 +643,9 @@ input::placeholder{
 	 })
 	 
  })
+ 
+ 
+ 
 	
 </script>
 
@@ -697,7 +712,7 @@ input::placeholder{
 										
 									</div>
 									<div class="col" align="right">
-											  	<button type="submit" id="excelBtn" style="padding-left: 0px;"><img class="product-img" src="${ pageContext.request.contextPath }/resources/img/excel.png">Excel 다운로드</button>
+											  	<button type="button" id="excelBtn" style="padding-left: 0px;"><img class="product-img" src="${ pageContext.request.contextPath }/resources/img/excel.png">Excel 다운로드</button>
 									</div>
 								</div>
 							</section>

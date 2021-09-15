@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="taxAgent.taxAgentDAO">
+	
+	<resultMap type="taxCustomerVO" id="taxCustomerMap">
+		<result column="user_id" property="userId" />
+		<result column="BUSINESS_NO" property="businessNo" />
+		<result column="store_name" property="storeName" />
+		<result column="ADDR_ROAD" property="addrRoad" />
+		<result column="ADDR_JIBUN" property="addrJibun" />
+		<result column="ADDR_DETAIL" property="addrDetail" />
+		<result column="OPEN_DATE" property="openDate" />
+	</resultMap>
+	
+	<!-- 세무사 - 자신이 담당하고 있는 회원들의 목록을 가져옴 -->
+	<select id="getCustomerList" resultType="taxCustomerVO" parameterType="String" resultMap="taxCustomerMap">
+		select a.user_id, a.name, a.phone, a.email, b.business_no, b.store_name, b.open_date, b.zipcode, b.addr_road, b.addr_jibun from tb_user a, TB_BUSINESS b
+		where a.user_id = b.user_id and tax_agent =#{taxAgentId}
+	</select>
+	
+	<select id="getCustomerInfo" resultType="taxCustomerVO" parameterType="String" resultMap="taxCustomerMap">
+		select a.user_id, name, phone, email, store_name, business_no, store_name, zipcode, addr_road, addr_jibun, addr_detail, open_date from tb_user a, TB_BUSINESS b
+		where a.user_id = b.user_id and business_no =#{businessNo}
+	</select>
+	
+	
+</mapper>

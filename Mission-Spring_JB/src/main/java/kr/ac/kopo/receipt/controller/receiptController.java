@@ -9,8 +9,14 @@ import java.awt.Color;
 import java.io.File; 
 import java.io.FileOutputStream; 
 import org.apache.poi.hssf.usermodel.HSSFCellStyle; 
-import org.apache.poi.hssf.usermodel.HSSFFont; 
-import org.apache.poi.ss.usermodel.CellStyle; 
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress; 
 import org.apache.poi.xssf.usermodel.XSSFCell; 
 import org.apache.poi.xssf.usermodel.XSSFColor; 
@@ -409,86 +415,24 @@ public class receiptController {
 			return getHomeTaxCardList;
 		}
 		
-		
 		// 엑셀 다운로드
 		@RequestMapping("/receipt/getListExcelFile")
 		public String ListExcelDown() {
 			
-			// .xlsx 확장자 지원 
-			XSSFWorkbook xssfWb = null;
-			XSSFSheet xssfSheet = null;
-			XSSFRow xssfRow = null;
-			XSSFCell xssfCell = null;
-			
-			try {
-				
-				int rowNo = 0; // 행의 갯수 
-				
-				xssfWb = new XSSFWorkbook(); //XSSFWorkbook 객체 생성 
-				xssfSheet = xssfWb.createSheet("워크 시트1"); // 워크시트 이름 설정
-				
-				XSSFFont font = xssfWb.createFont();
-				font.setFontName(HSSFFont.FONT_ARIAL); // 폰트 스타일 
-				font.setFontHeightInPoints((short)20); // 폰트 크기 
-				font.setBold(true); // Bold 설정 
-				font.setColor(new XSSFColor(Color.decode("#457ba2")));
-				
-				CellStyle cellStyle = xssfWb.createCellStyle(); xssfSheet.setColumnWidth(0, (xssfSheet.getColumnWidth(0))+(short)2048);
-				
-				cellStyle.setFont(font); // cellStyle에 font를 적용 
-				cellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-				
-				xssfSheet.addMergedRegion(new CellRangeAddress(0, 1, 0, 4));
-				
-				// 타이틀 생성 
-				xssfRow = xssfSheet.createRow(rowNo++); // 행 객체 추가 
-				xssfCell = xssfRow.createCell((short) 0); // 추가한 행에 셀 객체 추가
-				xssfCell.setCellStyle(cellStyle); // 셀에 스타일 지정 
-				xssfCell.setCellValue("타이틀 입니다"); // 데이터 입력 
-				xssfSheet.createRow(rowNo++); 
-				xssfRow = xssfSheet.createRow(rowNo++); // 빈행 추가 //테이블 스타일 설정 
-				
-				//테이블 스타일 설정 
-				CellStyle tableCellStyle = xssfWb.createCellStyle(); 
-				tableCellStyle.setBorderTop((short) 5); // 테두리 위쪽 
-				tableCellStyle.setBorderBottom((short) 5); // 테두리 아래쪽 
-				tableCellStyle.setBorderLeft((short) 5); // 테두리 왼쪽 
-				tableCellStyle.setBorderRight((short) 5);
-
-				xssfRow = xssfSheet.createRow(rowNo++); 
-				xssfCell = xssfRow.createCell((short) 0); 
-				xssfCell.setCellStyle(tableCellStyle); 
-				xssfCell.setCellValue("셀1"); 
-				xssfCell = xssfRow.createCell((short) 1); 
-				xssfCell.setCellStyle(tableCellStyle); 
-				xssfCell.setCellValue("셀2"); 
-				xssfCell = xssfRow.createCell((short) 2); 
-				xssfCell.setCellStyle(tableCellStyle); 
-				xssfCell.setCellValue("셀3"); 
-				xssfCell = xssfRow.createCell((short) 3); 
-				xssfCell.setCellStyle(tableCellStyle); 
-				xssfCell.setCellValue("셀4");
-				xssfCell = xssfRow.createCell((short) 4); 
-				xssfCell.setCellStyle(tableCellStyle);
-				
-				String localFile = "C:\\Lecture\\spring-workspace\\test\\" + "excelDownTest" + ".xlsx";
-				
-				File file = new File(localFile); 
-				FileOutputStream fos = null; 
-				fos = new FileOutputStream(file); 
-				xssfWb.write(fos);
-				
-				if(fos != null) fos.close();
-
-				
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
 			
 			return "redirect:/receipt/processedList";
 		}
 		
+		
+		@RequestMapping("/receipt/allReceiptList")
+		public String getAllreceiptList() {
+			
+			// 통합 영수증 매입으로 이동
+			// 수기 등록 자료와 홈텍스 매입 자료 모두를 조회할 수 있음
+			
+			return "receipt/allReceiptList";
+			
+		}
 		
 		
  				

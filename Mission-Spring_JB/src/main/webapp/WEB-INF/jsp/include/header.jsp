@@ -88,8 +88,8 @@ html, body {height: 100%;}
               <!--사용자의 agreement가 'N'일 경우 agreement 실행  -->
               <c:choose>
               	<c:when test="${userVO.userStatus == 'T' }">
-              	  <li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/account/agreement">담당 회원목록</a></li> 
-              	  <li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/taxAgent/taxAccount">기장대리</a></li> 
+              	  <li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/taxAgent/taxAccount">고객 증빙자료 조회/수집</a></li>
+              	  <li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/receiptManager">세금신고서</a>
               	</c:when>
               	<c:when test="${userVO.userStatus == 'S' }">
               	  <li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/account/agreement">회원관리</a></li> 
@@ -107,8 +107,7 @@ html, body {height: 100%;}
               		<li class="nav-item"><a class="nav-link" href="supprotCenter.jsp">고객문의</a>
               	</c:when>
               	<c:when test="${userVO.userStatus == 'T'}">
-              		<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/receiptManager">신고서 작성</a>
-              		<li class="nav-item"><a class="nav-link" href="supprotCenter.jsp">고객지원</a>
+              		<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/account/agreement">HomeTax</a></li>
               	</c:when>
               	
               	

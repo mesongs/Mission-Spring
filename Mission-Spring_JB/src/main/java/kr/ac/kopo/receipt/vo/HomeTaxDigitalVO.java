@@ -14,6 +14,7 @@ public class HomeTaxDigitalVO {
 	private int amount;
 	private int vat;
 	private int sum;
+	
 	public String getDigitalApprovalNo() {
 		return digitalApprovalNo;
 	}

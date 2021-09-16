@@ -60,6 +60,10 @@
     background-color: #f3f3f3;
 }
 
+ #test > th{
+ 	text-align: center;
+ }
+
  
 </style>
 
@@ -80,6 +84,31 @@
 			}
 			
 		})
+		
+		$("input:radio[name=searchDateDay]").click(function(){
+            
+											
+//			$("#linkA").attr({href : www.google.com , target : _blank });
+//			.css({"display":"block", "width":"50px"});
+
+											    if($("input:radio[name=searchDateDay]:checked").val()=='1'){
+											    	$("#searchQuarter").attr('style', "display:none;");
+											    	$("#searchMonth").attr('style', "display:none;");
+											    //	$("#searchDay").attr('style', "display:block;");
+											    	$("#searchDay").css({"display":"block", "width":"160px", "color": "rgb(73, 80, 87)", "margin-bottom": "20px", "height": "35px", "border-top-width": "0px", "padding-bottom" : "0px", "margin-left": "15px;"})
+											        
+											    } else if($("input:radio[name=searchDateDay]:checked").val()=='2'){
+											    	 $("#searchDay").attr('style', "display:none;");
+											    	 $("#searchQuarter").attr('style', "display:none;");
+											    //	 $("#searchMonth").attr('style', "display:block;");
+											    	 $("#searchMonth").css({"display":"block", "width":"160px", "color": "rgb(73, 80, 87)", "margin-bottom": "20px", "height": "35px", "border-top-width": "0px", "padding-bottom" : "0px;"})
+											    }else{
+											    	$("#searchDay").attr('style', "display:none;");
+											   // 	 $("#searchQuarter").attr('style', "display:block;");
+											   		 $("#searchQuarter").css({"display":"block", "width":"160px", "color": "rgb(73, 80, 87)", "margin-bottom": "20px", "height": "35px", "border-top-width": "0px", "padding-bottom" : "0px;"})
+											    	 $("#searchMonth").attr('style', "display:none;");
+											    }
+											});
 		
 		
 		// 체크 상태 변화될 때마다 수정사항 표시
@@ -257,7 +286,7 @@
 			
 		})
 		
-		processedList();
+//		processedList();
 		
 		function processedList(){
 			
@@ -321,94 +350,76 @@
 		}
 		
 		
-		// datepicker를 활용한 날짜 조회
-		 $('#startDate').datepicker(
-			{
-			
-				 dateFormat:'yy/mm/dd',
-	             changeMonth: true,
-	             changeYear: true,
-	             dayNames: ['일요일','월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
-	     		 dayNamesMin : ['일','월','화','수','목','금','토'],
-	     		 monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-			
-				 // 시작일 선택 후 닫힐 때, 종료일의 최소 선택 가능 날짜는 시작일
-				 // 시작일 이후로만 선택 가능한 종료일
-				 onClose:function(selectedDate){
-				
-					// 종료일 태그에 mindate 속성 추가
-					$('#endDate').datepicker("option","minDate", selectedDate)
-			}
-			
-		});
-		
-		$('#endDate').datepicker({
-			
-				dateFormat:'yy/mm/dd',
-	            changeMonth: true,
-	            changeYear: true,
-	            dayNames: ['일요일','월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
-	    		dayNamesMin : ['일','월','화','수','목','금','토'],
-	    		monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-				
-				// 종료일 선택 후 닫힐 때, 시작일의 최대 선택 가능 날짜는 종료일
-				onClose:function(selectedDate){
-					
-					$('#startDate').datepicker("option", "maxDate", selectedDate)
-			}
-			
-		});
-		
 		
 		$('#excelBtn').click(function(){
 			
 			 // 엑셀 다운로드 버튼
+			 
+			 alert('엑셀다운로드')
 			 location.href ="${ pageContext.request.contextPath }/receipt/getListExcelFile";
 		
 		})
 		
 		
-		
-		
-		$('#searchDate').click(function(){
+		//통합 매입내역 조회
+		$('#searchAllPurchase').click(function(){
 			
-			let startDate = $('#startDate').val();
- 			let endDate = $('#endDate').val(); 
+			let purchaseDate = $('#searchMonth').val();
+			
+			
+			
+			var sendArray = [];
+			
+			$("input[name=tblChk]:checked").each(function(){
+				sendArray.push($(this).val());
+			});
+			
+			var cnt = sendArray.length
 			
 			//조회 버튼 누르면, 기간에 해당하는 값만 조회함
 			$.ajax({
 				type : "get",
-				data : {startDate : startDate, endDate : endDate },
-				url : "${pageContext.request.contextPath}/receipt/selectDate",
+				data : { purchaseDate : purchaseDate, sendArray : sendArray, cnt : cnt },
+				url : "${pageContext.request.contextPath}/receipt/getAllReceiptSalese",
+				
 				success : function(result){
+					
+					console.log(result.IntegratedSalesList)
 					
 					let obj = JSON.parse(result);
 					
+					IntegratedList = obj.IntegratedSalesList;
+					
+					let allAmount = numberWithCommas(obj.amountSum);
+					let allVat = numberWithCommas(obj.vatSum);
+					
+					document.getElementById("allAmount").innerHTML=allAmount + "원" ;
+					document.getElementById("allVat").innerHTML=allVat + "원" ;
+					
+					
+					$('#calculate').css("display", "block");   
+
+					
+					 
 			 		 $('#test').empty();
 			 		 
-					 if(obj.length >= 1){
+					 if(IntegratedList.length >= 1){
 						 
 						 // for(receipt vo(=searchWaitList) : receiptList) 1.5버전 for문과 동일함
-						 obj.forEach(function(searchDateList){
+						 IntegratedList.forEach(function(IntegratedSalesList){
 							 	 
 							 	 str="<tr>"
 							 	 str += "<td>" + '<input type="checkbox" class="testBox">' + "</td>" 
-							     str +="<td>" + searchDateList.receiptDate + "</td>"
-							     str +="<td>" + searchDateList.receiptName + "</td>"
-							     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/detail/" + searchDateList.receiptNo + ">" + searchDateList.storeName +"</a></td>"; 
-							     
-							     str +="<td>" + searchDateList.sum +"원</td>";
-							     str +="<td>" + searchDateList.purpose +"</td>";
-							     
-							     if(searchDateList.overlap == 'Y'){
-					 					
-							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.png">' + "</td>"
-							     }else{
-				 					
-							    	 str += "<td>" + "</td>"
-				 				 }
-			 					 str +="<td>" + searchDateList.memo +"</td>";
+							     str +="<td>" + IntegratedSalesList.receiptDate + "</td>"
+							     str +="<td>" + IntegratedSalesList.receiptCode + "</td>"
+							     str +="<td>" + IntegratedSalesList.supplierBusinessNo + "</td>"
+							     str +="<td>" + IntegratedSalesList.supplierStoreName + "</td>"
+							     str +="<td>" + IntegratedSalesList.amount +"원</td>";
+			 					 str +="<td>" + IntegratedSalesList.vat +"원</td>";
+							     str +="<td>" + IntegratedSalesList.calSum +"원</td>";
+							     str +="<td>" + IntegratedSalesList.division + "</td>";
 			 					 str +="</tr>"
+			 					 
 			 					 $('#test').append(str);
 						 })
 					 }
@@ -422,7 +433,7 @@
 			})
 			
 		})
-			
+		
 		
 		
 	
@@ -491,6 +502,16 @@
 	
 </script>
 
+<script>
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+
+</script>
+
+
 </head>
 
 
@@ -505,14 +526,6 @@
 			<div class="col">
 				<h4 style="font-family: 'Noto Sans KR', sans-serif;font-size: xx-large; margin-left: 32px;">증빙관리</h4>
 			</div>
-			<div class="col" align="right">
-				<span>
-					 <input type="text" class="calenderInput" id="startDate" autocomplete="off" style="color: transparent; text-shadow: 0 0 0 rgba(2,2,2, 0.7);">
-					 <span style=" color: rgb(2,2,2); margin-left: 2px; margin-top: 5px;">~</span>
-					 <input type="text" class="calenderInput" id="endDate" autocomplete="off" style="margin-left: 2px; color: transparent; text-shadow: 0 0 0 rgba(2,2,2, 0.7)" >								
-					 <button type="submit" id="searchDate" style="margin-left: 7px;">조회</button>
-				</span>
-			</div>
 		</div>
 		<div class="container">
 			<ul class="nav nav-tabs" style="margin-left: 50px;">
@@ -520,27 +533,30 @@
 				<li class="nav-item"><a class="nav-link" href="#" style="padding-bottom: 10px";>처리 완료 목록</a></li>
 				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/receiptWaitList">처리 대기 목록</a></li>
 				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/rejectReceiptList">반려 목록</a></li>
-				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/receipt/homeTaxConnect"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/autoCollect.png">증빙자료 수집/조회</a></li>
-				<li class="nav-item"><a class="nav-link active" aria-current="page" href="#" style="border-bottom-width: 3px;">통합 매입내역 조회</a></li>
+				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/receipt/homeTaxConnect"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/autoCollect.png">전자 증빙자료 조회</a></li>
+				<li class="nav-item"><a class="nav-link active" aria-current="page" href="#" style="border-bottom-width: 3px;">통합 매입/매출 조회</a></li>
 			</ul> 
 			
 			<section>
 					<div class="container" style="margin-left: 36px;"> 
 							
-							<div class="row" style="margin-top: 30px; margin-right: 12px; margin-left: 12px;">
-							 	<div style="width:370px; background-color: #27b2a5; color:#fff; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; ">
-									<span style="margin-left: 6px;"><img class="product-img4" src="${ pageContext.request.contextPath }/resources/img/gd.png" style="margin-left: 3px; margin-bottom: 6px;">고객님의 통합 매입내역은 세금신고 시 활용됩니다.</span>
+							<div class="row" style="margin-top: 30px; margin-right: 0px; margin-left: 0px;">
+							 	<div style="width: 706px; background-color: #27b2a5; color:#fff; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; ">
+									<span style="margin-left: 6px; font-size: 17px;"><img class="product-img4" src="${ pageContext.request.contextPath }/resources/img/gd.png" style="margin-left: 3px; margin-bottom: 6px;">고객님의 사업장에서 발생한 매출내역, 고객님 명의로 발행된 매입내역을 조회하실 수 있습니다.</span>
 								</div>
 							</div>
 							
-							
 							 	
 							 	<div class="row" style="margin-top: 30px;">
-							 		<div class="col-7" style="float: left;">
-							 			<span style="float: left; font-weight: bold; color: rgb(2,2,2); margin-bottom: 10px;">분류</span>
-							 			<label style="float: left;"><input type="radio" name="digitalKind" value="1" style="margin-left: 10px;" checked="checked">전자세금계산서</label> 
-										<label style="float: left;"><input type="radio" name="digitalKind" value="2" style="margin-left: 10px;">전자계산서</label>
+							 		<div class="col-7" style="float: left; width: 496px">
+							 			<span style="float: left; font-weight: bold; color: rgb(2,2,2); margin-bottom: 10px; ">분류</span>
+							 			<label style="float: left;"><input type="checkbox" name="tblChk" value="001" style="margin-left: 10px;">세금계산서</label> 
+							 			<label style="float: left;"><input type="checkbox" name="tblChk" value="002" style="margin-left: 10px;">계산서</label> 
+							 			<label style="float: left;"><input type="checkbox" name="tblChk" value="003" style="margin-left: 10px;">카드영수증</label> 
+							 			<label style="float: left;"><input type="checkbox" name="tblChk" value="004" style="margin-left: 10px;">간이영수증</label>
+							 			<label style="float: left;"><input type="checkbox" name="tblChk" value="005" style="margin-left: 10px;">현금영수증</label>
 							 		</div>
+							 		
 							 		<div class="col" style="width: 200px; " align="right" >
 										<div style="margin-left: 206px;">
 											<input type="search" placeholder="사업자등록번호 검색" name="searchWord" id="searchWord" style="float: left; width: 170px; ">
@@ -549,14 +565,19 @@
 											</span>
 										</div>
 									</div>
-							 		
-							 		<div class="col-7" style="float: left;">
+									
+									<div class="col-7" style="float: left; margin-top: 10px;">
 							 			<span style="float: left; font-weight: bold; color: rgb(2,2,2); margin-bottom: 10px;">구분</span>
-							 			<label style="float: left;"><input type="radio" name="purchaseRadio" value="1" style="margin-left: 10px;" checked="checked">매입</label> 
+							 			<label style="float: left;"><input type="radio" name="purchaseRadio" value="1" style="margin-left: 10px;">매입</label> 
 										<label style="float: left;"><input type="radio" name="purchaseRadio" value="2" style="margin-left: 10px;">매출</label>
 							 		</div>
+							 		
+							 		
+							 		
 							 	</div>
-								<div class="row">
+							 	
+								
+								<div class="row" style="margin-top: 10px;">
 									<div class="col-7" style="float: left;">
 										<span style="float: left; font-weight: bold; color: rgb(2,2,2);">조회기간</span>
 										<label style="float: left;"><input type="radio" name="searchDateDay" value="1" style="margin-left: 10px;" checked="checked"> 일별</label> 
@@ -589,21 +610,19 @@
 												<option value="202001">2020년 01월</option>
 											</select>
 											<select name="searchQuarter" id="searchQuarter" style="margin-left: 15px; float: left; width: 50px; margin-bottom: 20px; color:#495057; height: 35px;border-top-width: 0px;padding-bottom: 0px; display: none;">
-												<option value="1">2021년 1분기</option>
-												<option value="2">2021년 2분기</option>
-												<option value="3">2021년 3분기</option>
-												<option value="4">2021년 4분기</option>
-												<option value="5">2020년 1분기</option>
-												<option value="6">2020년 2분기</option>
-												<option value="7">2020년 3분기</option>
-												<option value="8">2020년 4분기</option>
+												<option value="20210101">2021년 1분기</option>
+												<option value="20210401">2021년 2분기</option>
+												<option value="20210701">2021년 3분기</option>
+												<option value="20211001">2021년 4분기</option>
+												<option value="20200101">2020년 1분기</option>
+												<option value="20200401">2020년 2분기</option>
+												<option value="20200701">2020년 3분기</option>
+												<option value="20201001">2020년 4분기</option>
 											</select>
 											<span style="float: left">
-												<button id="searchBtn" name="searchBtn" type="button" style="height : 35px;;margin-left: 6px; border-top-left-radius: 5px;border-bottom-left-radius: 5px;">조회</button>
+												<button id="searchAllPurchase" name="searchAllPurchase" type="button" style="height : 35px;;margin-left: 6px; border-top-left-radius: 5px;border-bottom-left-radius: 5px;border-top-right-radius: 5px;border-bottom-right-radius: 5px;">조회</button>
 											</span>
-											<span style="float: left">
-												<button id="collectBtn" name="collectBtn" type="button" style="display: none;">수집</button>
-											</span>
+											
 									</div>
 									
 									<div class="col" align="right">
@@ -611,6 +630,14 @@
 									</div>
 									
 								</div>
+								
+								<div class="row" id="calculate" style="margin-top: 10px; margin-left: 0px; display: none;" >
+							 		<span style="float: left; font-weight: bold; color: rgb(2,2,2);">합계</span>
+							 		<span style="float: left; margin-left:10px;">공급가액 : </span>
+									<span style="float: left; margin-left: 5px; font-weight: bold;" id="allAmount"></span>
+									<span style="float: left; margin-left: 5px; ">부가세 : </span>
+									<span style="float: left; margin-left: 5px; font-weight: bold;" id="allVat"></span>
+							 	</div>
 			
 							
 						
@@ -621,31 +648,27 @@
 							<table style="margin-top: 30px" class="styled-table">
 								<tr id="boardtable">
 									<th><input type="checkbox" class="testBox" id="allCheck" value="1"></th>
-									<th width="120px">작성일자</th>
-									<th width="120px">발급일자</th>
-									<th width="140px">구분</th>
-									<th width="180px">사업자등록번호</th>
-									<th width="150px">가맹점명</th>
-									<th width="120px">공급자명</th>
+									<th width="120px">매입일시</th>
+									<th width="120px">발급유형</th>
+									<th width="150px">사업자등록번호</th>
+									<th width="160px">상호명</th>
 									<th width="110px">공급가액</th>
 									<th width="100px">부가세</th>
-									<th width="150px">합계금액</th>
-									<th width="90px">업종</th>
+									<th width="120px">합계금액</th>
+									<th width="138px">구분</th>
 								</tr>
 								
 								<tbody id="test">
 								 	<tr>
 								 		<td><input type="checkbox" class="testBox" id="allCheck" value="1"></td>
 								 		<td>20210630</td>
-								 		<td>20210710</td>
 								 		<td>세금계산서</td>
 								 		<td>6099192931</td>
 								 		<td>사오수산</td>
-								 		<td>박종범</td>
 								 		<td>80,910</td>
 								 		<td>8,090</td>
 								 		<td>89,000</td>
-								 		<td>도매</td>
+								 		<td>전자증빙</td>
 								 	</tr>
 								</tbody>
 							</table>

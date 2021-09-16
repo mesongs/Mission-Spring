@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import kr.ac.kopo.member.dao.MemberDAO;
 import kr.ac.kopo.receipt.vo.AcceptRejectVO;
 import kr.ac.kopo.receipt.vo.HomeTaxCashVO;
+import kr.ac.kopo.receipt.vo.IntegratedSalesVO;
 import kr.ac.kopo.receipt.vo.ReceiptFileVO;
 import kr.ac.kopo.receipt.vo.ReceiptVO;
 import kr.ac.kopo.receipt.vo.RejectReceiptVO;
@@ -165,6 +166,14 @@ public class ReceiptDAOImpl implements ReceiptDAO {
 		int cnt = sqlSessionTemplate.update("receipt.receiptDAO.reRegisterReject", rejectReceipt);
 		
 		return cnt;
+	}
+
+	@Override
+	public List<IntegratedSalesVO> getIntegratedListDao(IntegratedSalesVO integratedSalesVO) {
+		
+		List<IntegratedSalesVO> getIntegratedList = sqlSessionTemplate.selectList("receipt.receiptDAO.getIntegratedList", integratedSalesVO);
+		
+		return getIntegratedList;
 	}
 	
 	

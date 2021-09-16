@@ -678,7 +678,8 @@ input::placeholder{
 				<li class="nav-item"><a class="nav-link active" aria-current="page" href="#" style="padding-bottom: 10px";>처리 완료 목록</a></li>
 				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/receiptWaitList">처리 대기 목록</a></li>
 				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/rejectReceiptList">반려 목록</a></li>
-				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/receipt/homeTaxConnect"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/autoCollect.png">증빙자료 수집/조회</a></li>
+				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/receipt/homeTaxConnect"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/autoCollect.png">전자 증빙자료 조회</a></li>
+				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/allReceiptList">통합 매입/매출 조회</a></li>
 			</ul> 
 			
 			<section>
@@ -709,6 +710,8 @@ input::placeholder{
 											<button id="searchBtn" name="searchBtn" type="button">검색</button>
 											</span>
 										</div>
+										
+										
 										
 									</div>
 									<div class="col" align="right">

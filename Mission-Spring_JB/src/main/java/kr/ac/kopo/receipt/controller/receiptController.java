@@ -1,30 +1,23 @@
 package kr.ac.kopo.receipt.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import java.awt.Color; 
+import java.awt.Color;
+import java.io.BufferedOutputStream;
 import java.io.File; 
-import java.io.FileOutputStream; 
-import org.apache.poi.hssf.usermodel.HSSFCellStyle; 
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.BorderStyle;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.util.CellRangeAddress; 
-import org.apache.poi.xssf.usermodel.XSSFCell; 
-import org.apache.poi.xssf.usermodel.XSSFColor; 
-import org.apache.poi.xssf.usermodel.XSSFFont; 
-import org.apache.poi.xssf.usermodel.XSSFRow; 
-import org.apache.poi.xssf.usermodel.XSSFSheet; 
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,6 +40,7 @@ import kr.ac.kopo.receipt.vo.ReceiptFileVO;
 import kr.ac.kopo.receipt.vo.ReceiptVO;
 import kr.ac.kopo.receipt.vo.RejectReceiptVO;
 import kr.ac.kopo.receipt.vo.HomeTaxInfoVO;
+import kr.ac.kopo.receipt.vo.IntegratedSalesVO;
 import kr.ac.kopo.receipt.vo.searchDateVO;
 
 @Controller
@@ -415,25 +409,80 @@ public class receiptController {
 			return getHomeTaxCardList;
 		}
 		
-		// 엑셀 다운로드
-		@RequestMapping("/receipt/getListExcelFile")
-		public String ListExcelDown() {
-			
-			
-			return "redirect:/receipt/processedList";
-		}
 		
-		
+		// 통합 영수증 매입으로 이동
 		@RequestMapping("/receipt/allReceiptList")
 		public String getAllreceiptList() {
 			
-			// 통합 영수증 매입으로 이동
-			// 수기 등록 자료와 홈텍스 매입 자료 모두를 조회할 수 있음
+			
 			
 			return "receipt/allReceiptList";
+		}
+		
+		// 통합 매입 내역을 반환하는 list
+		@RequestMapping("/receipt/getAllReceiptSalese")
+		@ResponseBody
+		public HashMap<String, Object> getAllreceiptSalesList(IntegratedSalesVO integratedSalesVO, HttpSession session) {
+			
+			LoginVO userVO = (LoginVO)session.getAttribute("userVO");
+			String businessNo = userVO.getBusinessNo();
+			
+			integratedSalesVO.setBusinessNo(businessNo);
+			
+			List<IntegratedSalesVO> IntegratedSalesList = service.getIntegratedList(integratedSalesVO);
+			
+			// 받아온 List의 vo 합계를 공유영역에 등록하기
+			
+			// 구매금액의 합계, 세액 합계
+			int amountSum=0;
+			int vatSum=0;
+			
+			for(int i=0; i< IntegratedSalesList.size(); i++) {
+				
+				amountSum += IntegratedSalesList.get(i).getCalSum();
+				vatSum += IntegratedSalesList.get(i).getVat();
+			}
+			
+			
+			HashMap<String, Object> map = new HashMap<>();
+			
+			map.put("IntegratedSalesList", IntegratedSalesList);
+			map.put("amountSum", amountSum);
+			map.put("vatSum", vatSum);
+			
+			return map;
 			
 		}
 		
+		// 엑셀 다운로드
+		@RequestMapping("/receipt/getListExcelFile")
+		public String ListExcelDown(HttpServletRequest request ,HttpServletResponse response ,HttpSession session, IntegratedSalesVO param ) throws Exception {
+			
+			OutputStream out = null;
+			
+			// 업로드한 후 새로고침 안하려면, 그냥 void하면 되나?
+			
+			 try {
+		            HSSFWorkbook workbook = service.listExcelDownload(param);
+		            
+		            response.reset();
+		            response.setHeader("Content-Disposition", "attachment;filename=stbcs_history.xls");
+		            response.setContentType("application/vnd.ms-excel");
+		            out = new BufferedOutputStream(response.getOutputStream());
+		            
+		            workbook.write(out);
+		            out.flush();
+		            
+		        } catch (Exception e) {
+		        	e.printStackTrace();
+//		            logger.error("exception during downloading excel file : {}", e);
+		        } finally {
+		            if(out != null) out.close();
+		        }    
+			
+			
+			return "redirect:/receipt/allReceiptList";
+		}
 		
  				
 }

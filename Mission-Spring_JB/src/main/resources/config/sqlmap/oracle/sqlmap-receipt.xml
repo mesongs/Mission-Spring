@@ -34,6 +34,13 @@
 		<result column="receipt_code" property="receiptCode"/>
 	</resultMap>
 	
+	<resultMap type="IntegratedSalesVO" id="IntegratedSalesMap">
+		<result column="receipt_code" property="receiptCode"/>
+		<result column="store_name" property="supplierStoreName"/>
+		<result column="receipt_date" property="receiptDate"/>
+		<result column="supplier_business_no" property="supplierBusinessNo"/>
+	</resultMap>
+	
 	<select id="getReceiptNo" resultType="int">
 		SELECT RECEIPT_SEQ.NEXTVAL as receiptNo FROM DUAL
 	</select>
@@ -42,7 +49,7 @@
 		insert into TB_RECEIPT(RECEIPT_NO, RECEIPT_CODE, SUPPLIER_BUSINESS_NO, STORE_NAME, RECEIPT_DATE,
                       		  AMOUNT, VAT, PURPOSE, MEMO, BUSINESS_NO)
             		values(#{receiptNo},#{receiptKind}, #{supplierBusinessNo}, 
-            				#{storeName}, to_date(#{receiptDate}, 'yy/mm/dd'), #{amount}, #{vat}, #{purpose}, #{memo}, #{businessNo})
+            				#{storeName}, #{receiptDate}, #{amount}, #{vat}, #{purpose}, #{memo}, #{businessNo})
 	</insert>
 
 	<insert id="receiptFileRegister" parameterType="receiptVO">
@@ -51,7 +58,7 @@
 	</insert>
 	
 	<select id="getSeachWaitLst" parameterType="String" resultType="receiptVO" resultMap="receiptMap">
-			select receipt_no, SUPPLIER_BUSINESS_NO, STORE_NAME, to_char(RECEIPT_DATE, 'yy/mm/dd') as RECEIPT_DATE, to_char(REG_DATE, 'yy/mm/dd') as REG_DATE, AMOUNT, vat, MEMO, purpose, receipt_name 
+			select receipt_no, SUPPLIER_BUSINESS_NO, STORE_NAME, RECEIPT_DATE, to_char(REG_DATE, 'yy/mm/dd') as REG_DATE, AMOUNT, vat, MEMO, purpose, receipt_name 
 				from TB_RECEIPT a, TB_RECEIPT_KIND b     
 				where a.RECEIPT_code = b.RECEIPT_code 
 				and receipt_status ='W'
@@ -60,7 +67,7 @@
 	</select>
 	
 	<select id="waitAllList" resultType="receiptVO" resultMap="receiptMap">
-			select receipt_no, SUPPLIER_BUSINESS_NO, STORE_NAME, to_char(RECEIPT_DATE, 'yy/mm/dd') as RECEIPT_DATE, to_char(REG_DATE, 'yy/mm/dd') as REG_DATE, AMOUNT, vat, MEMO, purpose, receipt_name
+			select receipt_no, SUPPLIER_BUSINESS_NO, STORE_NAME, RECEIPT_DATE, to_char(REG_DATE, 'yy/mm/dd') as REG_DATE, AMOUNT, vat, MEMO, purpose, receipt_name
 			from TB_RECEIPT a, TB_RECEIPT_KIND b     
 			where a.RECEIPT_code = b.RECEIPT_code and
 			receipt_status ='W'
@@ -68,7 +75,7 @@
 	</select>
 	
 	<select id="processedAllList" resultType="receiptVO" resultMap="receiptMap">
-			select * from (select receipt_no, SUPPLIER_BUSINESS_NO, STORE_NAME, to_char(RECEIPT_DATE, 'yy/mm/dd') as RECEIPT_DATE, to_char(REG_DATE, 'yy/mm/dd') as REG_DATE,
+			select * from (select receipt_no, SUPPLIER_BUSINESS_NO, STORE_NAME, RECEIPT_DATE, to_char(REG_DATE, 'yy/mm/dd') as REG_DATE,
 	        receipt_status,AMOUNT, vat, AMOUNT+VAT AS SUM, MEMO, purpose, receipt_name, overlap
 			from TB_RECEIPT a, TB_RECEIPT_KIND b     
 			where a.RECEIPT_code = b.RECEIPT_code and
@@ -77,7 +84,7 @@
 	</select>
 	
 	<select id="getSeachProcessedList" parameterType="String" resultType="receiptVO" resultMap="receiptMap">
-			select receipt_no, SUPPLIER_BUSINESS_NO, STORE_NAME, to_char(RECEIPT_DATE, 'yy/mm/dd') as RECEIPT_DATE, to_char(REG_DATE, 'yy/mm/dd') as REG_DATE,
+			select receipt_no, SUPPLIER_BUSINESS_NO, STORE_NAME, RECEIPT_DATE, to_char(REG_DATE, 'yy/mm/dd') as REG_DATE,
 		    receipt_status,AMOUNT, vat, AMOUNT+VAT AS SUM, MEMO, purpose, receipt_name, overlap
 			from TB_RECEIPT a, TB_RECEIPT_KIND b     
 			where a.RECEIPT_code = b.RECEIPT_code and
@@ -87,7 +94,7 @@
 	</select>
 	
 	<select id="getSeachDateList" parameterType="searchDateVO" resultType="receiptVO" resultMap="receiptMap">
-			select receipt_no, SUPPLIER_BUSINESS_NO, STORE_NAME, to_char(RECEIPT_DATE, 'yy/mm/dd') as RECEIPT_DATE, to_char(REG_DATE, 'yy/mm/dd') as REG_DATE,
+			select receipt_no, SUPPLIER_BUSINESS_NO, STORE_NAME, RECEIPT_DATE, to_char(REG_DATE, 'yy/mm/dd') as REG_DATE,
 		    receipt_status,AMOUNT, vat, AMOUNT+VAT AS SUM, MEMO, purpose, receipt_name, overlap
 			from TB_RECEIPT a, TB_RECEIPT_KIND b     
 			where a.RECEIPT_code = b.RECEIPT_code and
@@ -97,7 +104,7 @@
 	</select>
 	
 	<select id="getReceiptKindList" parameterType="String" resultType="receiptVO" resultMap="receiptMap">
-			select receipt_no, SUPPLIER_BUSINESS_NO, STORE_NAME, to_char(RECEIPT_DATE, 'yy/mm/dd') as RECEIPT_DATE, to_char(REG_DATE, 'yy/mm/dd') as REG_DATE,
+			select receipt_no, SUPPLIER_BUSINESS_NO, STORE_NAME, RECEIPT_DATE, to_char(REG_DATE, 'yy/mm/dd') as REG_DATE,
 		    receipt_status,AMOUNT, vat, AMOUNT+VAT AS SUM, MEMO, purpose, receipt_name, overlap
 			from TB_RECEIPT a, TB_RECEIPT_KIND b     
 			where a.RECEIPT_code = b.RECEIPT_code and
@@ -112,7 +119,7 @@
 	</select>
 	
 	<select id="getPerReceiptList" parameterType="int" resultType="receiptVO" resultMap="receiptMap">
-			select * from (select receipt_no, SUPPLIER_BUSINESS_NO, STORE_NAME, to_char(RECEIPT_DATE, 'yy/mm/dd') as RECEIPT_DATE, to_char(REG_DATE, 'yy/mm/dd') as REG_DATE,
+			select * from (select receipt_no, SUPPLIER_BUSINESS_NO, STORE_NAME, RECEIPT_DATE, to_char(REG_DATE, 'yy/mm/dd') as REG_DATE,
 		    receipt_status,AMOUNT, vat, AMOUNT+VAT AS SUM, MEMO, purpose, receipt_name, overlap
 			from TB_RECEIPT a, TB_RECEIPT_KIND b     
 			where a.RECEIPT_code = b.RECEIPT_code and
@@ -123,7 +130,7 @@
 	
 	<!-- 영수증 세부사항 조회 -->
 	<select id="getReceiptDetail" parameterType="int" resultType="receiptVO" resultMap="receiptMap">
-			select a.receipt_no, receipt_code, supplier_business_no, store_name,  to_char(RECEIPT_DATE, 'yy/mm/dd') as RECEIPT_DATE, amount, vat, overlap, receipt_status, purpose, file_path,
+			select a.receipt_no, receipt_code, supplier_business_no, store_name, RECEIPT_DATE, amount, vat, overlap, receipt_status, purpose, file_path,
 		        memo, business_no, file_save_name
 				from TB_RECEIPT a, TB_RECEIPT_FILE b
 				where a.receipt_no = b.receipt_no
@@ -133,7 +140,7 @@
 	<!-- 직원이 확인할 수 있는 처리 대기 목록 -->
 	<select id="getMgReceiptList" resultType="receiptVO" resultMap="receiptMap">
 			select * from(select c.BUSINESS_NO, c.store_name, c.user_id, c.memo, c.purpose, c.overlap, amount, vat, (amount+vat) as sum,
-	       		to_char(RECEIPT_DATE, 'yy/mm/dd') as RECEIPT_DATE, to_char(REG_DATE, 'yy/mm/dd') as REG_DATE,
+	       		RECEIPT_DATE, to_char(REG_DATE, 'yy/mm/dd') as REG_DATE,
 	       		c.receipt_no, d.receipt_name
 			from(select a.BUSINESS_NO, a.store_name, b.user_id, a.memo, a.purpose, a.overlap, amount, vat,
 				       		RECEIPT_DATE, REG_DATE,
@@ -146,7 +153,7 @@
 	
 	<!-- 직원이 승인 or 반려하는 항목 -->
 	<select id="getMgReceiptDetail" parameterType="int" resultType="receiptVO" resultMap="receiptMap">
-		 	select receipt_no, receipt_code, supplier_business_no, c.store_name, to_char(RECEIPT_DATE, 'yy/mm/dd') as RECEIPT_DATE, to_char(REG_DATE, 'yy/mm/dd') as REG_DATE
+		 	select receipt_no, receipt_code, supplier_business_no, c.store_name, RECEIPT_DATE, to_char(REG_DATE, 'yy/mm/dd') as REG_DATE
 			       ,amount, vat, overlap, receipt_status, purpose, file_path, memo, c.business_no, file_save_name, d.user_id
 			from
 			(select a.receipt_no, receipt_code, supplier_business_no, store_name, RECEIPT_DATE, amount, reg_date,
@@ -161,7 +168,7 @@
 	<!--직원 목록 개수 조회 ajax -->
 	<select id="getPerMgReceiptList" parameterType="int" resultType="receiptVO" resultMap="receiptMap">
             select * from (select c.BUSINESS_NO, c.store_name, c.user_id, c.memo, c.purpose, c.overlap, amount, vat, (amount+vat) as sum,
-	       		to_char(RECEIPT_DATE, 'yy/mm/dd') as RECEIPT_DATE, to_char(REG_DATE, 'yy/mm/dd') as REG_DATE,
+	       		RECEIPT_DATE, to_char(REG_DATE, 'yy/mm/dd') as REG_DATE,
 	       		c.receipt_no, d.receipt_name
 				from(select a.BUSINESS_NO, a.store_name, b.user_id, a.memo, a.purpose, a.overlap, amount, vat,
 					       		RECEIPT_DATE, REG_DATE,
@@ -182,7 +189,7 @@
 	
 	<!-- 회원 - 반려된 영수증 목록 -->
 	<select id="rejectReceiptList" resultType="rejectReceiptVO" resultMap="rejectReceiptMap">
-		select * from (select receipt_no, SUPPLIER_BUSINESS_NO, STORE_NAME, to_char(RECEIPT_DATE, 'yy/mm/dd') as RECEIPT_DATE, to_char(REG_DATE, 'yy/mm/dd') as REG_DATE,
+		select * from (select receipt_no, SUPPLIER_BUSINESS_NO, STORE_NAME, RECEIPT_DATE, to_char(REG_DATE, 'yy/mm/dd') as REG_DATE,
 	        receipt_status,AMOUNT, vat, AMOUNT+VAT AS SUM, MEMO, purpose, receipt_name, overlap, reject_reason
 			from TB_RECEIPT a, TB_RECEIPT_KIND b     
 			where a.RECEIPT_code = b.RECEIPT_code and
@@ -192,7 +199,7 @@
 	
 	<!-- 회원 - 반려된 영수증 세부사항 -->
 	<select id="rejectReceiptDetail" resultType="rejectReceiptVO" parameterType="int" resultMap="rejectReceiptMap">
-		select a.receipt_no, receipt_code, supplier_business_no, store_name,  to_char(RECEIPT_DATE, 'yy/mm/dd') as RECEIPT_DATE, amount, vat, overlap, receipt_status, purpose, file_path,
+		select a.receipt_no, receipt_code, supplier_business_no, store_name, RECEIPT_DATE, amount, vat, overlap, receipt_status, purpose, file_path,
 		        memo, business_no, file_save_name, reject_reason						
 				from TB_RECEIPT a, TB_RECEIPT_FILE b
 				where a.receipt_no = b.receipt_no
@@ -202,8 +209,26 @@
 	<!--회원 -반려된 영수증 세부사항에서 재등록(내용을 변경해서 업데이트할 수 있음, 사진 오류면 다시 찍어야함)  -->
 	<update id="reRegisterReject" parameterType="rejectReceiptVO">
 		update TB_RECEIPT set receipt_code = #{receiptKind}, store_name= #{storeName}, amount= #{amount} , vat = #{vat}, purpose= #{purpose},
-		 			   supplier_Business_No=#{supplierBusinessNo}, receipt_Date=to_date(#{receiptDate}, 'yy/mm/dd'), memo=#{memo},
+		 			   supplier_Business_No=#{supplierBusinessNo}, receipt_Date=#{receiptDate}, memo=#{memo},
                        overlap=#{overlap}, reject_reason='-', receipt_status ='W' where RECEIPT_NO = #{receiptNo}
 	</update>
 	
+	<!-- 통합 매입내역 조회, 체크값 + 입력된 날짜 -->
+	<!-- and memo like '%'||#{searchWord}||'%' -->  
+	<!-- 동적쿼리 in 동적으로 추가 --><!-- WHERE COLUMN_NAME LIKE '%'||#searchKeyword#||'%' -->
+	
+	<select id="getIntegratedList" parameterType="integratedSalesVO" resultType="integratedSalesVO" resultMap="IntegratedSalesMap">
+			select * from(select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE, STORE_NAME, amount, vat, amount+vat as calSum, receipt_date, SUPPLIER_BUSINESS_NO, division
+			from tb_receipt where BUSINESS_NO=#{businessNo} and receipt_status='P' and receipt_date like #{purchaseDate}||'%' and receipt_code in
+			<foreach collection="sendArray" item="item" index="index" open="(" close=")" separator=",">
+            	${item}
+        	</foreach>
+			union
+			select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE, store_name, amount, vat,amount+vat as calSum, receipt_date, SUPPLIER_BUSINESS_NO, division
+			from TB_PURCHASE where BUSINESS_NO=#{businessNo} and receipt_date like #{purchaseDate}||'%' and receipt_code in
+			<foreach collection="sendArray" item="item" index="index" open="(" close=")" separator=",">
+            	${item}
+        	</foreach>
+        	) where rownum <![CDATA[ <= ]]> 20
+	</select>
 </mapper>

@@ -4,8 +4,10 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/form.css?after">
+
 <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/list.css?after">
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
 
 
 <head>
@@ -72,8 +74,87 @@
 
  	 a:link { color: #3a414e; text-decoration: none;}
 
+	.container-1{
+  width: 300px;
+  vertical-align: middle;
+  white-space: nowrap;
+  position: relative;
+}
+.container-1 .icon{
+  position: absolute;
+  top: 50%;
+  margin-left: 17px;
+  margin-top: 17px;
+  z-index: 1;
+  color: #4f5b66;
+}
+
+.container-1 input#search{
+  width: 228px;
+  height: 50px;
+  background: #E9EDF1;
+  border: none;
+  font-size: 13pt;
+  float: left;
+  color: #63717f;
+  padding-left: 45px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
 
 
+.container-1 input#search::-webkit-input-placeholder {
+   color: #65737e;
+}
+ 
+.container-1 input#search:-moz-placeholder { /* Firefox 18- */
+   color: #65737e;  
+}
+ 
+.container-1 input#search::-moz-placeholder {  /* Firefox 19+ */
+   color: #65737e;  
+}
+ 
+.container-1 input#search:-ms-input-placeholder {  
+   color: #65737e;  
+}
+
+.container-1 input#search:hover, .container-1 input#search:focus, .container-1 input#search:active{
+    outline:none;
+    background: #E9EDF1;
+  }
+  
+.container-1 input#search{
+  width: 228px;
+  height: 50px;
+  background: #E9EDF1;
+  border: none;
+  font-size: 13pt;
+  float: left;
+  color: #E9EDF1;
+  padding-left: 45px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+ 
+   
+    -webkit-transition: background .55s ease;
+  -moz-transition: background .55s ease;
+  -ms-transition: background .55s ease;
+  -o-transition: background .55s ease;
+  transition: background .55s ease;
+}
+
+.side-stick {
+     position: absolute;
+     width: 5px;
+     height: 48px;
+     top:0;
+     left: 0;
+     background-color: rgba(82, 95, 127, .5);
+     
+ }
 </style>  
 
 
@@ -191,6 +272,15 @@
 				</div>
 			</div>
 			
+			<div class="row" style="margin-bottom: 31px;">
+				<div class="box">
+				  <div class="container-1">
+				      <span class="icon"><i class="fa fa-search"></i></span>
+				      <input type="search" id="search" placeholder="검색어 입력" style="padding-top: 7px;" />
+				  </div>
+				</div>
+			</div>
+			
 			<div class="row">
 			
 			 	<c:forEach items="${ customerList }" var="customerList">
@@ -199,6 +289,7 @@
 							
 							<div class="panel panel-default" style="height: 200px; cursor: pointer;" onclick="location.href='${ pageContext.request.contextPath }/taxAgent/taxAccountDetail/${ customerList.businessNo }'">
 								<div class="panel-heading">
+									 <span class="side-stick"></span>
 									<sapn>사업장번호</sapn>
 									<span> : </span>
 									<span class="addBold">${ customerList.businessNo }</span>
@@ -217,6 +308,9 @@
 									    <span>email</span>
 									    <sapn> : </sapn>
 									    <span class="addBold">${ customerList.email }</span><br>
+									    <div align="right">
+									    <span style="float: right: ;"><img src="${ pageContext.request.contextPath }/resources/img/env1.png" style="width: 60px;"></span>
+										</div>
 									</div>
 							</div>
 						 	

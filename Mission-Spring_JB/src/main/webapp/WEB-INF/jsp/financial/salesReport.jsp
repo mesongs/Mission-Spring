@@ -313,9 +313,6 @@ function numberWithCommas(x) {
 		var customerkindArrComma = [];
 		
 		
-		
-		
-		
 		var today = new Date();
 		
 		var getYesterday = (today.getDay() - 1); // 인덱스로 표현된 요일 (0~6)

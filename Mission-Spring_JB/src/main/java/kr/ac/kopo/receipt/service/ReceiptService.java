@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -11,6 +12,7 @@ import kr.ac.kopo.receipt.vo.AcceptRejectVO;
 import kr.ac.kopo.receipt.vo.HomeTaxCardVO;
 import kr.ac.kopo.receipt.vo.HomeTaxCashVO;
 import kr.ac.kopo.receipt.vo.HomeTaxInfoVO;
+import kr.ac.kopo.receipt.vo.IntegratedSalesVO;
 import kr.ac.kopo.receipt.vo.ReceiptFileVO;
 import kr.ac.kopo.receipt.vo.ReceiptVO;
 import kr.ac.kopo.receipt.vo.RejectReceiptVO;
@@ -57,6 +59,10 @@ public interface ReceiptService {
 	List<HomeTaxCashVO> getHomeTaxCashInfoService(String purchaseDate, String businessNo);
 	
 	List<HomeTaxCardVO> getHomeTaxCardInfoService(String searchMonth, String businessNo);
+	
+	List<IntegratedSalesVO> getIntegratedList(IntegratedSalesVO integratedSalesVO);
+	
+	HSSFWorkbook listExcelDownload(IntegratedSalesVO param);
 	
 	
 	

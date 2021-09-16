@@ -106,9 +106,6 @@ public class FinancialServiceImpl implements FinancialService {
 	}
 	
 	
-	
-	
-	
 	// 처음에는 result set을 가져와서 서비스에서 parsing하려고 했음..  그런담에 view에 넘겨주려했음
 	// DB에서 처리한 값 map에 넣어서 반환
 	@Override
@@ -158,6 +155,18 @@ public class FinancialServiceImpl implements FinancialService {
 		
 		return map;
 		
+	}
+
+	
+	@Override
+	public HashMap<String, Object> getPurchaseInfo(String businessNo) {
+		
+		HashMap<String, Object> map = new HashMap<>();
+		
+		
+		
+		
+		return map;
 	}
 
 	

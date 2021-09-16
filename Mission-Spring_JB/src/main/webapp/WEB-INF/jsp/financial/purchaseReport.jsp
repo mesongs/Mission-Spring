@@ -231,9 +231,8 @@ polyline{
  .reportDayByTime{
 	
     padding-right: 34px;
+
 }
-
-
 </style>
 
 <script>
@@ -242,14 +241,11 @@ function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-
-
 </script>
 
 <script>
 	
 	$(function(){
-		
 		
 		// 전 일 매출금액
 		var commaYesterDaySales = numberWithCommas(${ returnSalesVO.yesterday })
@@ -395,9 +391,6 @@ function numberWithCommas(x) {
 		document.getElementById("재방문고객").innerHTML=customerkindArrComma[1] + "원" ;
 		
 		
-		/////////////////////////////////////////////
-		/////////////////////////////////////////////
-		/////////////////////////////////////////////
 		
 		<c:forEach items="${ weekCustomerKindSaleList }" var="weekCustomerKindSaleList">
 			weekCustomerKindArr.push("${ weekCustomerKindSaleList.customerKind }")
@@ -405,147 +398,9 @@ function numberWithCommas(x) {
 			weekCustomerSaleArr.push(${ weekCustomerKindSaleList.customerSale })
 		</c:forEach>
 			
-			
-			
-			let myChartOne3 = document.getElementById('myChartOne3').getContext('2d');
-			let barChart3 = new Chart(myChartOne3, {
-				
-				type : 'bar',
-				data: {
-					
-					labels : lastWeekArr,
-					datasets : [{
-						 
-						label : '매출액', // 각 그래프에서 나타내는 값 ex) 매출액 : 10만원,
-						data : lastWeekSalesArr
-						,
-						backgroundColor : '#27b2a5'
-						
-					}]
-					
-					
-				},
-				options : {
-					responsive: false,
-					title : {
-						display : false,
-						text : '일별 사업장 매출 현황',
-						fontSize : 20
-					},
-					legend : {
-						display : false,
-					},
-					scales : {
-						 xAxes: [{
-					            barPercentage: 0.4,
-					            gridLines: {
-					                color: "rgba(0, 0, 0, 0)"
-					            },
-					            ticks : {
-									fontSize : 12
-								}
-					        }],
-						yAxes : [{
-							
-							ticks : {
-								stepSize: 300000,
-								beginAtZero: true,
-								fontSize : 14
-							}
-						}]
-						
-					},
-					animation: {
-						duration: 1,
-						onComplete: function () {
-							var chartInstance = this.chart,
-								ctx = chartInstance.ctx;
-							ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
-							ctx.fillStyle = 'black';
-							ctx.textAlign = 'center';
-							ctx.textBaseline = 'bottom';
-
-							this.data.datasets.forEach(function (dataset, i) {
-								var meta = chartInstance.controller.getDatasetMeta(i);
-								meta.data.forEach(function (bar, index) {
-									var data = dataset.data[index];							
-									ctx.fillText(data, bar._model.x, bar._model.y - 5);
-								});
-							});
-						}
-					}
-
-					
-					
-					
-					
-				}
-				
-				
-			})
-		
-			let myChartOne4 = document.getElementById('myChartOne4').getContext('2d');
-			let barChart4 = new Chart(myChartOne4, {
-				
-				type : 'line',
-				data: {
-					
-					labels : lastWeekArr,
-					datasets : [{
-						 
-						label : '지난주 매출액',
-						data : lastWeekSalesArr,
-						backgroundColor : 'rgba(39, 178, 165, 0.6)',
-						pointRadius : 3
-					}, 
-					{
-						label : '2주 전 매출액',
-						data : weekBeforeSalesArr,
-						pointRadius : 3
-					}
-					
-					]
-					
-					
-				},
-				options : {
-					title : {
-						display : false,
-						text : '전 주 대비 최근 7일간 매출 추이',
-						fontSize : 20
-					},
-					legend : {
-						display : false,
-					}
-					,scales : {
-						 xAxes: [{
-							 barPercentage: 0.8,
-					            gridLines: {
-					                color: "rgba(0, 0, 0, 0)"
-					            },
-					            ticks : {
-									fontSize : 13
-								}
-					        }],
-						yAxes : [{
-							
-							ticks : {
-								stepSize: 400000,
-								beginAtZero: true,
-								fontSize : 14
-							}
-						}]
-						
-					}
-					
-					
-				}
-				
-				
-			})
-			
-			let cardSalesYop5Chart = document.getElementById('cardSalesYop5Chart').getContext('2d');
-			let cardPieChart = new Chart(cardSalesYop5Chart, {
+			///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			let recentWeekPieChart = document.getElementById('recentWeekPurchase').getContext('2d');
+			let recentPieChart = new Chart(recentWeekPieChart, {
 				
 				type : 'pie',
 				data: {
@@ -882,49 +737,23 @@ function numberWithCommas(x) {
 		<h4>사업보고서</h4>
 		<div class="container">
 			<ul class="nav nav-tabs" style="margin-left: 50px;">
-				<li class="nav-item"><a class="nav-link active" aria-current="page" href="#">매출내역</a></li>
-				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/financial/purchaseResport">매입내역</a></li>
+				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/financial/slaesReport">매출내역</a></li>
+				<li class="nav-item"><a class="nav-link active" aria-current="page" href="#">매입내역</a></li>
 			</ul>
 			
-			
 			<section>
-			
 					<div class="container" style="margin-left: 36px;"> 
 							<div class="row" style="margin-bottom: 25px;">
-								<div class="col-md-4">
-									<div class="panel panel-default" style="height: 200px">
-										<div class="panel-heading">전 일 매출 현황</div>
+								<div class="col-md-7">
+									<div class="panel panel-default" style="height: 350px">
+										<div class="panel-heading">최근 7일간 매입 현황</div>
 										<div class="panel-body" style="font-size: 20px; font-size: 20px;margin-top: 15px; padding-right: 15px;">
-											<span id="yesterdaySales" ></span>
-											<sapn> : </sapn>
-											<span class="addBold" id="commaYesterDaySales"></span><br>
-											<span style="float: left;">전 일 대비 증감률 : </span>
-											<span style="float: left; margin-left: 5px;" class="addBold">${ returnSalesVO.dod }</span>
-											<span style="float: left">
-												<c:if test="${ returnSalesVO.dayBefore gt returnSalesVO.yesterday}">
-													<img class="upDownImg" src="${ pageContext.request.contextPath }/resources/img/down.png">
-												</c:if>
-												<c:if test="${ returnSalesVO.dayBefore lt returnSalesVO.yesterday}">
-													<img class="upDownImg" src="${ pageContext.request.contextPath }/resources/img/up.png">												
-												</c:if>
-											</span><br>
-											<span id="salesDod"></span>
+											<canvas id="recentWeekPurchase" width="500" height="200"></canvas>
 										</div>
 									</div>
 								</div>
-								<div class="col-md-4">
-									<div class="panel panel-default" style="height: 200px">
-										<div class="panel-heading">주간 매출 현황</div>
-										<div class="panel-body" style="font-size: 20px; font-size: 20px;margin-top: 15px; padding-right: 15px;">
-											<span>주간 매출 합계 : </span>
-											<span class="addBold">4,806,000원</span><br>
-											<span style="float: left;">전 주 대비 증감률 : </span>
-											<span class="addBold" style="float: left; margin-left: 5px;"> 12%</span><span style="float: left"><img class="upDownImg" src="${ pageContext.request.contextPath }/resources/img/up.png"></span><br>
-											<span>전 주 대비 <span class="addBold">641,000원 감소</span></span>
-									</div>
-									</div>
-								</div>
-								<div class="col-md-4">
+								
+								<div class="col-md-5">
 									<div class="panel panel-default" style="height: 200px">
 										<div class="panel-heading">월간 매출 현황</div>
 										<div class="panel-body" style="font-size: 20px; font-size: 20px;margin-top: 15px; padding-right: 15px;">

@@ -10,4 +10,7 @@ public interface FinancialService {
 	// 매출 시각화 데이터 처리 후 리턴
 	HashMap<String, Object> getSalesInfo(String businessNo);
 	
+	// 매입 시각화 데이터 처리 후 리턴
+	HashMap<String, Object> getPurchaseInfo(String businessNo);
+	
 }

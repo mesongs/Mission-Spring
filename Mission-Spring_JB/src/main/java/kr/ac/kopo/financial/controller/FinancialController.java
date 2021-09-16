@@ -33,9 +33,9 @@ public class FinancialController {
 		LoginVO userVO = (LoginVO)session.getAttribute("userVO");
 		String businessNo = userVO.getBusinessNo();
 
-		///////////////////////////////////////////////////////////////////////////////////////
+		
 		ModelAndView mav = new ModelAndView("financial/salesReport");
-//		
+			
 		HashMap<String, Object> map = financialService.getSalesInfo(businessNo);
 
 		List<ReturnSalesVO> cardApprovalTop5List = (List<ReturnSalesVO>)map.get("cardApprovalTop5List");
@@ -106,9 +106,23 @@ public class FinancialController {
 //	}
 	
 	
-	// 홈택스 매입(현금영수증 내역, 카드 내역, 세금계산서 내역 한 달 주기 insert) 
+	// 홈택스 매입(현금영수증 내역, 카드 내역, 세금계산서 내역 한 달 주기 insert)
 	
 	
+	@RequestMapping("/financial/purchaseResport")
+	public ModelAndView financialPurchase(HttpSession session){
+		
+		ModelAndView mav = new ModelAndView("financial/purchaseReport");
+		
+		LoginVO userVO = (LoginVO)session.getAttribute("userVO");
+		String businessNo = userVO.getBusinessNo();
+
+		
+		HashMap<String, Object> map = financialService.getPurchaseInfo(businessNo);
+		
+		
+		return mav;
+	}
 
 	
 	

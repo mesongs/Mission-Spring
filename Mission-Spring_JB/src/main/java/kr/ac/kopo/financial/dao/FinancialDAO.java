@@ -2,6 +2,7 @@ package kr.ac.kopo.financial.dao;
 
 import java.util.List;
 
+import kr.ac.kopo.financial.vo.ReturnPurchaseVO;
 import kr.ac.kopo.financial.vo.ReturnSalesVO;
 import kr.ac.kopo.financial.vo.SalesReportVO;
 import kr.ac.kopo.financial.vo.SalesVO;
@@ -38,6 +39,24 @@ public interface FinancialDAO {
 	
 	ReturnSalesVO getMonthSales(String businessNo);
 	
+	
+	List<ReturnPurchaseVO> getRecentWeekSalesListDao(String businessNo);
+	
+	List<ReturnPurchaseVO> getRecentWeekPurchaseTrendDao(String businessNo);
+	
+	List<ReturnPurchaseVO> getLastTwoWeekPurchaseTrendDao(String businessNo);
+	
+	List<ReturnPurchaseVO> getMonthPurchaseListDao(String businessNo);
+	
+	// 공제, 불공제
+	List<ReturnPurchaseVO> weekDeductionDao(String businessNo);
+	
+	// 매입순위 top3 업체
+	List<ReturnPurchaseVO> weekTop3StoreDao(String businessNo);
+	
+	ReturnPurchaseVO getRecentWeekSumCount(String businessNo);
+	
+	ReturnPurchaseVO getTwoWeekSumCount(String businessNo);
 	
 	
 }

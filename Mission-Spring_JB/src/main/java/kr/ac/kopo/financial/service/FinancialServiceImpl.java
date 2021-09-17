@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.ac.kopo.financial.dao.FinancialDAO;
+import kr.ac.kopo.financial.vo.ReturnPurchaseVO;
 import kr.ac.kopo.financial.vo.ReturnSalesVO;
 import kr.ac.kopo.financial.vo.SalesReportVO;
 import kr.ac.kopo.financial.vo.SalesVO;
@@ -162,9 +163,34 @@ public class FinancialServiceImpl implements FinancialService {
 	public HashMap<String, Object> getPurchaseInfo(String businessNo) {
 		
 		HashMap<String, Object> map = new HashMap<>();
+		// List로 받아온 뒤 map으로 저장 => map의 key값으로 공유영역에 저장
 		
+		// 최근 7일간 매입내역 건 수, 합계금액, 수
+		List<ReturnPurchaseVO> recentWeekPurchaseList = financialDAO.getRecentWeekSalesListDao(businessNo);
 		
+		List<ReturnPurchaseVO> recentWeekPurchaseTrend = financialDAO.getRecentWeekPurchaseTrendDao(businessNo);
 		
+		List<ReturnPurchaseVO> getLastTwoWeekPurchaseTrend = financialDAO.getLastTwoWeekPurchaseTrendDao(businessNo);
+		
+		List<ReturnPurchaseVO> recentMonthPurchaseList = financialDAO.getMonthPurchaseListDao(businessNo);
+		
+		List<ReturnPurchaseVO> weekDeductionList = financialDAO.weekDeductionDao(businessNo);
+		
+		List<ReturnPurchaseVO> weekTop3StoreList = financialDAO.weekTop3StoreDao(businessNo);
+		
+		ReturnPurchaseVO recentWeekSumCountVO = financialDAO.getRecentWeekSumCount(businessNo);
+		ReturnPurchaseVO twoWeekSumCountVO = financialDAO.getTwoWeekSumCount(businessNo);
+		
+		map.put("recentWeekPurchaseList", recentWeekPurchaseList);
+		map.put("recentWeekPurchaseTrend", recentWeekPurchaseTrend);
+		map.put("getLastTwoWeekPurchaseTrend", getLastTwoWeekPurchaseTrend);
+		
+		map.put("recentMonthPurchaseList", recentMonthPurchaseList);
+		map.put("weekDeductionList", weekDeductionList);
+		map.put("weekTop3StoreList", weekTop3StoreList);
+		
+		map.put("recentWeekSumCountVO", recentWeekSumCountVO);
+		map.put("twoWeekSumCountVO", twoWeekSumCountVO);
 		
 		return map;
 	}

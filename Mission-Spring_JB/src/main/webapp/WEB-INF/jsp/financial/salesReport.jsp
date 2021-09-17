@@ -725,19 +725,6 @@ function numberWithCommas(x) {
 				labels : ['새벽', '아침', '점심', '오후', '저녁'],
 				datasets : [{
 					
-					label : yesterdayString + "(" + yesterdayOfWeek + ")" ,
-					data : [
-						
-						${bytimeSale.morningSale},
-		                ${bytimeSale.AFTERNOON1Sale},
-		                ${bytimeSale.AFTERNOON2Sale},
-		                ${bytimeSale.EVENINGSale}
-						
-					],
-					backgroundColor : 'rgb(43,63,60)'
-					
-				},
-				{
 					label : dayBeforeDayString + "(" + dayBeforeDayOfWeek + ")",
 					data : [
 						
@@ -748,6 +735,21 @@ function numberWithCommas(x) {
 						
 					],
 					backgroundColor : '#27b2a5'
+					
+				},
+				{
+					
+					
+						label : yesterdayString + "(" + yesterdayOfWeek + ")" ,
+						data : [
+							
+							${bytimeSale.morningSale},
+			                ${bytimeSale.AFTERNOON1Sale},
+			                ${bytimeSale.AFTERNOON2Sale},
+			                ${bytimeSale.EVENINGSale}
+							
+						],
+						backgroundColor : 'rgb(43,63,60)'
 				
 					
 				}

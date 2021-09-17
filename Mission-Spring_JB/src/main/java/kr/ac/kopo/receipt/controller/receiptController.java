@@ -471,6 +471,7 @@ public class receiptController {
 		            out = new BufferedOutputStream(response.getOutputStream());
 		            
 		            workbook.write(out);
+		           
 		            out.flush();
 		            
 		        } catch (Exception e) {

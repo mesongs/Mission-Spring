@@ -46,7 +46,7 @@
 		          	</c:otherwise>
           		</c:choose>
 				
-			</div>
+			</div> 
 		</section>
 
 		<!--================Hero Banner end =================-->

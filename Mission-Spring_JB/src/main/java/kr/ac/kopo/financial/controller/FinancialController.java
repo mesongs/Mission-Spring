@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kr.ac.kopo.account.service.AccountService;
 import kr.ac.kopo.financial.service.FinancialService;
+import kr.ac.kopo.financial.vo.ReturnPurchaseVO;
 import kr.ac.kopo.financial.vo.ReturnSalesVO;
 import kr.ac.kopo.financial.vo.SalesReportVO;
 import kr.ac.kopo.member.vo.LoginVO;
@@ -44,9 +45,7 @@ public class FinancialController {
 		List<ReturnSalesVO> weekBeforeSalesList = (List<ReturnSalesVO>) map.get("weekBeforeSalesList");
 		List<ReturnSalesVO> customerKindSaleList = (List<ReturnSalesVO>)map.get("getCustomerKindSaleList");
 		List<ReturnSalesVO> weekCustomerKindSaleList = (List<ReturnSalesVO>)map.get("getWeekCustomerKindSaleList");
-		
 		int perCutomerSale = (int)map.get("perCutomerSale");
-		
 		ReturnSalesVO bytimeSale = (ReturnSalesVO)map.get("bytimeSale");
 		ReturnSalesVO bytimeSale2 = (ReturnSalesVO)map.get("bytimeSale2");
 		ReturnSalesVO monthSalesVO = (ReturnSalesVO)map.get("monthSalesVO"); 
@@ -112,17 +111,45 @@ public class FinancialController {
 	@RequestMapping("/financial/purchaseResport")
 	public ModelAndView financialPurchase(HttpSession session){
 		
+		
 		ModelAndView mav = new ModelAndView("financial/purchaseReport");
 		
 		LoginVO userVO = (LoginVO)session.getAttribute("userVO");
 		String businessNo = userVO.getBusinessNo();
 
-		
 		HashMap<String, Object> map = financialService.getPurchaseInfo(businessNo);
 		
 		
+		// 전 주 매입
+		List<ReturnPurchaseVO> recentWeekPurchaseList = (List<ReturnPurchaseVO>)map.get("recentWeekPurchaseList");
+		List<ReturnPurchaseVO> recentWeekPurchaseTrend = (List<ReturnPurchaseVO>)map.get("recentWeekPurchaseTrend");
+		
+		// 전 전주 매입 추이
+		List<ReturnPurchaseVO> getLastTwoWeekPurchaseTrend = (List<ReturnPurchaseVO>)map.get("getLastTwoWeekPurchaseTrend");
+		
+		List<ReturnPurchaseVO> weekDeductionList = (List<ReturnPurchaseVO>)map.get("weekDeductionList");
+		List<ReturnPurchaseVO> weekTop3StoreList = (List<ReturnPurchaseVO>)map.get("weekTop3StoreList");
+		
+		// 월간 매입 내역 추이
+		List<ReturnPurchaseVO> recentMonthPurchaseList = (List<ReturnPurchaseVO>)map.get("recentMonthPurchaseList");
+		
+		ReturnPurchaseVO recentWeekSumCountVO = (ReturnPurchaseVO)map.get("recentWeekSumCountVO");
+		ReturnPurchaseVO twoWeekSumCountVO = (ReturnPurchaseVO)map.get("twoWeekSumCountVO");
+		
+		mav.addObject("recentWeekPurchaseList", recentWeekPurchaseList);
+		mav.addObject("recentWeekPurchaseTrend", recentWeekPurchaseTrend);
+		mav.addObject("getLastTwoWeekPurchaseTrend", getLastTwoWeekPurchaseTrend);
+		mav.addObject("recentMonthPurchaseList", recentMonthPurchaseList);
+		mav.addObject("weekDeductionList", weekDeductionList);
+		mav.addObject("weekTop3StoreList", weekTop3StoreList);
+		
+		mav.addObject("recentWeekSumCountVO", recentWeekSumCountVO);
+		mav.addObject("twoWeekSumCountVO", twoWeekSumCountVO);
+		
 		return mav;
 	}
+	
+	
 
 	
 	

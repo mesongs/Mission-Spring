@@ -22,6 +22,17 @@
 		<result column="customer_sale" property="customerSale"></result>
 	</resultMap>
 	
+	<resultMap type="returnPurchaseVO" id="returnPurchaseMap">
+		<result column="receipt_name" property="receiptName"></result>
+		<result column="recent_week_sum" property="recentWeekSum"></result>
+		<result column="receipt_date" property="receiptDate"></result>
+		<result column="recent_month_sum" property="recentMonthSum"></result>
+		<result column="store_name" property="storeName"></result>
+		<result column="week_purchase_count" property="weekPurchaseCount"></result>
+		<result column="two_week_sum" property="twoWeekSum"></result>
+		<result column="two_week_purchase_count" property="twoWeekPurchaseCount"></result>
+	</resultMap>
+	
 <!--<insert id="insertTable" parameterType="HashMap" statementType="CALLABLE">
   			{ CALL procedure명 (#{a}, #{b}, #{c}, #{d}) } 
  	</insert> -->
@@ -112,8 +123,6 @@
 		where deal_date like '202011%' and business_no=#{businessNo}) as last_month_sales
 		from dual)
 	</select> 
-	
-	
 	
 	
 	<!-- 최근 7일간 매출액, 리턴값은 List<returnSalesVO> -->
@@ -229,7 +238,100 @@
 			group by chk
 	</select>
 	
+	<!-- 매입내역 보고서 -->
+	
+	<!-- 최근 7일간 매입현황  -->
+	<select id="recentWeekPurchaseInfo" parameterType="String" resultType="returnPurchaseVO" resultMap="returnPurchaseMap">
+		select receipt_code as receipt_name, sum(calsum) as recent_week_sum, count(*) as count from(select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE, STORE_NAME, amount, vat, amount+vat as calSum, receipt_date, SUPPLIER_BUSINESS_NO
+		from tb_receipt where BUSINESS_NO=#{businessNo} and receipt_status='P' and receipt_date between '20210524' and '20210528'
+		union
+		select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE, store_name, amount, vat,amount+vat as calSum, receipt_date, SUPPLIER_BUSINESS_NO
+		from TB_PURCHASE where BUSINESS_NO=#{businessNo} and receipt_date between '20210524' and '20210528')
+		group by receipt_code
+	</select>
+	
+
+	<!-- 최근 7일간 매입 추이  -->
+	<select id="recentWeekPurchaseTrend" parameterType="String" resultType="returnPurchaseVO" resultMap="returnPurchaseMap">
+		select receipt_date, sum(calSum) as sum from(select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE,
+		STORE_NAME, amount, vat, amount+vat as calSum, 
+		to_char(to_date(receipt_date,'yy/mm/dd'),'yy-mm-dd') as receipt_date , 
+		SUPPLIER_BUSINESS_NO, 
+		division
+		from tb_receipt where BUSINESS_NO=#{businessNo} and receipt_status='P' and receipt_date between '20210522' and '20210528'
+		union
+		select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE, 
+		store_name, amount, vat,amount+vat as calSum,
+		to_char(to_date(receipt_date,'yy/mm/dd'),'yy-mm-dd') as receipt_date, 
+		SUPPLIER_BUSINESS_NO, division
+		from TB_PURCHASE where BUSINESS_NO=#{businessNo} and receipt_date between '20210522' and '20210528')
+		group by receipt_date
+		order by receipt_date asc
+	</select>
+	
+	<select id="lastTwoWeekPurchaseTrend" parameterType="String" resultType="returnPurchaseVO" resultMap="returnPurchaseMap">
+		select receipt_date, sum(calSum) as sum from(select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE,
+		STORE_NAME, amount, vat, amount+vat as calSum,
+		to_char(to_date(receipt_date,'yy/mm/dd'),'yy-mm-dd') as receipt_date , 
+		SUPPLIER_BUSINESS_NO, 
+		division
+		from tb_receipt where BUSINESS_NO=#{businessNo} and receipt_status='P' and receipt_date between '20210515' and '20210521'
+		union
+		select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE, 
+		store_name, amount, vat,amount+vat as calSum,
+		to_char(to_date(receipt_date,'yy/mm/dd'),'yy-mm-dd') as receipt_date, 
+		SUPPLIER_BUSINESS_NO, division
+		from TB_PURCHASE where BUSINESS_NO=#{businessNo} and receipt_date between '20210515' and '20210521')
+		group by receipt_date
+		order by receipt_date asc
+	</select>
+	
+	<!-- 월간 매입 합계, 영수증 별, 합계, 수  -->
+	<select id="monthPurchaseInfo" parameterType="String" resultType="returnPurchaseVO" resultMap="returnPurchaseMap">
+		select receipt_code as receipt_name, sum(calsum) as recent_month_sum, count(*) as count from(select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE, STORE_NAME, amount, vat, amount+vat as calSum, receipt_date, SUPPLIER_BUSINESS_NO
+		from tb_receipt where BUSINESS_NO=#{businessNo} and receipt_status='P' and receipt_date between '20210501' and '20210528'
+		union
+		select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE, store_name, amount, vat,amount+vat as calSum, receipt_date, SUPPLIER_BUSINESS_NO
+		from TB_PURCHASE where BUSINESS_NO=#{businessNo} and receipt_date between '20210501' and '20210528')
+		group by receipt_code
+	</select>
+	
+	<!-- 주간 공제 / 불공제 금액 비중, section, store_kind  -->
+	<select id="recentWeekDeduction" parameterType="String" resultType="returnPurchaseVO" resultMap="returnPurchaseMap">
+		select deduction, sum(sum) as sum, count(*) as count from tb_purchase
+		where BUSINESS_NO=#{businessNo} and receipt_date between '20210522' and '20210528'
+		group by deduction
+	</select>
+ 	
+ 	<!-- 주간 매입 순위TOP3 업체 -->
+	<select id="recentWeekTop3Store" parameterType="String" resultType="returnPurchaseVO" resultMap="returnPurchaseMap">
+		select store_name, sum from(select store_name, sum(amount) as sum from TB_PURCHASE
+		where BUSINESS_NO=#{businessNo} and receipt_date between '20210522' and '20210528'
+		group by store_name) where rownum <![CDATA[ <= ]]> 3
+	</select>
+	
+	<!-- 최근 주간 매입 합계  -->
+	<select id="recentWeekSumCount" parameterType="String" resultType="returnPurchaseVO" resultMap="returnPurchaseMap">
+		select sum(recent_week_sum) as recent_week_sum, sum(count) as week_purchase_count from (select receipt_code as receipt_name, sum(calsum) as recent_week_sum, count(*) as count from(select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE, STORE_NAME, amount, vat, amount+vat as calSum, receipt_date, SUPPLIER_BUSINESS_NO
+		from tb_receipt where BUSINESS_NO='6052355236' and receipt_status='P' and receipt_date between '20210524' and '20210528'
+		union
+		select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE, store_name, amount, vat,amount+vat as calSum, receipt_date, SUPPLIER_BUSINESS_NO
+		from TB_PURCHASE where BUSINESS_NO=#{businessNo} and receipt_date between '20210524' and '20210528')
+		group by receipt_code)
+	</select>
+	
+	<!-- 2주전 주간 매입 합계 -->
+	<select id="twoWeekSumCount" parameterType="String" resultType="returnPurchaseVO" resultMap="returnPurchaseMap">
+		select sum(recent_week_sum) as two_week_sum, sum(count) as two_week_purchase_count from (select receipt_code as receipt_name, sum(calsum) as recent_week_sum, count(*) as count from(select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE, STORE_NAME, amount, vat, amount+vat as calSum, receipt_date, SUPPLIER_BUSINESS_NO
+		from tb_receipt where BUSINESS_NO='6052355236' and receipt_status='P' and receipt_date between '20210524' and '20210528'
+		union
+		select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE, store_name, amount, vat,amount+vat as calSum, receipt_date, SUPPLIER_BUSINESS_NO
+		from TB_PURCHASE where BUSINESS_NO=#{businessNo} and receipt_date between '20210515' and '20210521')
+		group by receipt_code)
+	</select>
+
 	
 	
+
 	
 </mapper>

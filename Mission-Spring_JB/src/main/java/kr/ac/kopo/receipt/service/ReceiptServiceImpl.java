@@ -14,10 +14,6 @@ import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.json.simple.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -594,55 +590,17 @@ public class ReceiptServiceImpl implements ReceiptService {
 		return integratedList;
 	}
 	
-	
-	
-	
-	public HSSFWorkbook listExcelDownload(IntegratedSalesVO param) {
+	// 엑셀 다운로드 시, 사용자가 조회한 값을 다운로드
+
+	@Override
+	public List<IntegratedSalesVO> getSearchListService(HashMap<String, Object> map) {
 		
-		  HSSFWorkbook workbook = new HSSFWorkbook();
-	        
-	        HSSFSheet sheet = workbook.createSheet("엑셀시트명");
-	        
-	        HSSFRow row = null;
-	        
-	        HSSFCell cell = null;
-	        
-//	        param.setPager(false);
-//	        param.setNullText(NULL_TEXT);
-//	        param.setSeparator(DELI_EXCEL);
-	        
-	        // 디비를 거쳐서 정보를 다시가져온다???
-	        List<IntegratedSalesVO> list = receiptDAO.getIntegratedListDao(param);
-	        
-	        row = sheet.createRow(0);
-	        String[] headerKey = {"칼럼1", "칼럼2", "칼럼3", "칼럼4"};
-	        
-	        for(int i=0; i<headerKey.length; i++) {
-	            cell = row.createCell(i);
-	            cell.setCellValue(headerKey[i]);
-	        }
-	        
-	        for(int i=0; i<list.size(); i++) {
-	            row = sheet.createRow(i + 1);
-	            IntegratedSalesVO vo = list.get(i);
-	            
-	            cell = row.createCell(0);
-	            cell.setCellValue(vo.getBusinessNo());
-	            
-	            cell = row.createCell(1);
-	            cell.setCellValue(vo.getDivision());
-	            
-	            cell = row.createCell(2);
-	            cell.setCellValue(vo.getPurchaseDate());
-	            
-	            cell = row.createCell(3);
-	            cell.setCellValue(vo.getSupplierBusinessNo());
-	            
-	        }
-	        return workbook;
+		List<IntegratedSalesVO> searchedIntegratedList = receiptDAO.getSearchedIntegratedListDao(map);
+		
+		return searchedIntegratedList;
 	}
 	
-	
+
 	// 가장 먼저했던 이미지 서버에 저장, 썸네일 이미지 저장 => 저장된 이미지 ocr
 	/**
 	 * 1. 이미지 서버 파일에 저장, 썸네일 이미지
@@ -990,6 +948,8 @@ public class ReceiptServiceImpl implements ReceiptService {
 		return receiptFile;
 	}
 	
+	
+
 	//general ocr에서 사용할 Integer형 변환
 	public boolean checkInt(String str) {
 

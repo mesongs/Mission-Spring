@@ -1,5 +1,6 @@
 package kr.ac.kopo.receipt.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -54,5 +55,7 @@ public interface ReceiptDAO {
 	int reRegisterRejectDao(RejectReceiptVO rejectReceipt);
 	
 	List<IntegratedSalesVO> getIntegratedListDao(IntegratedSalesVO integratedSalesVO);
+	
+	List<IntegratedSalesVO> getSearchedIntegratedListDao(HashMap<String, Object> map);
 	
 }

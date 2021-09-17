@@ -1,10 +1,10 @@
 package kr.ac.kopo.receipt.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -62,8 +62,6 @@ public interface ReceiptService {
 	
 	List<IntegratedSalesVO> getIntegratedList(IntegratedSalesVO integratedSalesVO);
 	
-	HSSFWorkbook listExcelDownload(IntegratedSalesVO param);
-	
-	
+	List<IntegratedSalesVO> getSearchListService(HashMap<String, Object> map);
 	
 }

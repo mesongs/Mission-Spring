@@ -1,5 +1,6 @@
 package kr.ac.kopo.receipt.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -172,6 +173,14 @@ public class ReceiptDAOImpl implements ReceiptDAO {
 	public List<IntegratedSalesVO> getIntegratedListDao(IntegratedSalesVO integratedSalesVO) {
 		
 		List<IntegratedSalesVO> getIntegratedList = sqlSessionTemplate.selectList("receipt.receiptDAO.getIntegratedList", integratedSalesVO);
+		
+		return getIntegratedList;
+	}
+
+	@Override
+	public List<IntegratedSalesVO> getSearchedIntegratedListDao(HashMap<String, Object> map) {
+		
+		List<IntegratedSalesVO> getIntegratedList = sqlSessionTemplate.selectList("receipt.receiptDAO.-----------------", map);
 		
 		return getIntegratedList;
 	}

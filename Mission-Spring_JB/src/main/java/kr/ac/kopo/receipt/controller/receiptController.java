@@ -12,12 +12,20 @@ import java.awt.Color;
 import java.io.BufferedOutputStream;
 import java.io.File; 
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.hssf.util.HSSFColor.HSSFColorPredefined;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -455,36 +463,129 @@ public class receiptController {
 		}
 		
 		// 엑셀 다운로드
-		@RequestMapping("/receipt/getListExcelFile")
-		public String ListExcelDown(HttpServletRequest request ,HttpServletResponse response ,HttpSession session, IntegratedSalesVO param ) throws Exception {
-			
-			OutputStream out = null;
-			
-			// 업로드한 후 새로고침 안하려면, 그냥 void하면 되나?
-			
-			 try {
-		            HSSFWorkbook workbook = service.listExcelDownload(param);
+		@RequestMapping("/receipt/excelDown")
+		public void excelDownload(HttpServletResponse response, IntegratedSalesVO integratedSalesVO, HttpSession session) throws IOException {
+			  
+			  // api요청한 값을 다운로드 or 디비에서 데이터 다운로드 (일단 DB에서 다운로드 하는 것부터)
+			  
+			  LoginVO userVO = (LoginVO)session.getAttribute("userVO");
+			  String businessNo = userVO.getBusinessNo();
+			  
+			  integratedSalesVO.setBusinessNo(businessNo);
+			  
+			  String amountSum = integratedSalesVO.getAmountValue();
+			  String vatSum = integratedSalesVO.getVatValue();
+			  
+			  System.out.println(amountSum);
+			  System.out.println(vatSum);
+			  
+			  List<IntegratedSalesVO> searchedToExelList = service.getIntegratedList(integratedSalesVO);
+			  
+			  Workbook wb = new XSSFWorkbook();
+			  
+		      Sheet sheet = wb.createSheet("통합매입내역");
+		      Row row = null;
+		      Cell cell = null;
+		      int rowNum = 0;
+		      
+		      // 합계금액, 부가세도 넘겨주기, 사용자가 선택한 날짜도 넘겨주면 좋을듯
+		      
+		      CellStyle headStyle = wb.createCellStyle();
+		      
+		      
+		      
+		      headStyle.setFillForegroundColor(HSSFColorPredefined.PALE_BLUE.getIndex()); 
+		      headStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		      
+		      headStyle.setBorderBottom(BorderStyle.THIN);
+		      headStyle.setBorderLeft(BorderStyle.THIN);
+		      headStyle.setBorderRight(BorderStyle.THIN);
+		      headStyle.setBorderTop(BorderStyle.THIN);
+		      
+		      //데이터용 경계 스타일 테두리 지정
+		      CellStyle bodyStyle = wb.createCellStyle();
+		      bodyStyle.setBorderBottom(BorderStyle.THIN);
+		      bodyStyle.setBorderTop(BorderStyle.THIN);
+		      bodyStyle.setBorderLeft(BorderStyle.THIN);
+		      bodyStyle.setBorderRight(BorderStyle.THIN);
+		      
+		      Font font = wb.createFont();
+		      font.setBold(true); // Bold 설정
+		      
+		      headStyle.setFont(font);
+		      
+		      row = sheet.createRow(rowNum++);
+		      String [] headerArray = {"매입일시",
+		    		  "발급유형","사업자등록번호","상호명",
+		    		  "공급가액","부가세","합계금액","구분"};
+		      
+		      // Header
+		      for(int i=0; i<headerArray.length;i++) {
+		    	  
+		    	  cell = row.createCell(i);
+		    	  cell.setCellStyle(headStyle);
+		    	  
+		    	  cell.setCellValue(headerArray[i]);
+		    	  
+		      }
+		      
+		      
+		        for (int i = 0; i < searchedToExelList.size(); i++) {
+		            row = sheet.createRow(rowNum++);
 		            
-		            response.reset();
-		            response.setHeader("Content-Disposition", "attachment;filename=stbcs_history.xls");
-		            response.setContentType("application/vnd.ms-excel");
-		            out = new BufferedOutputStream(response.getOutputStream());
+		            cell = row.createCell(0);
+		            cell.setCellStyle(bodyStyle);
+		            cell.setCellValue(searchedToExelList.get(i).getReceiptDate());
 		            
-		            workbook.write(out);
-		           
-		            out.flush();
+		            cell = row.createCell(1);
+		            cell.setCellStyle(bodyStyle);
+		            cell.setCellValue(searchedToExelList.get(i).getReceiptCode());
 		            
-		        } catch (Exception e) {
-		        	e.printStackTrace();
-//		            logger.error("exception during downloading excel file : {}", e);
-		        } finally {
-		            if(out != null) out.close();
-		        }    
-			
-			
-			return "redirect:/receipt/allReceiptList";
+		            cell = row.createCell(2);
+		            cell.setCellStyle(bodyStyle);
+		            cell.setCellValue(searchedToExelList.get(i).getSupplierBusinessNo());
+		            
+		            cell = row.createCell(3);
+		            cell.setCellStyle(bodyStyle);
+		            cell.setCellValue(searchedToExelList.get(i).getSupplierStoreName());
+		            
+		            cell = row.createCell(4);
+		            cell.setCellStyle(bodyStyle);
+		            cell.setCellValue(searchedToExelList.get(i).getAmount());
+		            
+		            cell = row.createCell(5);
+		            cell.setCellStyle(bodyStyle);
+		            cell.setCellValue(searchedToExelList.get(i).getVat());
+		            
+		            cell = row.createCell(6);
+		            cell.setCellStyle(bodyStyle);
+		            cell.setCellValue(searchedToExelList.get(i).getCalSum());
+		            
+		            cell = row.createCell(7);
+		            cell.setCellStyle(bodyStyle);
+		            cell.setCellValue(searchedToExelList.get(i).getDivision());
+		        }
+		        row = sheet.createRow(rowNum++);
+		        row = sheet.createRow(rowNum++);
+			    cell.setCellValue("전자증빙");
+			      cell = row.createCell(0);
+			      
+			      row = sheet.createRow(rowNum++);
+			      cell.setCellValue("공급가액 : " + amountSum);
+			      cell = row.createCell(0);
+			      
+			      cell.setCellValue("부가세 : " + vatSum);
+			      cell = row.createCell(1);
+		        
+		        response.setContentType("ms-vnd/excel");
+//		        response.setHeader("Content-Disposition", "attachment;filename=example.xls");
+		        response.setHeader("Content-Disposition", "attachment;filename="+ integratedSalesVO.getPurchaseDate() +"_purchase" +".xlsx");
+
+		        // Excel File Output
+		        wb.write(response.getOutputStream());
+		        wb.close();
+		        
 		}
-		
  				
 }
 

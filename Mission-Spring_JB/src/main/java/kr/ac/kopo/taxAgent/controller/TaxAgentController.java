@@ -24,7 +24,7 @@ public class TaxAgentController {
 	@Autowired
 	private TaxAgentService service;
 
-	// 기장대리 페이지로 이동
+	// 고객 증빙자료 조회/수집 페이지로 이동
 	@RequestMapping("/taxAgent/taxAccount")
 	public ModelAndView taxAccount(HttpSession session) {
 		
@@ -32,7 +32,6 @@ public class TaxAgentController {
 		
 		ModelAndView mav = new ModelAndView("taxAgent/taxAccount");
 		
-//		session.getAttribute)
 		LoginVO userVO = (LoginVO)session.getAttribute("userVO");
 		String taxAgentId = userVO.getId();
 		

@@ -1,5 +1,7 @@
 package kr.ac.kopo.receipt.vo;
 
+import java.util.Arrays;
+
 public class IntegratedSalesVO {
 
 	private String receiptCode;
@@ -11,34 +13,12 @@ public class IntegratedSalesVO {
 	private String supplierBusinessNo;
 	private String division;
 	
+	private String amountValue; // 공급가액 합계
+	private String vatValue; // 부가세 합계
+	
 	private String businessNo;
 	private String[] sendArray;
 	private String purchaseDate;
-	
-	public int getCalSum() {
-		return calSum;
-	}
-	public void setCalSum(int calSum) {
-		this.calSum = calSum;
-	}
-	public String getBusinessNo() {
-		return businessNo;
-	}
-	public void setBusinessNo(String businessNo) {
-		this.businessNo = businessNo;
-	}
-	public String[] getSendArray() {
-		return sendArray;
-	}
-	public void setSendArray(String[] sendArray) {
-		this.sendArray = sendArray;
-	}
-	public String getPurchaseDate() {
-		return purchaseDate;
-	}
-	public void setPurchaseDate(String purchaseDate) {
-		this.purchaseDate = purchaseDate;
-	}
 	public String getReceiptCode() {
 		return receiptCode;
 	}
@@ -63,6 +43,12 @@ public class IntegratedSalesVO {
 	public void setVat(int vat) {
 		this.vat = vat;
 	}
+	public int getCalSum() {
+		return calSum;
+	}
+	public void setCalSum(int calSum) {
+		this.calSum = calSum;
+	}
 	public String getReceiptDate() {
 		return receiptDate;
 	}
@@ -81,12 +67,50 @@ public class IntegratedSalesVO {
 	public void setDivision(String division) {
 		this.division = division;
 	}
-	
+	public String getAmountValue() {
+		return amountValue;
+	}
+	public void setAmountValue(String amountValue) {
+		this.amountValue = amountValue;
+	}
+	public String getVatValue() {
+		return vatValue;
+	}
+	public void setVatValue(String vatValue) {
+		this.vatValue = vatValue;
+	}
+	public String getBusinessNo() {
+		return businessNo;
+	}
+	public void setBusinessNo(String businessNo) {
+		this.businessNo = businessNo;
+	}
+	public String[] getSendArray() {
+		return sendArray;
+	}
+	public void setSendArray(String[] sendArray) {
+		this.sendArray = sendArray;
+	}
+	public String getPurchaseDate() {
+		return purchaseDate;
+	}
+	public void setPurchaseDate(String purchaseDate) {
+		this.purchaseDate = purchaseDate;
+	}
 	@Override
 	public String toString() {
 		return "IntegratedSalesVO [receiptCode=" + receiptCode + ", supplierStoreName=" + supplierStoreName
-				+ ", amount=" + amount + ", vat=" + vat + ", receiptDate=" + receiptDate + ", supplierBusinessNo="
-				+ supplierBusinessNo + ", division=" + division + "]";
+				+ ", amount=" + amount + ", vat=" + vat + ", calSum=" + calSum + ", receiptDate=" + receiptDate
+				+ ", supplierBusinessNo=" + supplierBusinessNo + ", division=" + division + ", amountValue="
+				+ amountValue + ", vatValue=" + vatValue + ", businessNo=" + businessNo + ", sendArray="
+				+ Arrays.toString(sendArray) + ", purchaseDate=" + purchaseDate + "]";
 	}
+	
+	
+	
+	
+	
+	
+	
 	
 }

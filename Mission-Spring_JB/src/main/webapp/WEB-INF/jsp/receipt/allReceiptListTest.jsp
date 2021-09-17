@@ -68,7 +68,7 @@
 </style>
 
 <script>
-	
+	/////////색인
 	$(document).ready(function(){
 		
 		$('#allCheck').click(function(){
@@ -351,6 +351,13 @@
 		
 		
 		
+		$('#excelBtn').click(function(){
+			
+			 // 엑셀 다운로드 버튼
+			 // 엑셀버튼 실행 후 전달
+			
+		
+		})
 		
 		
 		//통합 매입내역 조회
@@ -360,11 +367,6 @@
 			
 			
 			
-			
-			
-			// purchaseDate는 사용자가 선택한 값임 hidden에 넣어서 넘기기
-			// 색인
-			
 			var sendArray = [];
 			
 			$("input[name=tblChk]:checked").each(function(){
@@ -373,14 +375,9 @@
 			
 			var cnt = sendArray.length
 			
-			
-			
-			
-			
 			//조회 버튼 누르면, 기간에 해당하는 값만 조회함
 			$.ajax({
 				type : "get",
-				async : false,
 				data : { purchaseDate : purchaseDate, sendArray : sendArray, cnt : cnt },
 				url : "${pageContext.request.contextPath}/receipt/getAllReceiptSalese",
 				
@@ -411,7 +408,7 @@
 						 IntegratedList.forEach(function(IntegratedSalesList){
 							 	 
 							 	 str="<tr>"
-							 	 str += "<td>" + '<input type="checkbox" name="wantCheck" id="" class="testBox">' + "</td>" 
+							 	 str += "<td>" + '<input type="checkbox" name="wantCheck" class="testBox">' + "</td>" 
 							     str +="<td>" + IntegratedSalesList.receiptDate + "</td>"
 							     str +="<td>" + IntegratedSalesList.receiptCode + "</td>"
 							     str +="<td>" + IntegratedSalesList.supplierBusinessNo + "</td>"
@@ -425,15 +422,6 @@
 			 					 $('#test').append(str);
 						 })
 					 }
-					 
-					 let amountValue = $('#allAmount').text();
-					 let vatValue = $('#allVat').text();
-						
-						// 조회 버튼 클릭하면, 사용자가 선택한 날짜, 체크한 체크박스 값을 넘겨야함
-						$('#purchaseDate').attr('value',purchaseDate);
-						$('#sendArray').attr('value', sendArray);
-						$('#amountValue').attr('value', amountValue);
-						$('#vatValue').attr('value', vatValue);
 					
 				},
 				error:function(request, status, error){
@@ -619,19 +607,16 @@ function numberWithCommas(x) {
 												<option value="20201001">2020년 4분기</option>
 											</select>
 											<span style="float: left">
-												<button id="searchAllPurchase" name="searchAllPurchase" type="button" style="height : 35px; margin-left: 6px; border-top-left-radius: 5px;border-bottom-left-radius: 5px;border-top-right-radius: 5px;border-bottom-right-radius: 5px;">조회</button>
+												<button id="searchAllPurchase" name="searchAllPurchase" type="button" style="height : 35px;;margin-left: 6px; border-top-left-radius: 5px;border-bottom-left-radius: 5px;border-top-right-radius: 5px;border-bottom-right-radius: 5px;">조회</button>
 											</span>
 											
 									</div>
 									
 									<div class="col" align="right">
-												<form action="${ pageContext.request.contextPath }/receipt/excelDown" method="get">
-													<input type="hidden" id="purchaseDate" name="purchaseDate" value="">
-													<input type="hidden" id="sendArray" name="sendArray" value="">
-													<input type="hidden" id="amountValue" name="amountValue" value="">
-													<input type="hidden" id="vatValue" name="vatValue" value="">
-													<button type="submit" id="excelBtn" style="float : right;"><img class="product-img" src="${ pageContext.request.contextPath }/resources/img/excel.png">Excel 다운로드</button>
-												</form>
+											<form action="${ pageContext.request.contextPath }/receipt/excelDown" method="get">
+												
+												<button type="submit" id="excelBtn" style="float : right;"><img class="product-img" src="${ pageContext.request.contextPath }/resources/img/excel.png">Excel 다운로드</button>
+											</form> <!-- row의 키값을 받아와서 넘긴다 => db에서 그  -->
 									</div>
 									
 								</div>

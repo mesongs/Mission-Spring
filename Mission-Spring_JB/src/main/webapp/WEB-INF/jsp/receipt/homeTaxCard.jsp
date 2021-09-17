@@ -571,7 +571,7 @@ table tbody th, table td {
 									<th width="170px">매입일시</th>
 									<th width="120px">승인번호</th>
 									<th width="180px">공급자사업자번호</th>
-									<th width="180px">가맹점명</th>
+									<th width="210px">가맹점명</th>
 									<th width="140px">카드명</th>
 									<th width="120px">카드번호</th>
 									<th width="100px">업종</th>

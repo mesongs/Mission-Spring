@@ -465,7 +465,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 				
 				homeTaxCashVO.setCashApprovalNo(cashApprovalNo);
 				homeTaxCashVO.setSupplierBusinessNo(supplierBusinessNo);
-				homeTaxCashVO.setPurchaseDate(purchaseDateTime);
+				homeTaxCashVO.setPurchaseDate(purchaseGetDate);
 				homeTaxCashVO.setSupplierStoreName(supplierStoreName);
 				homeTaxCashVO.setStoreKind(storeKind);
 				homeTaxCashVO.setSection(section);
@@ -557,7 +557,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 				
 				homeTaxCardVO.setCardApprovalNo(cardApprovalNo);
 				homeTaxCardVO.setSupplierBusinessNo(supplierBusinessNo);
-				homeTaxCardVO.setPurchaseDate(purchaseDateTime);
+				homeTaxCardVO.setPurchaseDate(purchaseGetDate);
 				homeTaxCardVO.setSupplierStoreName(supplierStoreName); 
 				homeTaxCardVO.setCardName(cardName);
 				homeTaxCardVO.setCardNumber(cardNumber);

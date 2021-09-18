@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,7 +36,7 @@
  
  .panel-default > .panel-heading{
 	
-	background-color : #E9EDF1;
+	background-color : rgba(39, 178, 127,0.4);
 	border-color : #ddd;
 	
 	
@@ -152,10 +156,87 @@
      height: 48px;
      top:0;
      left: 0;
-     background-color: rgba(82, 95, 127, .5);
-     
+     background-color: rgba(074,140,138,0.6); 
  }
 </style>  
+
+
+<script>
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+// 사업자등록번호 '-' 추가
+function bizNoFormatter(num, type) {
+
+    var formatNum = '';
+
+    try{
+
+         if (num.length == 10) {
+
+              if (type == 0) {
+
+                   formatNum = num.replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-*****');
+
+              } else {
+
+                    formatNum = num.replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-$3');
+
+              }
+
+         }
+
+    } catch(e) {
+
+         formatNum = num;
+
+         console.log(e);
+
+    }
+
+    return formatNum;
+
+}
+
+// 날짜 포맷 변경
+function YMDFormatter(num){
+
+    if(!num) return "";
+
+    var formatNum = '';
+
+
+
+    // 공백제거
+
+    num=num.replace(/\s/gi, "");
+
+
+
+    try{
+
+         if(num.length == 8) {
+
+              formatNum = num.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3');
+
+         }
+
+    } catch(e) {
+
+         formatNum = num;
+
+         console.log(e);
+
+    }
+
+    return formatNum;
+
+}
+	 
+</script>
+
 
 
 <script>
@@ -171,77 +252,8 @@
 		
 	})
 	
-	getBusinessList();
+	
 		
-		function getBusinessList(){
-			
-			$.ajax({
-				type : "get",
-				url : "${pageContext.request.contextPath}/receipt/processedAllList",
-				success : function(result){
-					
-					let obj = JSON.parse(result);
-					
-			 		 $('#test').empty();
-			 		 
-					 if(obj.length >= 1){
-						 
-						 // for(receipt vo(=searchWaitList) : receiptList) 1.5버전 for문과 동일함
-						 obj.forEach(function(processedList){
-							 	 
-							 	 str="<tr>"
-							 	 str += "<td>" + '<input type="checkbox" class="testBox">' + "</td>" 
-							     str += "<td>" + processedList.receiptDate + "</td>"
-							     str += "<td>" + processedList.receiptName + "</td>"
-							     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/detail/" + processedList.receiptNo + ">" + processedList.storeName +"</a></td>"; 
-							     str += "<td>" + processedList.sum +"원</td>";
-							     str += "<td>" + processedList.purpose +"</td>";
-							     
-							     if(processedList.overlap == 'Y'){
-				 					
-							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.png">' + "</td>"
-							     }else{
-				 					
-							    	 str += "<td>" + "</td>"
-				 				 }
-				 				 
-							     /* str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>" */
-							     /* str +="<td>" + processedList.overlap + "</td>" */
-							     
-			 					 str += "<td>" + processedList.memo +"</td>";
-			 					 str += "</tr>"
-			 					 $('#test').append(str);
-			 					 
-			 					 
-			 					 
-			 					 
-			 					 // 받아온 overlap값이 'Y'이면, 경고 이미지 띄우기
-			 					 // 'N'이면, empty
-			 					 
-			 					 
-			 					 
-			 					
-						 })
-					 }
-					
-				},
-				error:function(request, status, error){
-				    alert("code:"+ request.status +"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-				}
-				
-				
-			})
-			
-		}
-	
-	
-	// ajax로 세무사가 담당하고 있는 회원 리스트를 불러오기
-	
-	
-
-	
-	
-	
 	
 	
 
@@ -276,7 +288,7 @@
 				<div class="box">
 				  <div class="container-1">
 				      <span class="icon"><i class="fa fa-search"></i></span>
-				      <input type="search" id="search" placeholder="검색어 입력" style="padding-top: 7px;" />
+				      <input type="search" id="search" placeholder="검색어 입력" style="padding-top: 7px; background-color: rgba(074,140,138,0.2)" />
 				  </div>
 				</div>
 			</div>
@@ -290,7 +302,7 @@
 							<div class="panel panel-default" style="height: 200px; cursor: pointer;" onclick="location.href='${ pageContext.request.contextPath }/taxAgent/taxAccountDetail/${ customerList.businessNo }'">
 								<div class="panel-heading">
 									 <span class="side-stick"></span>
-									<sapn>사업장번호</sapn>
+									<sapn>BNo</sapn>
 									<span> : </span>
 									<span class="addBold">${ customerList.businessNo }</span>
 									<br>
@@ -309,7 +321,7 @@
 									    <sapn> : </sapn>
 									    <span class="addBold">${ customerList.email }</span><br>
 									    <div align="right">
-									    <span style="float: right: ;"><img src="${ pageContext.request.contextPath }/resources/img/env1.png" style="width: 60px;"></span>
+									    <span style="float: right: ;"><img src="${ pageContext.request.contextPath }/resources/img/test2.png" style="width: 55px; height: 25px;"></span>
 										</div>
 									</div>
 							</div>

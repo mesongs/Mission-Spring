@@ -364,7 +364,6 @@ public class receiptController {
 		@PostMapping("/receipt/homeTaxConnect") 
 		public String homeTaxConnect(HomeTaxInfoVO homeTaxInfo, Model model) {
 				
-			    // 반환값은 뭐여야 하지? 로그인이 성공적으로 되었다 라는 걸 확인하고 성공한 경우에만 페이지 넘겨야함
 				// 로그인 실패한 경우에는 redirect
 				String valid = service.homeTaxConnectService(homeTaxInfo);
 				String msg ="";

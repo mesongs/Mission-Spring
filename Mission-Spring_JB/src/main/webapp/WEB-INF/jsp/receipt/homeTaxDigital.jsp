@@ -507,6 +507,85 @@ table tbody th, table td {
 
 </script>
 
+<script>
+
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+// 사업자등록번호 '-' 추가
+function bizNoFormatter(num, type) {
+
+    var formatNum = '';
+
+    try{
+
+         if (num.length == 10) {
+
+              if (type == 0) {
+
+                   formatNum = num.replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-*****');
+
+              } else {
+
+                    formatNum = num.replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-$3');
+
+              }
+
+         }
+
+    } catch(e) {
+
+         formatNum = num;
+
+         console.log(e);
+
+    }
+
+    return formatNum;
+
+}
+
+// 날짜 포맷 변경
+function YMDFormatter(num){
+
+    if(!num) return "";
+
+    var formatNum = '';
+
+
+
+    // 공백제거
+
+    num=num.replace(/\s/gi, "");
+
+
+
+    try{
+
+         if(num.length == 8) {
+
+              formatNum = num.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3');
+
+         }
+
+    } catch(e) {
+
+         formatNum = num;
+
+         console.log(e);
+
+    }
+
+    return formatNum;
+
+}
+
+
+</script>
+
+
 </head>
 
 

@@ -397,9 +397,9 @@ table tbody th, table td {
 							 //    가맹점명 cardName cardNumber section amount vat sum
 							 	 str="<tr>"
 							 	 str += "<td>" + '<input type="checkbox" class="testBox">' + "</td>" 
-							     str +="<td>" + getHomeTaxCardList.purchaseDate + "</td>"
+							     str +="<td>" + YMDFormatter(getHomeTaxCardList.purchaseDate) + "</td>"
 							     str +="<td>" + getHomeTaxCardList.cardApprovalNo + "</td>"
-							     str +="<td>" + getHomeTaxCardList.supplierBusinessNo + "</td>"
+							     str +="<td>" + bizNoFormatter(getHomeTaxCardList.supplierBusinessNo,1) + "</td>"
 							     
 							     str +="<td>" + getHomeTaxCardList.supplierStoreName + "</td>"
 							     str +="<td>" + getHomeTaxCardList.cardName + "</td>"
@@ -407,9 +407,9 @@ table tbody th, table td {
 							     
 							     str +="<td>" + getHomeTaxCardList.section + "</td>"
 							    
-							     str +="<td>" + getHomeTaxCardList.amount + "원</td>"
-							     str +="<td>" + getHomeTaxCardList.vat + "원</td>"
-							     str +="<td>" + getHomeTaxCardList.sum + "원</td>"
+							     str +="<td>" + numberWithCommas(getHomeTaxCardList.amount) + "원</td>"
+							     str +="<td>" + numberWithCommas(getHomeTaxCardList.vat) + "원</td>"
+							     str +="<td>" + numberWithCommas(getHomeTaxCardList.sum) + "원</td>"
 							     
 							  	 
 			 					 str +="</tr>"
@@ -447,6 +447,86 @@ table tbody th, table td {
 			
 	
 	})
+
+</script>
+
+<script>
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+// 사업자등록번호 '-' 추가
+function bizNoFormatter(num, type) {
+
+    var formatNum = '';
+
+    try{
+
+         if (num.length == 10) {
+
+              if (type == 0) {
+
+                   formatNum = num.replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-*****');
+
+              } else {
+
+                    formatNum = num.replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-$3');
+
+              }
+
+         }
+
+    } catch(e) {
+
+         formatNum = num;
+
+         console.log(e);
+
+    }
+
+    return formatNum;
+
+}
+
+// 날짜 포맷 변경
+function YMDFormatter(num){
+
+    if(!num) return "";
+
+    var formatNum = '';
+
+
+
+    // 공백제거
+
+    num=num.replace(/\s/gi, "");
+
+
+
+    try{
+
+         if(num.length == 8) {
+
+              formatNum = num.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3');
+
+         }
+
+    } catch(e) {
+
+         formatNum = num;
+
+         console.log(e);
+
+    }
+
+    return formatNum;
+
+}
+
+
+
+	 
 
 </script>
 
@@ -517,35 +597,19 @@ table tbody th, table td {
 												<option value="202103">2021년 03월</option>
 												<option value="202102">2021년 02월</option>
 												<option value="202101">2021년 01월</option>
-												<option value="202012">2020년 12월</option>
-												<option value="202011">2020년 11월</option>
-												<option value="202010">2020년 10월</option>
-												<option value="202009">2020년 09월</option>
-												<option value="202008">2020년 08월</option>
-												<option value="202007">2020년 07월</option>
-												<option value="202006">2020년 06월</option>
-												<option value="202005">2020년 05월</option>
-												<option value="202004">2020년 04월</option>
-												<option value="202003">2020년 03월</option>
-												<option value="202002">2020년 02월</option>
-												<option value="202001">2020년 01월</option>
+
 											</select>
 											<select name="searchQuarter" id="searchQuarter" style="margin-left: 15px; float: left; width: 50px; margin-bottom: 20px; color:#495057; height: 35px;border-top-width: 0px;padding-bottom: 0px; display: none;">
 												<option value="1">2021년 1분기</option>
 												<option value="2">2021년 2분기</option>
 												<option value="3">2021년 3분기</option>
 												<option value="4">2021년 4분기</option>
-												<option value="5">2020년 1분기</option>
-												<option value="6">2020년 2분기</option>
-												<option value="7">2020년 3분기</option>
-												<option value="8">2020년 4분기</option>
+												
 											</select>
 											<span style="float: left">
 												<button id="searchHometaxCard" name="searchHometaxCard" type="button" style="height : 35px;;margin-left: 6px; border-top-left-radius: 5px;border-bottom-left-radius: 5px;">조회</button>
 											</span>
-											<span style="float: left">
-												<button id="collectBtn" name="collectBtn" type="button" style="display: none;">수집</button>
-											</span>
+											
 									</div>
 									
 									<div class="col" align="right">
@@ -570,7 +634,7 @@ table tbody th, table td {
 									<th><input type="checkbox" class="testBox" id="allCheck" value="1"></th>
 									<th width="170px">매입일시</th>
 									<th width="120px">승인번호</th>
-									<th width="180px">공급자사업자번호</th>
+									<th width="220px">공급자사업자번호</th>
 									<th width="210px">가맹점명</th>
 									<th width="140px">카드명</th>
 									<th width="120px">카드번호</th>
@@ -583,13 +647,13 @@ table tbody th, table td {
 								<tbody id="test">
 								 	<tr>
 								 		<td><input type="checkbox" class="testBox" id="allCheck" value="1"></td>
-								 		<td>2021-03-23 17:05:03</td>
+								 		<td>2021-03-23</td>
 								 		<td>324209823</td>
 								 		<td>605-25-91876</td>
 								 		<td>대양슈퍼</td>
-								 		<td>80,910</td>
-								 		<td>8,090</td>
-								 		<td>89,000</td>
+								 		<td>80,910원</td>
+								 		<td>8,090원</td>
+								 		<td>89,000원</td>
 								 		<td>일반과세자</td>
 								 		<td>도,소매</td>
 								 	</tr>

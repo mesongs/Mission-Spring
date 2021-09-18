@@ -211,80 +211,7 @@
 			
 		})
 		
-		// 목록 개수 ajax
-		$(document).on('change','#perReceipt', function(){	
-			
-			let perReceipt = $('#perReceipt').val()
-			
-			switch(receiptKind) {
-					  
-				  case '15':
-					receiptKind = 15
-					break
-			
-				  case '30':
-					receiptKind = 30
-				    break								
-				
-				  case '50':
-					receiptKind = 50
-				    break
-				    
-				  case '100':
-					receiptKind = 100   
-					break 
-				}
-			
-			
-			$.ajax({
-				type : "get",
-				url : "${pageContext.request.contextPath}/receipt/getPerReceiptList",
-				data : { perReceipt : perReceipt },
-				success : function(result){
-					
-					let obj = JSON.parse(result);
-					
-			 		 $('#test').empty();
-			 		 
-					 if(obj.length >= 1){
-						 
-						 obj.forEach(function(perReceiptistList){
-							 	 
-							 	 str="<tr>"
-							 	 str += "<td>" + '<input type="checkbox" name="wantCheck" class="testBox">' + "</td>" 
-							     str +="<td>" + perReceiptistList.receiptDate + "</td>"
-							     str +="<td>" + perReceiptistList.receiptName + "</td>"
-							     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/detail/" + perReceiptistList.receiptNo + ">" + perReceiptistList.storeName +"</a></td>"; 
-							     
-							     str +="<td>" + perReceiptistList.sum +"원</td>";
-							     str +="<td>" + perReceiptistList.purpose +"</td>";
-							     
-							     if(perReceiptistList.overlap == 'Y'){
-					 					
-							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.png">' + "</td>"
-							     }else{
-				 					
-							    	 str += "<td>" + "</td>"
-				 				 }
-			 					 str +="<td>" + perReceiptistList.memo +"</td>";
-			 					 str +="</tr>"
-			 					 $('#test').append(str);
-						 })
-					 }
-					
-				},
-				
-				error:function(request, status, error){
-				    alert("code:"+ request.status +"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-				}
-				
-				
-			})
-			
-			
-			
-			
-		})
+		
 		
 //		processedList();
 		
@@ -412,13 +339,13 @@
 							 	 
 							 	 str="<tr>"
 							 	 str += "<td>" + '<input type="checkbox" name="wantCheck" id="" class="testBox">' + "</td>" 
-							     str +="<td>" + IntegratedSalesList.receiptDate + "</td>"
+							     str +="<td>" + YMDFormatter(IntegratedSalesList.receiptDate) + "</td>"
 							     str +="<td>" + IntegratedSalesList.receiptCode + "</td>"
-							     str +="<td>" + IntegratedSalesList.supplierBusinessNo + "</td>"
+							     str +="<td>" + bizNoFormatter(IntegratedSalesList.supplierBusinessNo,1) + "</td>"
 							     str +="<td>" + IntegratedSalesList.supplierStoreName + "</td>"
-							     str +="<td>" + IntegratedSalesList.amount +"원</td>";
-			 					 str +="<td>" + IntegratedSalesList.vat +"원</td>";
-							     str +="<td>" + IntegratedSalesList.calSum +"원</td>";
+							     str +="<td>" + numberWithCommas(IntegratedSalesList.amount) +"원</td>";
+			 					 str +="<td>" + numberWithCommas(IntegratedSalesList.vat) +"원</td>";
+							     str +="<td>" + numberWithCommas(IntegratedSalesList.calSum) +"원</td>";
 							     str +="<td>" + IntegratedSalesList.division + "</td>";
 			 					 str +="</tr>"
 			 					 
@@ -519,6 +446,77 @@ function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+// 사업자등록번호 '-' 추가
+function bizNoFormatter(num, type) {
+
+    var formatNum = '';
+
+    try{
+
+         if (num.length == 10) {
+
+              if (type == 0) {
+
+                   formatNum = num.replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-*****');
+
+              } else {
+
+                    formatNum = num.replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-$3');
+
+              }
+
+         }
+
+    } catch(e) {
+
+         formatNum = num;
+
+         console.log(e);
+
+    }
+
+    return formatNum;
+
+}
+
+// 날짜 포맷 변경
+function YMDFormatter(num){
+
+    if(!num) return "";
+
+    var formatNum = '';
+
+
+
+    // 공백제거
+
+    num=num.replace(/\s/gi, "");
+
+
+
+    try{
+
+         if(num.length == 8) {
+
+              formatNum = num.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3');
+
+         }
+
+    } catch(e) {
+
+         formatNum = num;
+
+         console.log(e);
+
+    }
+
+    return formatNum;
+
+}
+
+
+
+	 
 
 </script>
 
@@ -613,10 +611,6 @@ function numberWithCommas(x) {
 												<option value="20210401">2021년 2분기</option>
 												<option value="20210701">2021년 3분기</option>
 												<option value="20211001">2021년 4분기</option>
-												<option value="20200101">2020년 1분기</option>
-												<option value="20200401">2020년 2분기</option>
-												<option value="20200701">2020년 3분기</option>
-												<option value="20201001">2020년 4분기</option>
 											</select>
 											<span style="float: left">
 												<button id="searchAllPurchase" name="searchAllPurchase" type="button" style="height : 35px; margin-left: 6px; border-top-left-radius: 5px;border-bottom-left-radius: 5px;border-top-right-radius: 5px;border-bottom-right-radius: 5px;">조회</button>

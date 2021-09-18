@@ -140,7 +140,7 @@
 	<!-- 직원이 확인할 수 있는 처리 대기 목록 -->
 	<select id="getMgReceiptList" resultType="receiptVO" resultMap="receiptMap">
 			select * from(select c.BUSINESS_NO, c.store_name, c.user_id, c.memo, c.purpose, c.overlap, amount, vat, (amount+vat) as sum,
-	       		RECEIPT_DATE, to_char(REG_DATE, 'yy/mm/dd') as REG_DATE,
+	       		RECEIPT_DATE, to_char(REG_DATE, 'yyyy-mm-dd') as REG_DATE,
 	       		c.receipt_no, d.receipt_name
 			from(select a.BUSINESS_NO, a.store_name, b.user_id, a.memo, a.purpose, a.overlap, amount, vat,
 				       		RECEIPT_DATE, REG_DATE,

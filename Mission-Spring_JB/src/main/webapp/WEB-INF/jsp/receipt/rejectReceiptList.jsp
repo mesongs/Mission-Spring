@@ -11,177 +11,12 @@
 <head>
 <jsp:include page="/WEB-INF/jsp/include/head.jsp"/>
 
-  <!--datePicker-->
- <!--  <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-  <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script> -->
+
  
 
-<!-- <style>
-
-#comment-custom-receipt {
-	/* max-width: 700px; */
-	width: 1000px;
-    margin-left: 350px;
-	font-family: 'Noto Sans KR', sans-serif;
-    margin-top: 30px;
-	
-}
-
-#comment-custom-receipt > h4 {
-	font-family: 'Noto Sans KR', sans-serif;
-	font-size: xx-large;
-}
-
-.container {
-	margin-top: 30px;
-}
-
-#receiptResgisterBtn {
-	width : 410.5px;
-	padding-right: 25px;
-	padding-left: 25px;
-	padding-top: 3px;
-	padding-bottom: 3px;
-	border: 0px;
-	font-size: x-large;
-	-webkit-border-radius: 30px;
-	-moz-border-radius: 30px;
-	-ms-border-radius: 30px;
-	border-radius: 30px;
-	color: #fff;
-	background-color: #27b2a5;
-}
 
 
-#comment-custom-receipt>h4 {
-	font-family: 'Noto Sans KR', sans-serif;
-	font-size: xx-large;
-}
 
-#memo {
-	padding: 8px 20px;
-	background: rgba(130, 139, 178, 0.25);;
-	border: none;
-	border-radius: 0px;
-	width: 100%;
-	font-size: 16px;
-	font-family: 'Noto Sans KR', sans-serif;
-	border: 1px solid transparent;
-	padding-left: 0px;
-}
- .receiptBtn{
- 	width: 90px;
- 	font-family: 'Noto Sans KR', sans-serif;
- }
-
-.row.box{
-	margin-left: 34px;
-}
-
-
-.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link{
-	color : #495057;
-}
-
-.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active{
-	color : #007BFF;
-}
- 
-.nav.nav-tabs{
-
-    font-family: 'Noto Sans KR', sans-serif;
-}
-
-.col-md-auto{
-padding-right: 0px;
-}
-
-#searchWord{
-	border-top-left-radius : 5px;
-	border-bottom-left-radius : 5px;
-	border-color: #999999;
-	
-
-}
-
-input::placeholder{
-
-	color : #495057;
-}
-
-.product-img {
-    max-width:50px;
-    max-height:50px;
-	margin-top: -5px;
-	margin-right: -10px;
-}
-
- button{
- 
- 	color: #495057;
- }
- 
-  table {
-    margin-top: 20px;
-    border-top: 3px solid #495057;
-    border-collapse: collapse;
-    border-bottom: 4px solid #495057;
-    
-  }
-  
-  th, td {
-    border-bottom: 1px solid #495057;
-    padding: 10px;
-  }
-  
-  
-  th{
-  	border-top: 3px solid #495057;
-  }
-  
- #excelBtn{
- 	border-top-left-radius: 5px;
- 	border-top-right-radius : 5px;
- 	border-bottom-right-radius: 5px;
- 	border-bottom-left-radius: 5px;
- }
- 
- #searchBtn{
- 	margin-left : -2px;
- 	border-top-right-radius : 5px;
- 	border-bottom-right-radius: 5px;
- }
- 
- #perReceipt{
- 	border-radius: 5px 5px 5px 5px; 
- }
- 
- .calenderInput{
-		background:url('http://cfile23.uf.tistory.com/image/26100D4F5864C76827F535') no-repeat 4px 9px; 
-		background-size:15px; 
-		padding:4px 2px 5px 25px;
-		width: 120px;
-		border-top-left-radius: 5px;
-	 	border-top-right-radius : 5px;
-	 	border-bottom-right-radius: 5px;
-	 	border-bottom-left-radius: 5px;
-	
-	}
-	
-	#searchDate{
-		height : 39px;
-		border-top-left-radius: 5px;
-	 	border-top-right-radius : 5px;
-	 	border-bottom-right-radius: 5px;
-	 	border-bottom-left-radius: 5px;
-	
-	}
- 	
- tr:hover {
-	background-color: #FEFDCF;
-}
-</style> -->
 
 <style>
 
@@ -226,6 +61,87 @@ input::placeholder{
 
 </style>
 
+
+<script>
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+// 사업자등록번호 '-' 추가
+function bizNoFormatter(num, type) {
+
+    var formatNum = '';
+
+    try{
+
+         if (num.length == 10) {
+
+              if (type == 0) {
+
+                   formatNum = num.replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-*****');
+
+              } else {
+
+                    formatNum = num.replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-$3');
+
+              }
+
+         }
+
+    } catch(e) {
+
+         formatNum = num;
+
+         console.log(e);
+
+    }
+
+    return formatNum;
+
+}
+
+// 날짜 포맷 변경
+function YMDFormatter(num){
+
+    if(!num) return "";
+
+    var formatNum = '';
+
+
+
+    // 공백제거
+
+    num=num.replace(/\s/gi, "");
+
+
+
+    try{
+
+         if(num.length == 8) {
+
+              formatNum = num.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3');
+
+         }
+
+    } catch(e) {
+
+         formatNum = num;
+
+         console.log(e);
+
+    }
+
+    return formatNum;
+
+}
+
+
+
+	 
+
+</script>
+
 <script>
 
 	$(document).ready(function(){
@@ -269,159 +185,7 @@ input::placeholder{
 			
 		})
 		
-		// 영수증 구분에 따른 ajax
-		//$('#receiptKind').change(function(){
-		$(document).on('change','#receiptKind', function(){	
-			
-			let receiptKind = $('#receiptKind').val()
-			
-			switch(receiptKind) {
-					  
-				  case '0':
-					receiptKind = '000'
-					break
-			
-				  case '1':
-					receiptKind = '001'
-				    break								
-				
-				  case '2':
-					receiptKind = '002'
-				    break
-				    
-				  case '3':
-					receiptKind = '003'   
-					break 
-					
-				  case '4':
-					receiptKind = '004'   
-				   	break
-				}
-			
-			$.ajax({
-				type : "get",
-				url : "${pageContext.request.contextPath}/receipt/getReceiptKindList",
-				data : {receiptKind : receiptKind},
-				success : function(result){
-					
-					let obj = JSON.parse(result);
-					
-			 		 $('#test').empty();
-			 		 
-					 if(obj.length >= 1){
-						 
-						 // for(receipt vo(=searchWaitList) : receiptList) 1.5버전 for문과 동일함
-						 obj.forEach(function(receiptKindList){
-							 	 
-							 	 str="<tr>"
-							 	 str += "<td>" + '<input type="checkbox" class="testBox">' + "</td>" 
-							     str +="<td>" + receiptKindList.receiptDate + "</td>"
-							     str +="<td>" + receiptKindList.receiptName + "</td>"
-							     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/detail/" + receiptKindList.receiptNo + ">" + receiptKindList.storeName +"</a></td>"; 
-							     
-							     str +="<td>" + receiptKindList.sum +"원</td>";
-							     str +="<td>" + receiptKindList.purpose +"</td>";
-							     if(receiptKindList.overlap == 'Y'){
-					 					
-							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>"
-							     }else{
-				 					
-							    	 str += "<td>" + "</td>"
-				 				 }
-			 					 str +="<td>" + receiptKindList.memo +"</td>";
-			 					 str +="</tr>"
-			 					 $('#test').append(str);
-						 })
-					 }
-					
-				},
-				
-				error:function(request, status, error){
-				    alert("code:"+ request.status +"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-				}
-				
-				
-			})
-			
-			
-			
-			
-		})
 		
-		// 목록 개수 ajax
-		$(document).on('change','#perReceipt', function(){	
-			
-			let perReceipt = $('#perReceipt').val()
-			
-			switch(receiptKind) {
-					  
-				  case '15':
-					receiptKind = 15
-					break
-			
-				  case '30':
-					receiptKind = 30
-				    break								
-				
-				  case '50':
-					receiptKind = 50
-				    break
-				    
-				  case '100':
-					receiptKind = 100   
-					break 
-				}
-			
-			
-			$.ajax({
-				type : "get",
-				url : "${pageContext.request.contextPath}/receipt/getPerReceiptList",
-				data : { perReceipt : perReceipt },
-				success : function(result){
-					
-					let obj = JSON.parse(result);
-					
-			 		 $('#test').empty();
-			 		 
-					 if(obj.length >= 1){
-						 
-						 obj.forEach(function(perReceiptistList){
-							 	 
-							 	 str="<tr>"
-							 	 str += "<td>" + '<input type="checkbox" class="testBox">' + "</td>" 
-							     str +="<td>" + perReceiptistList.receiptDate + "</td>"
-							     str +="<td>" + perReceiptistList.receiptName + "</td>"
-							     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/detail/" + perReceiptistList.receiptNo + ">" + perReceiptistList.storeName +"</a></td>"; 
-							     
-							     str +="<td>" + perReceiptistList.sum +"원</td>";
-							     str +="<td>" + perReceiptistList.purpose +"</td>";
-							     
-							     if(perReceiptistList.overlap == 'Y'){
-					 					
-							    	 str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>"
-							     }else{
-				 					
-							    	 str += "<td>" + "</td>"
-				 				 }
-			 					 str +="<td>" + perReceiptistList.memo +"</td>";
-			 					 str +="</tr>"
-			 					 $('#test').append(str);
-						 })
-					 }
-					
-				},
-				
-				error:function(request, status, error){
-				    alert("code:"+ request.status +"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-				}
-				
-				
-			})
-			
-			
-			
-			
-		})
 		
 		rejectList();
 		
@@ -442,11 +206,10 @@ input::placeholder{
 							 	 
 							 	 str="<tr>"
 							 	 str += "<td>" + '<input type="checkbox" class="testBox">' + "</td>" 
-							     str += "<td>" + processedList.receiptDate + "</td>"
+							     str += "<td>" + YMDFormatter(processedList.receiptDate) + "</td>"
 							     str += "<td>" + processedList.receiptName + "</td>"
 							     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/rejectDetail/" + processedList.receiptNo + ">" + processedList.storeName +"</a></td>"; 
-							     str += "<td>" + processedList.sum +"원</td>";
-							     str += "<td>" + processedList.purpose +"</td>";
+							     str += "<td>" + numberWithCommas(processedList.sum) +"원</td>";
 							     
 							     if(processedList.overlap == 'Y'){
 				 					
@@ -457,6 +220,7 @@ input::placeholder{
 				 				 }
 							     
 							     str += "<td>"+ '<img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/reject.png">' + processedList.rejectReason + "</td>";
+							     str += "<td>" + processedList.purpose +"</td>";
 							     
 							     
 				 				 
@@ -490,45 +254,6 @@ input::placeholder{
 		}
 		
 		
-		// datepicker를 활용한 날짜 조회
-		 /* $('#startDate').datepicker(
-			{
-			
-				 dateFormat:'yy/mm/dd',
-	             changeMonth: true,
-	             changeYear: true,
-	             dayNames: ['일요일','월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
-	     		 dayNamesMin : ['일','월','화','수','목','금','토'],
-	     		 monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-			
-				 // 시작일 선택 후 닫힐 때, 종료일의 최소 선택 가능 날짜는 시작일
-				 // 시작일 이후로만 선택 가능한 종료일
-				 onClose:function(selectedDate){
-				
-					// 종료일 태그에 mindate 속성 추가
-					$('#endDate').datepicker("option","minDate", selectedDate)
-			}
-			
-		});
-		
-		$('#endDate').datepicker({
-			
-				dateFormat:'yy/mm/dd',
-	            changeMonth: true,
-	            changeYear: true,
-	            dayNames: ['일요일','월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
-	    		dayNamesMin : ['일','월','화','수','목','금','토'],
-	    		monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-				
-				// 종료일 선택 후 닫힐 때, 시작일의 최대 선택 가능 날짜는 종료일
-				onClose:function(selectedDate){
-					
-					$('#startDate').datepicker("option", "maxDate", selectedDate)
-			}
-			
-		}); */
-		
-		
 		$('#searchDate').click(function(){
 			
 			let startDate = $('#startDate').val();
@@ -552,11 +277,11 @@ input::placeholder{
 							 	 
 							 	 str="<tr>"
 							 	 str += "<td>" + '<input type="checkbox" class="testBox">' + "</td>" 
-							     str +="<td>" + searchDateList.receiptDate + "</td>"
+							     str +="<td>" + YMDFormatter(searchDateList.receiptDate) + "</td>"
 							     str +="<td>" + searchDateList.receiptName + "</td>"
 							     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/detail/" + searchDateList.receiptNo + ">" + searchDateList.storeName +"</a></td>"; 
 							     
-							     str +="<td>" + searchDateList.sum +"원</td>";
+							     str +="<td>" + numberWithCommas(searchDateList.sum) +"원</td>";
 							     str +="<td>" + searchDateList.purpose +"</td>";
 							     
 							     if(searchDateList.overlap == 'Y'){
@@ -615,11 +340,11 @@ input::placeholder{
 					 	 
 					 	 str="<tr>"
 					 	 str += "<td>" + '<input type="checkbox" class="testBox">' + "</td>" 
-					     str +="<td>" + searchprocessedList.receiptDate + "</td>"
+					     str +="<td>" + YMDFormatter(searchprocessedList.receiptDate + "</td>"
 					     str +="<td>" + searchprocessedList.receiptName + "</td>"
 					     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/detail/" + searchprocessedList.receiptNo + ">" + searchprocessedList.storeName +"</a></td>"; 
 					     
-					     str +="<td>" + searchprocessedList.sum +"원</td>";
+					     str +="<td>" + numberWithCommas(searchprocessedList.sum) +"원</td>";
 					     str +="<td>" + searchprocessedList.purpose +"</td>";
 					     
 					     if(searchprocessedList.overlap == 'Y'){
@@ -723,13 +448,13 @@ input::placeholder{
 								<thead>
 								<tr id="boardtable">
 									<th><input type="checkbox" class="testBox" id="allCheck" value="1"></th>
-									<th width="100px">사용일시</th>
+									<th width="120px">사용일시</th>
 									<th width="150px">구분</th>
 									<th width="150px">업체명</th>
 									<th width="150px">사용금액</th>
-									<th width="150px">사용목적</th>
 									<th width="130px">중복여부</th>
 									<th width="350px">반려사유</th>
+									<th width="150px">사용목적</th>
 									<th width="500px">메모</th>
 								</tr>
 								</thead>

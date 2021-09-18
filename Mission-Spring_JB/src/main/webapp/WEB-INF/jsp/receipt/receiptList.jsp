@@ -186,10 +186,49 @@ input::placeholder{
 <style>
 
 
-	table tbody th, table td {
-    border-bottom: none;
+.fh5co-table .fh5co-social {
+	margin-top: 10px;
 }
 
+.fh5co-table .fh5co-social li {
+	float: left;
+	margin-right: 10px;
+}
+
+.fh5co-table thead {
+	background: #2595ff;
+	color: #fff;
+}
+
+.fh5co-table thead tr th, .fh5co-table thead tr td {
+	border-bottom: none;
+}
+
+.fh5co-table thead tr th {
+	padding-top: 30px;
+	padding-bottom: 30px;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.fh5co-table tbody tr th, .fh5co-table tbody tr td {
+	padding-top: 30px;
+	padding-bottom: 30px;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.fh5co-table tbody tr:first-child th, .fh5co-table tbody tr:first-child td {
+	border-top: none;
+}
+
+
+
+
+	/* table tbody th, table td {
+    border-bottom: none;
+}
+ */
 	.product-img2 {
     max-width: 30px;
     max-height: 50px;
@@ -220,6 +259,89 @@ input::placeholder{
 
  
 </style>
+
+
+<script>
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+// 사업자등록번호 '-' 추가
+function bizNoFormatter(num, type) {
+
+    var formatNum = '';
+
+    try{
+
+         if (num.length == 10) {
+
+              if (type == 0) {
+
+                   formatNum = num.replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-*****');
+
+              } else {
+
+                    formatNum = num.replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-$3');
+
+              }
+
+         }
+
+    } catch(e) {
+
+         formatNum = num;
+
+         console.log(e);
+
+    }
+
+    return formatNum;
+
+}
+
+// 날짜 포맷 변경
+function YMDFormatter(num){
+
+    if(!num) return "";
+
+    var formatNum = '';
+
+
+
+    // 공백제거
+
+    num=num.replace(/\s/gi, "");
+
+
+
+    try{
+
+         if(num.length == 8) {
+
+              formatNum = num.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3');
+
+         }
+
+    } catch(e) {
+
+         formatNum = num;
+
+         console.log(e);
+
+    }
+
+    return formatNum;
+
+}
+
+
+
+	 
+
+</script>
+
+
 
 <script>
 
@@ -307,11 +429,11 @@ input::placeholder{
 							 	 
 							 	 str="<tr>"
 							 	 str += "<td>" + '<input type="checkbox" class="testBox">' + "</td>" 
-							     str +="<td>" + receiptKindList.receiptDate + "</td>"
+							     str +="<td>" + YMDFormatter(receiptKindList.receiptDate) + "</td>"
 							     str +="<td>" + receiptKindList.receiptName + "</td>"
 							     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/detail/" + receiptKindList.receiptNo + ">" + receiptKindList.storeName +"</a></td>"; 
 							     
-							     str +="<td>" + receiptKindList.sum +"원</td>";
+							     str +="<td>" + numberWithCommas(receiptKindList.sum) +"원</td>";
 							     str +="<td>" + receiptKindList.purpose +"</td>";
 							     if(receiptKindList.overlap == 'Y'){
 					 					
@@ -381,11 +503,11 @@ input::placeholder{
 							 	 
 							 	 str="<tr>"
 							 	 str += "<td>" + '<input type="checkbox" class="testBox">' + "</td>" 
-							     str +="<td>" + perReceiptistList.receiptDate + "</td>"
+							     str +="<td>" + YMDFormatter(perReceiptistList.receiptDate) + "</td>"
 							     str +="<td>" + perReceiptistList.receiptName + "</td>"
 							     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/detail/" + perReceiptistList.receiptNo + ">" + perReceiptistList.storeName +"</a></td>"; 
 							     
-							     str +="<td>" + perReceiptistList.sum +"원</td>";
+							     str +="<td>" + numberWithCommas(perReceiptistList.sum) +"원</td>";
 							     str +="<td>" + perReceiptistList.purpose +"</td>";
 							     
 							     if(perReceiptistList.overlap == 'Y'){
@@ -435,10 +557,10 @@ input::placeholder{
 							 	 
 							 	 str="<tr>"
 							 	 str += "<td>" + '<input type="checkbox" class="testBox">' + "</td>" 
-							     str += "<td>" + processedList.receiptDate + "</td>"
+							     str += "<td>" + YMDFormatter(processedList.receiptDate) + "</td>"
 							     str += "<td>" + processedList.receiptName + "</td>"
 							     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/detail/" + processedList.receiptNo + ">" + processedList.storeName +"</a></td>"; 
-							     str += "<td>" + processedList.sum +"원</td>";
+							     str += "<td>" + numberWithCommas(processedList.sum) +"원</td>";
 							     str += "<td>" + processedList.purpose +"</td>";
 							     
 							     if(processedList.overlap == 'Y'){
@@ -527,7 +649,7 @@ input::placeholder{
 		
 		
 		
-		
+		/////////////////////////////////// datePicker를 활용한 날짜 조회********
 		$('#searchDate').click(function(){
 			
 			let startDate = $('#startDate').val();
@@ -551,11 +673,11 @@ input::placeholder{
 							 	 
 							 	 str="<tr>"
 							 	 str += "<td>" + '<input type="checkbox" class="testBox">' + "</td>" 
-							     str +="<td>" + searchDateList.receiptDate + "</td>"
+							     str +="<td>" + YMDFormatter(searchDateList.receiptDate) + "</td>"
 							     str +="<td>" + searchDateList.receiptName + "</td>"
 							     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/detail/" + searchDateList.receiptNo + ">" + searchDateList.storeName +"</a></td>"; 
 							     
-							     str +="<td>" + searchDateList.sum +"원</td>";
+							     str +="<td>" + numberWithCommas(searchDateList.sum) +"원</td>";
 							     str +="<td>" + searchDateList.purpose +"</td>";
 							     
 							     if(searchDateList.overlap == 'Y'){
@@ -616,11 +738,11 @@ input::placeholder{
 					 	 str += "<td " + 'class="testbox2">' + searchprocessedList.receiptNo + "</td>"
 					 	 str += "<td>" + '<input type="checkbox" class="testBox">' + "</td>"
 
-					     str +="<td>" + searchprocessedList.receiptDate + "</td>"
+					     str +="<td>" + YMDFormatter(searchprocessedList.receiptDate) + "</td>"
 					     str +="<td>" + searchprocessedList.receiptName + "</td>"
 					     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/detail/" + searchprocessedList.receiptNo + ">" + searchprocessedList.storeName +"</a></td>"; 
 					     
-					     str +="<td>" + searchprocessedList.sum +"원</td>";
+					     str +="<td>" + numberWithCommas(searchprocessedList.sum) +"원</td>";
 					     str +="<td>" + searchprocessedList.purpose +"</td>";
 					     
 					     if(searchprocessedList.overlap == 'Y'){
@@ -729,7 +851,7 @@ input::placeholder{
 								<thead>
 								<tr id="boardtable">
 									<th><input type="checkbox" class="testBox" id="allCheck" value="1"></th>
-									<th width="100px">사용일시</th>
+									<th width="140px">사용일시</th>
 									<th width="150px">구분</th>
 									<th width="200px">업체명</th>
 									<th width="200px">사용금액</th>

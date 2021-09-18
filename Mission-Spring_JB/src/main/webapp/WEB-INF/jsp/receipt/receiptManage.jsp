@@ -12,175 +12,13 @@
 <jsp:include page="/WEB-INF/jsp/include/head.jsp"/>
 
 
- 
-
-<!-- <style>
-
-#comment-custom-receipt {
-	/* max-width: 700px; */
-	width: 1000px;
-    margin-left: 350px;
-	font-family: 'Noto Sans KR', sans-serif;
-    margin-top: 30px;
-	
-}
-
-#comment-custom-receipt > h4 {
-	font-family: 'Noto Sans KR', sans-serif;
-	font-size: xx-large;
-}
-
-.container {
-	margin-top: 30px;
-}
-
-#receiptResgisterBtn {
-	width : 410.5px;
-	padding-right: 25px;
-	padding-left: 25px;
-	padding-top: 3px;
-	padding-bottom: 3px;
-	border: 0px;
-	font-size: x-large;
-	-webkit-border-radius: 30px;
-	-moz-border-radius: 30px;
-	-ms-border-radius: 30px;
-	border-radius: 30px;
-	color: #fff;
-	background-color: #27b2a5;
-}
-
-
-#comment-custom-receipt>h4 {
-	font-family: 'Noto Sans KR', sans-serif;
-	font-size: xx-large;
-}
-
-#memo {
-	padding: 8px 20px;
-	background: rgba(130, 139, 178, 0.25);;
-	border: none;
-	border-radius: 0px;
-	width: 100%;
-	font-size: 16px;
-	font-family: 'Noto Sans KR', sans-serif;
-	border: 1px solid transparent;
-	padding-left: 0px;
-}
- .receiptBtn{
- 	width: 90px;
- 	font-family: 'Noto Sans KR', sans-serif;
- }
-
-.row.box{
-	margin-left: 34px;
-}
-
-
-.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link{
-	color : #495057;
-}
-
-.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active{
-	color : #007BFF;
-}
- 
-.nav.nav-tabs{
-
-    font-family: 'Noto Sans KR', sans-serif;
-}
-
-.col-md-auto{
-padding-right: 0px;
-}
-
-#searchWord{
-	border-top-left-radius : 5px;
-	border-bottom-left-radius : 5px;
-	border-color: #999999;
-	
-
-}
-
-input::placeholder{
-
-	color : #495057;
-}
-
-.product-img {
-    max-width:50px;
-    max-height:50px;
-	margin-top: -5px;
-	margin-right: -10px;
-}
-
- button{
- 
- 	color: #495057;
- }
- 
-  table {
-    margin-top: 20px;
-    border-top: 3px solid #495057;
-    border-collapse: collapse;
-    border-bottom: 4px solid #495057;
-    
-  }
-  
-  th, td {
-    border-bottom: 1px solid #495057;
-    padding: 10px;
-  }
-  
-  
-  th{
-  	border-top: 3px solid #495057;
-  }
-  
- #excelBtn{
- 	border-top-left-radius: 5px;
- 	border-top-right-radius : 5px;
- 	border-bottom-right-radius: 5px;
- 	border-bottom-left-radius: 5px;
- }
- 
- #searchBtn{
- 	margin-left : -2px;
- 	border-top-right-radius : 5px;
- 	border-bottom-right-radius: 5px;
- }
- 
- #perReceipt{
- 	border-radius: 5px 5px 5px 5px; 
- }
- 
- .calenderInput{
-		background:url('http://cfile23.uf.tistory.com/image/26100D4F5864C76827F535') no-repeat 4px 9px; 
-		background-size:15px; 
-		padding:4px 2px 5px 25px;
-		width: 120px;
-		border-top-left-radius: 5px;
-	 	border-top-right-radius : 5px;
-	 	border-bottom-right-radius: 5px;
-	 	border-bottom-left-radius: 5px;
-	
-	}
-	
-	#searchDate{
-		height : 39px;
-		border-top-left-radius: 5px;
-	 	border-top-right-radius : 5px;
-	 	border-bottom-right-radius: 5px;
-	 	border-bottom-left-radius: 5px;
-	
-	}
- 	
- tr:hover {
-	background-color: #FEFDCF;
-}
-</style> -->
 
 <style>
+
+table tbody th, table td {
+    border-bottom: none;
+}
+
 	.product-img2 {
     max-width: 30px;
     max-height: 50px;
@@ -204,7 +42,85 @@ input::placeholder{
 </style>
 	
 
+<script>
 
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+// 사업자등록번호 '-' 추가
+function bizNoFormatter(num, type) {
+
+    var formatNum = '';
+
+    try{
+
+         if (num.length == 10) {
+
+              if (type == 0) {
+
+                   formatNum = num.replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-*****');
+
+              } else {
+
+                    formatNum = num.replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-$3');
+
+              }
+
+         }
+
+    } catch(e) {
+
+         formatNum = num;
+
+         console.log(e);
+
+    }
+
+    return formatNum;
+
+}
+
+// 날짜 포맷 변경
+function YMDFormatter(num){
+
+    if(!num) return "";
+
+    var formatNum = '';
+
+
+
+    // 공백제거
+
+    num=num.replace(/\s/gi, "");
+
+
+
+    try{
+
+         if(num.length == 8) {
+
+              formatNum = num.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3');
+
+         }
+
+    } catch(e) {
+
+         formatNum = num;
+
+         console.log(e);
+
+    }
+
+    return formatNum;
+
+}
+
+
+
+	 
+
+</script>
 
 <script>
 
@@ -432,7 +348,7 @@ input::placeholder{
 							     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/mgDetail/" + processedList.receiptNo + ">" + processedList.userId +"</a></td>";
 							     str += "<td>" + processedList.receiptName + "</td>"
 							     str += "<td>" + processedList.storeName + "</td>"
-							     str += "<td>" + processedList.sum +"원</td>";
+							     str += "<td>" + numberWithCommas(processedList.sum) +"원</td>";
 							     str += "<td>" + processedList.purpose +"</td>";
 							     
 							     if(processedList.overlap == 'Y'){
@@ -701,13 +617,13 @@ input::placeholder{
 							<table class="styled-table">
 								<tr id="boardtable">
 									<th><input type="checkbox" class="testBox" id="allCheck" value="1"></th>
-									<th width="100px">등록일시</th>
+									<th width="150px">등록일시</th>
 									<th width="150px">아이디</th>
 									<th width="150px">구분</th>
-									<th width="200px">업체명</th>
-									<th width="200px">합계금액</th>
+									<th width="170px">업체명</th>
+									<th width="170px">합계금액</th>
 									<th width="150px">사용목적</th>
-									<th width="130px">중복여부</th>
+									<th width="110px">중복여부</th>
 									<th width="600px">메모</th>
 								</tr>
 								

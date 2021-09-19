@@ -341,13 +341,6 @@ function YMDFormatter(num){
 										
 										
 										
-										<!-- <label style="float: left;"><input type="radio" name="searchDateDay" value="1" style="margin-left: 10px;"> 일별</label> 
-										<label style="float: left;"><input type="radio" name="searchDateDay" value="2" style="margin-left: 10px;"> 월별</label>
-										<label style="float: left;"><input type="radio" name="searchDateDay" value="3"style="margin-left: 10px;"> 분기별</label>
-										<label style="float: left;"><input type="radio" name="searchDateDay" value="4"style="margin-left: 10px;" checked="checked"> 상/하반기</label> -->
-										<!-- <span style="float: left;"><input type="date" name="searchDay" id="searchDay" style="margin-left: 15px; margin-bottom: 20px; color:#495057; height: 35px;border-top-width: 0px;padding-bottom: 0px; display: block;"></span> -->
-										<!-- <span style="float: left;"><input type="date" class="searchDay" id="searchDay" autocomplete="off" style="margin-left: 10px;border-bottom-right-radius: 5px; border-top-left-radius: 5px;border-bottom-left-radius: 5px; border-top-right-radius : 5px; border-top-left-radius : 5px; width : 160px;color: transparent; text-shadow: 0 0 0 rgba(2,2,2, 0.7); height: 35px;"></span> -->
-										
 										
 										
 										

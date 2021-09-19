@@ -20,7 +20,12 @@
 <style>
 
 
- a:link { color: #797979; text-decoration: none;}
+ td > a {
+ 
+ color: #797979;
+ 
+ }
+
  a:hover { font-weight: bold; text-decoration: none;}
 
 
@@ -157,13 +162,23 @@ table tbody th, table td {
 		});
 		
 		
-		
-		
-			
-			
-		
 	
 	})
+
+</script>
+
+<script>
+
+// 매입처별 세금계산서 합계표
+function goToTaxBill(formName){
+	// 모달창 확인 누르면, 회원이 입력한 정보를 homeTaxId homeTaxPassword businessNo로 전송
+	
+	formName.action = "${pageContext.request.contextPath}/taxAgent/taxBill";
+	formName.method = "post";
+	formName.submit();
+	
+}
+
 
 </script>
 
@@ -213,6 +228,7 @@ table tbody th, table td {
 						</div>
 						
 						
+						
 					
 						<div class="row" style="margin-top: 30px;">
 							 		<div class="col-7" style="float: left; width: 496px">
@@ -233,18 +249,25 @@ table tbody th, table td {
 							 		</div>
 						</div>
 						
+						<form name="linkSubmit">
 						<table>
+							<!-- hidden 으로 보내도 되니까 -->
 							<tr>
-								<th>수입(매출)</th>
-								<td>530,540원</td>
-								
+								<th rowspan="2"><input type="text" class="form-control" name="test" id="test" style="float: left; width: 200px;">수입 </th>
+								<th rowspan="2">7,711,000원</th>
+								<th style="border-top: none;">카드</th>
+								<th>현금영수증</th>
+								<th>현금</th>
+								<th>세금계산서</th>
 							</tr>
 							<tr>
 								<th>매입(비용)</th>
 								<td>234,000원</td>
 								
 							</tr>
+							
 						</table>
+						</form>
 						<hr>					
 						<span style="font-weight: bold; font-size: 25px;"><img class="product-img5" src="${ pageContext.request.contextPath }/resources/img/ss3.png" style="margin-left: 3px; margin-bottom: 6px;">작성서류</span>
 						<table class="styled-table" style="border: 1px solid; border-radius: 5px; width:706px;">
@@ -252,34 +275,34 @@ table tbody th, table td {
 								<th style="border-top: 0px solid; background-color: rgba(73, 80, 87,0.14); font-size: 22px;">서식명</th>
 							</tr>
 							<tr>
-								<td>부가가치세 신고서</td>
-							</tr> 
-							<tr>
 								<td><a href="${ pageContext.request.contextPath }/taxAgent/cardSealesWriteForm">신용카드매출전표등 발행금액 집계표</a></td>
 							</tr>
 							<tr>
-								<td>매입처별 계산서합계표</td>
+								<td><a href="javascript:goToTaxBill(linkSubmit)">매입처별 세금계산서합계표</a></td>
 							</tr>
 							<tr>
-								<td>매출처별 계산서합계표</td>
+								<td><a href="${ pageContext.request.contextPath }/taxAgent/taxBillVatZero">매입처별 계산서합계표</a></td>
 							</tr>
 							<tr>
-								<td>매입처별 세금계산서합계표</td>
+								<td><a href="#">매출처별 세금계산서합계표</a></td>
 							</tr>
 							<tr>
-								<td>매출처별 세금계산서합계표</td>
+								<td><a href="#">매출처별 계산서합계표</a></td>
 							</tr>
 							<tr>
-								<td>건물 등 감가상각자산 취득명세서</td>
+								<td><a href="#">건물 등 감가상각자산 취득명세서</a></td>
 							</tr>
 							<tr>
-								<td>공제받지 못할 매입세액 명세서</td>
+								<td><a href="#">공제받지 못할 매입세액 명세서</a></td>
 							</tr>
 							<tr>
-								<td>현금매출명세서</td>
+								<td><a href="#">일반과세자 부가가치세 신고서</a></td>
+							</tr> 
+							<tr>
+								<td><a href="#">현금매출명세서</a></td>
 							</tr>
 							<tr>
-								<td>의제매입세액 공제신고서</td>
+								<td><a href="#">의제매입세액 공제신고서</a></td>
 							</tr>
 							
 							

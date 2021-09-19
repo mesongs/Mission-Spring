@@ -186,49 +186,10 @@ input::placeholder{
 <style>
 
 
-.fh5co-table .fh5co-social {
-	margin-top: 10px;
-}
-
-.fh5co-table .fh5co-social li {
-	float: left;
-	margin-right: 10px;
-}
-
-.fh5co-table thead {
-	background: #2595ff;
-	color: #fff;
-}
-
-.fh5co-table thead tr th, .fh5co-table thead tr td {
-	border-bottom: none;
-}
-
-.fh5co-table thead tr th {
-	padding-top: 30px;
-	padding-bottom: 30px;
-	padding-left: 20px;
-	padding-right: 20px;
-}
-
-.fh5co-table tbody tr th, .fh5co-table tbody tr td {
-	padding-top: 30px;
-	padding-bottom: 30px;
-	padding-left: 20px;
-	padding-right: 20px;
-}
-
-.fh5co-table tbody tr:first-child th, .fh5co-table tbody tr:first-child td {
-	border-top: none;
-}
-
-
-
-
-	/* table tbody th, table td {
+	table tbody th, table td {
     border-bottom: none;
 }
- */
+
 	.product-img2 {
     max-width: 30px;
     max-height: 50px;

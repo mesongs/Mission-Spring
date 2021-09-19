@@ -9,5 +9,7 @@ public interface TaxAgentService {
 	List<TaxCustomerVO> getCustomerListService(String taxAgentId);
 	
 	TaxCustomerVO getCustomerInfoService(String bNo);
+
+	String pdfService();
 	
 }

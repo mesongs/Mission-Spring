@@ -116,7 +116,7 @@
  
  input[type=text] { 
  text-transform :none !important;
- background-color: rgba(130,139,178,0.25) !important;
+ background-color: rgba(130,139,178,0.25);
 }
 
 input[type=password] { 

@@ -475,9 +475,6 @@ public class receiptController {
 			  String amountSum = integratedSalesVO.getAmountValue();
 			  String vatSum = integratedSalesVO.getVatValue();
 			  
-			  System.out.println(amountSum);
-			  System.out.println(vatSum);
-			  
 			  List<IntegratedSalesVO> searchedToExelList = service.getIntegratedList(integratedSalesVO);
 			  
 			  Workbook wb = new XSSFWorkbook();

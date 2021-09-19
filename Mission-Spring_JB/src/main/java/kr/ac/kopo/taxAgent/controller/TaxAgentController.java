@@ -20,6 +20,7 @@ import kr.ac.kopo.member.vo.LoginVO;
 import kr.ac.kopo.receipt.vo.ReceiptVO;
 import kr.ac.kopo.taxAgent.service.TaxAgentService;
 import kr.ac.kopo.taxAgent.vo.TaxCustomerVO;
+import kr.ac.kopo.taxAgent.vo.TaxBillVO;
 
 @Controller
 public class TaxAgentController {
@@ -92,6 +93,8 @@ public class TaxAgentController {
 		
 //		고객 사업자번호로 조회
 		
+		System.out.println("bNO");
+		
 		bNO = bNO.replaceAll("-", "");
 		
 		ModelAndView mav = new ModelAndView("taxAgent/taxAccountDetail");
@@ -110,7 +113,7 @@ public class TaxAgentController {
 	public ModelAndView taxWriteForm(@RequestParam("bNo") String bNo, @RequestParam("storeName") String storeName) {
 		
 		
-		bNo = makeBNo(bNo); 
+		
 		
 		ModelAndView mav = new ModelAndView("taxAgent/taxWriteFormKind");
 		
@@ -133,6 +136,24 @@ public class TaxAgentController {
 		return mav;
 	}
 	
+	// 매입처별 세금계산서 합계표
+	@RequestMapping("/taxAgent/taxBill")
+	public String getAjaxTaxBill(TaxBillVO taxBillVO) {
+		
+		
+		return "taxAgent/taxBillWriteForm";
+	}
+	
+
+	@RequestMapping("/taxAgent/writePDF") //View에서 맵핑 url 주소
+    public ModelAndView list() throws Exception {
+        String result = pdfService.createPdf(); //createPdf()메소드에서 pdf파일이 생성되었는지 결과가 result에 담긴다.
+        
+        
+        
+        
+        return new ModelAndView("pdf/result","message",result); //그 결과가 message로 pdf/result페이지로 전송된다.
+    }
 	
 	
 	

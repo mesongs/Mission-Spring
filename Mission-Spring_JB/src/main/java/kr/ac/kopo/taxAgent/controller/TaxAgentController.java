@@ -1,6 +1,8 @@
 package kr.ac.kopo.taxAgent.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpSession;
@@ -93,7 +95,6 @@ public class TaxAgentController {
 		
 //		고객 사업자번호로 조회
 		
-		System.out.println("bNO");
 		
 		bNO = bNO.replaceAll("-", "");
 		
@@ -145,15 +146,6 @@ public class TaxAgentController {
 	}
 	
 
-	@RequestMapping("/taxAgent/writePDF") //View에서 맵핑 url 주소
-    public ModelAndView list() throws Exception {
-        String result = pdfService.createPdf(); //createPdf()메소드에서 pdf파일이 생성되었는지 결과가 result에 담긴다.
-        
-        
-        
-        
-        return new ModelAndView("pdf/result","message",result); //그 결과가 message로 pdf/result페이지로 전송된다.
-    }
 	
 	
 	

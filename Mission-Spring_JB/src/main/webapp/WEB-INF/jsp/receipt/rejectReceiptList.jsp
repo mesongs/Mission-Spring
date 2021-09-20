@@ -450,6 +450,7 @@ function YMDFormatter(num){
 									<th><input type="checkbox" class="testBox" id="allCheck" value="1"></th>
 									<th width="120px">사용일시</th>
 									<th width="150px">구분</th>
+									<th width="150px">사업자등록번호</th>
 									<th width="150px">업체명</th>
 									<th width="150px">사용금액</th>
 									<th width="130px">중복여부</th>

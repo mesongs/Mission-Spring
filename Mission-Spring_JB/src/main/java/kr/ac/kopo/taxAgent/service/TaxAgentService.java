@@ -10,6 +10,5 @@ public interface TaxAgentService {
 	
 	TaxCustomerVO getCustomerInfoService(String bNo);
 
-	String pdfService();
 	
 }

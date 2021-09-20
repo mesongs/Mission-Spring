@@ -15,7 +15,7 @@ import kr.ac.kopo.financial.vo.ReturnSalesVO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:config/spring/spring-mvc.xml"})
-public class BoardTest {
+public class doTtest {
 	
 	// 스프링 컨테이너에서 자동 주입?
 	// 이전의 테스트에서 sqlSessionTemplate 이미 존재하는지 확인해서 바로 자동 주입했음

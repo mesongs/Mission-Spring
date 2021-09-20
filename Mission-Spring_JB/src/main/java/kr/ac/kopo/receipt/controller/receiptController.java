@@ -123,6 +123,8 @@ public class receiptController {
 	@ResponseBody
 	public List<ReceiptVO> getListDate(searchDateVO dateVO){
 		
+		
+		
 		List<ReceiptVO> searchDateList = service.serachDate(dateVO);
 		
 		return searchDateList;

@@ -99,7 +99,7 @@
 			from TB_RECEIPT a, TB_RECEIPT_KIND b     
 			where a.RECEIPT_code = b.RECEIPT_code and
 			receipt_status ='P'
-            and RECEIPT_DATE between #{startDate} and #{endDate}
+            and RECEIPT_DATE between to_date(#{startDate}, 'yyyy-mm-dd') and to_date(#{endDate}, 'yyyy-mm-dd')
 			order by RECEIPT_DATE desc
 	</select>
 	
@@ -148,7 +148,7 @@
 							from tb_receipt a, tb_BUSINESS b
 							where a.BUSINESS_NO = b.BUSINESS_NO and receipt_status = 'W') c, TB_RECEIPT_KIND d
 			where c.receipt_code = d.receipt_code
-			order by receipt_no desc) where rownum <![CDATA[ <= ]]> 15
+			order by reg_date desc) where rownum <![CDATA[ <= ]]> 15
 	</select>
 	
 	<!-- 직원이 승인 or 반려하는 항목 -->
@@ -176,7 +176,7 @@
 								from tb_receipt a, tb_BUSINESS b
 								where a.BUSINESS_NO = b.BUSINESS_NO and receipt_status = 'W') c, TB_RECEIPT_KIND d
 				where c.receipt_code = d.receipt_code
-				order by receipt_no desc) where rownum <![CDATA[ <= ]]> #{perReceipt}
+				order by reg_date desc) where rownum <![CDATA[ <= ]]> #{perReceipt}
 	</select>
 	
 	<update id="acceptUpdate" parameterType="acceptRejectVO">

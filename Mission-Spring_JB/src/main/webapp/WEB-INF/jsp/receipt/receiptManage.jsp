@@ -226,7 +226,7 @@ function YMDFormatter(num){
 				 					
 							    	 str += "<td>" + "</td>"
 				 				 }
-			 					 str +="<td>" + receiptKindList.memo +"</td>";
+			 					
 			 					 str +="</tr>"
 			 					 $('#test').append(str);
 						 })
@@ -305,7 +305,7 @@ function YMDFormatter(num){
 							     /* str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>" */
 							     /* str +="<td>" + processedList.overlap + "</td>" */
 							     
-			 					 str += "<td>" + perMgReceiptistList.memo +"</td>";
+			 					
 			 					 str += "</tr>"
 			 					 $('#test').append(str);
 						 })
@@ -344,9 +344,15 @@ function YMDFormatter(num){
 								
 							 	 str="<tr>"
 							 	 str += "<td>" + '<input type="checkbox"class="testBox">' + "</td>" 
-							     str += "<td>" + processedList.regDate + "</td>"				
+							     str += "<td>" + processedList.regDate + "</td>"
+							     
+							     // 영수일시
+							     str += "<td>" + YMDFormatter(processedList.receiptDate) + "</td>"
+							     
 							     str += "<td><a href=" + "${ pageContext.request.contextPath }" +"/receipt/mgDetail/" + processedList.receiptNo + ">" + processedList.userId +"</a></td>";
+							     
 							     str += "<td>" + processedList.receiptName + "</td>"
+								 
 							     str += "<td>" + processedList.storeName + "</td>"
 							     str += "<td>" + numberWithCommas(processedList.sum) +"원</td>";
 							     str += "<td>" + processedList.purpose +"</td>";
@@ -362,7 +368,7 @@ function YMDFormatter(num){
 							     /* str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>" */
 							     /* str +="<td>" + processedList.overlap + "</td>" */
 							     
-			 					 str += "<td>" + processedList.memo +"</td>";
+			 					
 			 					 str += "</tr>"
 			 					 $('#test').append(str);
 
@@ -458,7 +464,7 @@ function YMDFormatter(num){
 				 					
 							    	 str += "<td>" + "</td>"
 				 				 }
-			 					 str +="<td>" + searchDateList.memo +"</td>";
+			 					
 			 					 str +="</tr>"
 			 					 $('#test').append(str);
 						 })
@@ -522,7 +528,7 @@ function YMDFormatter(num){
 					    	 str += "<td>" + "</td>"
 		 				 }
 					     
-	 					 str +="<td>" + searchprocessedList.memo +"</td>";
+	 					
 	 					 str +="</tr>"
 	 					 $('#test').append(str);
 	 					 
@@ -617,14 +623,15 @@ function YMDFormatter(num){
 							<table class="styled-table">
 								<tr id="boardtable">
 									<th><input type="checkbox" class="testBox" id="allCheck" value="1"></th>
-									<th width="150px">등록일시</th>
-									<th width="150px">아이디</th>
-									<th width="150px">구분</th>
+									<th width="140px">등록일시</th>
+									<th width="140px">영수일시</th>
+									<th width="120px">아이디</th>
+									<th width="120px">구분</th>
 									<th width="170px">업체명</th>
-									<th width="170px">합계금액</th>
-									<th width="150px">사용목적</th>
+									<th width="140px">합계금액</th>
+									<th width="100px">사용목적</th>
 									<th width="110px">중복여부</th>
-									<th width="600px">메모</th>
+									
 								</tr>
 								
 								<tbody id="test">

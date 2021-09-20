@@ -1,11 +1,12 @@
 package kr.ac.kopo.taxAgent.service;
 
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import kr.ac.kopo.receipt.dao.ReceiptDAO;
+
 import kr.ac.kopo.taxAgent.dao.TaxAgentDAO;
 import kr.ac.kopo.taxAgent.vo.TaxCustomerVO;
 
@@ -31,6 +32,11 @@ public class TaxAgentServiceImpl implements TaxAgentService {
 		return taxCustomer;
 	}
 
+	
+
+	
+
+	
 	
 	
 	

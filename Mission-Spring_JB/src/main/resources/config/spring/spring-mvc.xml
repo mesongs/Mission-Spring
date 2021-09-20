@@ -82,6 +82,9 @@
 	</bean>
 	
 	
+	
+	
+	
 	<!-- 우선, 인터셉터는 작동안되게 하자  -->
 	<!-- <bean class="kr.ac.kopo.interceptor.LoginInterceptor" id="loginInterceptor" />
 	

@@ -813,10 +813,10 @@ function YMDFormatter(num){
 								<tr id="boardtable">
 									<th><input type="checkbox" class="testBox" id="allCheck" value="1"></th>
 									<th width="140px">사용일시</th>
-									<th width="150px">구분</th>
-									<th width="200px">업체명</th>
-									<th width="200px">사용금액</th>
-									<th width="150px">사용목적</th>
+									<th width="130px">구분</th>
+									<th width="180px">업체명</th>
+									<th width="130px">사용금액</th>
+									<th width="110px">사용목적</th>
 									<th width="130px">중복여부</th>
 									<th width="600px">메모</th>
 								</tr>

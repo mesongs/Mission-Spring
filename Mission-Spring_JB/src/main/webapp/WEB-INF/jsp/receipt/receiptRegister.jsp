@@ -404,8 +404,8 @@ tr:hover{
 								<form name="homeTaxInfo">
 									<table style="margin: auto; border-collapse: separate; border-spacing: 0 10px;">
 										<tr>
-											<th style="padding-right: 10px;">홈택스ID</th>
-											<td><input type="text" class="form-control" name="hometaxId" id="hometaxId" style="float: left; width: 200px;"></td>
+											<th style="padding-right: 10px;" >홈택스ID</th>
+											<td><input type="text" autocomplete="off" class="form-control" name="hometaxId" id="hometaxId" style="float: left; width: 200px;"></td>
 										</tr>
 										<tr>
 											<th style="padding-right: 10px;">비밀번호</th>
@@ -413,7 +413,7 @@ tr:hover{
 										</tr>
 										<tr style="margin-bottom: 50px;">
 											<th style="padding-right: 10px;">사업자번호</th>
-											<td><input type="text" class="form-control" name="businessNo" id="businessNo" style="float: left; width: 200px;" value="${userVO.businessNo }"></td>
+											<td><input autocomplete="off" type="text" class="form-control" name="businessNo" id="businessNo" style="float: left; width: 200px;" value="${userVO.businessNo }"></td>
 										</tr>
 									</table>
 									<div style="width:100%; margin-top: 20px;margin-bottom: 20px; background-color: #27b2a5; color:#fff; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; ">

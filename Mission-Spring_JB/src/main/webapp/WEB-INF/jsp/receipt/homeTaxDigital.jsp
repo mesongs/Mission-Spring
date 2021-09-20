@@ -782,7 +782,7 @@ function YMDFormatter(num){
 								<tr id="boardtable">
 									<th><input type="checkbox" class="testBox" id="allCheck" value="1"></th>
 									<th width="120px">작성일자</th>
-									<th width="100px">구분</th>
+									<th width="130px">구분</th>
 									<th width="180px">사업자등록번호</th>
 									<th width="150px">가맹점명</th>
 									<th width="120px">유형</th>
@@ -799,6 +799,7 @@ function YMDFormatter(num){
 								 		<td>세금계산서</td>
 								 		<td>609-91-92931</td>
 								 		<td>사오수산</td>
+								 		<td>일반과세자</td>
 								 		<td>130,000원</td>
 								 		<td>13,000원</td>
 								 		<td>143,000원</td>

@@ -11,7 +11,8 @@
 
 <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/list.css?after">
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-
+<link href="${ pageContext.request.contextPath }/resources/css/reset2.css" rel="stylesheet">
+<link href="${ pageContext.request.contextPath }/resources/css/main2.css" rel="stylesheet">
 
 
 <head>
@@ -239,25 +240,7 @@ function YMDFormatter(num){
 
 
 
-<script>
 
-	$(document).ready(function(){
-	
-		
-		 
-		
-		
-		
-		
-		
-	})
-	
-	
-		
-	
-	
-
-</script>
 
 
 
@@ -267,10 +250,62 @@ function YMDFormatter(num){
 <body>
 	
 	<!--================Header Menu Area =================-->
-	<jsp:include page="/WEB-INF/jsp/include/header.jsp"/>
+	<%-- <jsp:include page="/WEB-INF/jsp/include/header.jsp"/> --%>
 	<!--================Header Menu Area =================-->
+	<!--헤더-->
+        <div class="header">
+            <div class="logo">
+                <a href="javascript:void(0)"><img src="${ pageContext.request.contextPath }/resources/img/logo.png" alt="logo" style="width: 214px; height: 80px;"></a>
+            </div>
+        </div>
+	
+	<div class="wrapper" style="background-color: #ffffff;">
+	<div class="nav" style="margin-bottom: 70px; height: 770px;">
 
-	<div class="comment-form-receipt" id="comment-custom-receipt" >
+               
+                <!--회원정보-->
+                <div class="memberInfo" style="height: 0px; background-color: #474A5B;">
+                    <p class="memberId">
+                        <strong>${userVO.id } 세무사님,</strong>
+                        <br><span style="font-size: 20px;">환영합니다!</span>
+                    </p>
+                    <a class="applyBtn" href="javascript:void(0)" style="width: 170px; height: 39px;"><strong>로그아웃<i class="fas fa-chevron-right"></i></strong></a>
+                </div>
+
+                <!--메뉴-->
+                <ul class="menu" style="margin-bottom: 140px;">
+                    <li class="mainMenu" style="margin-top:20px;">
+                        <a href="javascript:void(0)"><strong><i class="fas fa-file-signature"></i>고객 증빙자료</strong></a>
+                        <ul class="subMenu">
+                            <li><a href="${ pageContext.request.contextPath }/taxAgent/taxAgentCustomer">-증빙자료 조회/수집</a></li>
+                            
+                        </ul>
+                    </li>
+                    <li class="mainMenu" style="margin-top: 10px;">
+                        <a href="javascript:void(0)"><i class="fas fa-poll"></i><strong> 세무신고</strong></a>
+                        <ul class="subMenu">
+                            <li><a href="javascript:void(0)">-신고서작성</a></li>
+                            <li><a href="javascript:void(0)">-과거 신고내역 조회</a></li>
+                        </ul>
+                    </li>
+                    <li class="mainMenu" style="margin-top: 10px;">
+                        <a href="javascript:void(0)"><i class="fas fa-clipboard"></i><strong> 고객관리</strong></a>
+                        <ul class="subMenu">
+                            <li><a href="javascript:void(0)">-고객목록</a></li>
+                            <li><a href="javascript:void(0)">-SMS발송</a></li>
+                        </ul>
+                    </li>
+                    
+                    
+                    
+                </ul>
+
+                
+
+            </div>
+	
+	
+	<div class="comment-form-receipt" id="comment-custom-receipt" style="margin-left: 50px;" >
 		<div class="row">
 			<div class="col">
 				<h4 style="font-family: 'Noto Sans KR', sans-serif;font-size: xx-large;">담당 고객 목록</h4>
@@ -364,7 +399,7 @@ function YMDFormatter(num){
       </div>
       
 	</div>
-	
+	</div>
 	
 	
 	
@@ -376,7 +411,7 @@ function YMDFormatter(num){
 	<!--================ End Blog Post Area =================-->
 
 	<!--================ Start Footer Area =================-->
-	<jsp:include page="/WEB-INF/jsp/include/footer.jsp"/>
+	<%-- <jsp:include page="/WEB-INF/jsp/include/footer.jsp"/> --%>
 	<!--================ End Footer Area =================-->
 
 

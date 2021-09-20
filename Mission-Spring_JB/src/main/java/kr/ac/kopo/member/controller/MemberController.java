@@ -65,8 +65,16 @@ public class MemberController {
 		// 로그인을 성공했음
 		// 필요한거 요구하면 됨, session 객체도 굳이 request로 받아올 필요없음
 		// @SessionAttributes에 의해 session 객체로 등록
+		
 		model.addAttribute("userVO", userVO);
 		
+		
+		// 개발하는 동안은 주석처리
+		if(userVO.getUserStatus().equals("T")) {
+			
+			return "taxAgent/taxAgentIndex";
+			
+		}
 		
 		// 로그인 인터셉터를 거쳤는지 확인, 사용자가 로그인 후 가고싶은 경로
 		String dest = (String)session.getAttribute("dest");

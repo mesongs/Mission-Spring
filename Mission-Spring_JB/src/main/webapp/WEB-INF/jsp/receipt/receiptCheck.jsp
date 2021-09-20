@@ -223,12 +223,12 @@ $(function(){
                     
 					<div class="container">
 						<div class="row box">
-							<div id="fileUpload" class="dragAndDropDiv">
+							<div id="fileUpload" class="dragAndDropDiv" style="height: 599px;">
 								<section id="replaceThumb" style="max-width: 100%; height: 100%;">
 									<%-- <img src="/testUpload/${ receiptFile.fileSaveName }" style="width: 400px; height: 100%;"> --%>
 									<%-- <img src="/var/lib/tomcat9/webapps/Mission-Spring_JB/upload/${ receiptFile.thumbnailFileName }" style="width: 400px; height: 100%;">--%>
 									<!-- 아래가 실제 서버 경로  -->
-									<img src="${ pageContext.request.contextPath }/upload/${ receiptFile.fileSaveName }" style="width: 400px; height: 100%;">
+									<img src="${ pageContext.request.contextPath }/upload/${ receiptFile.fileSaveName }" style="width: 400px; height: 590px;">
 								</section>
 							</div>
 							<div class="col">

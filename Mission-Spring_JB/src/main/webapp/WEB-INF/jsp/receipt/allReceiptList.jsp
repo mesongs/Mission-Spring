@@ -337,6 +337,7 @@
 						 // for(receipt vo(=searchWaitList) : receiptList) 1.5버전 for문과 동일함
 						 IntegratedList.forEach(function(IntegratedSalesList){
 							 	 
+							 	 
 							 	 str="<tr>"
 							 	 str += "<td>" + '<input type="checkbox" name="wantCheck" id="" class="testBox">' + "</td>" 
 							     str +="<td>" + YMDFormatter(IntegratedSalesList.receiptDate) + "</td>"
@@ -345,11 +346,23 @@
 							     str +="<td>" + IntegratedSalesList.supplierStoreName + "</td>"
 							     str +="<td>" + numberWithCommas(IntegratedSalesList.amount) +"원</td>";
 			 					 str +="<td>" + numberWithCommas(IntegratedSalesList.vat) +"원</td>";
-							     str +="<td>" + numberWithCommas(IntegratedSalesList.calSum) +"원</td>";
-							     str +="<td>" + IntegratedSalesList.division + "</td>";
-			 					 str +="</tr>"
+							     str +="<td>" + numberWithCommas(IntegratedSalesList.calSum) +"원</td>"; 
+							     
+							     
+							     if(IntegratedSalesList.division =='수기증빙'){
+							     	str +="<td style='color: red;'>" + IntegratedSalesList.division + "</td>";
+							     }else{
+							    	str +="<td style='color: blue;'>" + IntegratedSalesList.division + "</td>";
+							    	
+							     }
+							     
+			 					 
+							     str +="</tr>"
 			 					 
 			 					 $('#test').append(str);
+			 					 
+			 					
+							 	
 						 })
 					 }
 					 
@@ -361,6 +374,15 @@
 						$('#sendArray').attr('value', sendArray);
 						$('#amountValue').attr('value', amountValue);
 						$('#vatValue').attr('value', vatValue);
+						
+						
+						
+						
+						
+						
+						
+						
+						
 					
 				},
 				error:function(request, status, error){
@@ -442,9 +464,16 @@
 
 <script>
 
+
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
+
+
+
+
+
+
 
 // 사업자등록번호 '-' 추가
 function bizNoFormatter(num, type) {
@@ -667,7 +696,7 @@ function YMDFormatter(num){
 								 		<td>80,910</td>
 								 		<td>8,090</td>
 								 		<td>89,000</td>
-								 		<td>전자증빙</td>
+								 		<td style="color: blue;">전자증빙</td>
 								 	</tr>
 								</tbody>
 							</table>

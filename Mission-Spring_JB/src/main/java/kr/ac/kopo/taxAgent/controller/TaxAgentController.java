@@ -30,13 +30,39 @@ public class TaxAgentController {
 	@Autowired
 	private TaxAgentService service;
 
-	// 고객 증빙자료 조회/수집 페이지로 이동
+	// 고객 증빙자료 조회/수집 페이지로 이동 - 1 (원본)
 	@RequestMapping("/taxAgent/taxAccount")
 	public ModelAndView taxAccount(HttpSession session) {
 		
 		// 여기서 로그인한 세무사의 고객 정보를 가져옴
 		
 		ModelAndView mav = new ModelAndView("taxAgent/taxAccount");
+		
+		LoginVO userVO = (LoginVO)session.getAttribute("userVO");
+		String taxAgentId = userVO.getId();
+		
+		// 세무사가 담당하고 있는 회원 정보
+		List<TaxCustomerVO> customerList = service.getCustomerListService(taxAgentId);
+		
+		for(int i=0; i<customerList.size(); i++) {
+			
+			customerList.get(i).setPhone(makePhoneNumber(customerList.get(i).getPhone()));
+			customerList.get(i).setBusinessNo(makeBNo(customerList.get(i).getBusinessNo()));
+		}
+		
+		
+		mav.addObject("customerList", customerList);
+		
+		return mav;
+	}
+	
+	// 고객 증빙자료 조회/수집 페이지로 이동 - 2 (변경한 페이지)
+	@RequestMapping("/taxAgent/taxAgentCustomer")
+	public ModelAndView taxAgentCustomer(HttpSession session) {
+		
+		// 여기서 로그인한 세무사의 고객 정보를 가져옴
+		
+		ModelAndView mav = new ModelAndView("taxAgent/taxAgentCustomer");
 		
 		LoginVO userVO = (LoginVO)session.getAttribute("userVO");
 		String taxAgentId = userVO.getId();
@@ -75,7 +101,7 @@ public class TaxAgentController {
 	
 	public static String makeBNo(String businessNo) {
 
-			String regEx = "(\\d{3,3})(\\d{2,2})(\\d{5,5})";
+		   String regEx = "(\\d{3,3})(\\d{2,2})(\\d{5,5})";
 		   
 		   
 

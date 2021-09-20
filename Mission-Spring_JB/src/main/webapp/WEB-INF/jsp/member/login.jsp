@@ -81,7 +81,7 @@ window.Kakao.init("bbe9ec6b57b56d8ef60c464ef2214a90");
 	                    <form method="post">
 	                    	<div class="form-group form-inline">
 		                    	<div class="form-group col-lg-6 col-md-6 name">
-		                          <input type="text" class="form-control" name="id" id="id" placeholder="아이디" onfocus="this.placeholder = ''" onblur="this.placeholder = '아이디'" style="background-color: rgba(130,139,178,0.25);">
+		                          <input type="text" autocomplete="off" class="form-control" name="id" id="id" placeholder="아이디" onfocus="this.placeholder = ''" onblur="this.placeholder = '아이디'" style="background-color: rgba(130,139,178,0.25);">
 		                        </div>
 	                        </div>
 	                        <div class="form-group col-lg-6 col-md-6 name" style="margin-bottom: 25px;">

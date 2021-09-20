@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import kr.ac.kopo.member.dao.MemberDAO;
 import kr.ac.kopo.receipt.vo.AcceptRejectVO;
 import kr.ac.kopo.receipt.vo.HomeTaxCashVO;
+import kr.ac.kopo.receipt.vo.HomeTaxDigitalVO;
 import kr.ac.kopo.receipt.vo.IntegratedSalesVO;
 import kr.ac.kopo.receipt.vo.ReceiptFileVO;
 import kr.ac.kopo.receipt.vo.ReceiptVO;
@@ -180,9 +181,17 @@ public class ReceiptDAOImpl implements ReceiptDAO {
 	@Override
 	public List<IntegratedSalesVO> getSearchedIntegratedListDao(HashMap<String, Object> map) {
 		
-		List<IntegratedSalesVO> getIntegratedList = sqlSessionTemplate.selectList("receipt.receiptDAO.-----------------", map);
+		List<IntegratedSalesVO> getIntegratedList = sqlSessionTemplate.selectList("receipt.receiptDAO.--", map);
 		
 		return getIntegratedList;
+	}
+
+	@Override
+	public List<HomeTaxDigitalVO> getHomeTaxDigitalInfoDao(HashMap<String, Object> map) {
+		
+		List<HomeTaxDigitalVO> getHomeTaxDigitalList = sqlSessionTemplate.selectList("receipt.receiptDAO.getDigitalBill", map);
+		
+		return getHomeTaxDigitalList;
 	}
 	
 	

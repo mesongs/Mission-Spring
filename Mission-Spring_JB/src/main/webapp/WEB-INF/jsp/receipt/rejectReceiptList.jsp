@@ -204,6 +204,7 @@ function YMDFormatter(num){
 						 
 						 obj.forEach(function(processedList){
 							 	 
+							 	 
 							 	 str="<tr>"
 							 	 str += "<td>" + '<input type="checkbox" class="testBox">' + "</td>" 
 							     str += "<td>" + YMDFormatter(processedList.receiptDate) + "</td>"
@@ -223,11 +224,6 @@ function YMDFormatter(num){
 							     str += "<td>" + processedList.purpose +"</td>";
 							     
 							     
-				 				 
-							     /* str += "<td>" + '<img class="product-img2" src="${ pageContext.request.contextPath }/resources/img/overlap.jpg">' + "</td>" */
-							     /* str +="<td>" + processedList.overlap + "</td>" */
-							     
-			 					 str += "<td>" + processedList.memo +"</td>";
 			 					 str += "</tr>"
 			 					 $('#test').append(str);
 			 					 
@@ -449,14 +445,12 @@ function YMDFormatter(num){
 								<tr id="boardtable">
 									<th><input type="checkbox" class="testBox" id="allCheck" value="1"></th>
 									<th width="120px">사용일시</th>
-									<th width="150px">구분</th>
-									<th width="150px">사업자등록번호</th>
+									<th width="130px">구분</th>
 									<th width="150px">업체명</th>
-									<th width="150px">사용금액</th>
+									<th width="130px">사용금액</th>
 									<th width="130px">중복여부</th>
-									<th width="350px">반려사유</th>
+									<th width="220px">반려사유</th>
 									<th width="150px">사용목적</th>
-									<th width="500px">메모</th>
 								</tr>
 								</thead>
 								

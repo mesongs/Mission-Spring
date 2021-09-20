@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import kr.ac.kopo.receipt.vo.AcceptRejectVO;
 import kr.ac.kopo.receipt.vo.HomeTaxCashVO;
+import kr.ac.kopo.receipt.vo.HomeTaxDigitalVO;
 import kr.ac.kopo.receipt.vo.IntegratedSalesVO;
 import kr.ac.kopo.receipt.vo.ReceiptFileVO;
 import kr.ac.kopo.receipt.vo.ReceiptVO;
@@ -57,5 +58,7 @@ public interface ReceiptDAO {
 	List<IntegratedSalesVO> getIntegratedListDao(IntegratedSalesVO integratedSalesVO);
 	
 	List<IntegratedSalesVO> getSearchedIntegratedListDao(HashMap<String, Object> map);
+	
+	List<HomeTaxDigitalVO> getHomeTaxDigitalInfoDao(HashMap<String,Object> map);
 	
 }

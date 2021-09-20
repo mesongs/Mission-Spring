@@ -14,7 +14,14 @@ public class HomeTaxDigitalVO {
 	private int amount;
 	private int vat;
 	private int sum;
+	private String section;
 	
+	public String getSection() {
+		return section;
+	}
+	public void setSection(String section) {
+		this.section = section;
+	}
 	public String getDigitalApprovalNo() {
 		return digitalApprovalNo;
 	}

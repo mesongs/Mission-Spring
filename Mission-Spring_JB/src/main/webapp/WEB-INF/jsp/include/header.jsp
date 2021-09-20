@@ -61,8 +61,14 @@ html, body {height: 100%;}
 
 
 </script>
-
-<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/header.css?after">
+<c:choose>
+	<c:when test="${ userVO.userStatus =='S' }">
+		<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/adminheader.css">
+	</c:when>
+	<c:otherwise>
+		<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/header.css?after">
+	</c:otherwise>
+</c:choose>
 
 <header class="header_area">
     
@@ -71,10 +77,10 @@ html, body {height: 100%;}
         <div class="container box_1620">
           <c:choose>
           	<c:when test="${ userVO.userStatus == 'S'}">
-          	  <a class="navbar-brand logo_h" href="${ pageContext.request.contextPath }"><img src="${ pageContext.request.contextPath }/resources/img/empLogo.png" alt="" style="200px; height: 72px;"></a>
+          	  <a class="navbar-brand logo_h" href="${ pageContext.request.contextPath }"><img src="${ pageContext.request.contextPath }/resources/img/adminLogo2.png" alt="" style="200px; height: 72px;"></a>
           	</c:when>
           	<c:otherwise>
-	          <a class="navbar-brand logo_h" href="${ pageContext.request.contextPath }"><img src="${ pageContext.request.contextPath }/resources/img/logo.png" alt=""></a>          		
+	          <a class="navbar-brand logo_h" href="${ pageContext.request.contextPath }"><img src="${ pageContext.request.contextPath }/resources/img/logo.png" style="height: 65px;" alt=""></a>          		
           	</c:otherwise>
           </c:choose>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -112,7 +118,7 @@ html, body {height: 100%;}
               	
               	
               	<c:otherwise>
-              		<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/processedList">증빙관리</a>
+              		<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/register">증빙관리</a>
 	                <li class="nav-item"><a class="nav-link" href="supprotCenter.jsp">지원센터</a>
               	</c:otherwise>
               </c:choose>

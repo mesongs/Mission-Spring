@@ -41,15 +41,23 @@
 		<result column="supplier_business_no" property="supplierBusinessNo"/>
 	</resultMap>
 	
+	<resultMap type="homeTaxDigitalVO" id="homeTaxDigitalMap">
+		<result column="receipt_date" property="dealDate"/>
+		<result column="receipt_kind" property="receiptKind"/>
+		<result column="supplier_business_no" property="supplierBusinessNo"/>
+		<result column="store_name" property="supplierStoreName" />
+		<result column="store_kind" property="storeKind"/>
+	</resultMap>
+	
 	<select id="getReceiptNo" resultType="int">
 		SELECT RECEIPT_SEQ.NEXTVAL as receiptNo FROM DUAL
 	</select>
 	
 	<insert id="receiptRegister" parameterType="receiptVO">
-		insert into TB_RECEIPT(RECEIPT_NO, RECEIPT_CODE, SUPPLIER_BUSINESS_NO, STORE_NAME, RECEIPT_DATE,
+		insert into TB_RECEIPT(RECEIPT_NO, RECEIPT_CODE, SUPPLIER_BUSINESS_NO, STORE_NAME, RECEIPT_DATE,reg_date,
                       		  AMOUNT, VAT, PURPOSE, MEMO, BUSINESS_NO)
             		values(#{receiptNo},#{receiptKind}, #{supplierBusinessNo}, 
-            				#{storeName}, #{receiptDate}, #{amount}, #{vat}, #{purpose}, #{memo}, #{businessNo})
+            				#{storeName}, #{receiptDate}, to_date('20210628', 'yy/mm/dd'), #{amount}, #{vat}, #{purpose}, #{memo}, #{businessNo})
 	</insert>
 
 	<insert id="receiptFileRegister" parameterType="receiptVO">
@@ -213,8 +221,7 @@
                        overlap=#{overlap}, reject_reason='-', receipt_status ='W' where RECEIPT_NO = #{receiptNo}
 	</update>
 	
-	<!-- 통합 매입내역 조회, 체크값 + 입력된 날짜 -->
-	<!-- and memo like '%'||#{searchWord}||'%' -->  
+	<!-- 통합 매입내역 조회, 체크값 + 입력된 날짜 --> 
 	<!-- 동적쿼리 in 동적으로 추가 --><!-- WHERE COLUMN_NAME LIKE '%'||#searchKeyword#||'%' -->
 	
 	<select id="getIntegratedList" parameterType="integratedSalesVO" resultType="integratedSalesVO" resultMap="IntegratedSalesMap">
@@ -229,6 +236,17 @@
 			<foreach collection="sendArray" item="item" index="index" open="(" close=")" separator=",">
             	${item}
         	</foreach>
-        	) where rownum <![CDATA[ <= ]]> 20
+        	) where rownum <![CDATA[ <= ]]> 30
+        	order by receipt_date desc
 	</select>
+	
+	
+	<!--전자 계산서 조회  -->
+	<select id="getDigitalBill" parameterType="map" resultType="homeTaxDigitalVO" resultMap="homeTaxDigitalMap">
+		select receipt_date, decode(receipt_code,'002','계산서') as receipt_kind, supplier_business_no, store_name, store_kind ,amount, vat, sum, section 
+    	from tb_purchase 
+    	where business_no=#{businessNo} and receipt_date like #{searchMonth}||'%' and receipt_code='002'
+	</select>
+	
+	
 </mapper>

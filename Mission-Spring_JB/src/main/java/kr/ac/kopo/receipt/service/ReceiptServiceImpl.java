@@ -33,6 +33,7 @@ import kr.ac.kopo.receipt.dao.ReceiptDAO;
 import kr.ac.kopo.receipt.vo.AcceptRejectVO;
 import kr.ac.kopo.receipt.vo.HomeTaxCardVO;
 import kr.ac.kopo.receipt.vo.HomeTaxCashVO;
+import kr.ac.kopo.receipt.vo.HomeTaxDigitalVO;
 import kr.ac.kopo.receipt.vo.HomeTaxInfoVO;
 import kr.ac.kopo.receipt.vo.IntegratedSalesVO;
 import kr.ac.kopo.receipt.vo.ReceiptFileVO;
@@ -581,6 +582,20 @@ public class ReceiptServiceImpl implements ReceiptService {
 		return getHomeTaxCardList;
 	}
 	
+	
+	@Override
+	public List<HomeTaxDigitalVO> getHomeTaxDigitalInfoService(String searchMonth, String businessNo) {
+		
+		HashMap<String, Object> map = new HashMap<>();
+		
+		map.put("searchMonth", searchMonth);
+		map.put("businessNo", businessNo);
+		
+		List<HomeTaxDigitalVO> homeTaxDigitalList = receiptDAO.getHomeTaxDigitalInfoDao(map);
+		
+		return homeTaxDigitalList;
+	}
+
 	///////////////////////////
 	@Override
 	public List<IntegratedSalesVO> getIntegratedList(IntegratedSalesVO integratedSalesVO) {

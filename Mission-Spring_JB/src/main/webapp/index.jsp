@@ -39,7 +39,7 @@
 			<div class="container" align="center">
 				<c:choose>
 		          	<c:when test="${userVO.userStatus == 'S'}">
-		          	  <img id="mainImage" src="${ pageContext.request.contextPath }/resources/img/empMain.png">
+		          	  <img id="mainImage" src="${ pageContext.request.contextPath }/resources/img/adminMain2.png">
 		          	</c:when>
 		          	<c:otherwise>
 			          <img id="mainImage" src="${ pageContext.request.contextPath }/resources/img/indexMain3.png">          		

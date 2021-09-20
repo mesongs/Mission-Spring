@@ -185,6 +185,11 @@ input::placeholder{
 
 <style>
 
+th{
+	font-size: 18px;
+
+}
+
 .styled-table tbody tr:nth-of-type(even) {
     background-color: #f3f3f3;
 }
@@ -403,7 +408,7 @@ table tbody th, table td {
 							     
 							     str +="<td>" + getHomeTaxCardList.supplierStoreName + "</td>"
 							     str +="<td>" + getHomeTaxCardList.cardName + "</td>"
-							     str +="<td>" + getHomeTaxCardList.cardNumber + "</td>"
+							     str +="<td>" + cardNumberTrim(getHomeTaxCardList.cardNumber) + "</td>"
 							     
 							     str +="<td>" + getHomeTaxCardList.section + "</td>"
 							    
@@ -451,6 +456,17 @@ table tbody th, table td {
 </script>
 
 <script>
+
+function cardNumberTrim(x){
+	
+	// 9675-40**-****-****
+	// 9675-40*
+	var setCardNumber = x.substring(0,9)
+	
+	return setCardNumber;
+	
+}
+
 
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -634,10 +650,10 @@ function YMDFormatter(num){
 									<th><input type="checkbox" class="testBox" id="allCheck" value="1"></th>
 									<th width="170px">매입일시</th>
 									<th width="120px">승인번호</th>
-									<th width="220px">공급자사업자번호</th>
-									<th width="210px">가맹점명</th>
+									<th width="260px">사업자번호</th>
+									<th width="230px">상호명</th>
 									<th width="140px">카드명</th>
-									<th width="120px">카드번호</th>
+									<th width="160px">카드번호</th>
 									<th width="100px">업종</th>
 									<th width="110px">공급가액</th>
 									<th width="100px">부가세</th>
@@ -647,15 +663,16 @@ function YMDFormatter(num){
 								<tbody id="test">
 								 	<tr>
 								 		<td><input type="checkbox" class="testBox" id="allCheck" value="1"></td>
-								 		<td>2021-03-23</td>
-								 		<td>324209823</td>
+								 		<td>2021-09-10</td>
+								 		<td>871111215</td>
 								 		<td>605-25-91876</td>
 								 		<td>대양슈퍼</td>
+								 		<td>비씨카드</td>
+								 		<td>9675-40**</td>
+								 		<td>소매</td>
 								 		<td>80,910원</td>
 								 		<td>8,090원</td>
 								 		<td>89,000원</td>
-								 		<td>일반과세자</td>
-								 		<td>도,소매</td>
 								 	</tr>
 								</tbody>
 							</table>

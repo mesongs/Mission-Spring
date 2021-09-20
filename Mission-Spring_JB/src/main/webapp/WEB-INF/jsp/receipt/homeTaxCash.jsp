@@ -184,6 +184,12 @@ input::placeholder{
 </style> -->
 
 <style>
+
+th{
+
+	font-size: 18px;
+}
+
 table tbody th, table td {
     border-bottom: none;
 }
@@ -636,21 +642,21 @@ function YMDFormatter(num){
 								<tr id="boardtable">
 									<th><input type="checkbox" class="testBox" id="allCheck" value="1"></th>
 									<th width="140px">매입일시</th>
-									<th width="190px">가맹점 사업자번호</th>
-									<th width="120px">가맹점명</th>
-									<th width="90px">업종명</th>
+									<th width="190px">사업자번호</th>
+									<th width="150px">상호명</th>
+									<th width="100px">업종명</th>
 									<th width="110px">공급가액</th>
 									<th width="100px">부가세</th>
 									<th width="150px">매입금액</th>
 									<th width="140px">유형</th>
 									<th width="130px">승인번호</th>
-									<th width="110px">공제여부</th>
+									<th width="110px">공제</th>
 								</tr>
 								
 								<tbody id="test">
 								 	<tr>
 								 		<td><input type="checkbox" class="testBox" id="allCheck" value="1"></td>
-								 		<td>2021-03-23</td>
+								 		<td>2021-09-20</td>
 								 		<td>605-25-91876</td>
 								 		<td>대양슈퍼</td>
 								 		<td>소매</td>
@@ -662,17 +668,7 @@ function YMDFormatter(num){
 								 		<td>불공제</td>
 								 	</tr>
 								 	<tr>
-								 		<td><input type="checkbox" class="testBox" id="allCheck" value="1"></td>
-								 		<td>2021-03-23</td>
-								 		<td>605-25-91876</td>
-								 		<td>대양슈퍼</td>
-								 		<td>소매</td>
-								 		<td>80,910원</td>
-								 		<td>8,090원</td>
-								 		<td>89,000원</td>
-								 		<td>일반과세자</td>
-								 		<td>147369422</td>
-								 		<td>불공제</td>
+								 		
 								 	</tr>
 								</tbody>
 							</table>

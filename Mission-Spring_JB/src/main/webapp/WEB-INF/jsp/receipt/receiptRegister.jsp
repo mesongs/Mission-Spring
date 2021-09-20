@@ -13,6 +13,11 @@
 <jsp:include page="/WEB-INF/jsp/include/head.jsp" />
 
 <style>
+
+tr:hover{
+     background-color: #ffffff;
+}
+
 .product-img4{
  	max-width: 20px;
     max-height: 20px;

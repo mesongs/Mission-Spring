@@ -185,7 +185,20 @@ input::placeholder{
 
 <style>
 
+#searchHometaxBill{
+	border-top-left-radius: 5px;
+ 	border-top-right-radius: 5px;
+ 	border-bottom-left-radius: 5px;
+ 	border-bottom-right-radius: 5px;
 
+}
+
+
+
+th{
+	font-size: 18px;
+
+}
  
  .nav-tabs .nav-link.active {
     color: #007BFF;
@@ -242,6 +255,77 @@ table tbody th, table td {
 <script>
 
 	$(document).ready(function(){
+		
+		
+		
+$('#searchHometaxBill').click(function(){
+			
+			//전자계산서 선택한 후 날짜에 해당하는 값을 조회함, 색인
+			let searchMonth = $('#searchMonth').val();
+			
+			// 조회 버튼 누르면, 기간에 해당하는 값만 조회함
+			$.ajax({
+				type : "get",
+				data : { searchMonth : searchMonth },
+				url : "${pageContext.request.contextPath}/receipt/getHomeTaxDigitalBill",
+				success : function(result){
+					
+					let obj = JSON.parse(result);
+					
+					
+			 		 $('#test').empty();
+			 		 
+					 if(obj.length >= 1){
+						 
+						 // for(receipt vo(=searchWaitList) : receiptList) 1.5버전 for문과 동일함
+						 obj.forEach(function(getHomeTaxDigitalList){
+							 	 
+							 //    가맹점명 cardName cardNumber section amount vat sum
+							 	 str="<tr>"
+							 	 str += "<td>" + '<input type="checkbox" class="testBox">' + "</td>" 
+							     str +="<td>" + YMDFormatter(getHomeTaxDigitalList.dealDate) + "</td>"
+							     str +="<td>" + getHomeTaxDigitalList.receiptKind + "</td>"
+							     str +="<td>" + bizNoFormatter(getHomeTaxDigitalList.supplierBusinessNo,1) + "</td>"
+							     str +="<td>" + getHomeTaxDigitalList.supplierStoreName + "</td>"
+							     str +="<td>" + getHomeTaxDigitalList.storeKind + "</td>"
+							     str +="<td>" + numberWithCommas(getHomeTaxDigitalList.amount) + "원</td>"
+							     str +="<td>" + numberWithCommas(getHomeTaxDigitalList.vat) + "원</td>"
+							     str +="<td>" + numberWithCommas(getHomeTaxDigitalList.sum) + "원</td>"
+							     str +="<td>" + getHomeTaxDigitalList.section + "</td>"
+							     
+							     
+							  	 
+			 					 str +="</tr>"
+			 					 
+			 						
+			 					   
+			 					 
+			 					 $('#test').append(str);
+						 })
+					 }
+					
+				},
+				error:function(request, status, error){
+				    alert("code:"+ request.status +"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				}
+				
+				
+			})
+			
+		})
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		document.getElementById('searchDay').value = new Date().toISOString().substring(0, 10);
 		
@@ -669,35 +753,17 @@ function YMDFormatter(num){
 												<option value="202103">2021년 03월</option>
 												<option value="202102">2021년 02월</option>
 												<option value="202101">2021년 01월</option>
-												<option value="202012">2020년 12월</option>
-												<option value="202011">2020년 11월</option>
-												<option value="202010">2020년 10월</option>
-												<option value="202009">2020년 09월</option>
-												<option value="202008">2020년 08월</option>
-												<option value="202007">2020년 07월</option>
-												<option value="202006">2020년 06월</option>
-												<option value="202005">2020년 05월</option>
-												<option value="202004">2020년 04월</option>
-												<option value="202003">2020년 03월</option>
-												<option value="202002">2020년 02월</option>
-												<option value="202001">2020년 01월</option>
 											</select>
 											<select name="searchQuarter" id="searchQuarter" style="margin-left: 15px; float: left; width: 50px; margin-bottom: 20px; color:#495057; height: 35px;border-top-width: 0px;padding-bottom: 0px; display: none;">
 												<option value="1">2021년 1분기</option>
 												<option value="2">2021년 2분기</option>
 												<option value="3">2021년 3분기</option>
 												<option value="4">2021년 4분기</option>
-												<option value="5">2020년 1분기</option>
-												<option value="6">2020년 2분기</option>
-												<option value="7">2020년 3분기</option>
-												<option value="8">2020년 4분기</option>
 											</select>
 											<span style="float: left">
-												<button id="searchBtn" name="searchBtn" type="button" style="height : 35px;;margin-left: 6px; border-top-left-radius: 5px;border-bottom-left-radius: 5px;">조회</button>
+												<button id="searchHometaxBill" name="searchHometaxBill" type="button" style="height : 35px;;margin-left: 6px; border-top-left-radius: 5px;border-bottom-left-radius: 5px;">조회</button>
 											</span>
-											<span style="float: left">
-												<button id="collectBtn" name="collectBtn" type="button" style="display: none;">수집</button>
-											</span>
+											
 									</div>
 									
 									<div class="col" align="right">
@@ -716,11 +782,10 @@ function YMDFormatter(num){
 								<tr id="boardtable">
 									<th><input type="checkbox" class="testBox" id="allCheck" value="1"></th>
 									<th width="120px">작성일자</th>
-									<th width="120px">발급일자</th>
-									<th width="140px">구분</th>
+									<th width="100px">구분</th>
 									<th width="180px">사업자등록번호</th>
 									<th width="150px">가맹점명</th>
-									<th width="120px">공급자명</th>
+									<th width="120px">유형</th>
 									<th width="110px">공급가액</th>
 									<th width="100px">부가세</th>
 									<th width="150px">합계금액</th>
@@ -730,15 +795,13 @@ function YMDFormatter(num){
 								<tbody id="test">
 								 	<tr>
 								 		<td><input type="checkbox" class="testBox" id="allCheck" value="1"></td>
-								 		<td>20210630</td>
-								 		<td>20210710</td>
+								 		<td>2021-09-18</td>
 								 		<td>세금계산서</td>
-								 		<td>6099192931</td>
+								 		<td>609-91-92931</td>
 								 		<td>사오수산</td>
-								 		<td>박종범</td>
-								 		<td>80,910</td>
-								 		<td>8,090</td>
-								 		<td>89,000</td>
+								 		<td>130,000원</td>
+								 		<td>13,000원</td>
+								 		<td>143,000원</td>
 								 		<td>도매</td>
 								 	</tr>
 								</tbody>

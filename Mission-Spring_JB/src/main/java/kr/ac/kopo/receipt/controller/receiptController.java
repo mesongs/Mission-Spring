@@ -44,6 +44,7 @@ import kr.ac.kopo.receipt.service.ReceiptService;
 import kr.ac.kopo.receipt.vo.AcceptRejectVO;
 import kr.ac.kopo.receipt.vo.HomeTaxCardVO;
 import kr.ac.kopo.receipt.vo.HomeTaxCashVO;
+import kr.ac.kopo.receipt.vo.HomeTaxDigitalVO;
 import kr.ac.kopo.receipt.vo.ReceiptFileVO;
 import kr.ac.kopo.receipt.vo.ReceiptVO;
 import kr.ac.kopo.receipt.vo.RejectReceiptVO;
@@ -418,6 +419,22 @@ public class receiptController {
 			return getHomeTaxCardList;
 		}
 		
+		@RequestMapping("/receipt/getHomeTaxDigitalBill")
+		@ResponseBody
+		public List<HomeTaxDigitalVO> getHomeTaxDigitalBillInfo(HttpSession session, @RequestParam("searchMonth") String searchMonth){
+			
+			
+			LoginVO userVO = (LoginVO)session.getAttribute("userVO");
+			String businessNo = userVO.getBusinessNo();
+			
+			List<HomeTaxDigitalVO> getHomeTaxDigitalBillList = service.getHomeTaxDigitalInfoService(searchMonth, businessNo);
+			
+			return getHomeTaxDigitalBillList;
+			
+		}
+		
+		
+		
 		
 		// 통합 영수증 매입으로 이동
 		@RequestMapping("/receipt/allReceiptList")
@@ -584,6 +601,10 @@ public class receiptController {
 		        wb.close();
 		        
 		}
+		
+		
+		
+		
  				
 }
 

@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import kr.ac.kopo.receipt.vo.AcceptRejectVO;
 import kr.ac.kopo.receipt.vo.HomeTaxCardVO;
 import kr.ac.kopo.receipt.vo.HomeTaxCashVO;
+import kr.ac.kopo.receipt.vo.HomeTaxDigitalVO;
 import kr.ac.kopo.receipt.vo.HomeTaxInfoVO;
 import kr.ac.kopo.receipt.vo.IntegratedSalesVO;
 import kr.ac.kopo.receipt.vo.ReceiptFileVO;
@@ -59,6 +60,8 @@ public interface ReceiptService {
 	List<HomeTaxCashVO> getHomeTaxCashInfoService(String purchaseDate, String businessNo);
 	
 	List<HomeTaxCardVO> getHomeTaxCardInfoService(String searchMonth, String businessNo);
+	
+	List<HomeTaxDigitalVO> getHomeTaxDigitalInfoService(String searchMonth, String businessNo);
 	
 	List<IntegratedSalesVO> getIntegratedList(IntegratedSalesVO integratedSalesVO);
 	

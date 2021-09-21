@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        
+
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
 <link href="${ pageContext.request.contextPath }/resources/css/reset2.css" rel="stylesheet">
@@ -12,10 +12,21 @@
 <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/list.css?after">
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">    
     
-
+<script src="${ pageContext.request.contextPath }/resources/vendors/jquery/jquery-3.2.1.min.js"></script>
 
 
 <style>
+
+.writeForm{
+
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	background-color: #27b2a5;
+	color: #ffffff;
+	border : 0px;
+}
 
 .StFont{
 
@@ -37,7 +48,30 @@ th{
 </style>
 
 
+<script>
+$(document).ready(function(){
+	
+	
+	
+	$('#writeForm').click(function(){
+	
+		
+		alert('클릭')
+		
+		let bNo = ${taxCustomer.businessNo};
+		let storeName = '${taxCustomer.storeName}';
+		location.href = '${ pageContext.request.contextPath }/taxAgent/taxWriteForm?bNo='+ bNo + "&storeName=" + storeName ;
+		
+		//location.href="search.jsp?type="+type+"&type2=type"+type2;
 
+		
+		
+	})
+})
+
+
+
+</script>
 
 
     
@@ -107,9 +141,19 @@ th{
                      <ul>
                             <li class="active"><strong style="font-size:20px;">수입(매출)</strong></li>
                             <li><strong style="font-size:20px;"><a href="#">비용(매입/일반경비)</a></strong></li>
+                            <li><strong style="font-size:20px;"><a href="#">목록</a></strong></li>
                      </ul>
                         
                     </div>
+                    
+                    <div style="border: 3px solid; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; ">
+						<div class="row" style="height: 50px; width: 1050px; ;">
+							<div class="col-2" style="background-color: rgba(130,139,178,0.25); width: 20%; text-align:center; display:table-cell; vertical-align:middle; line-height:50px;font-size: 20px;left: 15px;">사업자등록번호</div>
+							<div class="col-4" style="width: 20%; text-align:center; display:table-cell; vertical-align:middle; line-height:50px;font-size: 20px;">605-23-55236</div> <!--UserVO가 가지고 있는 값  -->
+							<div class="col-2" style="background-color: rgba(130,139,178,0.25); width: 20%; text-align:center; display:table-cell; vertical-align:middle; line-height:50px;font-size: 20px;">상호</div>
+							<div class="col-4" style="width: 20%; text-align:center; display:table-cell; vertical-align:middle; line-height:50px;font-size: 20px;">${taxCustomer.storeName}</div>
+						</div>
+					</div>
 
                     <!--조건설정영역-->
                     <div class="condition">
@@ -315,23 +359,12 @@ th{
                             </table>
                         </div>
                     </div>
-
-                   
-
-                    <!--페이징-->
-                    <p class="paging">
-                        <span><i class="fas fa-chevron-left"></i></span>
-                        <span>1</span>
-                        <span>2</span>
-                        <span>3</span>
-                        <span><i class="fas fa-chevron-right"></i></span>
-                    </p>
-
                 </div>
-
+				
                 
-                <div class="account">
-                    <span class="tit"><i class="fas fa-chevron-circle-right"></i> <strong style="font-size: 20px;">요약 (부가세 포함)</strong></span>
+                <div class="account" style="margin-top: 30px;">
+                    <span class="tit"><i class="fas fa-chevron-circle-right" style="font-size: 24px;"></i> <strong style="font-size: 24px;">요약 (부가세 포함)</strong></span>
+                    <span style="float: right;"><button id="writeForm" class="writeForm" style="font-size: 24px;" type="submit">신고서 작성<i class="fas fa-chevron-right"></i></button></span>
                     <div class="table">
                         <table>
                             <colgroup>

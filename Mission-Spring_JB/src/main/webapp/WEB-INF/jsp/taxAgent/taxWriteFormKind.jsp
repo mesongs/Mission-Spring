@@ -6,7 +6,10 @@
 
 <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/form.css?after">
 <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/list.css?before">
-
+<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/list.css?after">
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="${ pageContext.request.contextPath }/resources/css/reset2.css" rel="stylesheet">
+<link href="${ pageContext.request.contextPath }/resources/css/main2.css" rel="stylesheet">
 
 <head>
 <jsp:include page="/WEB-INF/jsp/include/head.jsp"/>
@@ -188,10 +191,61 @@ function goToTaxBill(formName){
 <body>
 	
 	<!--================Header Menu Area =================-->
-	<jsp:include page="/WEB-INF/jsp/include/header.jsp"/>
+	<%-- <jsp:include page="/WEB-INF/jsp/include/header.jsp"/> --%>
 	<!--================Header Menu Area =================-->
 
-	<div class="comment-form-receipt" id="comment-custom-receipt" style="width: 1110px;">
+
+
+
+	<div class="header">
+            <div class="logo">
+                <a href="javascript:void(0)"><img src="${ pageContext.request.contextPath }/resources/img/logo.png" alt="logo" style="width: 214px; height: 80px;"></a>
+            </div>
+    </div>
+
+	 <div class="wrapper">
+	 
+	 	 <div class="nav">
+	 	 
+	 	 	<div class="memberInfo">
+                    <p class="memberId">
+                        <strong>${userVO.id } 세무사님,</strong>
+                        <br><span style="font-size: 20px;">환영합니다!</span>
+                    </p>
+                    <a class="applyBtn" href="javascript:void(0)"><strong>로그아웃<i class="fas fa-chevron-right"></i></strong></a>
+                </div>
+                
+                <ul class="menu">
+                    <li class="mainMenu" style="margin-top:20px;">
+                        <a href="javascript:void(0)"><strong><i class="fas fa-file-signature"></i>고객 증빙자료</strong></a>
+                        <ul class="subMenu">
+                            <li><a href="javascript:void(0)">-증빙자료 조회/수집</a></li>
+                            
+                        </ul>
+                    </li>
+                    <li class="mainMenu" style="margin-top: 10px;">
+                        <a href="javascript:void(0)"><i class="fas fa-poll"></i><strong> 세무신고</strong></a>
+                        <ul class="subMenu">
+                            <li><a href="javascript:void(0)">-신고서작성</a></li>
+                            <li><a href="javascript:void(0)">-과거 신고내역 조회</a></li>
+                        </ul>
+                    </li>
+                    <li class="mainMenu" style="margin-top: 10px;">
+                        <a href="javascript:void(0)"><i class="fas fa-clipboard"></i><strong> 고객관리</strong></a>
+                        <ul class="subMenu">
+                            <li><a href="javascript:void(0)">-고객목록</a></li>
+                            <li><a href="javascript:void(0)">-SMS발송</a></li>
+                        </ul>
+                    </li>
+                    
+                    
+                    
+                </ul>
+	 	 
+	 	 
+	 	 </div>
+	 
+	 	 <div class="comment-form-receipt" id="comment-custom-receipt" style="width: 1110px;">
 		<div class="row">
 			<div class="col">
 				<h4 style="font-family: 'Noto Sans KR', sans-serif;font-size: xx-large; margin-left: 32px;">세금신고서 작성</h4>
@@ -199,11 +253,7 @@ function goToTaxBill(formName){
 			
 		</div>
 		<div class="container">
-			<ul class="nav nav-tabs" style="margin-left: 50px;">
-				<li class="nav-item"><a class="nav-link active" aria-current="page" href="#">부가가치세</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">종합소득세</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">과거 세무신고 내역 조회</a></li>
-			</ul>
+			
 			
 			<section>
 					<div class="container" style="margin-left: 36px;">
@@ -321,6 +371,20 @@ function goToTaxBill(formName){
 		</div>
 
 	</div>
+	 
+	 
+	 
+	 
+	 
+	 </div>
+
+
+
+
+
+
+
+	
 	
 	
 	<!--================ End Blog Post Area =================-->

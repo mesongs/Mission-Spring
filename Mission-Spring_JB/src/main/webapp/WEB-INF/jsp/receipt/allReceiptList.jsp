@@ -587,7 +587,7 @@ function YMDFormatter(num){
 							 	
 							 	<div class="row" style="margin-top: 30px;">
 							 		<div class="col-7" style="float: left; width: 496px">
-							 			<span style="float: left; font-weight: bold; color: rgb(2,2,2); margin-bottom: 10px; ">분류</span>
+							 			<span style="float: left; font-weight: bold; color: rgb(2,2,2); margin-bottom: 10px; ">발급유형</span>
 							 			<label style="float: left;"><input type="checkbox" name="tblChk" value="001" style="margin-left: 10px;">세금계산서</label> 
 							 			<label style="float: left;"><input type="checkbox" name="tblChk" value="002" style="margin-left: 10px;">계산서</label> 
 							 			<label style="float: left;"><input type="checkbox" name="tblChk" value="003" style="margin-left: 10px;">카드영수증</label> 

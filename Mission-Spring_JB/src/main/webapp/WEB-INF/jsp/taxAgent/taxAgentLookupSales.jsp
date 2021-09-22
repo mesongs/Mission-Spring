@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+ <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+ <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,6 +19,12 @@
 
 
 <style>
+a { 
+text-decoration:none 
+}
+ a:link { color: #ffffff; text-decoration: none;}
+ a:visited { color: black; text-decoration: none;}
+ a:hover { color: #ffffff; text-decoration: none;}
 
 .writeForm{
 
@@ -53,21 +62,18 @@ $(document).ready(function(){
 	
 	
 	
-	$('#writeForm').click(function(){
-	
-		
-		alert('클릭')
-		
-		let bNo = ${taxCustomer.businessNo};
-		let storeName = '${taxCustomer.storeName}';
-		location.href = '${ pageContext.request.contextPath }/taxAgent/taxWriteForm?bNo='+ bNo + "&storeName=" + storeName ;
-		
-		//location.href="search.jsp?type="+type+"&type2=type"+type2;
-
-		
-		
-	})
 })
+
+
+
+function summary(formName){
+	
+		formName.action = "${pageContext.request.contextPath}/taxAgent/taxWriteForm" ;
+		formName.method = "post";
+		formName.submit();
+		
+		
+	}
 
 
 
@@ -137,16 +143,21 @@ $(document).ready(function(){
             <div class="content">
                 <div class="list">
                     <!--탭-->
-                    <div class="listMenu">
+                    
+                    
+                    
+                    <div class="listMenu" style="margin-bottom: 30px;">
                      <ul>
-                            <li class="active"><strong style="font-size:20px;">수입(매출)</strong></li>
-                            <li><strong style="font-size:20px;"><a href="#">비용(매입/일반경비)</a></strong></li>
+                            <li><strong style="font-size:20px;"><a href="#">수입(매출)</a></strong></li>
+                            <li class="active"><strong style="font-size:20px;">비용(매입/일반경비)</strong></li>
                             <li><strong style="font-size:20px;"><a href="#">목록</a></strong></li>
                      </ul>
+                     
+                     
                         
                     </div>
                     
-                    <div style="border: 3px solid; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; ">
+                    <div style="border: 3px solid #797979; color:#797979; width:648px; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; ">
 						<div class="row" style="height: 50px; width: 1050px; ;">
 							<div class="col-2" style="background-color: rgba(130,139,178,0.25); width: 20%; text-align:center; display:table-cell; vertical-align:middle; line-height:50px;font-size: 20px;left: 15px;">사업자등록번호</div>
 							<div class="col-4" style="width: 20%; text-align:center; display:table-cell; vertical-align:middle; line-height:50px;font-size: 20px;">605-23-55236</div> <!--UserVO가 가지고 있는 값  -->
@@ -154,26 +165,61 @@ $(document).ready(function(){
 							<div class="col-4" style="width: 20%; text-align:center; display:table-cell; vertical-align:middle; line-height:50px;font-size: 20px;">${taxCustomer.storeName}</div>
 						</div>
 					</div>
+					
+					
+					
 
                     <!--조건설정영역-->
-                    <div class="condition">
-                        <select>
-                            <option>조회일</option>
-                        </select>
-                        <select>
-                            <option>거래처 선택</option>
-                        </select>
-                        <select>
-                            <option>상세조회조건</option>
-                        </select>
-                        <select>
-                            <option>오픈마켓,PG,배달</option>
-                        </select>
+                    <div class="condition" style="margin-top: 20px;">
+							<span style="float: left; font-weight: bold; color: rgb(2,2,2); margin-bottom: 10px; font-size: 18px;">발급유형</span>
+							<label style="float: left; font-size: 17px; margin-top: 2px;"><input type="checkbox" name="tblChk" value="001" style="margin-left: 10px;">세금계산서</label> 
+							<label style="float: left; font-size: 17px; margin-top: 2px;" ><input type="checkbox" name="tblChk" value="002" style="margin-left: 10px;">계산서</label> 
+							<label style="float: left; font-size: 17px; margin-top: 2px;"><input type="checkbox" name="tblChk" value="003" style="margin-left: 10px;">카드영수증</label> 
+							<label style="float: left; font-size: 17px; margin-top: 2px;"><input type="checkbox" name="tblChk" value="004" style="margin-left: 10px;">간이영수증</label>
+							<label style="float: left; font-size: 17px; margin-top: 2px;"><input type="checkbox" name="tblChk" value="005" style="margin-left: 10px;">현금영수증</label>
                     </div>
-
+                    
+                    
+                    
+                    <div class="condition" style="margin-top: 20px; border-top: 0px;">
+                    	
+                    	
+                        <span style="float: left; font-weight: bold; color: rgb(2,2,2); margin-bottom: 10px; margin-top:3px; font-size: 18px; ">조회기간 설정</span>
+                        <label style="float: left; font-size: 17px; margin-top: 5px;"><input type="radio" name="searchDateDay" value="1" style="margin-left: 10px;"> 일별</label> 
+						<label style="float: left; font-size: 17px; margin-top: 5px;"><input type="radio" name="searchDateDay" value="2" style="margin-left: 10px;"> 월별</label>
+						<label style="float: left; font-size: 17px; margin-top: 5px;"><input type="radio" name="searchDateDay" value="2" style="margin-left: 10px;" checked="checked"> 기 수별</label>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <select name="selectYear" id="selectYear" style="margin-left: 15px; float: left; width: 100px; color:#495057; height: 35px;">
+								<option value="2019">2019년</option>
+								<option value="2020">2020년</option>
+								<option value="2021" selected="selected">2021년</option>
+						</select>
+						<select name="selectOrder" id="selectOrder" style="margin-left: 15px; float: left; width: 55px; color:#495057; height: 35px;">
+												<option value="1" selected="selected">1기</option>
+												<option value="2">2기</option>
+						</select>
+							 			<span style="float: left">
+												<button id="searchWriteForm" name="searchWriteForm" type="button" style="height : 35px; margin-left: 15px; border-top-left-radius: 5px;border-bottom-left-radius: 5px;border-top-right-radius: 5px;border-bottom-right-radius: 5px; font-size: 18px;">조회</button>
+										</span>
+					
+                       <%-- <button type="submit" id="excelBtn" style="padding-left: 0px; margin-left: 10px; font-size: 18px;"><img class="product-img" src="${ pageContext.request.contextPath }/resources/img/excel.png" style="margin-top: -5px;">Excel 다운로드</button> --%>
+                    	                   </div>
+                    
+                    
+                           
+                     
                     <!--데이터영역-->
-                    <div class="table">
-                        <div>
+                    <div class="table" style="margin-top:20px;">
+                        <div class="scrollArea">
                             <table>
                                 <colgroup>
                                     <col width="5%">
@@ -184,188 +230,88 @@ $(document).ready(function(){
                                     <col width="12%">
                                     <col width="12%">
                                     <col width="12%">
-                                    <col width="11%">
+                                    
                                 </colgroup>
                                 <thead>
                                     <th><input type="checkbox"></th>
-                                    <th>날짜</th>
-                                    <th>거래처</th>
-                                    <th>품목(내용)</th>
-                                    <th class="alignRight">공급가액</th>
-                                    <th class="alignRight">부가세</th>
-                                    <th class="alignRight">합계</th>
-                                    <th class="alignRight">카드 수수료</th>
+                                    <th>매입일시</th>
+                                    <th>발급유형</th>
+                                    <th>사업자등록번호</th>
+                                    <th>상호명</th>
+                                    <th>공급가액</th>
+                                    <th>부가세</th>
+                                    <th>합계</th>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><input type="checkbox"></td>
-                                        <td>2019-09-01</td>
-                                        <td>카드(매출)</td>
-                                        <td>카드(5)</td>
-                                        <td class="alignRight">581,182</td>
-                                        <td class="alignRight">58,182</td>
-                                        <td class="alignRight">640,000</td>
-                                        <td class="alignRight">0</td>
-                                        
-                                    </tr>
-                                    <tr>
-                                        <td><input type="checkbox"></td>
-                                        <td>2019-09-01</td>
-                                        <td>카드(매출)</td>
-                                        <td>카드(5)</td>
-                                        <td class="alignRight">581,182</td>
-                                        <td class="alignRight">58,182</td>
-                                        <td class="alignRight">640,000</td>
-                                        <td class="alignRight">0</td>
-                                       
-                                    </tr>
-                                    <tr>
-                                        <td><input type="checkbox"></td>
-                                        <td>2019-09-01</td>
-                                        <td>카드(매출)</td>
-                                        <td>카드(5)</td>
-                                        <td class="alignRight">581,182</td>
-                                        <td class="alignRight">58,182</td>
-                                        <td class="alignRight">640,000</td>
-                                        <td class="alignRight">0</td>
-                                        
-                                    </tr>
-                                    <tr>
-                                        <td><input type="checkbox"></td>
-                                        <td>2019-09-01</td>
-                                        <td>카드(매출)</td>
-                                        <td>카드(5)</td>
-                                        <td class="alignRight">581,182</td>
-                                        <td class="alignRight">58,182</td>
-                                        <td class="alignRight">640,000</td>
-                                        <td class="alignRight">0</td>
-                                        
-                                    </tr>
-                                    <tr>
-                                        <td><input type="checkbox"></td>
-                                        <td>2019-09-01</td>
-                                        <td>카드(매출)</td>
-                                        <td>카드(5)</td>
-                                        <td class="alignRight">581,182</td>
-                                        <td class="alignRight">58,182</td>
-                                        <td class="alignRight">640,000</td>
-                                        <td class="alignRight">0</td>
-                                        
-                                    </tr>
-                                    <tr>
-                                        <td><input type="checkbox"></td>
-                                        <td>2019-09-01</td>
-                                        <td>카드(매출)</td>
-                                        <td>카드(5)</td>
-                                        <td class="alignRight">581,182</td>
-                                        <td class="alignRight">58,182</td>
-                                        <td class="alignRight">640,000</td>
-                                        <td class="alignRight">0</td>
-                                        
-                                    </tr>
-                                    <tr>
-                                        <td><input type="checkbox"></td>
-                                        <td>2019-09-01</td>
-                                        <td>카드(매출)</td>
-                                        <td>카드(5)</td>
-                                        <td class="alignRight">581,182</td>
-                                        <td class="alignRight">58,182</td>
-                                        <td class="alignRight">640,000</td>
-                                        <td class="alignRight">0</td>
-                                        
-                                    </tr>
-                                    <tr>
-                                        <td><input type="checkbox"></td>
-                                        <td>2019-09-01</td>
-                                        <td>카드(매출)</td>
-                                        <td>카드(5)</td>
-                                        <td class="alignRight">581,182</td>
-                                        <td class="alignRight">58,182</td>
-                                        <td class="alignRight">640,000</td>
-                                        <td class="alignRight">0</td>
-                                        
-                                    </tr>
-                                    <tr>
-                                        <td><input type="checkbox"></td>
-                                        <td>2019-09-01</td>
-                                        <td>카드(매출)</td>
-                                        <td>카드(5)</td>
-                                        <td class="alignRight">581,182</td>
-                                        <td class="alignRight">58,182</td>
-                                        <td class="alignRight">640,000</td>
-                                        <td class="alignRight">0</td>
-                                        
-                                    </tr>
-                                    <tr>
-                                        <td><input type="checkbox"></td>
-                                        <td>2019-09-01</td>
-                                        <td>카드(매출)</td>
-                                        <td>카드(5)</td>
-                                        <td class="alignRight">581,182</td>
-                                        <td class="alignRight">58,182</td>
-                                        <td class="alignRight">640,000</td>
-                                        <td class="alignRight">0</td>
-                                       
-                                    </tr>
-                                    <tr>
-                                        <td><input type="checkbox"></td>
-                                        <td>2019-09-01</td>
-                                        <td>카드(매출)</td>
-                                        <td>카드(5)</td>
-                                        <td class="alignRight">581,182</td>
-                                        <td class="alignRight">58,182</td>
-                                        <td class="alignRight">640,000</td>
-                                        <td class="alignRight">0</td>
-                                    
-                                    </tr>
-                                    <tr>
-                                        <td><input type="checkbox"></td>
-                                        <td>2019-09-01</td>
-                                        <td>카드(매출)</td>
-                                        <td>카드(5)</td>
-                                        <td class="alignRight">581,182</td>
-                                        <td class="alignRight">58,182</td>
-                                        <td class="alignRight">640,000</td>
-                                        <td class="alignRight">0</td>
-                                       
-                                    </tr>
+                                <tbody id="test">
+									<c:forEach items="${ getPurchaseList }" var="getPurchaseList">
+										<tr>
+											<td><input type="checkbox"></td>
+											<td>${getPurchaseList.receiptDate }</td>
+											<td>${getPurchaseList.receiptCode }</td>
+											<td>${getPurchaseList.supplierBusinessNo }</td>
+											<td>${getPurchaseList.storeName }</td>
+											<td><fmt:formatNumber value="${ getPurchaseList.amount}" pattern="#,###" />원</td>
+											<td><fmt:formatNumber value="${ getPurchaseList.vat}" pattern="#,###" />원</td>
+											<td><fmt:formatNumber value="${ getPurchaseList.calSum}" pattern="#,###" />원</td>
+										</tr>
+									</c:forEach>   		 
                                 </tbody>
                             </table>
                         </div>
                         <div class="sum">
                             <table>
                                 <colgroup>
-                                    <col width="41%">
+                                    <col width="53%">
                                     <col width="12%">
                                     <col width="12%">
                                     <col width="12%">
-                                    <col width="12%">
-                                    <col width="11%">
+                                    
                                 </colgroup>
                                 <tr>
                                     <td><strong>부분합계</strong></td>
-                                    <td class="alignRight">5,031,841</td>
-                                    <td class="alignRight">503,186</td>
-                                    <td class="alignRight">5,535,000</td>
-                                    <td class="alignRight">0</td>
+                                    <td><fmt:formatNumber value="${ pusrchaseSumVO.purchaseAmountSum}" pattern="#,###" />원</td>
+                                    <td> <fmt:formatNumber value="${ pusrchaseSumVO.purchaseVatSum}" pattern="#,###" />원</td>
+                                    <td><fmt:formatNumber value="${ pusrchaseSumVO.purchaseSum}" pattern="#,###" />원</td>
                                 </tr>
                                 <tr>
                                     <td><strong>전체합계</strong></td>
-                                    <td class="alignRight">5,031,841</td>
-                                    <td class="alignRight">503,186</td>
-                                    <td class="alignRight">5,535,000</td>
-                                    <td class="alignRight">0</td>
+                                    <td><fmt:formatNumber value="${ pusrchaseSumVO.purchaseAmountSum}" pattern="#,###" />원</td>
+                                    <td> <fmt:formatNumber value="${ pusrchaseSumVO.purchaseVatSum}" pattern="#,###" />원</td>
+                                    <td><fmt:formatNumber value="${ pusrchaseSumVO.purchaseSum}" pattern="#,###" />원</td>
                                 </tr>
                             </table>
                         </div>
                     </div>
+                    
+					<p class="paging" style="margin-top: 20px;">
+                        <span><i class="fas fa-chevron-left"></i></span>
+                        <span>1</span>
+                        <span>2</span>
+                        <span>3</span>
+                        <span>4</span>
+                        <span>5</span>
+                        <span><i class="fas fa-chevron-right"></i></span>
+                    </p>
+					
+                    
+                    
                 </div>
 				
                 
                 <div class="account" style="margin-top: 30px;">
                     <span class="tit"><i class="fas fa-chevron-circle-right" style="font-size: 24px;"></i> <strong style="font-size: 24px;">요약 (부가세 포함)</strong></span>
-                    <span style="float: right;"><button id="writeForm" class="writeForm" style="font-size: 24px;" type="submit">신고서 작성<i class="fas fa-chevron-right"></i></button></span>
+                   <span style="float: right;"><a href="javascript:summary(sendSummary)" class="writeForm" style="font-size: 24px;">신고서 작성<i class="fas fa-chevron-right"></i></a></span>
                     <div class="table">
+                        <form name= sendSummary> 
+                        <input type="hidden" name="storeName" value="${taxCustomer.storeName}">
+                        <input type="hidden" name="bNo" value="${taxCustomer.businessNo}">
+                        <input type="hidden" name="salesSum" value="${customerSalesVO.slaesSum}">
+                        <input type="hidden" name="purchaseSum" value="${ pusrchaseSumVO.purchaseSum}">
+                        <input type="hidden" name="cashPurchase" value="${ cashSum }">
+                        <input type="hidden" name="simplePurchase" value="${ simpleSum }">
+                        <input type="hidden" name="taxPurchase" value=" ${ taxSum }">
+                        <input type="hidden" name="taxBillPurchase" value="${ taxBilSum }">
+                        <input type="hidden" name="cardPurchase" value="${cardSum}">
                         <table>
                             <colgroup>
                                 <col width="14%">
@@ -374,43 +320,50 @@ $(document).ready(function(){
                                 <col width="14%">
                                 <col width="14%">
                                 <col width="14%">
+                                <col width="14%">
                             </colgroup>
                             <tbody>
+                            	
                                 <tr>
                                     <td class="alignCenter color" rowspan="2"><strong class="fontSize">수입</strong></td>
-                                    <td class="alignCenter" rowspan="2"><strong class="fontSize">7,711,000</strong></td>
-                                    <td><strong class="StFont">카드</strong></td>
-                                    <td><strong class="StFont">현금영수증</strong></td>
-                                    <td><strong class="StFont">현금</strong></td>
+                                    <td class="alignCenter" rowspan="2"><strong class="fontSize"><fmt:formatNumber value="${ customerSalesVO.slaesSum}" pattern="#,###" />원</strong></td>
+                                    <td><strong class="StFont">카드영수증</strong></td>
                                     <td><strong class="StFont">세금계산서</strong></td>
+                                    <td><strong class="StFont">간이영수증</strong></td>
+                                    <td><strong class="StFont">계산서</strong></td>
+                                    <td><strong class="StFont">현금영수증</strong></td>
                                     
                                 </tr>
                                 <tr>
-                                    <td class="StFont">7,711,00</td>
+                                	<!-- 카드 매출 데이터 -->
+                                    <td class="StFont"><fmt:formatNumber value="${ customerSalesVO.slaesSum}" pattern="#,###" />원</td>
                                     <td class="StFont">0</td>
                                     <td class="StFont">0</td>
                                     <td class="StFont">0</td>
-                                    
+                                    <td class="StFont">0</td>
                                 </tr>
-                                <tr>
+                                <tr>				
                                     <td class="alignCenter color" rowspan="2"><strong class="fontSize">비용</strong></td>
-                                    <td class="alignCenter" rowspan="2"><strong class="fontSize">6,611,000</strong></td>
-                                    <td><strong class="StFont">카드</strong></td>
-                                    <td><strong class="StFont">현금영수증</strong></td>
-                                    <td><strong class="StFont">현금</strong></td>
-                                    <td><strong class="StFont">세금계산서</strong></td>
+                                    <td class="alignCenter" rowspan="2"><strong class="fontSize"><fmt:formatNumber value="${ pusrchaseSumVO.purchaseSum}" pattern="#,###" />원</strong></td>
                                     
+                                    <td><strong class="StFont">카드영수증</strong></td>
+                                    <td><strong class="StFont">세금계산서</strong></td>
+                                    <td><strong class="StFont">간이영수증</strong></td>
+                                    <td><strong class="StFont">계산서</strong></td>
+                                    <td><strong class="StFont">현금영수증</strong></td>
                                 </tr>
                                 <tr>
-                                    <td>7,711,00</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    
-                                </tr>
+                                	<td><fmt:formatNumber value="${ cardSum }" pattern="#,###" />원</td>
+                                	<td><fmt:formatNumber value="${ taxBilSum }" pattern="#,###" />원</td>
+                                	<td><fmt:formatNumber value="${ simpleSum }" pattern="#,###" />원</td>
+                                	<td><fmt:formatNumber value="${ taxSum }" pattern="#,###" />원</td>
+                                	<td><fmt:formatNumber value="${ cashSum }" pattern="#,###" />원 </td>
+                                </tr>    
                             </tbody>
                         </table>
-                    </div>
+                        </form>
+                         <!-- <span style="float: right;"><a href="javascript:summary(sendSummary)" class="writeForm" style="font-size: 24px;">신고서 작성<i class="fas fa-chevron-right"></i></a></span> -->
+                    </div>						
                 </div>
             </div>
         </div>

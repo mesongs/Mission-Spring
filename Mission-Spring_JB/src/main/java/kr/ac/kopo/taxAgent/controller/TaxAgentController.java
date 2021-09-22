@@ -12,17 +12,23 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import kr.ac.kopo.financial.vo.ReturnPurchaseVO;
 import kr.ac.kopo.member.service.MemberService;
 import kr.ac.kopo.member.vo.LoginVO;
 import kr.ac.kopo.receipt.vo.ReceiptVO;
 import kr.ac.kopo.taxAgent.service.TaxAgentService;
 import kr.ac.kopo.taxAgent.vo.TaxCustomerVO;
-import kr.ac.kopo.taxAgent.vo.TaxBillVO;
+import kr.ac.kopo.taxAgent.vo.TaxUserInfoVO;
+import kr.ac.kopo.taxAgent.vo.customerPurchaseVO;
+import kr.ac.kopo.taxAgent.vo.summaryVO;
+import kr.ac.kopo.taxAgent.vo.CustomerSalesVO;
+import kr.ac.kopo.taxAgent.vo.WriteInfoVO;
 
 @Controller
 public class TaxAgentController {
@@ -117,6 +123,57 @@ public class TaxAgentController {
 			
 			TaxCustomerVO taxCustomer = service.getCustomerInfoService(bNO);
 			
+			// 회원의 최근 6개월 간의 통합 매입, 카드 매출을 조회 => 공유영역에 저장
+			// 서비스단에서 dao 여러 개 호출해서 map에 저장해서 넘겨주기
+			
+			
+			HashMap<String, Object> map = service.getCustomerPurchase(bNO);
+			
+//			List<ReturnPurchaseVO> recentWeekPurchaseList = (List<ReturnPurchaseVO>)map.get("recentWeekPurchaseList");
+			List<customerPurchaseVO> receiptKindSumList = (List<customerPurchaseVO>) map.get("receiptKindSumList");
+			
+			
+			
+			for(int i=0; i<receiptKindSumList.size(); i++) {
+				
+				
+				
+				switch (receiptKindSumList.get(i).getReceiptCode()) {
+				case "003":
+					mav.addObject("cardSum",receiptKindSumList.get(i).getReceiptKindPurchase());
+					break;
+					
+				case "004":
+					mav.addObject("simpleSum",receiptKindSumList.get(i).getReceiptKindPurchase());
+					break;
+					
+				case "001":
+					mav.addObject("taxBilSum",receiptKindSumList.get(i).getReceiptKindPurchase());
+					break;
+					
+				case "002":
+					mav.addObject("taxSum",receiptKindSumList.get(i).getReceiptKindPurchase());
+					break;
+					
+				case "005":
+					mav.addObject("cashSum",receiptKindSumList.get(i).getReceiptKindPurchase());
+					break;
+				
+				}
+				
+			}
+				
+			
+			customerPurchaseVO pusrchaseSumVO = (customerPurchaseVO)map.get("pusrchaseSumVO");
+			List<customerPurchaseVO> getPurchaseList = (List<customerPurchaseVO>)map.get("getPurchaseList");
+			CustomerSalesVO customerSalesVO = (CustomerSalesVO) map.get("salesSumVO");
+			
+//			mav.addObject("receiptKindSumList", receiptKindSumList);
+			mav.addObject("pusrchaseSumVO", pusrchaseSumVO);
+			mav.addObject("getPurchaseList", getPurchaseList);
+			mav.addObject("customerSalesVO", customerSalesVO);
+			
+			// 세무사가 선택한 고객 Info
 			mav.addObject("taxCustomer", taxCustomer);
 			
 			return mav;
@@ -124,37 +181,59 @@ public class TaxAgentController {
 		}
 	
 	
-	// 세무사가 고객의 세무 정보 확인 후, 신고서 작성 페이지로 이동함
-	@RequestMapping("/taxAgent/taxWriteForm")
-	public ModelAndView taxWriteForm(@RequestParam("bNo") String bNo, @RequestParam("storeName") String storeName) {
+	// 세무사가 고객의 세무 정보 확인 후, 신고서 작성 페이지로 이동함 - 변경 전 1
+	@PostMapping("/taxAgent/taxWriteForm")
+	public ModelAndView taxWriteForm(summaryVO summaryVO) {
 		
+		
+		
+		// form태그로 날아오는 인자 vo로 받기
 		ModelAndView mav = new ModelAndView("taxAgent/taxWriteFormKind");
-		
-		mav.addObject("bNo", bNo);
-		mav.addObject("storeName", storeName);
+		mav.addObject("summaryVO", summaryVO);
 		
 		return mav;
 	}
-	
-	
-	// 카드 매출 관련 세금신고서 작성 form으로 이동
-	@RequestMapping("/taxAgent/cardSealesWriteForm")
-	public ModelAndView cardSealesWriteForm() {
+		
+	// 변경 후 2
+//	@RequestMapping("/taxAgent/taxWriteForm")
+//	public ModelAndView taxWriteForm(@RequestParam("bNo") String bNo, @RequestParam("storeName") String storeName) {
+//		
+//		ModelAndView mav = new ModelAndView("taxAgent/test");
+//		
+//		mav.addObject("bNo", bNo);
+//		mav.addObject("storeName", storeName);
+//		
+//		return mav;
+//	}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// 카드 매출 관련 신고서 작성, form으로 이동
+	@PostMapping("/taxAgent/cardSealesWriteForm")
+	public ModelAndView cardSealesWriteForm(WriteInfoVO writeInfoVO) {
 		
 		ModelAndView mav = new ModelAndView("taxAgent/taxCardSalesWriteForm");
-		
 		// 이 링크로 들어오면, 기존에 조회한 값을 가지고 들어와야함
 		
+		String bNo = writeInfoVO.getbNo();
+		
+		TaxUserInfoVO taxUserInfo = service.getTaxUserInfoService(bNo); 		
+		
+		// 고객 기본정보를 가져와서VO에 공유영역에 저장
+		mav.addObject("taxUserInfo", taxUserInfo);
+		mav.addObject("writeInfoVO", writeInfoVO);
 		
 		return mav;
+		
 	}
 	
 	// 매입처별 세금계산서 합계표
-	@RequestMapping("/taxAgent/taxBill")
-	public String getAjaxTaxBill(TaxBillVO taxBillVO) {
+	@PostMapping("/taxAgent/taxBill")
+	public String getAjaxTaxBill() {
 		
+		//mav.addObject("summaryVO", summaryVO);
 		
 		return "taxAgent/taxBillWriteForm";
+		
 	}
 	
 

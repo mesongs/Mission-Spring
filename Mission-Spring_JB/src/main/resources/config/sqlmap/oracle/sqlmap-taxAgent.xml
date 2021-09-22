@@ -15,6 +15,24 @@
 		<result column="OPEN_DATE" property="openDate" />
 	</resultMap>
 	
+	<resultMap type="customerPurchaseVO" id="customerPurchaseMap">
+		<result column="receipt_code" property="receiptCode" />
+		<result column="receipt_kind_purchase" property="receiptKindPurchase" />
+		<result column="store_name" property="storeName"/>
+		<result column="receipt_date" property="receiptDate" />
+		<result column="supplier_business_no" property="supplierBusinessNo"/>
+		<result column="purchase_sum" property="purchaseSum" />
+		<result column="purchase_amount" property="purchaseAmountSum" /> 
+		<result column="purchase_vat" property="purchaseVatSum" />
+	</resultMap>
+	
+	<resultMap type="taxUserInfoVO" id="taxUserInfoMap">
+		<result column="BUSINESS_NO" property="bNo" />
+		<result column="addr_jibun" property="addrJibun" />
+		<result column="store_name" property="storeName" />
+	</resultMap>
+	
+	
 	<!-- 세무사 - 자신이 담당하고 있는 회원들의 목록을 가져옴 -->
 	<select id="getCustomerList" resultType="taxCustomerVO" parameterType="String" resultMap="taxCustomerMap">
 		select a.user_id, a.name, a.phone, a.email, b.business_no, b.store_name, b.open_date, b.zipcode, b.addr_road, b.addr_jibun from tb_user a, TB_BUSINESS b
@@ -24,6 +42,49 @@
 	<select id="getCustomerInfo" resultType="taxCustomerVO" parameterType="String" resultMap="taxCustomerMap">
 		select a.user_id, name, phone, email, store_name, business_no, store_name, zipcode, addr_road, addr_jibun, addr_detail, open_date from tb_user a, TB_BUSINESS b
 		where a.user_id = b.user_id and business_no =#{businessNo}
+	</select>
+	
+	
+	<!-- 발급유형별 합계금액 -->
+	<select id="receiptKindPurchase" resultType="customerPurchaseVO" parameterType="String" resultMap="customerPurchaseMap">
+			select receipt_code, sum(calsum) as receipt_kind_purchase from(select RECEIPT_CODE, STORE_NAME, amount, vat, amount+vat as calSum, receipt_date, SUPPLIER_BUSINESS_NO
+			from tb_receipt where BUSINESS_NO=#{businessNo} and receipt_status='P' and receipt_date between '20210301' and '20210630'
+			union
+			select RECEIPT_CODE, store_name, amount, vat,amount+vat as calSum, receipt_date, SUPPLIER_BUSINESS_NO
+			from TB_PURCHASE where BUSINESS_NO=#{businessNo} and receipt_date between '20210301' and '20210630')
+            group by receipt_code
+	</select>
+	
+	
+	<!-- 매입 금액 합계 -->
+	<select id="purchaseSum" resultType="customerPurchaseVO" parameterType="String" resultMap="customerPurchaseMap">
+		select  sum(calsum) as purchase_sum, sum(amount) as purchase_amount, sum(vat) purchase_vat from (select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE, STORE_NAME, amount, vat, amount+vat as calSum, receipt_date, SUPPLIER_BUSINESS_NO
+			from tb_receipt where BUSINESS_NO=#{businessNo} and receipt_status='P' and receipt_date between '20210301' and '20210630'
+			union
+			select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE, store_name, amount, vat,amount+vat as calSum, receipt_date, SUPPLIER_BUSINESS_NO
+			from TB_PURCHASE where BUSINESS_NO=#{businessNo} and receipt_date between '20210301' and '20210630')
+	</select>
+	
+	<!-- 매입 table row -->
+	<select id="pusrchaseRow" resultType="customerPurchaseVO" parameterType="String" resultMap="customerPurchaseMap">
+		select receipt_date, RECEIPT_CODE, SUPPLIER_BUSINESS_NO, store_name, amount, vat, calSum
+            from (select to_char(to_date(receipt_date, 'yyyy-mm-dd'), 'yyyy-mm-dd') as receipt_date, RECEIPT_CODE, SUBSTR(SUPPLIER_BUSINESS_NO, 0,3)||'-'||SUBSTR(SUPPLIER_BUSINESS_NO, 4,2)||'-'||SUBSTR(SUPPLIER_BUSINESS_NO, 5) as SUPPLIER_BUSINESS_NO, store_name, amount, vat, calSum   from(select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE, STORE_NAME, amount, vat, amount+vat as calSum, receipt_date, SUPPLIER_BUSINESS_NO
+			from tb_receipt where BUSINESS_NO=#{businessNo} and receipt_status='P' and receipt_date between '20210301' and '20210630'
+			union
+			select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE, store_name, amount, vat,amount+vat as calSum, receipt_date, SUPPLIER_BUSINESS_NO
+			from TB_PURCHASE where BUSINESS_NO=#{businessNo} and receipt_date between '20210301' and '20210630')
+            order by receipt_date desc) where rownum <![CDATA[ <= ]]> 20
+	</select>
+	
+	<!-- 최근 카드 매출 데이터 -->
+	<select id="salesSum"  resultType="customerSalesVO" parameterType="String">
+		select sum(approval_amount) as slaesSum from tb_card_sales where business_no=#{businessNo} and deal_date between '20210101' and '20210630'
+	</select>
+	
+	<!-- 세무신고를 위한 user data -->
+	<select id="taxUserInfoSearch" resultType="taxUserInfoVO" parameterType="String" resultMap="taxUserInfoMap" >
+		select a.name, store_name, SUBSTR(business_no, 0,3)||'-'||SUBSTR(business_no, 4,2)||'-'||SUBSTR(business_no, 5) as business_no, addr_jibun from tb_user a, tb_business b
+		where a.user_id = b.user_id and business_no=#{businessNo}
 	</select>
 	
 	

@@ -1,12 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+ <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+ <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/form.css?after">
 <link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/list.css?before">
-<link rel="stylesheet" href="${ pageContext.request.contextPath }/resources/css/list.css?after">
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 <link href="${ pageContext.request.contextPath }/resources/css/reset2.css" rel="stylesheet">
 <link href="${ pageContext.request.contextPath }/resources/css/main2.css" rel="stylesheet">
@@ -14,17 +16,27 @@
 <head>
 <jsp:include page="/WEB-INF/jsp/include/head.jsp"/>
 
-  <!--datePicker-->
-  <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-  <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
  
 
 <style>
 
+ a:hover { 
+ 
+ font-weight:bold; 
+}
+
+.StFont1{
+
+	font-size: 17px;
+}
+
+.fontSize{
+	font-size: 18px;
+}
+
 
  td > a {
- 
+ font-size : 23px;
  color: #797979;
  
  }
@@ -126,43 +138,10 @@ table tbody th, table td {
 
 	$(document).ready(function(){
 		
-		// datepicker를 활용한 날짜 조회
-		 $('#startDate').datepicker(
-			{
-			
-				 dateFormat:'yy/mm/dd',
-	             changeMonth: true,
-	             changeYear: true,
-	             dayNames: ['일요일','월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
-	     		 dayNamesMin : ['일','월','화','수','목','금','토'],
-	     		 monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-			
-				 // 시작일 선택 후 닫힐 때, 종료일의 최소 선택 가능 날짜는 시작일
-				 // 시작일 이후로만 선택 가능한 종료일
-				 onClose:function(selectedDate){
-				
-					// 종료일 태그에 mindate 속성 추가
-					$('#endDate').datepicker("option","minDate", selectedDate)
-			}
-			
-		});
 		
-		$('#endDate').datepicker({
-			
-				dateFormat:'yy/mm/dd',
-	            changeMonth: true,
-	            changeYear: true,
-	            dayNames: ['일요일','월요일', '화요일', '수요일', '목요일', '금요일', '토요일'],
-	    		dayNamesMin : ['일','월','화','수','목','금','토'],
-	    		monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
-				
-				// 종료일 선택 후 닫힐 때, 시작일의 최대 선택 가능 날짜는 종료일
-				onClose:function(selectedDate){
-					
-					$('#startDate').datepicker("option", "maxDate", selectedDate)
-			}
-			
-		});
+		 
+		
+		
 		
 		
 	
@@ -174,7 +153,6 @@ table tbody th, table td {
 
 // 매입처별 세금계산서 합계표
 function goToTaxBill(formName){
-	// 모달창 확인 누르면, 회원이 입력한 정보를 homeTaxId homeTaxPassword businessNo로 전송
 	
 	formName.action = "${pageContext.request.contextPath}/taxAgent/taxBill";
 	formName.method = "post";
@@ -182,6 +160,12 @@ function goToTaxBill(formName){
 	
 }
 
+function goToCardForm(formName){
+	
+	formName.action = "${pageContext.request.contextPath}/taxAgent/cardSealesWriteForm"
+	formName.method = "post";
+	formName.submit(); 
+}
 
 </script>
 
@@ -203,23 +187,26 @@ function goToTaxBill(formName){
             </div>
     </div>
 
-	 <div class="wrapper">
+	 <div class="wrapper" style="background-color: #ffffff;">
 	 
-	 	 <div class="nav">
-	 	 
-	 	 	<div class="memberInfo">
+	 	 <div class="nav" style="margin-bottom: 70px; height: 1130px;">
+
+               
+                <!--회원정보-->
+                <div class="memberInfo" style="height: 0px; background-color: #474A5B;">
                     <p class="memberId">
                         <strong>${userVO.id } 세무사님,</strong>
                         <br><span style="font-size: 20px;">환영합니다!</span>
                     </p>
-                    <a class="applyBtn" href="javascript:void(0)"><strong>로그아웃<i class="fas fa-chevron-right"></i></strong></a>
+                    <a class="applyBtn" href="javascript:void(0)" style="width: 170px; height: 39px;"><strong>로그아웃<i class="fas fa-chevron-right"></i></strong></a>
                 </div>
-                
-                <ul class="menu">
+
+                <!--메뉴-->
+                <ul class="menu" style="margin-bottom: 480px;">
                     <li class="mainMenu" style="margin-top:20px;">
                         <a href="javascript:void(0)"><strong><i class="fas fa-file-signature"></i>고객 증빙자료</strong></a>
                         <ul class="subMenu">
-                            <li><a href="javascript:void(0)">-증빙자료 조회/수집</a></li>
+                            <li><a href="${ pageContext.request.contextPath }/taxAgent/taxAgentCustomer">-증빙자료 조회/수집</a></li>
                             
                         </ul>
                     </li>
@@ -241,11 +228,12 @@ function goToTaxBill(formName){
                     
                     
                 </ul>
-	 	 
-	 	 
-	 	 </div>
+
+                
+
+            </div>
 	 
-	 	 <div class="comment-form-receipt" id="comment-custom-receipt" style="width: 1110px;">
+	 	 <div class="comment-form-receipt" id="comment-custom-receipt" style="width: 1110px; margin-left: 0px;">
 		<div class="row">
 			<div class="col">
 				<h4 style="font-family: 'Noto Sans KR', sans-serif;font-size: xx-large; margin-left: 32px;">세금신고서 작성</h4>
@@ -271,14 +259,16 @@ function goToTaxBill(formName){
 						<div style="border: 3px solid; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; ">
 								<div class="row" style="height: 50px; width: 1050px; ;">
 									<div class="col-2" style="background-color: rgba(130,139,178,0.25); width: 20%; text-align:center; display:table-cell; vertical-align:middle; line-height:50px;font-size: 20px;left: 15px;">사업자등록번호</div>
-									<div class="col-4" style="width: 20%; text-align:center; display:table-cell; vertical-align:middle; line-height:50px;font-size: 20px;">${bNo}</div> <!--UserVO가 가지고 있는 값  -->
+									<div class="col-4" style="width: 20%; text-align:center; display:table-cell; vertical-align:middle; line-height:50px;font-size: 20px;">605-23-55236</div> <!--UserVO가 가지고 있는 값  -->
 									<div class="col-2" style="background-color: rgba(130,139,178,0.25); width: 20%; text-align:center; display:table-cell; vertical-align:middle; line-height:50px;font-size: 20px;">상호</div>
-									<div class="col-4" style="width: 20%; text-align:center; display:table-cell; vertical-align:middle; line-height:50px;font-size: 20px;">${storeName}</div>
+									<div class="col-4" style="width: 20%; text-align:center; display:table-cell; vertical-align:middle; line-height:50px;font-size: 20px;">${summaryVO.storeName}</div>
 								</div>
 						</div>
 						
 						
 						
+						
+						<hr>
 					
 						<div class="row" style="margin-top: 30px;">
 							 		<div class="col-7" style="float: left; width: 496px">
@@ -299,60 +289,108 @@ function goToTaxBill(formName){
 							 		</div>
 						</div>
 						
+						
+						
+						
 						<form name="linkSubmit">
-						<table>
-							<!-- hidden 으로 보내도 되니까 -->
-							<tr>
-								<th rowspan="2"><input type="text" class="form-control" name="test" id="test" style="float: left; width: 200px;">수입 </th>
-								<th rowspan="2">7,711,000원</th>
-								<th style="border-top: none;">카드</th>
-								<th>현금영수증</th>
-								<th>현금</th>
-								<th>세금계산서</th>
-							</tr>
-							<tr>
-								<th>매입(비용)</th>
-								<td>234,000원</td>
-								
-							</tr>
+						<!-- jstl형변환한거 객체에 매핑안되서 hidden으로 보내기 --> 
+						<input type="hidden" name="storeName" value="${summaryVO.storeName}">
+                        <input type="hidden" name="bNo" value="${summaryVO.bNo}">
+                        <input type="hidden" name="salesSum" value="${ summaryVO.salesSum}">
+                        <input type="hidden" name="purchaseSum" value="${ summaryVO.purchaseSum}">
+                        <input type="hidden" name="cashPurchase" value="${ summaryVO.cardPurchase }">
+                        <input type="hidden" name="simplePurchase" value="${ summaryVO.simplePurchase}">
+                        <input type="hidden" name="taxPurchase" value=" ${ summaryVO.taxPurchase }">
+                        <input type="hidden" name="taxBillPurchase" value="${ summaryVO.taxBillPurchase }">
+                        <input type="hidden" name="cardPurchase" value=" ${ summaryVO.cashPurchase }">
+						
+						<table class="table" style="margin-top: 20px; border-top: 3px solid #495057; border-collapse: collapse; border-bottom: 4px solid #495057;">
+							
+							<colgroup>
+                                <col width="14%">
+                                <col width="14%">
+                                <col width="14%">
+                                <col width="14%">
+                                <col width="14%">
+                                <col width="14%">
+                                <col width="14%">
+                            </colgroup>
+                            <tbody>
+                            	
+                                <tr>
+                                    <td class="alignCenter color" rowspan="2"><strong class="fontSize">수입</strong></td>
+                                    <td class="alignCenter" rowspan="2"><strong class="fontSize"><fmt:formatNumber value="${ summaryVO.salesSum}" pattern="#,###" />원</strong></td>
+                                    <td><strong class="StFont1">카드영수증</strong></td>
+                                    <td><strong class="StFont1">세금계산서</strong></td>
+                                    <td><strong class="StFont1">간이영수증</strong></td>
+                                    <td><strong class="StFont1">계산서</strong></td>
+                                    <td><strong class="StFont1">현금영수증</strong></td>
+                                    
+                                </tr>
+                                <tr>
+                                	<!-- 카드 매출 데이터 -->
+                                    <td class="StFont1"><fmt:formatNumber value="${ summaryVO.salesSum}" pattern="#,###" />원</td>
+                                    <td class="StFont1">0원</td>
+                                    <td class="StFont1">0원</td>
+                                    <td class="StFont1">0원</td>
+                                    <td class="StFont1">0원</td>
+                                </tr>
+                                <tr>				
+                                    <td class="alignCenter color" rowspan="2"><strong class="fontSize">비용</strong></td>
+                                    <td class="alignCenter" rowspan="2"><strong class="fontSize"><fmt:formatNumber value="${ summaryVO.purchaseSum}" pattern="#,###" />원</strong></td>
+                                    
+                                    <td><strong class="StFont1">카드영수증</strong></td>
+                                    <td><strong class="StFont1">세금계산서</strong></td>
+                                    <td><strong class="StFont1">간이영수증</strong></td>
+                                    <td><strong class="StFont1">계산서</strong></td>
+                                    <td><strong class="StFont1">현금영수증</strong></td>
+                                </tr>
+                                <tr>
+                                	<td class="StFont1"><fmt:formatNumber value="${ summaryVO.cardPurchase }" pattern="#,###" />원</td>
+                                	<td class="StFont1"><fmt:formatNumber value="${ summaryVO.taxBillPurchase }" pattern="#,###" />원</td>
+                                	<td class="StFont1"><fmt:formatNumber value="${ summaryVO.simplePurchase}" pattern="#,###" />원</td>
+                                	<td class="StFont1"><fmt:formatNumber value="${ summaryVO.taxPurchase }" pattern="#,###" />원</td>
+                                	<td class="StFont1"><fmt:formatNumber value="${ summaryVO.cashPurchase }" pattern="#,###" />원 </td>
+                                </tr>  
+                            </tbody>
 							
 						</table>
 						</form>
 						<hr>					
-						<span style="font-weight: bold; font-size: 25px;"><img class="product-img5" src="${ pageContext.request.contextPath }/resources/img/ss3.png" style="margin-left: 3px; margin-bottom: 6px;">작성서류</span>
+						<span style="font-weight: bold; font-size: 28px;"><img class="product-img5" src="${ pageContext.request.contextPath }/resources/img/ss3.png" style="margin-left: 3px; margin-bottom: 6px;">작성서류</span>
 						<table class="styled-table" style="border: 1px solid; border-radius: 5px; width:706px;">
 							<tr>
-								<th style="border-top: 0px solid; background-color: rgba(73, 80, 87,0.14); font-size: 22px;">서식명</th>
+								<th style="border-top: 0px solid; background-color: rgba(73, 80, 87,0.14); font-size: 27px;">서식명</th>
 							</tr>
 							<tr>
-								<td><a href="${ pageContext.request.contextPath }/taxAgent/cardSealesWriteForm">신용카드매출전표등 발행금액 집계표</a></td>
+								<td><a href="javascript:goToCardForm(linkSubmit)">① 신용카드매출전표등 발행금액 집계표</a></td>
 							</tr>
 							<tr>
-								<td><a href="javascript:goToTaxBill(linkSubmit)">매입처별 세금계산서합계표</a></td>
+								<td><a href="javascript:goToTaxBill(linkSubmit)">② 매입처별 세금계산서합계표</a></td>
 							</tr>
 							<tr>
-								<td><a href="${ pageContext.request.contextPath }/taxAgent/taxBillVatZero">매입처별 계산서합계표</a></td>
+								<td><a href="${ pageContext.request.contextPath }/taxAgent/taxBillVatZero">③ 매입처별 계산서합계표</a></td>
 							</tr>
 							<tr>
-								<td><a href="#">매출처별 세금계산서합계표</a></td>
+								<td><a href="#">④ 매출처별 세금계산서합계표</a></td>
 							</tr>
 							<tr>
-								<td><a href="#">매출처별 계산서합계표</a></td>
+								<td><a href="#">⑤ 매출처별 계산서합계표</a></td>
 							</tr>
 							<tr>
-								<td><a href="#">건물 등 감가상각자산 취득명세서</a></td>
+								<td><a href="#">⑥ 건물 등 감가상각자산 취득명세서</a></td>
 							</tr>
 							<tr>
-								<td><a href="#">공제받지 못할 매입세액 명세서</a></td>
+								<td><a href="#">⑦ 공제받지 못할 매입세액 명세서</a></td>
 							</tr>
 							<tr>
-								<td><a href="#">일반과세자 부가가치세 신고서</a></td>
+								<td><a href="#">⑧ 일반과세자 부가가치세 신고서</a></td>
 							</tr> 
 							<tr>
-								<td><a href="#">현금매출명세서</a></td>
+								<td><a href="#">⑨  현금매출명세서</a></td>
 							</tr>
 							<tr>
-								<td><a href="#">의제매입세액 공제신고서</a></td>
+								<td><a href="#">⑩  의제매입세액 공제신고서</a></td>
 							</tr>
 							
 							

@@ -55,22 +55,23 @@ strong {font-weight:600; font-size: 20px;}
 .list .listMenu .listMenuRight a span::after {content:'';display:inline-block;width:1px;height:10px;margin-left:7px;background:#dbdbdb;}
 .list .listMenu .listMenuRight a span i {color:#29B3A6;}
 .list .condition {padding:15px 0; border-top:1px solid #dbdbdb;}
-.list .condition select {padding:3px 0; border-radius:3px;font-size:13px;color:#6d6d6d;}
+.list .condition select {padding:3px 0; border-radius:3px;font-size:16px;color:#6d6d6d;}
 .list .table table {width:100%;}
 .list .table th {padding:10px 5px;color:#6d6d6d;border-top:1px solid #dbdbdb;font-size:20px;font-weight:600;text-align:left;box-sizing: border-box;}
 .list .table th:first-child {border-left:1px solid #dbdbdb;text-align:center;}
 .list .table th:last-child {border-right:1px solid #dbdbdb;}
 .list .table .alignRight {text-align:right;}
-.list .table td {border:1px solid #dbdbdb; border-width:1px 0 0 1px;padding:5px;color:#6d6d6d; font-size:18px;box-sizing: border-box;}
+.list .table td {border:1px solid #dbdbdb; border-width:1px 0 0 1px;padding:5px;color:#6d6d6d; font-size:20px;box-sizing: border-box;}
 .list .table td:first-child {text-align:center;}
+.list .table .scrollArea{max-height : 360px; overflow-y: auto;}
 .list .table .sum {border:1px solid #dbdbdb;background:#eee;box-sizing: border-box;}
-.list .table .sum td {padding:8px 5px;font-size:13px;box-sizing: border-box;}
+.list .table .sum td {padding:8px 5px;font-size:19px;box-sizing: border-box;}
 .list .table .sum td:first-child {text-align:center;}
 .list .bottomBtn {display:flex;justify-content: space-between;padding:10px 0;}
 .list .bottomBtn button {font-size:13px;color:#6d6d6d;border:1px solid #aeaeae; border-radius:5px;background:#fcfcfc;}
 .list .bottomBtn .save button{border:none;color:#fff;background:#29B3A6;}
 .list .paging {display:flex;justify-content: center;}
-.list .paging span {display:block;width:30px;height:30px;border:1px solid #dbdbdb;border-width:1px 1px 1px 0;color:#6d6d6d;font-size:13px;text-align:center;line-height:30px;}
+.list .paging span {display:block;width:30px;height:30px;border:1px solid #dbdbdb;border-width:1px 1px 1px 0;color:#6d6d6d;font-size:16px;text-align:center;line-height:30px;}
 .list .paging span:first-child {border-left:1px solid #dbdbdb;}
 
 .account {padding-top:20px;}

@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -221,15 +224,15 @@ text-align: center;
 								</tr>
 								<tr>
 									<th colspan="2" class="centerCol">① 상호(법인명)</th>
-									<td colspan="5">종범상회</td>
+									<td colspan="5">${taxUserInfo.storeName}</td>
 									<th colspan="3" class="centerCol">② 대표자</th>
-									<td colspan="2">박종범</td>
+									<td colspan="2">${taxUserInfo.name}</td>
 								</tr>
 								<tr>
 									<th colspan="2" class="centerCol">③ 사업장 소재지</th>
-									<td colspan="5" >부산진구 부암동</td>
+									<td colspan="5" >${taxUserInfo.addrJibun}</td>
 									<th colspan="3" class="centerCol">④ 사업자등록번호</th>
-									<td colspan="2">605-23-55236</td>
+									<td colspan="2">${taxUserInfo.bNo }</td>
 								</tr>
 								
 								<tr>
@@ -244,8 +247,8 @@ text-align: center;
 								</tr>
 								<tr>
 									<th colspan="2" class="centerCol">합계</th>
-									<td colspan="3"></td>
-									<td colspan="2"></td>
+									<td colspan="3"><fmt:formatNumber value="${writeInfoVO.salesSum }" pattern="#,###" />원</td>
+									<td colspan="2"><fmt:formatNumber value="${writeInfoVO.salesSum }" pattern="#,###" />원</td>
 									<td colspan="3"></td>
 									<td colspan="2"></td>
 								</tr>
@@ -276,9 +279,9 @@ text-align: center;
 								</tr>
 								<tr>
 									<th colspan="2" class="centerCol">⑨ 세금계산서 발급금액</th>
-									<td colspan="5"></td>
+									<td colspan="5">0원</td>
 									<th colspan="3" class="centerCol">⑩ 계산서 발급금액</th>
-									<td colspan="2"></td>
+									<td colspan="2">0원</td>
 								</tr>
 								<tr>
 									<td colspan="12"></td>

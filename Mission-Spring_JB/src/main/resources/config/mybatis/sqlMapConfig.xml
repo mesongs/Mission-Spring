@@ -18,5 +18,9 @@
 		<typeAlias type="kr.ac.kopo.receipt.vo.IntegratedSalesVO" alias="integratedSalesVO"/>
 		<typeAlias type="kr.ac.kopo.financial.vo.ReturnPurchaseVO" alias="returnPurchaseVO"/>
 		<typeAlias type="kr.ac.kopo.receipt.vo.HomeTaxDigitalVO" alias="homeTaxDigitalVO"/>
+		<typeAlias type="kr.ac.kopo.taxAgent.vo.customerPurchaseVO" alias="customerPurchaseVO"/>
+		<typeAlias type="kr.ac.kopo.taxAgent.vo.CustomerSalesVO" alias="customerSalesVO"/>
+		<typeAlias type="kr.ac.kopo.taxAgent.vo.WriteInfoVO" alias="writeInfoVO"/>
+		<typeAlias type="kr.ac.kopo.taxAgent.vo.TaxUserInfoVO" alias="taxUserInfoVO"/>
 	</typeAliases>
 </configuration>

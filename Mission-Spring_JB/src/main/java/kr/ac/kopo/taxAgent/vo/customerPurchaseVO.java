@@ -14,8 +14,7 @@ public class customerPurchaseVO {
 	private String supplierBusinessNo;
 	
 	// 부가세 포함된 값 총 액
-	private int purchaseSum;   
-	
+	private int purchaseSum;
 	private int purchaseAmountSum;
 	private int purchaseVatSum;
 	

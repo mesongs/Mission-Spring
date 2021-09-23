@@ -36,13 +36,13 @@ public class taxAgentDAOImpl implements TaxAgentDAO {
 	}
 	
 	//세무사 - 고객의 영수증 종류별 매입 합계 조회
-	@Override
-	public List<customerPurchaseVO> getReceiptKindSumList(String bNo) {
-		
-		List<customerPurchaseVO> receiptKindPurchaseList = sqlSessionTemplate.selectList("taxAgent.taxAgentDAO.receiptKindPurchase", bNo); 
-		
-		return receiptKindPurchaseList;
-	}
+//	@Override
+//	public List<customerPurchaseVO> getReceiptKindSumList(String bNo) {
+//		
+//		List<customerPurchaseVO> receiptKindPurchaseList = sqlSessionTemplate.selectList("taxAgent.taxAgentDAO.receiptKindPurchase", bNo); 
+//		
+//		return receiptKindPurchaseList;
+//	}
 
 	@Override
 	public customerPurchaseVO getPusrchaseSum(String bNo) {
@@ -82,6 +82,23 @@ public class taxAgentDAOImpl implements TaxAgentDAO {
 		List<customerPurchaseVO> purchaseList = sqlSessionTemplate.selectList("taxAgent.taxAgentDAO.customerPurchaseListAjax", map);
 		
 		return purchaseList;
+	}
+
+	@Override
+	public customerPurchaseVO getPusrchasePerSum(HashMap<String, String> map) {
+		// TODO Auto-generated method stub
+		
+		customerPurchaseVO purchasePurVO = sqlSessionTemplate.selectOne("taxAgent.taxAgentDAO.purchasePerAjax", map);
+		
+		return purchasePurVO;
+	}
+
+	@Override
+	public List<customerPurchaseVO> getReceiptKindSumList(HashMap<String, String> map) {
+		
+		List<customerPurchaseVO> receiptKindSumList = sqlSessionTemplate.selectList("taxAgent.taxAgentDAO.receiptKindSum",map);
+		
+		return receiptKindSumList;
 	}
 
 	

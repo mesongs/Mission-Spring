@@ -162,23 +162,39 @@ public class TaxAgentController {
 	}
 	
   
-	//ajax로 담당 고객의 내입 내역을 조회함
-	@RequestMapping("/taxAgent/getPurchaseListAjax")
-	@ResponseBody
-	public List<customerPurchaseVO> getPurchaseListAjax(@RequestParam HashMap<String, String> map){
+	//ajax로 담당 고객의 매입 내역을 조회함
+//	@RequestMapping("/taxAgent/getPurchaseListAjax")
+//	@ResponseBody
+//	public List<customerPurchaseVO> getPurchaseListAjax(@RequestParam HashMap<String, String> map){
+//		 
+//		 List<customerPurchaseVO> purchaseList = service.getCustomerPurchaseListService(map);
+//		 
+//		 // 조회할 때마다 가지고와야하는 값 => 영수금액 합계, 부가세 합계, 매입유형별 금액 합계
+// 		 // 넘겨주는 값을 map으로..
+//		 
+//		 
+//		 
+//		 return purchaseList;
+//	}
 		
-		 List<customerPurchaseVO> purchaseList = service.getCustomerPurchaseListService(map);
-		 
-		 return purchaseList;
-		
-	}
+		@RequestMapping("/taxAgent/getPurchaseListAjax")
+		@ResponseBody
+		public HashMap<String, Object> getPurchaseListAjax(@RequestParam HashMap<String, String> map){
+			 
+			 
+			 HashMap<String, Object> returnMap = service.getCustomerPurchaseListService(map);
+			 // returnMap에 들어있는 값은 사용자가 조회한 rowList 영수금액 합계, 부가세 합계, 매입유형별 금액 합계
+			
+			 
+			 
+			 
+			 return returnMap;
+		}
 		
 	
 	// 세무사가 고객의 세무 정보 확인 후, 신고서 작성 페이지로 이동함 - 변경 전 1
 	@PostMapping("/taxAgent/taxWriteForm")
 	public ModelAndView taxWriteForm(summaryVO summaryVO) {
-		
-		
 		
 		// form태그로 날아오는 인자 vo로 받기
 		ModelAndView mav = new ModelAndView("taxAgent/taxWriteFormKind");

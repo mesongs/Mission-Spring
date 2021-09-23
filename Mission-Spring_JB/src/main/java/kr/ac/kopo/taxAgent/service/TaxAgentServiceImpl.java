@@ -44,12 +44,12 @@ public class TaxAgentServiceImpl implements TaxAgentService {
 		HashMap<String, Object> map = new HashMap<>();
 		
 		// 발급유형별 합계금액
-		List<customerPurchaseVO> receiptKindSumList = taxAgentDAO.getReceiptKindSumList(bNo);
+//		List<customerPurchaseVO> receiptKindSumList = taxAgentDAO.getReceiptKindSumList(bNo);
 		customerPurchaseVO pusrchaseSumVO = taxAgentDAO.getPusrchaseSum(bNo);
 		List<customerPurchaseVO> getPurchaseList = taxAgentDAO.getPurchaseList(bNo);
 		CustomerSalesVO salesSumVO = taxAgentDAO.getSalesSum(bNo);
 		
-		map.put("receiptKindSumList", receiptKindSumList);
+//		map.put("receiptKindSumList", receiptKindSumList);
 		map.put("pusrchaseSumVO", pusrchaseSumVO);
 		map.put("getPurchaseList", getPurchaseList);
 		map.put("salesSumVO", salesSumVO);
@@ -70,15 +70,27 @@ public class TaxAgentServiceImpl implements TaxAgentService {
 	
 	// 통합 매입내역 조회 - ajax
 	@Override
-	public List<customerPurchaseVO> getCustomerPurchaseListService(HashMap<String, String> map) {
+	public HashMap<String, Object> getCustomerPurchaseListService(HashMap<String, String> map) {
 		
 		// 총 개수 구하기 => 레코드의 시작과 
 		
+		HashMap<String, Object> returnMap = new HashMap<String, Object>();
+		
+		// 통합 매입내역 리스트
 		List<customerPurchaseVO> purchaseList = taxAgentDAO.getCustomerPurchaseListDao(map);
 		
+		// 총 합계금액, 영수금액 합계, 부가세 합계
+		customerPurchaseVO customerPurchaseVO = taxAgentDAO.getPusrchasePerSum(map);
+		
+		// 유형별 합계
+		List<customerPurchaseVO> receiptKindSumList = taxAgentDAO.getReceiptKindSumList(map);
+		
+		returnMap.put("purchaseList", purchaseList);
+		returnMap.put("customerPurchaseVO", customerPurchaseVO);
+		returnMap.put("receiptKindSumList", receiptKindSumList);
 		
 		
-		return purchaseList;
+		return returnMap;
 	}
 
 	

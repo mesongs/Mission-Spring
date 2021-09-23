@@ -17,9 +17,7 @@ public interface TaxAgentService {
 	
 	TaxUserInfoVO getTaxUserInfoService(String bNo);
 	
-	List<customerPurchaseVO> getCustomerPurchaseListService(HashMap<String, String> map);
-	
-	
+	HashMap<String, Object> getCustomerPurchaseListService(HashMap<String, String> map);
 	
 	
 }

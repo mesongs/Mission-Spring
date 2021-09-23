@@ -15,7 +15,7 @@ public interface TaxAgentDAO {
 
 	TaxCustomerVO getCustomerInfoDao(String bNo);
 	
-	List<customerPurchaseVO> getReceiptKindSumList(String bNo);
+//	List<customerPurchaseVO> getReceiptKindSumList(String bNo);
 	
 	customerPurchaseVO getPusrchaseSum(String bNo);
 	
@@ -27,7 +27,9 @@ public interface TaxAgentDAO {
 	
 	List<customerPurchaseVO> getCustomerPurchaseListDao(HashMap<String, String> map);
 	
+	customerPurchaseVO getPusrchasePerSum(HashMap<String, String> map);
 	
+	List<customerPurchaseVO> getReceiptKindSumList(HashMap<String, String> map);
 	
 	
 }

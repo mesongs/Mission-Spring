@@ -146,21 +146,65 @@ $(document).ready(function(){
 		let selectYear = $('#selectYear').val() 
 		let selectOrder = $('#selectOrder').val()
 		
-		
+		 
+			
+			
 		$.ajax({
 			type : "get",
 			data : {selectYear : selectYear, selectOrder : selectOrder},
 			url : "${pageContext.request.contextPath}/taxAgent/getPurchaseListAjax",
 			success : function(result){
 				
+				
+				// receiptKindSumList
 				let obj = JSON.parse(result);
 				
+				
+				// 매입유형별 금액 => 세금신고서 작성에 사용되는 값
+				for(let i=0; i< obj.receiptKindSumList.length; i++ ){
+					
+					switch(obj.receiptKindSumList[i].receiptCode) {
+						
+						case '001':  
+						    $('#taxBillPur').html(numberWithCommas(obj.receiptKindSumList[i].receiptKindPurchase)+"원")
+						    break;
+		
+						case '002':  
+							$('#taxPur').html(numberWithCommas(obj.receiptKindSumList[i].receiptKindPurchase)+"원")
+						    break;
+						    
+						case '003':
+							$('#cardPur').html(numberWithCommas(obj.receiptKindSumList[i].receiptKindPurchase)+"원")
+							break;
+							    
+						case '004':  
+							$('#simplePur').html(numberWithCommas(obj.receiptKindSumList[i].receiptKindPurchase)+"원")
+							break;
+							    
+						case '005':  
+							$('#cashPur').html(numberWithCommas(obj.receiptKindSumList[i].receiptKindPurchase)+"원")
+							break;
+						    
+					}
+					  
+				}
+				
+				// 색인 purchaseAmountSum purchaseSum purchaseVatSum
+				$('#purchaseAmountSum').html(numberWithCommas(obj.customerPurchaseVO.purchaseAmountSum)+"원");
+				$('#purchaseVatSum').html(numberWithCommas(obj.customerPurchaseVO.purchaseVatSum)+"원");
+				$('#purchaseSum').html(numberWithCommas(obj.customerPurchaseVO.purchaseSum)+"원");
+							
+				// 집계에 있는 비용 합계에도 동일하게 들어감
+				$('#purchaseAllSum').html(numberWithCommas(obj.customerPurchaseVO.purchaseSum)+"원");
+				
+				let ObjPurchaseList = obj.purchaseList
+								
 		 		 $('#test').empty();
 		 		 
-				 if(obj.length >= 1){
+				 if(ObjPurchaseList.length >= 1){
 					 
 					 // for(receipt vo(=searchWaitList) : receiptList) 1.5버전 for문과 동일함
-					 obj.forEach(function(purchaseList){
+					 ObjPurchaseList.forEach(function(purchaseList){
 						 	 
 						 	 
 						 	 str="<tr>"
@@ -400,17 +444,12 @@ function summary(formName){
                                     <col width="12%">
                                     
                                 </colgroup>
-                                <tr>
-                                    <td><strong>부분합계</strong></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
+                                
                                 <tr>
                                     <td><strong>전체합계</strong></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td id="purchaseAmountSum"></td>
+                                    <td id="purchaseVatSum"></td>
+                                    <td id="purchaseSum"></td>
                                 </tr>
                             </table>
                         </div>
@@ -477,7 +516,7 @@ function summary(formName){
                                 </tr>
                                 <tr>
                                     <td class="alignCenter color" rowspan="2"><strong class="fontSize">비용</strong></td>
-                                    <td class="alignCenter" rowspan="2"><strong class="fontSize"><fmt:formatNumber value="${ pusrchaseSumVO.purchaseSum}" pattern="#,###" />원</strong></td>
+                                    <td class="alignCenter" rowspan="2" id="purchaseAllSum"><strong class="fontSize"></strong></td>
                                     <td><strong class="StFont">카드영수증</strong></td>
                                     <td><strong class="StFont">세금계산서</strong></td>
                                     <td><strong class="StFont">간이영수증</strong></td>
@@ -485,11 +524,11 @@ function summary(formName){
                                     <td><strong class="StFont">현금영수증</strong></td>
                                 </tr>
                                 <tr>
-                                	<td><fmt:formatNumber value="${ cardSum }" pattern="#,###" />원</td>
-                                	<td><fmt:formatNumber value="${ taxBilSum }" pattern="#,###" />원</td>
-                                	<td><fmt:formatNumber value="${ simpleSum }" pattern="#,###" />원</td>
-                                	<td><fmt:formatNumber value="${ taxSum }" pattern="#,###" />원</td>
-                                	<td><fmt:formatNumber value="${ cashSum }" pattern="#,###" />원 </td>
+                                	<td id="cardPur"></td>
+                                	<td id="taxBillPur"></td>
+                                	<td id="simplePur"></td>
+                                	<td id="taxPur"></td>
+                                	<td id="cashPur"></td>
                                 </tr>
                             </tbody>
                         </table>

@@ -31,17 +31,19 @@
 }
 
 .fontSize{
-	font-size: 18px;
+	font-size: 19px;
 }
 
 
  td > a {
  font-size : 23px;
  color: #797979;
- 
+ padding: 0.4rem 0;
+ padding-left : 20px;
  }
 
  a:hover { font-weight: bold; text-decoration: none;}
+
 
 
 .blog-pagination .page-item.active .page-link{
@@ -129,7 +131,6 @@ table tbody th, table td {
     background-color: #f3f3f3;
 }
  
- 
 </style>
 
 
@@ -189,25 +190,24 @@ function goToCardForm(formName){
 
 	 <div class="wrapper" style="background-color: #ffffff;">
 	 
-	 	 <div class="nav" style="margin-bottom: 70px; height: 1130px;">
+	 	 <div class="nav" style="margin-bottom: 70px; height: 1300px;">
 
                
                 <!--회원정보-->
                 <div class="memberInfo" style="height: 0px; background-color: #474A5B;">
                     <p class="memberId">
-                        <strong>${userVO.id } 세무사님,</strong>
+                        <strong>${userVO.name } 세무사님,</strong>
                         <br><span style="font-size: 20px;">환영합니다!</span>
                     </p>
                     <a class="applyBtn" href="javascript:void(0)" style="width: 170px; height: 39px;"><strong>로그아웃<i class="fas fa-chevron-right"></i></strong></a>
                 </div>
 
                 <!--메뉴-->
-                <ul class="menu" style="margin-bottom: 480px;">
-                    <li class="mainMenu" style="margin-top:20px;">
+                <ul class="menu" style="margin-bottom: 630px;">
+                    <li class="mainMenu" style="margin-top:5px;">
                         <a href="javascript:void(0)"><strong><i class="fas fa-file-signature"></i>고객 증빙자료</strong></a>
                         <ul class="subMenu">
                             <li><a href="${ pageContext.request.contextPath }/taxAgent/taxAgentCustomer">-증빙자료 조회/수집</a></li>
-                            
                         </ul>
                     </li>
                     <li class="mainMenu" style="margin-top: 10px;">
@@ -318,8 +318,8 @@ function goToCardForm(formName){
                             <tbody>
                             	
                                 <tr>
-                                    <td class="alignCenter color" rowspan="2"><strong class="fontSize">수입</strong></td>
-                                    <td class="alignCenter" rowspan="2"><strong class="fontSize"><fmt:formatNumber value="${ summaryVO.salesSum}" pattern="#,###" />원</strong></td>
+                                    <td class="alignCenter color" rowspan="2" style="line-height: 4; padding-left:55px; "><strong class="fontSize">수입</strong></td>
+                                    <td class="alignCenter" rowspan="2" style="line-height: 4;"><strong class="fontSize"><fmt:formatNumber value="${ summaryVO.salesSum}" pattern="#,###" />원</strong></td>
                                     <td><strong class="StFont1">카드영수증</strong></td>
                                     <td><strong class="StFont1">세금계산서</strong></td>
                                     <td><strong class="StFont1">간이영수증</strong></td>
@@ -336,8 +336,8 @@ function goToCardForm(formName){
                                     <td class="StFont1">0원</td>
                                 </tr>
                                 <tr>				
-                                    <td class="alignCenter color" rowspan="2"><strong class="fontSize">비용</strong></td>
-                                    <td class="alignCenter" rowspan="2"><strong class="fontSize"><fmt:formatNumber value="${ summaryVO.purchaseSum}" pattern="#,###" />원</strong></td>
+                                    <td class="alignCenter color" rowspan="2" style="line-height: 4; padding-left:55px;" ><strong class="fontSize">비용</strong></td>
+                                    <td class="alignCenter" rowspan="2" style="line-height: 4;"><strong class="fontSize"><fmt:formatNumber value="${ summaryVO.purchaseSum}" pattern="#,###" />원</strong></td>
                                     
                                     <td><strong class="StFont1">카드영수증</strong></td>
                                     <td><strong class="StFont1">세금계산서</strong></td>
@@ -358,9 +358,9 @@ function goToCardForm(formName){
 						</form>
 						<hr>					
 						<span style="font-weight: bold; font-size: 28px;"><img class="product-img5" src="${ pageContext.request.contextPath }/resources/img/ss3.png" style="margin-left: 3px; margin-bottom: 6px;">작성서류</span>
-						<table class="styled-table" style="border: 1px solid; border-radius: 5px; width:706px;">
+						<table class="styled-table" style="border: 1px solid; border-radius: 5px; width:706px; padding: 0.4rem 0;">
 							<tr>
-								<th style="border-top: 0px solid; background-color: rgba(73, 80, 87,0.14); font-size: 27px;">서식명</th>
+								<th style="padding-left:15px; border-top: 0px solid; background-color: rgba(73, 80, 87,0.14); font-size: 27px;">서식명</th>
 							</tr>
 							<tr>
 								<td><a href="javascript:goToCardForm(linkSubmit)">① 신용카드매출전표등 발행금액 집계표</a></td>

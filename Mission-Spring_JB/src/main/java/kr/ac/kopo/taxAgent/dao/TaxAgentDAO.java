@@ -1,5 +1,6 @@
 package kr.ac.kopo.taxAgent.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import kr.ac.kopo.taxAgent.vo.CustomerSalesVO;
@@ -22,7 +23,10 @@ public interface TaxAgentDAO {
 	
 	CustomerSalesVO getSalesSum(String bNo);
 	
-	TaxUserInfoVO	getTaxUserInfoDao(String bNo); 
+	TaxUserInfoVO getTaxUserInfoDao(String bNo); 
+	
+	List<customerPurchaseVO> getCustomerPurchaseListDao(HashMap<String, String> map);
+	
 	
 	
 	

@@ -67,6 +67,19 @@ public class TaxAgentServiceImpl implements TaxAgentService {
 		return taxUserInfo;
 		
 	}
+	
+	// 통합 매입내역 조회 - ajax
+	@Override
+	public List<customerPurchaseVO> getCustomerPurchaseListService(HashMap<String, String> map) {
+		
+		// 총 개수 구하기 => 레코드의 시작과 
+		
+		List<customerPurchaseVO> purchaseList = taxAgentDAO.getCustomerPurchaseListDao(map);
+		
+		
+		
+		return purchaseList;
+	}
 
 	
 	

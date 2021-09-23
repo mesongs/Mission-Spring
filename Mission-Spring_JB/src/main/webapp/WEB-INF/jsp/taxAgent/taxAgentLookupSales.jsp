@@ -58,11 +58,153 @@ th{
 
 
 <script>
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+// 사업자등록번호 '-' 추가
+function bizNoFormatter(num, type) {
+
+    var formatNum = '';
+
+    try{
+
+         if (num.length == 10) {
+
+              if (type == 0) {
+
+                   formatNum = num.replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-*****');
+
+              } else {
+
+                    formatNum = num.replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-$3');
+
+              }
+
+         }
+
+    } catch(e) {
+
+         formatNum = num;
+
+         console.log(e);
+
+    }
+
+    return formatNum;
+
+}
+
+// 날짜 포맷 변경
+function YMDFormatter(num){
+
+    if(!num) return "";
+
+    var formatNum = '';
+
+
+
+    // 공백제거
+
+    num=num.replace(/\s/gi, "");
+
+
+
+    try{
+
+         if(num.length == 8) {
+
+              formatNum = num.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3');
+
+         }
+
+    } catch(e) {
+
+         formatNum = num;
+
+         console.log(e);
+
+    }
+
+    return formatNum;
+
+}
+	 
+</script>
+
+<script>
 $(document).ready(function(){
 	
 	
 	
+	getSalesRow();
+	
+	function getSalesRow(){
+		
+		// select value가져오기
+		let selectYear = $('#selectYear').val() 
+		let selectOrder = $('#selectOrder').val()
+		
+		
+		$.ajax({
+			type : "get",
+			data : {selectYear : selectYear, selectOrder : selectOrder},
+			url : "${pageContext.request.contextPath}/taxAgent/getPurchaseListAjax",
+			success : function(result){
+				
+				let obj = JSON.parse(result);
+				
+		 		 $('#test').empty();
+		 		 
+				 if(obj.length >= 1){
+					 
+					 // for(receipt vo(=searchWaitList) : receiptList) 1.5버전 for문과 동일함
+					 obj.forEach(function(purchaseList){
+						 	 
+						 	 
+						 	 str="<tr>"
+						 	 
+						 	 str += "<td>" + '<input type="checkbox">' + "</td>" 
+						     str += "<td>" + purchaseList.receiptDate + "</td>"
+						     str += "<td>" + purchaseList.receiptCode + "</td>"
+						     str += "<td>" + purchaseList.supplierBusinessNo + "</td>"
+						     str += "<td>" + purchaseList.storeName + "</td>"
+						     str += "<td>" + numberWithCommas(purchaseList.amount) + "원</td>"
+						     str += "<td>" + numberWithCommas(purchaseList.vat) + "원</td>"
+						     str += "<td>" + numberWithCommas(purchaseList.calSum) + "원</td>"
+		 					 str += "</tr>"
+		 					 
+		 					 $('#test').append(str);
+		 					 
+		 					 
+					 })
+				 }
+				
+			},
+			error:function(request, status, error){
+			    alert("code:"+ request.status +"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			}
+			
+			
+		})
+		
+	}
+	
+	
+	$('#searchWriteForm').click(function(){
+		
+		getSalesRow();
+		
+		
+		
+		
+	})
+	
+	
+	
 })
+
 
 
 
@@ -74,7 +216,6 @@ function summary(formName){
 		
 		
 	}
-
 
 
 </script>
@@ -101,7 +242,7 @@ function summary(formName){
                 <!--회원정보-->
                 <div class="memberInfo">
                     <p class="memberId">
-                        <strong>${userVO.id } 세무사님,</strong>
+                        <strong>${userVO.name } 세무사님,</strong>
                         <br><span style="font-size: 20px;">환영합니다!</span>
                     </p>
                     <a class="applyBtn" href="javascript:void(0)"><strong>로그아웃<i class="fas fa-chevron-right"></i></strong></a>
@@ -130,15 +271,9 @@ function summary(formName){
                             <li><a href="javascript:void(0)">-SMS발송</a></li>
                         </ul>
                     </li>
-                    
-                    
-                    
                 </ul>
-
-                
-
             </div>
-
+            
             <!--우측컨텐츠-->
             <div class="content">
                 <div class="list">
@@ -243,18 +378,16 @@ function summary(formName){
                                     <th>합계</th>
                                 </thead>
                                 <tbody id="test">
-									<c:forEach items="${ getPurchaseList }" var="getPurchaseList">
 										<tr>
 											<td><input type="checkbox"></td>
-											<td>${getPurchaseList.receiptDate }</td>
-											<td>${getPurchaseList.receiptCode }</td>
-											<td>${getPurchaseList.supplierBusinessNo }</td>
-											<td>${getPurchaseList.storeName }</td>
-											<td><fmt:formatNumber value="${ getPurchaseList.amount}" pattern="#,###" />원</td>
-											<td><fmt:formatNumber value="${ getPurchaseList.vat}" pattern="#,###" />원</td>
-											<td><fmt:formatNumber value="${ getPurchaseList.calSum}" pattern="#,###" />원</td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
 										</tr>
-									</c:forEach>   		 
                                 </tbody>
                             </table>
                         </div>
@@ -269,15 +402,15 @@ function summary(formName){
                                 </colgroup>
                                 <tr>
                                     <td><strong>부분합계</strong></td>
-                                    <td><fmt:formatNumber value="${ pusrchaseSumVO.purchaseAmountSum}" pattern="#,###" />원</td>
-                                    <td> <fmt:formatNumber value="${ pusrchaseSumVO.purchaseVatSum}" pattern="#,###" />원</td>
-                                    <td><fmt:formatNumber value="${ pusrchaseSumVO.purchaseSum}" pattern="#,###" />원</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td><strong>전체합계</strong></td>
-                                    <td><fmt:formatNumber value="${ pusrchaseSumVO.purchaseAmountSum}" pattern="#,###" />원</td>
-                                    <td> <fmt:formatNumber value="${ pusrchaseSumVO.purchaseVatSum}" pattern="#,###" />원</td>
-                                    <td><fmt:formatNumber value="${ pusrchaseSumVO.purchaseSum}" pattern="#,###" />원</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                 </tr>
                             </table>
                         </div>
@@ -342,10 +475,9 @@ function summary(formName){
                                     <td class="StFont">0</td>
                                     <td class="StFont">0</td>
                                 </tr>
-                                <tr>				
+                                <tr>
                                     <td class="alignCenter color" rowspan="2"><strong class="fontSize">비용</strong></td>
                                     <td class="alignCenter" rowspan="2"><strong class="fontSize"><fmt:formatNumber value="${ pusrchaseSumVO.purchaseSum}" pattern="#,###" />원</strong></td>
-                                    
                                     <td><strong class="StFont">카드영수증</strong></td>
                                     <td><strong class="StFont">세금계산서</strong></td>
                                     <td><strong class="StFont">간이영수증</strong></td>
@@ -358,7 +490,7 @@ function summary(formName){
                                 	<td><fmt:formatNumber value="${ simpleSum }" pattern="#,###" />원</td>
                                 	<td><fmt:formatNumber value="${ taxSum }" pattern="#,###" />원</td>
                                 	<td><fmt:formatNumber value="${ cashSum }" pattern="#,###" />원 </td>
-                                </tr>    
+                                </tr>
                             </tbody>
                         </table>
                         </form>

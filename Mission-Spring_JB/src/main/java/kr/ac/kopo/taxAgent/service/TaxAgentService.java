@@ -5,6 +5,7 @@ import java.util.List;
 
 import kr.ac.kopo.taxAgent.vo.TaxCustomerVO;
 import kr.ac.kopo.taxAgent.vo.TaxUserInfoVO;
+import kr.ac.kopo.taxAgent.vo.customerPurchaseVO;
 
 public interface TaxAgentService {
 
@@ -15,4 +16,10 @@ public interface TaxAgentService {
 	HashMap<String, Object> getCustomerPurchase(String bNo);
 	
 	TaxUserInfoVO getTaxUserInfoService(String bNo);
+	
+	List<customerPurchaseVO> getCustomerPurchaseListService(HashMap<String, String> map);
+	
+	
+	
+	
 }

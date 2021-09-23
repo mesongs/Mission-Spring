@@ -1,5 +1,6 @@
 package kr.ac.kopo.taxAgent.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -73,6 +74,14 @@ public class taxAgentDAOImpl implements TaxAgentDAO {
 		TaxUserInfoVO taxUserInfo = sqlSessionTemplate.selectOne("taxAgent.taxAgentDAO.taxUserInfoSearch", bNo);
 		
 		return taxUserInfo;
+	}
+
+	@Override
+	public List<customerPurchaseVO> getCustomerPurchaseListDao(HashMap<String, String> map) {
+		
+		List<customerPurchaseVO> purchaseList = sqlSessionTemplate.selectList("taxAgent.taxAgentDAO.customerPurchaseListAjax", map);
+		
+		return purchaseList;
 	}
 
 	

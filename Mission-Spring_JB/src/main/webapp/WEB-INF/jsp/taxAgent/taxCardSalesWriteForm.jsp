@@ -132,9 +132,6 @@ text-align: center;
 		$('#writeFile').click(function(){
 			
 			
-			
-			alert('pdf생성 테스트')
-			
 			// form 태그를 submit해야할 듯, 그전에 pdf 생성 테스트하기
 			html2canvas($('#pdfDiv')[0]).then(function(canvas) { //저장 영역 div id
 				

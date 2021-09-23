@@ -87,5 +87,33 @@
 		where a.user_id = b.user_id and business_no=#{businessNo}
 	</select>
 	
+	<!-- 통합 매입내역 조회 - ajax -->
+	<select id="customerPurchaseListAjax" resultType="customerPurchaseVO" parameterType="hashMap" resultMap="customerPurchaseMap">
+		<!-- #{selectYear} #{selectOrder} -->
+		select receipt_date, RECEIPT_CODE, SUPPLIER_BUSINESS_NO, store_name, amount, vat, calSum
+            from (select to_char(to_date(receipt_date, 'yyyy-mm-dd'), 'yyyy-mm-dd') as receipt_date, RECEIPT_CODE, SUBSTR(SUPPLIER_BUSINESS_NO, 0,3)||'-'||SUBSTR(SUPPLIER_BUSINESS_NO, 4,2)||'-'||SUBSTR(SUPPLIER_BUSINESS_NO, 5) as SUPPLIER_BUSINESS_NO, store_name, amount, vat, calSum   from(select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE, STORE_NAME, amount, vat, amount+vat as calSum, receipt_date, SUPPLIER_BUSINESS_NO
+			from tb_receipt where BUSINESS_NO='6052355236'
+			and receipt_status='P'  
+			<choose>
+				<when test="selectOrder eq 1">
+					and receipt_date between #{selectYear}||'0101' and #{selectYear}||'0630'
+				</when>
+				<when test="selectOrder eq 2">
+					and receipt_date between #{selectYear}||'0701' and #{selectYear}||'1231'
+				</when>
+			</choose>
+			union
+			select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE, store_name, amount, vat,amount+vat as calSum, receipt_date, SUPPLIER_BUSINESS_NO
+			from TB_PURCHASE where BUSINESS_NO='6052355236'
+			<choose>
+				<when test="selectOrder eq 1">
+					and receipt_date between #{selectYear}||'0101' and #{selectYear}||'0630')
+				</when>
+				<when test="selectOrder eq 2">
+					and receipt_date between #{selectYear}||'0701' and #{selectYear}||'1231')
+				</when>
+			</choose>
+            order by receipt_date desc) where rownum <![CDATA[ <= ]]> 20
+	</select>
 	
 </mapper>

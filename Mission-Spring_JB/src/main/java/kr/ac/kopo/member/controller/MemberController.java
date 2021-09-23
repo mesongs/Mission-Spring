@@ -69,7 +69,7 @@ public class MemberController {
 		model.addAttribute("userVO", userVO);
 		
 		
-		// 개발하는 동안은 주석처리
+		// userStatus가 'T'이면 세무사 페이지로 이동하기
 		if(userVO.getUserStatus().equals("T")) {
 			
 			return "taxAgent/taxAgentIndex";

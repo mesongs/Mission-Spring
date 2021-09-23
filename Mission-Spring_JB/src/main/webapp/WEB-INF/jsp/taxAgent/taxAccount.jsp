@@ -266,7 +266,7 @@ function YMDFormatter(num){
                 <!--회원정보-->
                 <div class="memberInfo" style="height: 0px; background-color: #474A5B;">
                     <p class="memberId">
-                        <strong>${userVO.id } 세무사님,</strong>
+                        <strong>${userVO.name } 세무사님,</strong>
                         <br><span style="font-size: 20px;">환영합니다!</span>
                     </p>
                     <a class="applyBtn" href="javascript:void(0)" style="width: 170px; height: 39px;"><strong>로그아웃<i class="fas fa-chevron-right"></i></strong></a>
@@ -337,15 +337,15 @@ function YMDFormatter(num){
 							<div class="panel panel-default" style="height: 200px; cursor: pointer;" onclick="location.href='${ pageContext.request.contextPath }/taxAgent/taxAccountDetail/${ customerList.businessNo }'">
 								<div class="panel-heading">
 									 <span class="side-stick"></span>
-									<sapn>BNo</sapn>
+									<sapn>상호명</sapn>
 									<span> : </span>
-									<span class="addBold">${ customerList.businessNo }</span>
+									<span class="addBold">${ customerList.storeName }</span>
 									<br>
 								</div>
 									<div class="panel-body" style="font-size: 17px;margin-top: 15px; padding-right: 15px;">
-										<span>상호명</span>
+										<span>사업장번호</span>
 									    <sapn> : </sapn>
-									    <span class="addBold">${ customerList.storeName }</span><br>
+									    <span class="addBold">${ customerList.businessNo }</span><br>
 									    <span>고객명</span>
 									    <sapn> : </sapn>
 									    <span class="addBold">${ customerList.name }</span><br>

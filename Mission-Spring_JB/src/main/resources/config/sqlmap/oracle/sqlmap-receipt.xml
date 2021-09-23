@@ -225,7 +225,7 @@
 	<!-- 동적쿼리 in 동적으로 추가 --><!-- WHERE COLUMN_NAME LIKE '%'||#searchKeyword#||'%' -->
 	
 	<select id="getIntegratedList" parameterType="integratedSalesVO" resultType="integratedSalesVO" resultMap="IntegratedSalesMap">
-			select * from(select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE, STORE_NAME, amount, vat, amount+vat as calSum, receipt_date, SUPPLIER_BUSINESS_NO, division
+        	 select * from(select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE, STORE_NAME, amount, vat, amount+vat as calSum, receipt_date, SUPPLIER_BUSINESS_NO, division
 			from tb_receipt where BUSINESS_NO=#{businessNo} and receipt_status='P' and receipt_date like #{purchaseDate}||'%' and receipt_code in
 			<foreach collection="sendArray" item="item" index="index" open="(" close=")" separator=",">
             	${item}
@@ -236,8 +236,8 @@
 			<foreach collection="sendArray" item="item" index="index" open="(" close=")" separator=",">
             	${item}
         	</foreach>
-        	) where rownum <![CDATA[ <= ]]> 30
-        	order by receipt_date desc
+        	order by receipt_date desc)
+        	where rownum <![CDATA[ <= ]]> 30
 	</select>
 	
 	

@@ -113,6 +113,15 @@ public class customerPurchaseVO {
 	public void setReceiptKindPurchase(int receiptKindPurchase) {
 		this.receiptKindPurchase = receiptKindPurchase;
 	}
+
+	
+	@Override
+	public String toString() {
+		return "customerPurchaseVO [receiptCode=" + receiptCode + ", storeName=" + storeName + ", amount=" + amount
+				+ ", vat=" + vat + ", calSum=" + calSum + ", receiptDate=" + receiptDate + ", supplierBusinessNo="
+				+ supplierBusinessNo + ", purchaseSum=" + purchaseSum + ", purchaseAmountSum=" + purchaseAmountSum
+				+ ", purchaseVatSum=" + purchaseVatSum + ", receiptKindPurchase=" + receiptKindPurchase + "]";
+	}
 	
 	
 	

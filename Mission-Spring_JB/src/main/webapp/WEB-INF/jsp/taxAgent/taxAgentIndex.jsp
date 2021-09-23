@@ -61,7 +61,7 @@ th{
                 <!--회원정보-->
                 <div class="memberInfo">
                     <p class="memberId">
-                        <strong>${userVO.id } 세무사님,</strong>
+                        <strong>${userVO.name } 세무사님,</strong>
                         <br><span style="font-size: 20px;">환영합니다!</span>
                     </p>
                     <a class="applyBtn" href="javascript:void(0)"><strong>로그아웃<i class="fas fa-chevron-right"></i></strong></a>

@@ -19,12 +19,18 @@
 
 
 <style>
-a { 
-text-decoration:none 
-}
- a:link { color: #ffffff; text-decoration: none;}
- a:visited { color: black; text-decoration: none;}
- a:hover { color: #ffffff; text-decoration: none;}
+ 
+
+
+
+.tabMove:hover { color: rgb(2,2,2); font-weight: bold; }
+.tabMove { text-decoration: none; }
+.tabMove:hover { text-decoration: none;}
+.tabMove:active { text-decoration: none; }
+.tabMove:link { color: rgb(2,2,2); }
+.tabMove:visited { text-decoration: none; }
+
+
 
 .writeForm{
 
@@ -236,6 +242,7 @@ $(document).ready(function(){
 	}
 	
 	
+	// 조회버튼 눌렀을 때 실행, 세무사가 조회하는 날짜에 해당하는 값 조회
 	$('#searchWriteForm').click(function(){
 		
 		getSalesRow();
@@ -244,6 +251,8 @@ $(document).ready(function(){
 		
 		
 	})
+	
+	
 	
 	
 	
@@ -260,6 +269,19 @@ function summary(formName){
 		
 		
 	}
+	
+function goToSales(){
+	
+	
+	$('#salesTab').addClass("active");
+	$('#purchaseTab').removeClass("active");
+	
+	// 수입 탭으로 이동됐고, replace => $.get으로 jsp페이지를 불러오기
+	
+	
+	
+}
+
 
 
 </script>
@@ -327,9 +349,9 @@ function summary(formName){
                     
                     <div class="listMenu" style="margin-bottom: 30px;">
                      <ul>
-                            <li><strong style="font-size:20px;"><a href="#">수입(매출)</a></strong></li>
-                            <li class="active"><strong style="font-size:20px;">비용(매입/일반경비)</strong></li>
-                            <li><strong style="font-size:20px;"><a href="#">목록</a></strong></li>
+                            <li id="salesTab"><strong style="font-size:20px;"><a href="javascript:goToSales();" class="tabMove">수입(매출)</a></strong></li>
+                            <li class="active" id="purchaseTab"><strong style="font-size:20px;">비용(매입/일반경비)</strong></li>
+                            <li><strong style="font-size:20px;"><a href="#" class="tabMove">목록</a></strong></li>
                      </ul>
                      
                      

@@ -111,50 +111,6 @@ public class TaxAgentController {
 			// 서비스단에서 dao 여러 개 호출해서 map에 저장해서 넘겨주기
 			
 			
-//			HashMap<String, Object> map = service.getCustomerPurchase(bNO);
-			
-//			List<ReturnPurchaseVO> recentWeekPurchaseList = (List<ReturnPurchaseVO>)map.get("recentWeekPurchaseList");
-//			List<customerPurchaseVO> receiptKindSumList = (List<customerPurchaseVO>) map.get("receiptKindSumList");
-			
-			
-			
-//			for(int i=0; i<receiptKindSumList.size(); i++) {
-//				
-//				switch (receiptKindSumList.get(i).getReceiptCode()) {
-//				case "003":
-//					mav.addObject("cardSum",receiptKindSumList.get(i).getReceiptKindPurchase());
-//					break;
-//					
-//				case "004":
-//					mav.addObject("simpleSum",receiptKindSumList.get(i).getReceiptKindPurchase());
-//					break;
-//					
-//				case "001":
-//					mav.addObject("taxBilSum",receiptKindSumList.get(i).getReceiptKindPurchase());
-//					break;
-//					
-//				case "002":
-//					mav.addObject("taxSum",receiptKindSumList.get(i).getReceiptKindPurchase());
-//					break;
-//					
-//				case "005":
-//					mav.addObject("cashSum",receiptKindSumList.get(i).getReceiptKindPurchase());
-//					break;
-//				
-//				}
-//				
-//			}
-				
-			// 컨트롤러 받아온 row에 들어갈 data들
-//			customerPurchaseVO pusrchaseSumVO = (customerPurchaseVO)map.get("pusrchaseSumVO");
-//			List<customerPurchaseVO> getPurchaseList = (List<customerPurchaseVO>)map.get("getPurchaseList");
-//			CustomerSalesVO customerSalesVO = (CustomerSalesVO) map.get("salesSumVO");
-			
-//			mav.addObject("receiptKindSumList", receiptKindSumList);
-//			mav.addObject("pusrchaseSumVO", pusrchaseSumVO);
-//			mav.addObject("getPurchaseList", getPurchaseList);
-//			mav.addObject("customerSalesVO", customerSalesVO);
-			
 			// 세무사가 선택한 고객 Info
 			mav.addObject("taxCustomer", taxCustomer);
 			
@@ -162,34 +118,16 @@ public class TaxAgentController {
 	}
 	
   
-	//ajax로 담당 고객의 매입 내역을 조회함
-//	@RequestMapping("/taxAgent/getPurchaseListAjax")
-//	@ResponseBody
-//	public List<customerPurchaseVO> getPurchaseListAjax(@RequestParam HashMap<String, String> map){
-//		 
-//		 List<customerPurchaseVO> purchaseList = service.getCustomerPurchaseListService(map);
-//		 
-//		 // 조회할 때마다 가지고와야하는 값 => 영수금액 합계, 부가세 합계, 매입유형별 금액 합계
-// 		 // 넘겨주는 값을 map으로..
-//		 
-//		 
-//		 
-//		 return purchaseList;
-//	}
+
+	@RequestMapping("/taxAgent/getPurchaseListAjax")
+	@ResponseBody
+	public HashMap<String, Object> getPurchaseListAjax(@RequestParam HashMap<String, String> map){
 		
-		@RequestMapping("/taxAgent/getPurchaseListAjax")
-		@ResponseBody
-		public HashMap<String, Object> getPurchaseListAjax(@RequestParam HashMap<String, String> map){
-			 
-			 
-			 HashMap<String, Object> returnMap = service.getCustomerPurchaseListService(map);
-			 // returnMap에 들어있는 값은 사용자가 조회한 rowList 영수금액 합계, 부가세 합계, 매입유형별 금액 합계
-			
-			 
-			 
-			 
-			 return returnMap;
-		}
+		HashMap<String, Object> returnMap = service.getCustomerPurchaseListService(map);
+		// returnMap에 들어있는 값은 사용자가 조회한 rowList 영수금액 합계, 부가세 합계, 매입유형별 금액 합계
+		
+		return returnMap;
+	}
 		
 	
 	// 세무사가 고객의 세무 정보 확인 후, 신고서 작성 페이지로 이동함 - 변경 전 1
@@ -202,10 +140,7 @@ public class TaxAgentController {
 		
 		return mav;
 	}
-		
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	// 카드 매출 관련 신고서 작성, form으로 이동
 	@PostMapping("/taxAgent/cardSealesWriteForm")
 	public ModelAndView cardSealesWriteForm(WriteInfoVO writeInfoVO) {

@@ -28,6 +28,7 @@ import kr.ac.kopo.taxAgent.vo.TaxUserInfoVO;
 import kr.ac.kopo.taxAgent.vo.customerPurchaseVO;
 import kr.ac.kopo.taxAgent.vo.summaryVO;
 import kr.ac.kopo.taxAgent.vo.CustomerSalesVO;
+import kr.ac.kopo.taxAgent.vo.TaxBillVO;
 import kr.ac.kopo.taxAgent.vo.WriteInfoVO;
 
 @Controller
@@ -128,13 +129,22 @@ public class TaxAgentController {
 		
 		return returnMap;
 	}
-		
 	
+	
+	// 통합 매출 조회 ajax
+	@RequestMapping("/taxAgent/getSalesListAjax")
+	@ResponseBody
+	public HashMap<String, Object> getSalesListAjax(@RequestParam HashMap<String, String> map){
+		
+		HashMap<String, Object> returnMap = service.getCustomerSalesListService(map);
+		
+		return returnMap;
+	}
+		
 	// 세무사가 고객의 세무 정보 확인 후, 신고서 작성 페이지로 이동함 - 변경 전 1
 	@PostMapping("/taxAgent/taxWriteForm")
 	public ModelAndView taxWriteForm(summaryVO summaryVO) {
 		
-		// form태그로 날아오는 인자 vo로 받기
 		ModelAndView mav = new ModelAndView("taxAgent/taxWriteFormKind");
 		mav.addObject("summaryVO", summaryVO);
 		
@@ -152,7 +162,7 @@ public class TaxAgentController {
 		
 		TaxUserInfoVO taxUserInfo = service.getTaxUserInfoService(bNo); 		
 		
-		// 고객 기본정보를 가져와서VO에 공유영역에 저장
+		// 고객 기본정보를 가져와서VO 공유영역에 저장
 		mav.addObject("taxUserInfo", taxUserInfo);
 		mav.addObject("writeInfoVO", writeInfoVO);
 		
@@ -162,15 +172,54 @@ public class TaxAgentController {
 	
 	// 매입처별 세금계산서 합계표
 	@PostMapping("/taxAgent/taxBill")
-	public String getAjaxTaxBill() {
+	public ModelAndView getAjaxTaxBill(WriteInfoVO writeInfoVO) {
 		
-		//mav.addObject("summaryVO", summaryVO);
+		ModelAndView mav = new ModelAndView("taxAgent/taxBillWriteForm");
+		// bNo 고객 정보(사업장 정보) 가져와야하고, 고객의 세금계산서 내역을 가져와야함, forEach로
+		String bNo = writeInfoVO.getbNo();
 		
-		return "taxAgent/taxBillWriteForm";
+		// writeInfoVO에는 통합 매입 / 매출 데이터가 들어있음
+		TaxUserInfoVO taxUserInfo = service.getTaxUserInfoService(bNo);  
+		
+		// 세무사가 선택한 날짜
+		String selectYear = writeInfoVO.getSelectYear();
+		String selectOrder = writeInfoVO.getSelectOrder();
+		
+		HashMap<String, String> requestMap = new HashMap<>();
+		
+		requestMap.put("selectYear", selectYear);
+		requestMap.put("selectOrder", selectOrder);
+		
+		List<TaxBillVO> getHrTaxBillList = service.getHrTaxBillList(requestMap);
+		
+		TaxBillVO taxBillCountSumVO = service.taxbillCountSum(requestMap);
+		
+		TaxBillVO digitalTaxBillCountSumVO = service.digitalTaxBillCountSum(requestMap);
+		
+		mav.addObject("writeInfoVO",writeInfoVO);
+		mav.addObject("taxUserInfo",taxUserInfo);
+		
+		
+		// 수기 세금계산서 List
+		mav.addObject("getHrTaxBillList", getHrTaxBillList);
+		
+		// 수기 세금계산서 합계
+		mav.addObject("taxBillCountSumVO",taxBillCountSumVO);
+		
+		// 전자 세금계산서 합계
+		mav.addObject("digitalTaxBillCountSumVO", digitalTaxBillCountSumVO);
+		
+		return mav;
 		
 	}
 	
 
+	// 매출 탭으로 이동 시 변경되는 부분만 페이지 replace
+	@RequestMapping("/taxAgent/taxAgentPurchaseReplace")
+	public String purchaseReplace() {
+		
+		return "taxAgent/taxAgentLookupReplace";
+	}
 	
 	
 	

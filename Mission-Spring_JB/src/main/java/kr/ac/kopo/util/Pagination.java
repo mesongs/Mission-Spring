@@ -11,6 +11,7 @@ public class Pagination {
 	
 	private int startRow; // 페이지별 시작 글 번호
 	private int endRow; // 페이지별 끝 글 번호
+	
 	private int curBlock; // 사용자가 현재 속한 블록
 	
 	// [1] [2] [3] [4] [5] => 1번 째 블록

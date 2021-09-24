@@ -20,7 +20,36 @@ public class WriteInfoVO {
 	private String addrJibun;
 	
 	
+	// 선택한 날짜
+	private String selectYear;
+	private String selectOrder;
 	
+	
+	
+	public String getSelectYear() {
+		return selectYear;
+	}
+
+
+
+	public void setSelectYear(String selectYear) {
+		this.selectYear = selectYear;
+	}
+
+
+
+	public String getSelectOrder() {
+		return selectOrder;
+	}
+
+
+
+	public void setSelectOrder(String selectOrder) {
+		this.selectOrder = selectOrder;
+	}
+
+
+
 	public int getSalesSum() {
 		return salesSum;
 	}

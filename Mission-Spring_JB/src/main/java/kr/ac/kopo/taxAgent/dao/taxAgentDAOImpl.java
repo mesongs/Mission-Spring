@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import kr.ac.kopo.taxAgent.service.TaxAgentService;
 import kr.ac.kopo.taxAgent.vo.CustomerSalesVO;
+import kr.ac.kopo.taxAgent.vo.TaxBillVO;
 import kr.ac.kopo.taxAgent.vo.TaxCustomerVO;
 import kr.ac.kopo.taxAgent.vo.TaxUserInfoVO;
 import kr.ac.kopo.taxAgent.vo.customerPurchaseVO;
@@ -100,7 +101,56 @@ public class taxAgentDAOImpl implements TaxAgentDAO {
 		
 		return receiptKindSumList;
 	}
+	
+	@Override
+	public List<CustomerSalesVO> getCustomerSalesListDao(HashMap<String, String> map) {
+		
+		List<CustomerSalesVO> salesList = sqlSessionTemplate.selectList("taxAgent.taxAgentDAO.getAllSalesList", map); 
+		
+		return salesList;
+	}
+	
+	@Override
+	public CustomerSalesVO getSalesPerSum(HashMap<String, String> map) {
+		
+		CustomerSalesVO salesPerSum = sqlSessionTemplate.selectOne("taxAgent.taxAgentDAO.getSalesPerSum", map);
+		return salesPerSum;
+		
+	}
 
+	@Override
+	public List<TaxBillVO> getHrTaxBillList(HashMap<String, String> map) {
+		
+		// 수기 세금계산서 List
+		List<TaxBillVO> hrTaxBillList = sqlSessionTemplate.selectList("taxAgent.taxAgentDAO.handWriteTaxBill", map);
+		
+		return hrTaxBillList;
+	}
+	
+	@Override
+	public TaxBillVO geHrTaxBillCountSum(HashMap<String, String> map) {
+		
+		TaxBillVO hrCountSumVO = sqlSessionTemplate.selectOne("taxAgent.taxAgentDAO.hrCountSum", map); 
+		
+		return hrCountSumVO;
+	}
+
+	@Override
+	public TaxBillVO getDigitalTaxBillCountSum(HashMap<String, String> map) {
+		
+		TaxBillVO digitalCountSumVO = sqlSessionTemplate.selectOne("taxAgent.taxAgentDAO.digitalCountSum", map);
+		return digitalCountSumVO;
+	}
+
+	@Override
+	public int getTotalRecord(HashMap<String, String> map) {
+		
+		int totalRecord = sqlSessionTemplate.selectOne("taxAgent.taxAgentDAO.totalRecordCount", map);
+		
+		return totalRecord;
+	}
+
+	
 	
 	
 	

@@ -32,6 +32,26 @@
 		<result column="store_name" property="storeName" />
 	</resultMap>
 	
+	<resultMap type="customerSalesVO" id="customerSalesMap">
+		<result column="approval_no" property="approvalNo"></result>
+		<result column="deal_date" property="dealDate"></result>
+		<result column="sales_sum" property="salesSum"/>
+		<result column="sales_amount_sum" property="salesAmountSum"/>
+		<result column="sales_vat_sum" property="salesVatSum"/>
+	</resultMap>
+	
+	<resultMap type="taxBillVO" id="taxBillMap">
+		<result column="HR_SUPPLIER_BUSINESS_NO" property="hrSupplierBNo" />
+		<result column="hr_amount" property="hrAmount" />
+		<result column="hr_vat" property="hrVat"/>
+		<result column="hr_store_name" property="hrStoreName" />
+		<result column="hr_taxBill_count" property="hrTaxBillCount" />
+		<result column="hr_amount_sum" property="hrAmountSum" />
+		<result column="hr_vat_sum" property="hrVatSum"/>
+		<result column="digital_taxBill_count" property="digitalTaxBillCount"/>
+		<result column="digital_amount_sum" property="digitalAmountSum"/>
+		<result column="digital_vat_sum" property="digitalVatSum"/>
+	</resultMap>
 	
 	<!-- 세무사 - 자신이 담당하고 있는 회원들의 목록을 가져옴 -->
 	<select id="getCustomerList" resultType="taxCustomerVO" parameterType="String" resultMap="taxCustomerMap">
@@ -138,10 +158,97 @@
 	
 	</select>
 	
+	<!-- 통합 매출 내역 조회(현재 카드 매출 집계) -->
+	<select id="getAllSalesList" parameterType="hashMap" resultType="customerPurchaseVO" resultMap="customerSalesMap">
+		select deal_date, approval_no, approval_amount as calSum, round((approval_amount / 1.1),0) as amount, approval_amount - round((approval_amount / 1.1),0) as vat 
+			from tb_card_sales
+			where BUSINESS_NO='6052355236' 
+			<choose>
+				<when test="selectOrder eq 1">
+					and deal_date between #{selectYear}||'0101' and #{selectYear}||'0701'
+				</when>
+				<when test="selectOrder eq 2">
+					and deal_date between #{selectYear}||'0701' and #{selectYear}||'1231'
+				</when>
+			</choose>
+			order by deal_date desc
+	</select>
+	
+	<select id="getSalesPerSum" parameterType="hashMap" resultType="customerPurchaseVO" resultMap="customerSalesMap">
+		select sum(approval_amount) as sales_sum, sum(round((approval_amount / 1.1),0)) as sales_amount_sum, sum(approval_amount - round((approval_amount / 1.1),0)) as sales_vat_sum 
+		from tb_card_sales
+		where BUSINESS_NO='6052355236' 
+		<choose>
+				<when test="selectOrder eq 1">
+					and deal_date between #{selectYear}||'0101' and #{selectYear}||'0701'
+				</when>
+				<when test="selectOrder eq 2">
+					and deal_date between #{selectYear}||'0701' and #{selectYear}||'1231'
+				</when>
+		</choose>
+		order by deal_date desc
+	</select>
+	
+	<!-- 수기 세금계산서 매입 - 수기 세금계산서 list, 작성폼에 mapping-->
+	<select id="handWriteTaxBill" parameterType="hashMap" resultType="taxBillVO" resultMap="taxBillMap">
+		select rownum as no, HR_SUPPLIER_BUSINESS_NO,hr_store_name, hr_amount, hr_vat from (select SUBSTR(SUPPLIER_BUSINESS_NO, 0,3)||'-'||SUBSTR(SUPPLIER_BUSINESS_NO, 4,2)||'-'||SUBSTR(SUPPLIER_BUSINESS_NO, 6,5) as HR_SUPPLIER_BUSINESS_NO,
+        store_name as hr_store_name, amount as hr_amount, vat as hr_vat
+		from tb_receipt
+		where business_no='6052355236' and receipt_code='001' and receipt_status='P'
+		<choose>
+				<when test="selectOrder eq 1">
+					and receipt_date between #{selectYear}||'0101' and #{selectYear}||'0701'
+				</when>
+				<when test="selectOrder eq 2">
+					and receipt_date between #{selectYear}||'0701' and #{selectYear}||'1231'
+				</when>
+		</choose>
+		order by receipt_date desc)
+	</select>
+	
+	<!-- 수기 세금계산서 매입 - 수기 세금계산서 갯 수, 공급가액 / 세액 합계 -->
+	<select id="hrCountSum" parameterType="hashMap" resultType="taxBillVO" resultMap="taxBillMap">
+		select count(*) as hr_TaxBill_Count, sum(amount) as hr_amount_sum, sum(vat) as hr_vat_sum
+		from tb_receipt where business_no='6052355236' and receipt_code='001' and receipt_status='P' 
+		<choose>
+				<when test="selectOrder eq 1">
+					and receipt_date between #{selectYear}||'0101' and #{selectYear}||'0701'
+				</when>
+				<when test="selectOrder eq 2">
+					and receipt_date between #{selectYear}||'0701' and #{selectYear}||'1231'
+				</when>
+		</choose>
+	</select>
+	
+	<!-- 전자 세금계산서 - 갯 수, 공급가액 / 세액 합계  -->
+	<select id="digitalCountSum" parameterType="hashMap" resultType="taxBillVO" resultMap="taxBillMap">
+		select count(*) as digital_taxBill_count, sum(amount) as digital_amount_sum, sum(vat) as digital_vat_sum
+		from tb_purchase where receipt_code='001'
+		<choose>
+				<when test="selectOrder eq 1">
+					and receipt_date between #{selectYear}||'0101' and #{selectYear}||'0701'
+				</when>
+				<when test="selectOrder eq 2">
+					and receipt_date between #{selectYear}||'0701' and #{selectYear}||'1231'
+				</when>
+		</choose>
+	</select>
 	
 	
-	
-	
+	<select id="totalRecordCount" parameterType="hashMap" resultType="int">
+		select count(*) as totalRecord
+			from tb_card_sales
+			where BUSINESS_NO='6052355236' 
+			<choose>
+				<when test="selectOrder eq 1">
+					and deal_date between #{selectYear}||'0101' and #{selectYear}||'0701'
+				</when>
+				<when test="selectOrder eq 2">
+					and deal_date between #{selectYear}||'0701' and #{selectYear}||'1231'
+				</when>
+			</choose>
+			order by deal_date desc
+	</select>
 	
 	
 	

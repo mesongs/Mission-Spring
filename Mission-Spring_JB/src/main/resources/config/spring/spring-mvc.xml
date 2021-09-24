@@ -14,7 +14,7 @@
     http://www.springframework.org/schema/task/spring-task-3.1.xsd">
 
 	<context:component-scan base-package="kr.ac.kopo" />
-		
+	
 	<!-- 스케줄러 크론탭 설정에 필요한 태그들  -->
 	<task:scheduler id="cardSalesScheduler" pool-size="10"/>
 	<task:annotation-driven scheduler="cardSalesScheduler"/>

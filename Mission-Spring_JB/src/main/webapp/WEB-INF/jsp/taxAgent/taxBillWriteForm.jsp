@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+ <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+ <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -217,22 +219,22 @@ text-align: center;
 								</tr>
 								<tr>
 									<th colspan="2" class="centerCol">① 상호(법인명)</th>
-									<td colspan="5">종범상회</td>
+									<td colspan="5">${taxUserInfo.storeName}</td>
 									<th colspan="3" class="centerCol">② 대표자</th>
-									<td colspan="2">박종범</td>
+									<td colspan="2">${taxUserInfo.name}</td>
 								</tr>
 								<tr>
 									<th colspan="2" class="centerCol">③ 사업장 소재지</th>
-									<td colspan="5" >부산진구 부암동</td>
+									<td colspan="5" >${taxUserInfo.addrJibun}</td>
 									<th colspan="3" class="centerCol">④ 사업자등록번호</th>
-									<td colspan="2">605-23-55236</td>
+									<td colspan="2">${taxUserInfo.bNo }</td>
 								</tr>
 								
 								<tr>
 									<th colspan="2" class="centerCol">⑤ 거래기간</th>
-									<td colspan="5" >2021-01-01 ~ 2021-06-31</td>
+									<td colspan="5" style="width:4190px;">2021-01-01 ~ 2021-06-31</td>
 									<th colspan="3" class="centerCol">⑥ 작성일</th>
-									<td colspan="2">2021-07-08</td>
+									<td colspan="2">2021-07-05</td>
 								</tr>
 								
 								<tr>
@@ -247,20 +249,18 @@ text-align: center;
 								</tr>
 								<tr>
 									<th colspan="2" class="centerCol">합계</th>
-									<td colspan="4"></td>
-									<td colspan="1"></td>
-									<td colspan="3"></td>
-									<td colspan="2"></td>
-								</tr>
+									<td colspan="4" align="center">${digitalTaxBillCountSumVO.digitalTaxBillCount + taxBillCountSumVO.hrTaxBillCount}개</td>
+									<td colspan="1" align="center">${digitalTaxBillCountSumVO.digitalTaxBillCount + taxBillCountSumVO.hrTaxBillCount}개</td>
+									<td colspan="3" align="center"><fmt:formatNumber value="${digitalTaxBillCountSumVO.digitalAmountSum + taxBillCountSumVO.hrAmountSum}" pattern="#,###" />원</td>
+									<td colspan="2" align="center"><fmt:formatNumber value="${digitalTaxBillCountSumVO.digitalVatSum + taxBillCountSumVO.hrVatSum}" pattern="#,###" />원</td>
+								</tr>					
 								<tr>
 									<th rowspan="3" class="centerCol">과세기간 종료일 다음 달 11일까지 전송된 전자세금계산서 발급받은 분</th>
 									<th class="centerCol" style="width: 110px;">사업자등록번호 발급받은 분</td>
-									<td colspan="4"></td>
-									<td colspan="1"></td>
-									<td colspan="3"></td>
-									<td colspan="2"></td>
-									
-									
+									<td colspan="4" align="center">${digitalTaxBillCountSumVO.digitalTaxBillCount}개</td>
+									<td colspan="1" align="center">${digitalTaxBillCountSumVO.digitalTaxBillCount}개</td>
+									<td colspan="3" align="center"><fmt:formatNumber value="${digitalTaxBillCountSumVO.digitalAmountSum}" pattern="#,###" />원</td>
+									<td colspan="2" align="center"><fmt:formatNumber value="${digitalTaxBillCountSumVO.digitalVatSum}" pattern="#,###" />원</td>
 								</tr>
 								<tr>
 									<th class="centerCol">주민등록번호 발급받은 분</td>
@@ -273,21 +273,19 @@ text-align: center;
 								<tr>
 									<th class="centerCol">소 계</td>
 									
-									<td colspan="4"></td>
-									<td colspan="1"></td>
-									<td colspan="3"></td>
-									<td colspan="2"></td>
+									<td colspan="4" align="center">${digitalTaxBillCountSumVO.digitalTaxBillCount}개</td>
+									<td colspan="1" align="center">${digitalTaxBillCountSumVO.digitalTaxBillCount}개</td>
+									<td colspan="3" align="center"><fmt:formatNumber value="${digitalTaxBillCountSumVO.digitalAmountSum}" pattern="#,###" />원</td>
+									<td colspan="2" align="center"><fmt:formatNumber value="${digitalTaxBillCountSumVO.digitalVatSum}" pattern="#,###" />원</td>
 								</tr>
 								
 								<tr>
 									<th rowspan="3" class="centerCol">위 전자세금계산서 외의 발급받은 분</th>
 									<th class="centerCol">사업자등록번호 발급받은 분</td>
-									<td colspan="4"></td>
-									<td colspan="1"></td>
-									<td colspan="3"></td>
-									<td colspan="2"></td>
-									
-									
+									<td colspan="4" align="center">${taxBillCountSumVO.hrTaxBillCount}개</td>
+									<td colspan="1" align="center">${taxBillCountSumVO.hrTaxBillCount}개</td>
+									<td colspan="3" align="center"><fmt:formatNumber value="${taxBillCountSumVO.hrAmountSum}" pattern="#,###" />원</td>
+									<td colspan="2" align="center"><fmt:formatNumber value="${taxBillCountSumVO.hrVatSum}" pattern="#,###" />원</td>
 								</tr>
 								<tr>
 									<th class="centerCol">주민등록번호 발급받은 분</td>
@@ -299,11 +297,10 @@ text-align: center;
 								</tr>
 								<tr>
 									<th class="centerCol">소 계</td>
-									
-									<td colspan="4"></td>
-									<td colspan="1"></td>
-									<td colspan="3"></td>
-									<td colspan="2"></td>
+									<td colspan="4" align="center">${taxBillCountSumVO.hrTaxBillCount}개</td>
+									<td colspan="1" align="center">${taxBillCountSumVO.hrTaxBillCount}개</td>
+									<td colspan="3" align="center"><fmt:formatNumber value="${taxBillCountSumVO.hrAmountSum}" pattern="#,###" />원</td>
+									<td colspan="2" align="center"><fmt:formatNumber value="${taxBillCountSumVO.hrVatSum}" pattern="#,###" />원</td>
 								</tr>
 								
 								<tr>
@@ -316,57 +313,22 @@ text-align: center;
 								<tr>
 									<th class="centerCol" style="width: 160px;">⑪ 번호</th>
 									<th colspan="4" class="centerCol">⑫사업자등록번호</th>
-									<th colspan="1" class="centerCol" style="width: 100px;">⑬ 상호(법인명)</th>
-									<th colspan="3" class="centerCol" style="width: 90px;">⑭ 매수</th>
-									<th colspan="2" class="centerCol" >⑮ 공급가액</th>
+									<th colspan="3" class="centerCol" style="width: 100px;">⑬ 상호(법인명)</th>
+									<th colspan="3" class="centerCol" >⑮ 공급가액</th>
 									<th colspan="2" class="centerCol" style="width: 1110px;">⑯ 세액</th>
 								</tr>
 								
-								<tr>
-									
-									<td class="centerCol">1</td>
-									<td colspan="4" class="centerCol"><input type="text" style="border: none; background-color: transparent;"></td>
-									<td colspan="1" class="centerCol"></td>
-									<td colspan="3" class="centerCol"></td>
-									<td colspan="2" class="centerCol"></td>
-									<td colspan="2" class="centerCol"></td>
-								</tr>
-								<tr>
-									
-									<td class="centerCol">2</td>
-									<td colspan="4" class="centerCol"></td>
-									<td colspan="1" class="centerCol"></td>
-									<td colspan="3" class="centerCol"></td>
-									<td colspan="2" class="centerCol"></td>
-									<td colspan="2" class="centerCol"></td>
-								</tr>
-								<tr>
-									
-									<td class="centerCol">3</td>
-									<td colspan="4" class="centerCol"></td>
-									<td colspan="1" class="centerCol"></td>
-									<td colspan="3" class="centerCol"></td>
-									<td colspan="2" class="centerCol"></td>
-									<td colspan="2" class="centerCol"></td>
-								</tr>
-								<tr>
-									
-									<td class="centerCol">4</td>
-									<td colspan="4" class="centerCol"></td>
-									<td colspan="1" class="centerCol"></td>
-									<td colspan="3" class="centerCol"></td>
-									<td colspan="2" class="centerCol"></td>
-									<td colspan="2" class="centerCol"></td>
-								</tr>
-								<tr>
-									
-									<td class="centerCol">5</td>
-									<td colspan="4" class="centerCol"></td>
-									<td colspan="1" class="centerCol"></td>
-									<td colspan="3" class="centerCol"></td>
-									<td colspan="2" class="centerCol"></td>
-									<td colspan="2" class="centerCol"></td>
-								</tr>
+								
+								<c:forEach items="${ getHrTaxBillList }" var="getHrTaxBillList">
+											<tr>
+												<td class="centerCol">${ getHrTaxBillList.no}</td>
+												<td colspan="4" class="centerCol">${ getHrTaxBillList.hrSupplierBNo}</td>
+												<td colspan="3" class="centerCol">${ getHrTaxBillList.hrStoreName}</td>
+												<td colspan="3" class="centerCol"><fmt:formatNumber value="${ getHrTaxBillList.hrAmount}" pattern="#,###" />원</td>
+												<td colspan="2" class="centerCol"><fmt:formatNumber value="${ getHrTaxBillList.hrVat}" pattern="#,###" />원</td>
+											</tr>
+								</c:forEach>
+								
 								<tr align="center">
 									<td colspan="12" style="font-weight: bold; color: rgb(2,2,2); background-color: rgb(238, 245, 243);">작 성 방 법</td>
 								</tr>

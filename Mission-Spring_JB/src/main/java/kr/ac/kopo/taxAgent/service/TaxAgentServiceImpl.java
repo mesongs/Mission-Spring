@@ -10,9 +10,11 @@ import org.springframework.stereotype.Service;
 
 import kr.ac.kopo.taxAgent.dao.TaxAgentDAO;
 import kr.ac.kopo.taxAgent.vo.CustomerSalesVO;
+import kr.ac.kopo.taxAgent.vo.TaxBillVO;
 import kr.ac.kopo.taxAgent.vo.TaxCustomerVO;
 import kr.ac.kopo.taxAgent.vo.TaxUserInfoVO;
 import kr.ac.kopo.taxAgent.vo.customerPurchaseVO;
+import kr.ac.kopo.util.Pagination;
 
 @Service
 public class TaxAgentServiceImpl implements TaxAgentService {
@@ -92,11 +94,59 @@ public class TaxAgentServiceImpl implements TaxAgentService {
 		
 		return returnMap;
 	}
+	
+	@Override
+	public HashMap<String, Object> getCustomerSalesListService(HashMap<String, String> map) {
 
-	
-	
-	
+		HashMap<String, Object> returnMap = new HashMap<String, Object>();
+		
+		// 통합 매출 리스트 (현재 카드 매출만 집계)
+		List<CustomerSalesVO> salesList = taxAgentDAO.getCustomerSalesListDao(map);
+		
+		// 매출 공급가액, 부가세, 합계금액
+		CustomerSalesVO customerSaelsVO = taxAgentDAO.getSalesPerSum(map);
+		
+		int totalRow = taxAgentDAO.getTotalRecord(map); 
+		
+		
+//		Pagination pagination = new Pagination(totalRow, );
+		
+		
+		returnMap.put("salesList", salesList);
+		returnMap.put("customerSaelsVO", customerSaelsVO);
+		
+		return returnMap;
+		
+	}
 
+	@Override
+	public List<TaxBillVO> getHrTaxBillList(HashMap<String, String> map) {
+		
+		List<TaxBillVO> getHrtaxBillList = taxAgentDAO.getHrTaxBillList(map);
+		
+		return getHrtaxBillList;
+	}
+
+	@Override
+	public TaxBillVO taxbillCountSum(HashMap<String, String> map) {
+		
+		TaxBillVO taxbillCountSum = taxAgentDAO.geHrTaxBillCountSum(map);
+		
+		return taxbillCountSum;
+	}
+
+	@Override
+	public TaxBillVO digitalTaxBillCountSum(HashMap<String, String> map) {
+		
+		TaxBillVO digitalTaxbillCountSum = taxAgentDAO.getDigitalTaxBillCountSum(map);
+		
+		return digitalTaxbillCountSum;
+	}
+	
+	
+	
+	
+	
 	
 	
 	

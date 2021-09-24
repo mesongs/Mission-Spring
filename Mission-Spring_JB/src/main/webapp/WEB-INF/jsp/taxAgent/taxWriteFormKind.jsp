@@ -20,6 +20,15 @@
 
 <style>
 
+tr:hover{
+	
+	text-decoration: none;
+}
+td:hover{
+	
+	text-decoration: none;
+}
+
  a:hover { 
  
  font-weight:bold; 

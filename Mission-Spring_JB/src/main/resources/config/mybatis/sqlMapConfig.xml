@@ -22,5 +22,7 @@
 		<typeAlias type="kr.ac.kopo.taxAgent.vo.CustomerSalesVO" alias="customerSalesVO"/>
 		<typeAlias type="kr.ac.kopo.taxAgent.vo.WriteInfoVO" alias="writeInfoVO"/>
 		<typeAlias type="kr.ac.kopo.taxAgent.vo.TaxUserInfoVO" alias="taxUserInfoVO"/>
+		<typeAlias type="kr.ac.kopo.taxAgent.vo.TaxBillVO" alias="taxBillVO"/>
+		
 	</typeAliases>
 </configuration>

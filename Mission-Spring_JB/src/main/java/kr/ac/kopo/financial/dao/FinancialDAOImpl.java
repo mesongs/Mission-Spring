@@ -11,6 +11,7 @@ import kr.ac.kopo.financial.vo.ReturnPurchaseVO;
 import kr.ac.kopo.financial.vo.ReturnSalesVO;
 import kr.ac.kopo.financial.vo.SalesReportVO;
 import kr.ac.kopo.financial.vo.SalesVO;
+import kr.ac.kopo.financial.vo.SmsReportInfoVO;
 
 @Repository
 public class FinancialDAOImpl implements FinancialDAO {
@@ -173,6 +174,22 @@ public class FinancialDAOImpl implements FinancialDAO {
 		ReturnPurchaseVO twoWeekSumCountVO = sqlSessionTemplate.selectOne("financial.financialDAO.twoWeekSumCount", businessNo);
 		
 		return twoWeekSumCountVO;
+	}
+
+	@Override
+	public SmsReportInfoVO getPhoneNumber() {
+		
+		SmsReportInfoVO customerSmsInfo = sqlSessionTemplate.selectOne("financial.financialDAO.getCustomerSmsInfoList");
+		
+		return customerSmsInfo;
+	}
+
+	@Override
+	public SmsReportInfoVO getYesterdayDayBeforeSales(SmsReportInfoVO smsInfoVO) {
+		
+		SmsReportInfoVO customerSmsSalesVO = sqlSessionTemplate.selectOne("financial.financialDAO.getCustomerSmsSalesInfo", smsInfoVO);
+		
+		return customerSmsSalesVO;
 	}
 	
 	

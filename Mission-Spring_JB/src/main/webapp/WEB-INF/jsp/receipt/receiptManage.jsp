@@ -15,8 +15,9 @@
 
 <style>
 
+
 table tbody th, table td {
-    border-bottom: none;
+    border-bottom: 1px solid rgba(2,2,2,0.1);
 }
 
 	.product-img2 {
@@ -27,7 +28,7 @@ table tbody th, table td {
 	}
 
 	#boardtable{
-		
+	
 	height: 60px;
     font-size: 18px;
     font-weight: bold;

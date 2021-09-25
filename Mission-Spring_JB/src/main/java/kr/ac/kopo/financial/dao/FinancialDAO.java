@@ -1,11 +1,13 @@
 package kr.ac.kopo.financial.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import kr.ac.kopo.financial.vo.ReturnPurchaseVO;
 import kr.ac.kopo.financial.vo.ReturnSalesVO;
 import kr.ac.kopo.financial.vo.SalesReportVO;
 import kr.ac.kopo.financial.vo.SalesVO;
+import kr.ac.kopo.financial.vo.SmsReportInfoVO;
 
 public interface FinancialDAO {
 	
@@ -58,5 +60,10 @@ public interface FinancialDAO {
 	
 	ReturnPurchaseVO getTwoWeekSumCount(String businessNo);
 	
-	
+	SmsReportInfoVO getPhoneNumber();
+
+	SmsReportInfoVO getYesterdayDayBeforeSales(SmsReportInfoVO smsInfoVO);
+
 }
+
+

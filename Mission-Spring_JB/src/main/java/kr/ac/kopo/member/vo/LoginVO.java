@@ -10,17 +10,9 @@ public class LoginVO {
 	private String phone;
 	private String email; // 자신의 email
 	private String taxAgentEmail; // 세무대리인 email
-	private String bankingAgreement;
+	private String agreement;
 	private String homtaxAgreement;
 	private String userStatus; // role 구분
-	
-
-	public String getStoreName() {
-		return storeName;
-	}
-	public void setStoreName(String storeName) {
-		this.storeName = storeName;
-	}
 	public String getId() {
 		return id;
 	}
@@ -38,6 +30,12 @@ public class LoginVO {
 	}
 	public void setBusinessNo(String businessNo) {
 		this.businessNo = businessNo;
+	}
+	public String getStoreName() {
+		return storeName;
+	}
+	public void setStoreName(String storeName) {
+		this.storeName = storeName;
 	}
 	public String getName() {
 		return name;
@@ -63,11 +61,11 @@ public class LoginVO {
 	public void setTaxAgentEmail(String taxAgentEmail) {
 		this.taxAgentEmail = taxAgentEmail;
 	}
-	public String getBankingAgreement() {
-		return bankingAgreement;
+	public String getAgreement() {
+		return agreement;
 	}
-	public void setBankingAgreement(String bankingAgreement) {
-		this.bankingAgreement = bankingAgreement;
+	public void setAgreement(String agreement) {
+		this.agreement = agreement;
 	}
 	public String getHomtaxAgreement() {
 		return homtaxAgreement;
@@ -82,13 +80,8 @@ public class LoginVO {
 		this.userStatus = userStatus;
 	}
 	
-	@Override
-	public String toString() {
-		return "LoginVO [id=" + id + ", password=" + password + ", businessNo=" + businessNo + ", storeName="
-				+ storeName + ", name=" + name + ", phone=" + phone + ", email=" + email + ", taxAgentEmail="
-				+ taxAgentEmail + ", bankingAgreement=" + bankingAgreement + ", homtaxAgreement=" + homtaxAgreement
-				+ ", userStatus=" + userStatus + "]";
-	}
+
+	
 	
 	
 	

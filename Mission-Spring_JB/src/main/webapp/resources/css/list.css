@@ -114,22 +114,25 @@ input::placeholder{
  	color: #495057;
  }
  
+ /* table css 변경 */
   table {
     margin-top: 20px;
-    border-top: 3px solid #495057;
+
     border-collapse: collapse;
-    border-bottom: 4px solid #495057;
+
     
   }
   
   th, td { 
-    border-bottom: 1px solid #495057;
     padding: 10px;
   }
   
   
   th{
-  	border-top: 3px solid #495057;
+  	border-top: 1px solid rgba(2,2,2,0.1);
+  	border-bottom :  1px solid rgba(2,2,2,0.1);
+  	background-color: rgba(233,246,251,0.9);
+  	color : rgb(2,2,2);
   }
   
  #excelBtn{

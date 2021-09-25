@@ -20,7 +20,10 @@
 
 <style>
  
+th{
 
+background-color: rgb(240,245,243);
+}
 
 
 .tabMove:hover { color: rgb(2,2,2); font-weight: bold; }
@@ -154,16 +157,8 @@ th{
                     </div>
                     
                     
-                    <div>
-					<p class="paging" style="margin-top: 20px;">
-                        <span><i class="fas fa-chevron-left"></i></span>
-                        <span>1</span>
-                        <span>2</span>
-                        <span>3</span>
-                        <span>4</span>
-                        <span>5</span>
-                        <span><i class="fas fa-chevron-right"></i></span>
-                    </p>
+                    <div id="salesPageCount">
+					
 					</div>
 					</section>
               

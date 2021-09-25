@@ -2,7 +2,7 @@ package kr.ac.kopo.util;
 
 public class Pagination {
 	
-	private int rowSize = 10; // 한 페이지 글 개수, page 당 10개 출력
+	private int rowSize = 30; // 한 페이지 글 개수, page 당 10개 출력
 	private int blockSize = 5; // 페이지 블록 개수, 5page씩 출력
 	private int curPage; // 현재 페이지
 	private int totalRow; // 전체 레코드 개수
@@ -214,4 +214,13 @@ public class Pagination {
 	public void setTotalPage(int totalPage) {
 		this.totalPage = totalPage;
 	}
+
+	@Override
+	public String toString() {
+		return "Pagination [rowSize=" + rowSize + ", blockSize=" + blockSize + ", curPage=" + curPage + ", totalRow="
+				+ totalRow + ", totalPage=" + totalPage + ", startRow=" + startRow + ", endRow=" + endRow
+				+ ", curBlock=" + curBlock + ", startPage=" + startPage + ", endPage=" + endPage + "]";
+	}
+	
+	
 }

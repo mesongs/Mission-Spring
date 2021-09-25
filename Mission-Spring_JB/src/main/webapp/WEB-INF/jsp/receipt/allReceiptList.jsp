@@ -71,6 +71,22 @@
 	
 	$(document).ready(function(){
 		
+		$('#tblAllChk').click(function(){
+		
+			if($('#tblAllChk').prop('checked')){
+				
+				$("input[name=tblChk]").prop('checked',true)
+				
+			}else{
+				
+				$("input[name=tblChk]").prop('checked',false)
+				
+			}
+			
+		})
+		
+		
+		
 		$('#allCheck').click(function(){
 			
 			if($('#allCheck').prop('checked')){
@@ -588,6 +604,7 @@ function YMDFormatter(num){
 							 	<div class="row" style="margin-top: 30px;">
 							 		<div class="col-7" style="float: left; width: 496px">
 							 			<span style="float: left; font-weight: bold; color: rgb(2,2,2); margin-bottom: 10px; ">발급유형</span>
+							 			<label style="float: left; text-decoration: underline; font-weight: bold;"><input type="checkbox" name="tblChk" id="tblAllChk" value="0" style="margin-left: 10px;">전체 선택</label> 
 							 			<label style="float: left;"><input type="checkbox" name="tblChk" value="001" style="margin-left: 10px;">세금계산서</label> 
 							 			<label style="float: left;"><input type="checkbox" name="tblChk" value="002" style="margin-left: 10px;">계산서</label> 
 							 			<label style="float: left;"><input type="checkbox" name="tblChk" value="003" style="margin-left: 10px;">카드영수증</label> 
@@ -689,13 +706,13 @@ function YMDFormatter(num){
 								<tbody id="test">
 								 	<tr>
 								 		<td><input type="checkbox" class="testBox" id="allCheck" value="1"></td>
-								 		<td>20210630</td>
+								 		<td>2021-09-15</td>
 								 		<td>세금계산서</td>
-								 		<td>6099192931</td>
-								 		<td>사오수산</td>
-								 		<td>80,910</td>
-								 		<td>8,090</td>
-								 		<td>89,000</td>
+								 		<td>609-91-92931</td>
+								 		<td>광명사거리상회</td>
+								 		<td>80,910원</td>
+								 		<td>8,090원</td>
+								 		<td>89,000원</td>
 								 		<td style="color: blue;">전자증빙</td>
 								 	</tr>
 								</tbody>

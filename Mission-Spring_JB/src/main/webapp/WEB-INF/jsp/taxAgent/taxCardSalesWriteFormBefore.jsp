@@ -122,7 +122,7 @@ text-align: center;
 		
 		$('#goList').click(function(){
 			
-			history.back();
+			location.href='${ pageContext.request.contextPath }/taxAgent/taxWriteForm?bNo='+ '6052355236' + "&storeName=" + '종범상회'
 			
 		})
 		
@@ -183,17 +183,10 @@ text-align: center;
 <body>
 	
 	<!--================Header Menu Area =================-->
-	<%-- <jsp:include page="/WEB-INF/jsp/include/header.jsp"/> --%>
+	<jsp:include page="/WEB-INF/jsp/include/header.jsp"/>
 	<!--================Header Menu Area =================-->
-	
-	<div class="header">
-          <div class="logo">
-              <a href="javascript:void(0)"><img src="${ pageContext.request.contextPath }/resources/img/logo.png" alt="logo" style="width: 214px; height: 80px;"></a>
-          </div>
-    </div>
-	
-	
-	<div class="comment-form-receipt" id="comment-custom-receipt" style="width: 1110px; margin-top: 50px;">
+
+	<div class="comment-form-receipt" id="comment-custom-receipt" style="width: 1110px;">
 		<div class="row">
 			<div class="col">
 				<h4 style="font-family: 'Noto Sans KR', sans-serif;font-size: xx-large; margin-left: 32px;">세금신고서 작성</h4>
@@ -233,9 +226,9 @@ text-align: center;
 									<td colspan="2">${taxUserInfo.name}</td>
 								</tr>
 								<tr>
-									<th colspan="2" class="centerCol" style="width: 310px;">③ 사업장 소재지</th>
+									<th colspan="2" class="centerCol">③ 사업장 소재지</th>
 									<td colspan="5" >${taxUserInfo.addrJibun}</td>
-									<th colspan="3" class="centerCol"  style="width: 350px;">④ 사업자등록번호</th>
+									<th colspan="3" class="centerCol">④ 사업자등록번호</th>
 									<td colspan="2">${taxUserInfo.bNo }</td>
 								</tr>
 								
@@ -282,9 +275,9 @@ text-align: center;
 									<th colspan="12" class="rowTitle">3. 신용카드매출전표등 발행금액(⑤ 합계) 중 세금계산서(계산서) 발급명세</th>
 								</tr>
 								<tr>
-									<th colspan="2" class="centerCol">⑨ 세금계산서<br>발급금액</th>
+									<th colspan="2" class="centerCol">⑨ 세금계산서 발급금액</th>
 									<td colspan="5">0원</td>
-									<th colspan="3" class="centerCol">⑩ 계산서<b>발급금액</th>
+									<th colspan="3" class="centerCol">⑩ 계산서 발급금액</th>
 									<td colspan="2">0원</td>
 								</tr>
 								<tr>
@@ -304,7 +297,7 @@ text-align: center;
 							</div>
 							<div style="margin: auto;">
 								<input type="submit" class="button submit_btn" id="writeFile" style="border-radius:30px; color:#fff background-color: #27b2a5; margin-right:10px; margin-top: 20px; font-size: 21px;" value="작성">
-								<input type="button" class="button submit_btn" id="goList" style="margin-left:10px; color:#999999;background-color: rgba(134, 139, 178, 0.25); margin-top: 20px; font-size: 21px ; border-radius : 30px; border: 0px;" value="목록">
+								<input type="submit" class="button submit_btn" id="goList" style="margin-left:10px; color:#999999;background-color: rgba(134, 139, 178, 0.25); margin-top: 20px; font-size: 21px ; border-radius : 30px; border: 0px;" value="목록">
 							</div>
 						</div>
 					</div>

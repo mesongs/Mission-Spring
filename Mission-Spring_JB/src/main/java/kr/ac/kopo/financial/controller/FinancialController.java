@@ -150,7 +150,15 @@ public class FinancialController {
 	}
 	
 	
-
+	// 회원들의 폰 번호(회원가입 시 sms 정보 수신 동의한 회원에 한 해)로
+	// 9월 ~일 사업보고서가 업데이트 되었습니다.
+	//	초(0~59) 분(0~59) 시(0~23) 일(1~31) 월(1~12) 요일(0~6)
+	@Scheduled(cron = "0 42 19 * * *")
+	public void sendSmsReportSummary() {
+		
+		financialService.sendSmsSummary();
+		
+	}
 	
 	
 	

@@ -11,7 +11,6 @@
 		<result column="USER_STATUS" property="userStatus" />
 		<result column="TAX_AGENT_EMAIL" property="taxAgentEmail" />
 		<result column="business_no" property="businessNo" />
-		<result column="BANKING_AGREEMENT" property="bankingAgreement"/>
 		<result column="HOMTAX_AGREEMENT" property="homtaxAgreement"/>
 		<result column="store_name" property="storeName" />
 	</resultMap>
@@ -24,7 +23,7 @@
 	
 	<!-- 로그인 -->
 	<select id="login" parameterType="loginVO" resultType="loginVO" resultMap="loginMap">
-		select a.user_id, a.user_password, name, email, USER_STATUS, HOMTAX_AGREEMENT, BANKING_AGREEMENT, TAX_AGENT_EMAIL, business_no, store_name from tb_user a, TB_BUSINESS b
+		select a.user_id, a.user_password, name, email, USER_STATUS, HOMTAX_AGREEMENT, AGREEMENT, TAX_AGENT_EMAIL, business_no, store_name from tb_user a, TB_BUSINESS b
 		where a.user_id = b.user_id
 		and a.user_id = #{id} and a.user_password = #{password}
 	</select>

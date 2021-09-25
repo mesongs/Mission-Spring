@@ -126,13 +126,11 @@ text-align: center;
 		
 		$('#goList').click(function(){
 			
-			location.href='${ pageContext.request.contextPath }/taxAgent/taxWriteForm?bNo='+ '6052355236' + "&storeName=" + '종범상회'
+			history.back();
 		
 		})
 		
 		$('#writeFile').click(function(){
-			
-			alert('pdf생성 테스트')
 			
 			// form 태그를 submit해야할 듯, 그전에 pdf 생성 테스트하기
 			html2canvas($('#pdfDiv')[0]).then(function(canvas) { //저장 영역 div id
@@ -181,10 +179,17 @@ text-align: center;
 <body>
 	
 	<!--================Header Menu Area =================-->
-	<jsp:include page="/WEB-INF/jsp/include/header.jsp"/>
+	<%-- <jsp:include page="/WEB-INF/jsp/include/header.jsp"/> --%>
 	<!--================Header Menu Area =================-->
-
-	<div class="comment-form-receipt" id="comment-custom-receipt" style="width: 1110px;">
+	<div class="header">
+          <div class="logo">
+              <a href="javascript:void(0)"><img src="${ pageContext.request.contextPath }/resources/img/logo.png" alt="logo" style="width: 214px; height: 80px;"></a>
+          </div>
+    </div>
+	
+	
+	
+	<div class="comment-form-receipt" id="comment-custom-receipt" style="width: 1110px; margin-top: 50px;">
 		<div class="row">
 			<div class="col">
 				<h4 style="font-family: 'Noto Sans KR', sans-serif;font-size: xx-large; margin-left: 32px;">세금신고서 작성</h4>

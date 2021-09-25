@@ -1,11 +1,16 @@
 package kr.ac.kopo.financial.service;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +22,9 @@ import kr.ac.kopo.financial.vo.ReturnPurchaseVO;
 import kr.ac.kopo.financial.vo.ReturnSalesVO;
 import kr.ac.kopo.financial.vo.SalesReportVO;
 import kr.ac.kopo.financial.vo.SalesVO;
+import kr.ac.kopo.financial.vo.SmsReportInfoVO;
+import net.nurigo.java_sdk.api.Message;
+import net.nurigo.java_sdk.exceptions.CoolsmsException;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -195,6 +203,151 @@ public class FinancialServiceImpl implements FinancialService {
 		return map;
 	}
 
+
+	@Override
+	public void sendSmsSummary() {
+		
+		String api_key = "NCSRI4WNPD7KEZQ6";
+		String api_secret = "WASOT4YPEKCAPHICV7KM1IWKFESCN4EK";
+
+		Message coolsms = new Message(api_key, api_secret);
+		
+		// sms정보 수신 동의한 회원들의 정보만 가져옴(전화번호, 사업장명 등)
+		SmsReportInfoVO smsCustomerInfo = financialDAO.getPhoneNumber();
+		
+		String sendStoreName =  smsCustomerInfo.getStoreName();
+		String phoneNumber = smsCustomerInfo.getPhone();
+		String businessNo = smsCustomerInfo.getBusinessNo();
+		
+		// 파라미터로 넘길 날짜 추출
+		Calendar calendar = new GregorianCalendar();
+		SimpleDateFormat SDF = new SimpleDateFormat("yyyyMMdd");
+		// 오늘 날짜
+		String chkDate = SDF.format(calendar.getTime());		
+//		System.out.println("Today : " + chkDate);
+
+		// 날짜에서 요일 추출하기
+		String []weeks = {"일","월","화","수","목","금","토"};
+		Calendar c= Calendar.getInstance();
+		
+		// 어제 날짜 구하기
+		calendar.add(Calendar.DATE, -1);
+		String yesterdayDate = SDF.format(calendar.getTime());
+		
+		String sendYesterdayDate = getDate(yesterdayDate);
+//		System.out.println("날짜추출한거 : "+subYesterdayDate);
+		
+//		System.out.println("어제날짜 : " + yesterdayDate);
+		c.set(Integer.parseInt(yesterdayDate.substring(0,4))
+		        ,Integer.parseInt(yesterdayDate.substring(4,6))-1
+		        ,Integer.parseInt(yesterdayDate.substring(6,8)) );
+		String sendYesterdayWeek= "("+weeks[c.get(Calendar.DAY_OF_WEEK)-1]+")"; 
+		
+		
+		// 그저 께 날짜 구하기, 처음에 -2했는데, 이미 -1되있으니까 여기서 -1만 해주면됨
+		calendar.add(Calendar.DATE, -1);		
+		String dayBeforeDate = SDF.format(calendar.getTime());	
+		
+		String sendDayBeforeDate = getDate(dayBeforeDate);
+//		System.out.println("그저께 날짜 : " + dayBeforeDate);
+		c.set(Integer.parseInt(dayBeforeDate.substring(0,4))
+		        ,Integer.parseInt(dayBeforeDate.substring(4,6))-1
+		        ,Integer.parseInt(dayBeforeDate.substring(6,8)) );
+		String sendDayBeforeWeek= "("+ weeks[c.get(Calendar.DAY_OF_WEEK)-1] + ")";
+		
+		SmsReportInfoVO requestInfo = new SmsReportInfoVO();
+		
+		requestInfo.setBusinessNo(businessNo);
+		requestInfo.setYesterday(yesterdayDate);
+		requestInfo.setDayBefore(dayBeforeDate);
+		
+		// 사업자번호는 이미 들어있으니까 어제랑 그저께 날짜만 set해서 보내줌
+		SmsReportInfoVO sendInfoVO = financialDAO.getYesterdayDayBeforeSales(requestInfo);
+		
+		
+		// storeName변수와 sendInfoVO가지고 있는 값을 문자로 전송함
+		// sendInfo에 전 날 매출액 + 전 전날 매출액
+		int yesterdaySalesSum = sendInfoVO.getYesterdaySum();
+		int dayBeforeSalesSum = sendInfoVO.getDayBeforeSum();
+		
+		// 숫자 콤마 찍기
+		DecimalFormat formatter = new DecimalFormat("###,###");
+		
+		String sendYesterdaySalesSum = formatter.format(yesterdaySalesSum) + "원";
+		String sendDayBeforeSalesSum = formatter.format(dayBeforeSalesSum) + "원";
+		String sendfullYesterday = sendYesterdayDate + sendYesterdayWeek;
+		String sendfullDayBefore = sendDayBeforeDate + sendDayBeforeWeek;
+		
+
+		
+//			\n으로 줄바꿈해보기
+			HashMap<String, String> params = new HashMap<String, String>();
+			params.put("to", phoneNumber);
+			params.put("from", "01090258049");
+			params.put("type", "LMS");
+			params.put("text", "[사업보고서 업데이트 안내]" + "\n" 
+						+ "안녕하세요. 하나WITH입니다." + "\n"
+						+ sendStoreName + " 사장님의 사업보고서가 업데이트 되었습니다." + "\n"
+						+ sendfullYesterday + ":" + sendYesterdaySalesSum + "\n"
+						+ sendfullDayBefore + ":" + sendDayBeforeSalesSum + "\n"
+						+ "자세한 사항은 하나WITH 홈페이지에서 확인하실 수 있습니다.");	
+
+//[사업보고서 업데이트 안내]
+//안녕하세요. 하나WITH입니다.
+//미송초밥 사장님의 사업보고서가 업데이트 되었습니다.
+//09-24(금요일) 매출액 : 240,000원
+//09-23(금요일) 매출액 : 330,000원
+//자세한 사항은 하나WITH 홈페이지에서 확인하실 수 있습니다.
+			
+			
+			try {
+				// json 형식으로 변경해서 api 요청
+				JSONObject obj = (JSONObject) coolsms.send(params);
+				System.out.println(obj.toString());
+
+			} catch (CoolsmsException e) {
+				System.out.println(e.getMessage());
+				System.out.println(e.getCode());
+			}
+			
+			
+			
+			
+			
+			
+			
+			
+		
+		
+		
+		
+	}
+
+	// 20210924 => 하이픈 추가, substring으로 09-24이렇게 뽑아내기 
+	public static String getDate(String str) {
+        
+		String monthDay = null ;
+		
+        if(str == null) {
+            return str;
+        }
+        
+        int size = str.length();
+        
+        if(size==4) {
+            return str;
+        }else if(size==6) {
+            str = str.substring(0,4)+"-"+str.substring(4,6);
+        }else if(size==8) {
+            str = str.substring(0,4)+"-"+str.substring(4,6)+"-"+str.substring(6,8);
+            monthDay = str.substring(5,10);
+        }else {
+            return str;
+        }
+        
+        return monthDay;
+        
+    }
 	
 	
 	

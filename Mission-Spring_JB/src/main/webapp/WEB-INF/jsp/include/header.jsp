@@ -119,7 +119,7 @@ html, body {height: 100%;}
               	
               	<c:otherwise>
               		<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/register">증빙관리</a>
-	                <li class="nav-item"><a class="nav-link" href="supprotCenter.jsp">지원센터</a>
+	                <li class="nav-item"><a class="nav-link" href="supprotCenter.jsp">고객문의</a>
               	</c:otherwise>
               </c:choose>
               

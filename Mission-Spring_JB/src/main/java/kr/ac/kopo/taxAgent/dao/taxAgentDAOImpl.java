@@ -149,6 +149,30 @@ public class taxAgentDAOImpl implements TaxAgentDAO {
 		
 		return totalRecord;
 	}
+	
+	@Override
+	public List<CustomerSalesVO> getFirstPageList(HashMap<String, Object> map) {
+		
+		List<CustomerSalesVO> getFirstPageList = sqlSessionTemplate.selectList("taxAgent.taxAgentDAO.getFirstPageList", map);
+		
+		return getFirstPageList;
+	}
+
+	@Override
+	public List<customerPurchaseVO> getpurchaseFirstPageList(HashMap<String, Object> map) {
+		
+		List<customerPurchaseVO> getPurchaseFirstPageList = sqlSessionTemplate.selectList("taxAgent.taxAgentDAO.getPurchaseFirstList", map);
+		
+		return getPurchaseFirstPageList;
+	}
+
+	@Override
+	public int getPurchaseTotalRecord(HashMap<String, String> map) {
+		
+		int totalPurchaseRecord = sqlSessionTemplate.selectOne("taxAgent.taxAgentDAO.totalPurchaseRecordCount", map);
+		
+		return totalPurchaseRecord;
+	}
 
 	
 	

@@ -119,7 +119,7 @@ public class TaxAgentController {
 	}
 	
   
-
+	// 통합 매입 조회 ajax
 	@RequestMapping("/taxAgent/getPurchaseListAjax")
 	@ResponseBody
 	public HashMap<String, Object> getPurchaseListAjax(@RequestParam HashMap<String, String> map){

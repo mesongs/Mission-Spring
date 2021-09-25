@@ -13,4 +13,5 @@ public interface FinancialService {
 	// 매입 시각화 데이터 처리 후 리턴
 	HashMap<String, Object> getPurchaseInfo(String businessNo);
 	
+	void sendSmsSummary();
 }

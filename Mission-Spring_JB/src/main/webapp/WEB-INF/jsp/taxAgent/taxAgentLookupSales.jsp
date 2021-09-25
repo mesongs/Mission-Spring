@@ -20,6 +20,12 @@
 
 <style>
 
+th{
+background-color: rgb(240,245,243);
+
+}
+
+
 .tabMove:hover { color: rgb(2,2,2); font-weight: bold; }
 .tabMove { text-decoration: none; }
 .tabMove:hover { text-decoration: none;}
@@ -62,6 +68,11 @@ th{
 
 	font-size: 20px;
 
+}
+
+.active{
+
+color: #3a82ce;
 }
 
 </style>
@@ -161,17 +172,16 @@ $(document).ready(function(){
 			
 	})
 	
-	//getSalesRow();
-	
 	function getSalesRow(){
 		
 		// select value가져오기
 		let selectYear = $('#selectYear').val() 
 		let selectOrder = $('#selectOrder').val()
-		
+		let curPage = 1; //
 		$.ajax({
+			async: false,
 			type : "get",
-			data : {selectYear : selectYear, selectOrder : selectOrder},
+			data : {selectYear : selectYear, selectOrder : selectOrder, curPage : curPage},
 			url : "${pageContext.request.contextPath}/taxAgent/getPurchaseListAjax",
 			success : function(result){
 				
@@ -227,7 +237,8 @@ $(document).ready(function(){
 				// 집계에 있는 비용 합계에도 동일하게 들어감
 				$('#purchaseAllSum').html(numberWithCommas(obj.customerPurchaseVO.purchaseSum)+"원");
 				
-				let ObjPurchaseList = obj.purchaseList
+				let ObjPurchaseList = obj.purchasePageRowList
+				
 								
 		 		 $('#test').empty();
 		 		 
@@ -250,7 +261,8 @@ $(document).ready(function(){
 		 					 str += "</tr>"
 		 					 
 		 					 $('#test').append(str);
-		 					 
+							   
+							    
 		 					 
 					 })
 				 }
@@ -261,7 +273,21 @@ $(document).ready(function(){
 			}
 			
 			
+			
+			
 		})
+		
+			purchasePageCountStr = "<p class='paging' style='margin-top: 20px;'>"
+			purchasePageCountStr += "<span><i class='fas fa-chevron-left'></i></span>"
+			purchasePageCountStr += "<span>1</span>"
+			purchasePageCountStr += "<span>2</span>"
+			purchasePageCountStr += "<span>3</span>"
+			purchasePageCountStr += "<span>4</span>"
+			purchasePageCountStr += "<span>5</span>"
+			purchasePageCountStr += "<span><i class='fas fa-chevron-right'></i></span>"
+			purchasePageCountStr += "</p>"
+				
+		    $('#salesPageCount').append(purchasePageCountStr);
 		
 	}
 	
@@ -280,11 +306,16 @@ $(document).ready(function(){
 		// select value가져오기
 		let selectYear = $('#selectYear').val() 
 		let selectOrder = $('#selectOrder').val()
-		let cntPage = 1;
+		let curPage = 1;
+		
+		// 세무사가 조회를 눌러야 페이지번호가 뜸
+		// total page
+		
 		
 		$.ajax({
+			async : false,
 			type : "get",
-			data : {selectYear : selectYear, selectOrder : selectOrder},
+			data : {selectYear : selectYear, selectOrder : selectOrder, curPage : curPage},
 			url : "${pageContext.request.contextPath}/taxAgent/getSalesListAjax",
 			success : function(result){
 				
@@ -311,7 +342,7 @@ $(document).ready(function(){
 
 				// 사용자가 조회한 값의 합계 금액을 구해야함
 				
-				let ObjSalesList = obj.salesList
+				let ObjSalesList = obj.pageRowList
 				
 				
 		 		 $('#test').empty();
@@ -345,6 +376,18 @@ $(document).ready(function(){
 			
 		})
 		
+		pageCountStr = "<p class='paging' style='margin-top: 20px;'>"
+	    pageCountStr += "<span><i class='fas fa-chevron-left'></i></span>"
+	    pageCountStr += "<span>1</span>"
+	    pageCountStr += "<span>2</span>"
+	    pageCountStr += "<span>3</span>"
+	    pageCountStr += "<span>4</span>"
+	    pageCountStr += "<span>5</span>"
+	    pageCountStr += "<span><i class='fas fa-chevron-right'></i></span>"
+	    pageCountStr += "</p>"
+			
+	    $('#pageCount').append(pageCountStr);
+		
 	})
 	
 })
@@ -362,7 +405,8 @@ function summary(formName){
 		
 		
 	}
-	
+
+// 비용(통합 매입 탭으로 이동)
 function goToSales(){
 	
 	// 처음에 '수입' 탭부터 시작
@@ -371,7 +415,7 @@ function goToSales(){
 	
 	$('#salesTabCss').css('color','rgb(2,2,2)');
 //	salesTabCss purchaseTabCss  
-	$('#purchaseTabCss').css('color','#0000EE');
+	$('#purchaseTabCss').css('color','#3a82ce');
 	
 	$("input[name=tblChk]").prop('checked',false)
 
@@ -426,6 +470,7 @@ function goToSales(){
                         <ul class="subMenu">
                             <li><a href="javascript:void(0)">-신고서작성</a></li>
                             <li><a href="javascript:void(0)">-과거 신고내역 조회</a></li>
+                            <li><a href="javascript:void(0)">-HomeTax 바로가기</a></li>
                         </ul>
                     </li>
                     <li class="mainMenu" style="margin-top: 10px;">
@@ -444,7 +489,7 @@ function goToSales(){
                     <!--탭-->
                     <div class="listMenu" style="margin-bottom: 30px;">
                      <ul>
-                            <li class="active" id="salesTab"><strong style="font-size:20px;"><a href="javascript:goToSales();" id="salesTabCss">수입(매출)</a></strong></li>
+                            <li class="active" id="salesTab"><strong style="font-size:20px;"><a href="javascript:goToSales();" id="salesTabCss" style="color :#3a82ce">수입(매출)</a></strong></li>
                             <li id="purchaseTab"><strong style="font-size:20px;"><a href="javascript:goToSales();"  style="color: rgb(2,2,2);" id="purchaseTabCss">비용(매입/일반경비)</a></strong></li>
                             <li><strong style="font-size:20px; color: rgb(2,2,2);"><a href="#" style="color: rgb(2,2,2);">목록</a></strong></li>
                      </ul>
@@ -553,17 +598,10 @@ function goToSales(){
                         </div>
                     </div>
                     
-                    <div>
-					<p class="paging" style="margin-top: 20px;">
-                        <span><i class="fas fa-chevron-left"></i></span>
-                        <span>1</span>
-                        <span>2</span>
-                        <span>3</span>
-                        <span>4</span>
-                        <span>5</span>
-                        <span><i class="fas fa-chevron-right"></i></span>
-                    </p>
+                    <div id="pageCount">
+					
 					</div>
+					
 					</section>
                 </div>
 				
@@ -608,7 +646,6 @@ function goToSales(){
                                     <td><strong class="StFont">간이영수증</strong></td>
                                     <td><strong class="StFont">계산서</strong></td>
                                     <td><strong class="StFont">현금영수증</strong></td>
-                                    
                                 </tr>
                                 <tr>
                                 	<!-- 카드 매출 데이터 -->

@@ -187,8 +187,10 @@ input::placeholder{
 
 
 	table tbody th, table td {
-    border-bottom: none;
+    border-bottom: 1px solid rgba(2,2,2,0.1);
+    
 }
+
 
 	.product-img2 {
     max-width: 30px;

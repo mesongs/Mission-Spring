@@ -81,6 +81,7 @@ th{
                         <ul class="subMenu">
                             <li><a href="javascript:void(0)">-신고서작성</a></li>
                             <li><a href="javascript:void(0)">-과거 신고내역 조회</a></li>
+                            <li><a href="javascript:void(0)">-HomeTax 바로가기</a></li>
                         </ul>
                     </li>
                     <li class="mainMenu" style="margin-top: 10px;">

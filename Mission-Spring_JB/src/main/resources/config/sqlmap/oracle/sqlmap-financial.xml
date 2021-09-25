@@ -33,6 +33,13 @@
 		<result column="two_week_purchase_count" property="twoWeekPurchaseCount"></result>
 	</resultMap>
 	
+	<resultMap type="smsReportInfoVO" id="smsReportInfoMap">
+		<result column="store_name" property="storeName"/>
+		<result column="business_no" property="businessNo"/>
+		<result column="dayBefore_sum" property="dayBeforeSum"/> 
+		<result column="yesterday_sum" property="yesterdaySum"/>
+	</resultMap>
+	
 <!--<insert id="insertTable" parameterType="HashMap" statementType="CALLABLE">
   			{ CALL procedure명 (#{a}, #{b}, #{c}, #{d}) } 
  	</insert> -->
@@ -330,8 +337,21 @@
 		group by receipt_code)
 	</select>
 
+	<!-- 회원가입 시 sms정보수신에 동의한 회원리스트 -->
+	<select id="getCustomerSmsInfoList" resultType="smsReportInfoVO" resultMap="smsReportInfoMap">
+		select phone,store_name, b.business_no from tb_user a, tb_business b
+		where a.user_id = b.user_id and agreement= 'Y'
+	</select>
 	
+	<!-- 문자로 전송할 매출 Info dayBeforeSum yesterdaySum-->
+	<select id="getCustomerSmsSalesInfo" parameterType="smsReportInfoVO" resultType="smsReportInfoVO">
+		select day_before as dayBeforeSum, yesterday as yesterdaySum from 
+		(select (select decode(sum(approval_amount),null,0,sum(approval_amount)) from tb_card_sales
+		where deal_date = to_date(#{dayBefore}, 'yyyymmdd') and business_no=#{businessNo}) as day_before,
+		(select decode(sum(approval_amount),null,0,sum(approval_amount)) from tb_card_sales
+		where deal_date = to_date(#{yesterday}, 'yyyymmdd') and business_no=#{businessNo}) as yesterday
+		from dual)
+	</select>
 	
-
 	
 </mapper>

@@ -44,6 +44,10 @@ public interface TaxAgentDAO {
 	
 	int getTotalRecord(HashMap<String, String> map);
 	
+	List<CustomerSalesVO> getFirstPageList(HashMap<String, Object> map); 
 	
+	List<customerPurchaseVO> getpurchaseFirstPageList(HashMap<String, Object> map);
+	
+	int getPurchaseTotalRecord(HashMap<String, String> map);
 	
 }

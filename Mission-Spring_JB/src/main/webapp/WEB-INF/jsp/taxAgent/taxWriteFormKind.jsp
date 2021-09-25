@@ -25,7 +25,6 @@ tr:hover{
 	text-decoration: none;
 }
 td:hover{
-	
 	text-decoration: none;
 }
 
@@ -224,6 +223,7 @@ function goToCardForm(formName){
                         <ul class="subMenu">
                             <li><a href="javascript:void(0)">-신고서작성</a></li>
                             <li><a href="javascript:void(0)">-과거 신고내역 조회</a></li>
+                            <li><a href="javascript:void(0)">-HomeTax 바로가기</a></li>
                         </ul>
                     </li>
                     <li class="mainMenu" style="margin-top: 10px;">
@@ -279,28 +279,11 @@ function goToCardForm(formName){
 						
 						<hr>
 					
-						<div class="row" style="margin-top: 30px;">
-							 		<div class="col-7" style="float: left; width: 496px">
-							 			<span style="float: left; font-weight: bold; color: rgb(2,2,2); margin-bottom: 10px; margin-top:3px; font-size: 17px; ">조회기간 설정</span>
-							 			
-							 			<select name="selectYear" id="selectYear" style="margin-left: 15px; float: left; width: 100px; margin-bottom: 20px; color:#495057; height: 35px;">
-												<option value="2019">2019년</option>
-												<option value="2020">2020년</option>
-												<option value="2021" selected="selected">2021년</option>
-										</select>
-										<select name="selectOrder" id="selectOrder" style="margin-left: 15px; float: left; width: 100px; margin-bottom: 20px; color:#495057; height: 35px;">
-												<option value="1" selected="selected">1기</option>
-												<option value="2">2기</option>
-										</select>
-							 			<span style="float: left">
-												<button id="searchWriteForm" name="searchWriteForm" type="button" style="height : 35px; margin-left: 15px; border-top-left-radius: 5px;border-bottom-left-radius: 5px;border-top-right-radius: 5px;border-bottom-right-radius: 5px;">조회</button>
-										</span>
-							 		</div>
-						</div>
 						
 						
 						
-						
+						<div style="margin-top: 20px;">
+						<span class="tit"><i class="fas fa-chevron-circle-right" style="font-size: 20px;"></i> <strong style="font-size: 20px;">요약 (부가세 포함)</strong></span>
 						<form name="linkSubmit">
 						<!-- jstl형변환한거 객체에 매핑안되서 hidden으로 보내기 --> 
 						<input type="hidden" name="storeName" value="${summaryVO.storeName}">
@@ -365,6 +348,7 @@ function goToCardForm(formName){
 							
 						</table>
 						</form>
+						</div>
 						<hr>					
 						<span style="font-weight: bold; font-size: 28px;"><img class="product-img5" src="${ pageContext.request.contextPath }/resources/img/ss3.png" style="margin-left: 3px; margin-bottom: 6px;">작성서류</span>
 						<table class="styled-table" style="border: 1px solid; border-radius: 5px; width:706px; padding: 0.4rem 0;">
@@ -378,7 +362,7 @@ function goToCardForm(formName){
 								<td><a href="javascript:goToTaxBill(linkSubmit)">② 매입처별 세금계산서합계표</a></td>
 							</tr>
 							<tr>
-								<td><a href="${ pageContext.request.contextPath }/taxAgent/taxBillVatZero">③ 매입처별 계산서합계표</a></td>
+								<td><a href="#">③ 매입처별 계산서합계표</a></td>
 							</tr>
 							<tr>
 								<td><a href="#">④ 매출처별 세금계산서합계표</a></td>

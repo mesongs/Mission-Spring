@@ -230,9 +230,11 @@ public class FinancialServiceImpl implements FinancialService {
 		String []weeks = {"일","월","화","수","목","금","토"};
 		Calendar c= Calendar.getInstance();
 		
-		// 어제 날짜 구하기
-		calendar.add(Calendar.DATE, -1);
+		// 어제 날짜 구하기(시나리오 시간 6월 30일 => 6월 29일 날짜 구해야함)
+		calendar.add(Calendar.DATE, -89);
 		String yesterdayDate = SDF.format(calendar.getTime());
+		
+//		System.out.println("어제 시간 설정하기" + yesterdayDate);
 		
 		String sendYesterdayDate = getDate(yesterdayDate);
 //		System.out.println("날짜추출한거 : "+subYesterdayDate);
@@ -247,6 +249,8 @@ public class FinancialServiceImpl implements FinancialService {
 		// 그저 께 날짜 구하기, 처음에 -2했는데, 이미 -1되있으니까 여기서 -1만 해주면됨
 		calendar.add(Calendar.DATE, -1);		
 		String dayBeforeDate = SDF.format(calendar.getTime());	
+		
+//		System.out.println("그저께 시간 설정하기" + dayBeforeDate);
 		
 		String sendDayBeforeDate = getDate(dayBeforeDate);
 //		System.out.println("그저께 날짜 : " + dayBeforeDate);
@@ -279,17 +283,15 @@ public class FinancialServiceImpl implements FinancialService {
 		String sendfullDayBefore = sendDayBeforeDate + sendDayBeforeWeek;
 		
 
-		
-//			\n으로 줄바꿈해보기
-			HashMap<String, String> params = new HashMap<String, String>();
-			params.put("to", phoneNumber);
-			params.put("from", "01090258049");
-			params.put("type", "LMS");
-			params.put("text", "[사업보고서 업데이트 안내]" + "\n" 
+	    HashMap<String, String> params = new HashMap<String, String>();
+	    params.put("to", phoneNumber);
+	    params.put("from", "01090258049");
+	    params.put("type", "LMS");
+	    params.put("text", "[사업보고서 업데이트 안내]" + "\n" 
 						+ "안녕하세요. 하나WITH입니다." + "\n"
 						+ sendStoreName + " 사장님의 사업보고서가 업데이트 되었습니다." + "\n"
-						+ sendfullYesterday + ":" + sendYesterdaySalesSum + "\n"
-						+ sendfullDayBefore + ":" + sendDayBeforeSalesSum + "\n"
+						+ sendfullYesterday + " 매출 : " + sendYesterdaySalesSum + "\n"
+						+ sendfullDayBefore + " 매출 : " + sendDayBeforeSalesSum + "\n"
 						+ "자세한 사항은 하나WITH 홈페이지에서 확인하실 수 있습니다.");	
 
 //[사업보고서 업데이트 안내]
@@ -310,20 +312,11 @@ public class FinancialServiceImpl implements FinancialService {
 				System.out.println(e.getCode());
 			}
 			
-			
-			
-			
-			
-			
-			
-			
-		
-		
 		
 		
 	}
 
-	// 20210924 => 하이픈 추가, substring으로 09-24이렇게 뽑아내기 
+	// 날짜 20210924 => 하이픈 추가(sms로 필요한 것만..), substring으로 09-24이렇게 뽑아내기 
 	public static String getDate(String str) {
         
 		String monthDay = null ;

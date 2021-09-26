@@ -670,7 +670,11 @@ function YMDFormatter(num){
 													<input type="hidden" id="sendArray" name="sendArray" value="">
 													<input type="hidden" id="amountValue" name="amountValue" value="">
 													<input type="hidden" id="vatValue" name="vatValue" value="">
-													<button type="submit" id="excelBtn" style="float : right;"><img class="product-img" src="${ pageContext.request.contextPath }/resources/img/excel.png">Excel 다운로드</button>
+													
+												<span style="float: right;">
+												 	<button type="submit" id="excelBtn" style="height : 35px; border-top-left-radius: 5px;border-bottom-left-radius: 5px;border-top-right-radius: 5px;border-bottom-right-radius: 5px; font-size: 16px;"><i class="fas fa-file-excel"></i><span style="margin-left:5px;">Excel 다운로드</span></button>
+												</span>	
+												
 												</form>
 									</div>
 									

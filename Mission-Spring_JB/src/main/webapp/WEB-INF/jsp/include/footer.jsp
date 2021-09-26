@@ -123,22 +123,27 @@ function openSocket(){
  
 </script>
 
-<footer class="footer-area section-padding" id="footer-area">
+<footer class="footer-area section-padding" id="footer-area" style="margin-top: 120px;">
     <div class="container">
       <div class="row">
         <div class="col-lg-3  col-md-6 col-sm-6">
           <div class="single-footer-widget">
-            <h6>About Us</h6>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore dolore magna aliqua.
+            <h6 style="margin-bottom:15px;">About Us</h6>
+            <p style="font-family: 'Noto Sans KR', sans-serif; color: rgba(2,2,2,0.7) ">
+             하나WITH는,<br>
+             <i class="far fa-laugh-squint"></i><span style="margin-left: 5px;">소상공인을 위한 통합 매입/매출 조회 서비스</span><br>
+             <i class="far fa-laugh-squint"></i><span style="margin-left: 5px;">소상공인의 사업장 경영을 위한 사업보고서 서비스</span><br>
+            <i class="far fa-laugh-squint"></i><span style="margin-left: 5px;">세무사의 간편한 업무를 위한 세무신고서 자동 생성 서비스</span><br>
             </p>
             <p id="webSocketTest"></p>
           </div>
         </div>
         <div class="col-lg-4  col-md-6 col-sm-6">
           <div class="single-footer-widget">
-            <h6>Newsletter</h6>
-            <p>Stay update with our latest</p>
+            <h6 style="margin-bottom:15px;">Newsletter</h6>
+            <p style="font-family: 'Noto Sans KR', sans-serif; color: rgba(2,2,2,0.7)">
+            	<i class="fas fa-envelope-square"></i><span style="margin-left: 5px;">SMS 수신에 동의하시면, <br>하나WITH에서 제공하는 사업보고서를 정기적으로 받아보실 수 있습니다.</span>
+            </p>
             <div class="" id="mc_embed_signup">
 
               <form target="_blank" novalidate="true" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"
@@ -156,25 +161,32 @@ function openSocket(){
         </div>
         <div class="col-lg-3  col-md-6 col-sm-6">
           <div class="single-footer-widget mail-chimp">
-            <h6 class="mb-20">Instragram Feed</h6>
+            <h6 class="mb-20" style="margin-bottom:15px;">Quick Links</h6>
+            <p style="font-family: 'Noto Sans KR', sans-serif; color: rgba(2,2,2,0.7)">
+            <i class="fas fa-external-link-alt"></i><a href="#" style="color: rgba(2,2,2,0.7)"><span style="margin-left: 5px;">하나금융티아이</span></a><br>
+            <i class="fas fa-external-link-alt"></i><a href="#" style="color: rgba(2,2,2,0.7)"><span style="margin-left: 5px;">하나은행</span></a><br>
+            <i class="fas fa-external-link-alt"></i><a href="#" style="color: rgba(2,2,2,0.7)"><span style="margin-left: 5px;">하나금융투자</span></a><br>
+            <i class="fas fa-external-link-alt"></i><a href="#" style="color: rgba(2,2,2,0.7)"><span style="margin-left: 5px;">하나카드</span></a><br>
+            <i class="fas fa-external-link-alt"></i><a href="#" style="color: rgba(2,2,2,0.7)"><span style="margin-left: 5px;">하나캐피탈</span></a><br>
+            <i class="fas fa-external-link-alt"></i><a href="#" style="color: rgba(2,2,2,0.7)"><span style="margin-left: 5px;">하나생명</span></a><br>
+            </p>
           </div>
         </div>
         <div class="col-lg-2 col-md-6 col-sm-6">
           <div class="single-footer-widget">
-            <h6>Follow Us</h6>
-            <p>Let us be social</p>
+            <h6 style="margin-bottom:15px;">Follow Us</h6>
             <div class="footer-social d-flex align-items-center">
               <a href="#">
-                <i class="fab fa-facebook-f"></i>
+                <i class="fab fa-facebook-f" style="color: rgba(2,2,2,0.7)"></i>
               </a>
               <a href="#">
-                <i class="fab fa-twitter"></i>
+                <i class="fab fa-twitter" style="color: rgba(2,2,2,0.7)"></i>
               </a>
               <a href="#">
-                <i class="fab fa-dribbble"></i>
+                <i class="fab fa-dribbble" style="color: rgba(2,2,2,0.7)"></i>
               </a>
               <a href="#">
-                <i class="fab fa-behance"></i>
+                <i class="fab fa-behance" style="color: rgba(2,2,2,0.7)"></i>
               </a>
             </div>
           </div>

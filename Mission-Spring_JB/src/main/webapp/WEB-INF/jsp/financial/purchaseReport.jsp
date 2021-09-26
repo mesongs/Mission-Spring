@@ -368,14 +368,14 @@ function numberWithCommas(x) {
 
 					labels : lastWeekTrendDayArr,
 					datasets : [{
-						 
-						label : '지난주 매입액',
+						
+						label : '최근 7일 매입액',
 						data : lastWeekTrendSumArr,
 						backgroundColor : 'rgba(39, 178, 165, 0.6)',
 						pointRadius : 3
 					}, 
 					{
-						label : '2주 전 매입액',
+						label : '전 주 매입액',
 						data : lastTwoWeekPurchaseSumArr,
 						pointRadius : 3
 					}
@@ -386,7 +386,11 @@ function numberWithCommas(x) {
 				},
 				options : {
 					legend : {
-						display : false,
+						display : true,
+						labels: {
+	                         fontSize: 12,
+	                         fontColor: 'rgb(2,2,2)'
+	                         }
 					}
 					,scales : {
 						 xAxes: [{
@@ -454,7 +458,10 @@ function numberWithCommas(x) {
 							this.data.datasets.forEach(function (dataset, i) {
 								var meta = chartInstance.controller.getDatasetMeta(i);
 								meta.data.forEach(function (bar, index) {
-									var data = dataset.data[index];							
+									var data = dataset.data[index];		
+									data=data.toString();
+									data=data.split(/(?=(?:...)*$)/);
+									data=data+"원"
 									ctx.fillText(data, bar._model.x, bar._model.y - 5);
 								});
 							});
@@ -473,7 +480,7 @@ function numberWithCommas(x) {
 						yAxes : [{
 							
 							ticks : {
-								stepSize: 1000000,
+								stepSize: 500000,
 								beginAtZero: true,
 								fontSize : 14
 							}
@@ -499,7 +506,7 @@ function numberWithCommas(x) {
 						
 						data : lastMonthSumArr,
 						backgroundColor:
-		                        ["rgb(152,175,173)","#27b2a5", "rgb(179,221,210)","rgb(79,186,140)","rgba(43, 63, 56, 0.2)"]
+		                        ["rgba(43,63,60,0.7)","#27b2a5", "rgb(179,221,210)","rgb(79,186,140)","rgba(43, 63, 56, 0.2)"]
 					}
 					]
 					
@@ -571,7 +578,7 @@ function numberWithCommas(x) {
 												</span>
 												<span style="line-height: 2;">
 														<span style="float: left;">전 주 대비 증감률 : </span>
-														<span class="addBold" style="float: left; margin-left: 5px;"> 12%</span>
+														<span class="addBold" style="float: left; margin-left: 5px;">29%</span>
 													<span style="float: left">
 														<c:if test="${ twoWeekSumCountVO.twoWeekSum gt recentWeekSumCountVO.recentWeekSum}">
 															<img class="upDownImg" src="${ pageContext.request.contextPath }/resources/img/down.png">

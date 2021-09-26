@@ -538,7 +538,10 @@ function goToSales(){
 												<option value="2">2기</option>
 						</select>
 							 			<span style="float: left">
-												<button id="salesListSearch" name="salesListSearch" type="button" style="height : 35px; margin-left: 15px; border-top-left-radius: 5px;border-bottom-left-radius: 5px;border-top-right-radius: 5px;border-bottom-right-radius: 5px; font-size: 18px;">조회</button>
+												<button id="salesListSearch" name="salesListSearch" type="button" style="height : 35px; margin-left: 15px; border-top-left-radius: 5px;border-bottom-left-radius: 5px;border-top-right-radius: 5px;border-bottom-right-radius: 5px; font-size: 18px; font-weight: bold;">조회</button>
+										</span>
+										<span style="float: right;">
+											 <button id="excelDownload" style="height : 35px; border-top-left-radius: 5px;border-bottom-left-radius: 5px;border-top-right-radius: 5px;border-bottom-right-radius: 5px; font-size: 18px; font-weight: bold;"><i class="fas fa-file-excel"></i><span style="margin-left:5px;">Excel 다운로드</span></button>
 										</span>
 					
                        <%-- <button type="submit" id="excelBtn" style="padding-left: 0px; margin-left: 10px; font-size: 18px;"><img class="product-img" src="${ pageContext.request.contextPath }/resources/img/excel.png" style="margin-top: -5px;">Excel 다운로드</button> --%>

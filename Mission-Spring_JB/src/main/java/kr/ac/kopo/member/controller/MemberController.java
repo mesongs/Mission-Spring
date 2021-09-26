@@ -96,13 +96,13 @@ public class MemberController {
 		//session.invalidate();
 		
 		// false
-		System.out.println(sessionStatus.isComplete());
+//		System.out.println(sessionStatus.isComplete());
 		
 		// 세션 끝났음, 종료
 		sessionStatus.setComplete();
 		
 		// true (끝난거 확인)
-		System.out.println(sessionStatus.isComplete());
+//		System.out.println(sessionStatus.isComplete());
 		
 		return "redirect:/";
 	}

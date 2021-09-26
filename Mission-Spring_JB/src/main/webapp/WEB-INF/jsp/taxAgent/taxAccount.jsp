@@ -260,7 +260,7 @@ function YMDFormatter(num){
         </div>
 	
 	<div class="wrapper" style="background-color: #ffffff;">
-	<div class="nav" style="margin-bottom: 70px; height: 770px;">
+	<div class="nav" style="margin-bottom: 70px; height: 800px;">
 
                
                 <!--회원정보-->

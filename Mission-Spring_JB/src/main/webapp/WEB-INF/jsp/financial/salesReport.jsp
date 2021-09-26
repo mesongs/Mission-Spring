@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+ <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+ <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -254,19 +256,17 @@ function numberWithCommas(x) {
 		// 전 일 매출금액
 		var commaYesterDaySales = numberWithCommas(${ returnSalesVO.yesterday })
 		var commaDayBeforeSales = numberWithCommas(${ returnSalesVO.dayBefore });
-	
+		
 		
 		document.getElementById("commaYesterDaySales").innerHTML=commaYesterDaySales + "원" ;
-
+		
 		
 		var calDayBeforeYesterday = ${ returnSalesVO.dayBefore } - ${ returnSalesVO.yesterday }
 		
 		// 전 월 증감액
 		var calLastLastSales =  ${ monthSalesVO.lastMonthSales } - ${ monthSalesVO.lastLastMonthSales }
-		  
+		
 		var commaSalesMom = numberWithCommas(calLastLastSales)
-		
-		
 		
 		
 		if(commaSalesMom.indexOf("-")){
@@ -285,11 +285,16 @@ function numberWithCommas(x) {
 		}
 		
 		
-		var salesDod = numberWithCommas(calDayBeforeYesterday)
+		// 계산한 값을 절대값으로 출력해야함
+		var salesDod = numberWithCommas(Math.abs(calDayBeforeYesterday))
+		
+		
 		
 		if(salesDod.indexOf("-")){
 			
+			
 			salesDod.replace("-", "")	
+			
 			
 		}
 		
@@ -313,19 +318,20 @@ function numberWithCommas(x) {
 		document.getElementById("AFTERNOON2Sale").innerHTML = AFTERNOON2Sale + "원";
 		document.getElementById("EVENINGSale").innerHTML = EVENINGSale + "원";
 		
-		
+
 		var customerkindArrComma = [];
-		
 		
 		var today = new Date();
 		
-		var getYesterday = (today.getDay() - 1); // 인덱스로 표현된 요일 (0~6)
-		var yesterDayMonth = ('0' + (today.getMonth() + 1)).slice(-2);
-		var yesterday = ('0' + (today.getDate() - 1)).slice(-2);
+		//var getYesterday = (today.getDay() - 1); // 인덱스로 표현된 요일 (0~6)
+		var getYesterday = '2';
+		var yesterDayMonth = ('0' + (today.getMonth() - 2)).slice(-2);
+		var yesterday = ('0' + (today.getDate() + 3)).slice(-2);
 		
-		var	getDayBefore = (today.getDay() - 2);
-	    var dayBeforeMonth = ('0' + (today.getMonth() + 1)).slice(-2);
-	    var dayBeforeDay = ('0' + (today.getDate() - 2)).slice(-2);
+		//var getDayBefore = (today.getDay() - 2);
+		var getDayBefore = '1';
+	    var dayBeforeMonth = ('0' + (today.getMonth() -2)).slice(-2);
+	    var dayBeforeDay = ('0' + (today.getDate() + 2)).slice(-2);
 		
 		var yesterdayString = yesterDayMonth  + '-' + yesterday;
 	    var dayBeforeDayString = dayBeforeMonth + '-' + dayBeforeDay;
@@ -391,8 +397,8 @@ function numberWithCommas(x) {
 		var perCutomerSale = numberWithCommas(${perCutomerSale});
 		
 		document.getElementById("perCutomerSale").innerHTML=perCutomerSale + "원" ;
-		document.getElementById("신규고객").innerHTML=customerkindArrComma[0] + "원" ;
-		document.getElementById("재방문고객").innerHTML=customerkindArrComma[1] + "원" ;
+		document.getElementById("재방문고객").innerHTML=customerkindArrComma[0] + "원" ;
+		document.getElementById("신규고객").innerHTML=customerkindArrComma[1] + "원" ;
 		
 		
 		/////////////////////////////////////////////
@@ -450,7 +456,14 @@ function numberWithCommas(x) {
 							ticks : {
 								stepSize: 300000,
 								beginAtZero: true,
-								fontSize : 14
+								fontSize : 14,
+								userCallBack:function(value, index, values){
+									value=value.toString();
+									value=value.split(/(?=(?:...)*$)/);
+									value=value.join(',');
+									return value+"원";
+									
+								}
 							}
 						}]
 						
@@ -468,7 +481,10 @@ function numberWithCommas(x) {
 							this.data.datasets.forEach(function (dataset, i) {
 								var meta = chartInstance.controller.getDatasetMeta(i);
 								meta.data.forEach(function (bar, index) {
-									var data = dataset.data[index];							
+									var data = dataset.data[index];	
+									data=data.toString();
+									data=data.split(/(?=(?:...)*$)/);
+									data=data+"원"
 									ctx.fillText(data, bar._model.x, bar._model.y - 5);
 								});
 							});
@@ -493,13 +509,13 @@ function numberWithCommas(x) {
 					labels : lastWeekArr,
 					datasets : [{
 						 
-						label : '지난주 매출액',
+						label : '최근 7일 매출액',
 						data : lastWeekSalesArr,
 						backgroundColor : 'rgba(39, 178, 165, 0.6)',
 						pointRadius : 3
 					}, 
 					{
-						label : '2주 전 매출액',
+						label :'전 주 매출액',
 						data : weekBeforeSalesArr,
 						pointRadius : 3
 					}
@@ -515,7 +531,13 @@ function numberWithCommas(x) {
 						fontSize : 20
 					},
 					legend : {
-						display : false,
+						display : true,
+						labels: {
+	                         fontSize: 15,
+	                         fontColor: 'rgb(2,2,2)'
+	                         }
+						
+						
 					}
 					,scales : {
 						 xAxes: [{
@@ -681,7 +703,10 @@ function numberWithCommas(x) {
 							this.data.datasets.forEach(function (dataset, i) {
 								var meta = chartInstance.controller.getDatasetMeta(i);
 								meta.data.forEach(function (bar, index) {
-									var data = dataset.data[index];							
+									var data = dataset.data[index];
+									data=data.toString();
+									data=data.split(/(?=(?:...)*$)/);
+									data=data+"원"
 									ctx.fillText(data, bar._model.x, bar._model.y - 5);
 								});
 							});
@@ -702,7 +727,14 @@ function numberWithCommas(x) {
 							ticks : {
 								stepSize: 1000000,
 								beginAtZero: true,
-								fontSize : 14
+								fontSize : 14,
+								userCallBack:function(value, index, values){
+									value=value.toString();
+									value=value.split(/(?=(?:...)*$)/);
+									value=value.join(',');
+									return value+"원";
+									
+								}
 							}
 						}]
 						
@@ -714,15 +746,14 @@ function numberWithCommas(x) {
 				
 			})
 		
-	   
-			
+		
 		let myChartOne = document.getElementById('myChartOne').getContext('2d');
 		let barChart = new Chart(myChartOne, {
 			
 			type : 'bar',
 			data: {
 				
-				labels : ['새벽', '아침', '점심', '오후', '저녁'],
+				labels : ['아침', '점심', '오후', '저녁'],
 				datasets : [{
 					
 					label : dayBeforeDayString + "(" + dayBeforeDayOfWeek + ")",
@@ -784,12 +815,35 @@ function numberWithCommas(x) {
 					yAxes : [{
 						
 						ticks : {
+							max : 800000,
 							stepSize: 200000,
 							beginAtZero: true,
 							fontSize : 14
 						}
 					}]
 					
+				},
+				animation: {
+					duration: 1,
+					onComplete: function () {
+						var chartInstance = this.chart,
+							ctx = chartInstance.ctx;
+						ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+						ctx.fillStyle = 'black';
+						ctx.textAlign = 'center';
+						ctx.textBaseline = 'bottom';
+
+						this.data.datasets.forEach(function (dataset, i) {
+							var meta = chartInstance.controller.getDatasetMeta(i);
+							meta.data.forEach(function (bar, index) {
+								var data = dataset.data[index];
+								data=data.toString();
+								data=data.split(/(?=(?:...)*$)/);
+								data=data+"원"
+								ctx.fillText(data, bar._model.x, bar._model.y - 5);
+							});
+						});
+					}
 				}
 
 				
@@ -919,11 +973,11 @@ function numberWithCommas(x) {
 										<div class="panel-heading">주간 매출 현황</div>
 										<div class="panel-body" style="font-size: 20px; font-size: 20px;margin-top: 15px; padding-right: 15px;">
 											<span>주간 매출 합계 : </span>
-											<span class="addBold">4,806,000원</span><br>
+											<span class="addBold"><fmt:formatNumber value="4953000" pattern="#,###" />원</span><br>
 											<span style="float: left;">전 주 대비 증감률 : </span>
-											<span class="addBold" style="float: left; margin-left: 5px;"> 12%</span><span style="float: left"><img class="upDownImg" src="${ pageContext.request.contextPath }/resources/img/up.png"></span><br>
-											<span>전 주 대비 <span class="addBold">641,000원 감소</span></span>
-									</div>
+											<span class="addBold" style="float: left; margin-left: 5px;">10%</span><span style="float: left"><img class="upDownImg" src="${ pageContext.request.contextPath }/resources/img/down.png"></span><br>
+											<span>전 주 대비 <span class="addBold"><fmt:formatNumber value="520000" pattern="#,###" />원 감소</span></span>
+									</div>		
 									</div>
 								</div>
 								<div class="col-md-4">

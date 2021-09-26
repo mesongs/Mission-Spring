@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import kr.ac.kopo.member.vo.LoginVO;
 import kr.ac.kopo.member.vo.MemberVO;
 
 public class LoginInterceptor extends HandlerInterceptorAdapter {
@@ -14,11 +15,11 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			throws Exception {
 		
 		
-		System.out.println("로그인 인터셉터 처리...");	
+//		System.out.println("로그인 인터셉터 처리");
 		// 로그인 여부 판단!
 		
 		HttpSession session = request.getSession();
-		MemberVO userVO = (MemberVO)session.getAttribute("userVO");
+		LoginVO userVO = (LoginVO)session.getAttribute("userVO");
 		
 		// 로그인 되어있지 않은 경우 => return false
 		if(userVO == null) {
@@ -30,13 +31,13 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			String uri = request.getRequestURI();
 			
 			//사용자가 요청한 전체 URI
-			System.out.println("getRequestURI : " + request.getRequestURI());
+			//System.out.println("getRequestURI : " + request.getRequestURI());
 			// /Mission-Spring
-			System.out.println("getContextPath : " + request.getContextPath());
+			//System.out.println("getContextPath : " + request.getContextPath());
 			
 			// 사용자가 입력한 uri 얻어오기
 			uri = uri.substring(request.getContextPath().length());
-			System.out.println("dest에 기록하는 uri : " + uri);
+//			System.out.println("dest에 기록하는 uri : " + uri);
 			
 			// 사용자가 로그인한 후, 가고싶은 경로를 기억시킴, MemberController 1
 			session.setAttribute("dest", uri);
@@ -50,7 +51,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			//MemberController2를 확인해보자
 			
 			//로그인 하도록 redirect
-			response.sendRedirect(request.getContextPath() + "/login");
+			response.sendRedirect(request.getContextPath() + "/member/login");
 			
 			
 			return false;

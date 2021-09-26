@@ -44,7 +44,7 @@
   			{ CALL procedure명 (#{a}, #{b}, #{c}, #{d}) } 
  	</insert> -->
 	
-  <!-- 여신금융api에 요청한 데이터 insert[배치] -->
+  <!-- 여신금융api에 요청한 데이터 insert[배치처리] -->
   <insert id="salesInsertBatch" parameterType="salesVO">
   	<foreach item="item" index="index" collection="list" separator=" " open="INSERT ALL " close="SELECT * FROM DUAL">
   			into TB_CARD_SALES(
@@ -67,12 +67,13 @@
   	</foreach>
   </insert>
 
-  	<!-- 세진이가 알려준 것 map으로 받아온 것 insert -->
+  	<!-- map으로 받아온 것 insert -->
   	<!-- <foreach collection="paramap" item="map" separator="," open="insert All" close="select * from dual"> 
     into sj_auto_account()
     values(#{map.id},) -->
 	
 	
+	<!-- 이전에 시도했던 것  -->
 	<select id="salesReportResult" parameterType="String" resultType="SalesReportVO" resultMap="returnSalesMap">
 	   select deal_date, 
        deal_time,
@@ -95,14 +96,14 @@
 	<!-- 최근 7일간 카드사별 결제금액 top5 (파라미터 : 날짜 + 사업장번호 )  -->
 	<select id="cardApprovalTop5" parameterType="String" resultType="returnSalesVO" resultMap="returnSalesMap">
 		select card_name, approval_amount from(select card_name, sum(approval_amount) as approval_amount from tb_card_sales
-		where deal_date between to_date('2020-11-18', 'yyyy-mm-dd') and to_date('2020-11-26','yyyy-mm-dd')
+		where deal_date between to_date('20210623', 'yyyy-mm-dd') and to_date('20210629','yyyy-mm-dd')
 		and business_no=#{businessNo}
 		group by card_name
 		order by approval_amount desc)
 		where rownum <![CDATA[ <= ]]> 5
 	</select>
 	
-	<!-- 서버  -->
+	<!-- 서버에 deploy했을 때 date지정  -->
 	<!-- select card_name, approval_amount from(select card_name, sum(approval_amount) as approval_amount from tb_card_sales
 		where deal_date between to_char(to_date('20201118', 'yyyy-mm-dd'), 'yyyymmdd') and to_char(to_date('20201126','yyyy-mm-dd'), 'yyyymmdd')
 		and business_no='6052355236'
@@ -110,32 +111,33 @@
 		order by approval_amount desc)
 		where rownum <= 5 -->
 	
-	
+	 
 	<!-- 전전날 매출액 / 전날 매출액 / 매출액 증감률 -->
 	<select id="salesResult" parameterType="String" resultType="returnSalesVO">
 		select day_before as dayBefore, yesterday, round((yesterday - day_before) / day_before * 100,1)||'%' as dod from 
 		(select (select decode(sum(approval_amount),null,0,sum(approval_amount)) from tb_card_sales
-		where deal_date ='20201125' and business_no=#{businessNo}) as day_before,
+		where deal_date ='20210628' and business_no=#{businessNo}) as day_before,
 		(select decode(sum(approval_amount),null,0,sum(approval_amount)) from tb_card_sales
-		where deal_date ='20201126' and business_no=#{businessNo}) as yesterday
+		where deal_date ='20210629' and business_no=#{businessNo}) as yesterday
 		from dual)
 	</select>
 	
 	<!-- 저저번 달 매출액 합계, 저번 달 매출액 합계, 매출액 증감률  -->
+	<!-- calendar클래스로 최근 한 달, 지난 한 달간을 비교 -->
 	<select id="monthSalesResult" parameterType="String" resultType="returnSalesVO">
 		select last_last_month_sales as lastLastMonthSales, last_month_sales as lastMonthSales, round((last_month_sales - last_last_month_sales) / last_last_month_sales * 100,1)||'%' as mom from 
 		(select (select decode(sum(approval_amount),null,0,sum(approval_amount)) from tb_card_sales
-		where deal_date like '202010%' and business_no=#{businessNo}) as last_last_month_sales,
+		where deal_date between '20210501' and '20210530' and business_no=#{businessNo}) as last_last_month_sales,
 		(select decode(sum(approval_amount),null,0,sum(approval_amount)) from tb_card_sales
-		where deal_date like '202011%' and business_no=#{businessNo}) as last_month_sales
+		where deal_date between '20210531' and '20210629' and business_no=#{businessNo}) as last_month_sales
 		from dual)
-	</select> 
+	</select>
 	
 	
 	<!-- 최근 7일간 매출액, 리턴값은 List<returnSalesVO> -->
 	<select id="lastWeekSales" parameterType="String" resultType="returnSalesVO" resultMap="returnSalesMap">
 		select to_char(to_date(deal_date, 'yy/mm/dd'), 'yy-mm-dd') as lastWeek, sum(approval_amount) as lastWeek_sales from tb_card_sales
-		where deal_date between to_date('2020-11-19', 'yyyy-mm-dd') and to_date('2020-11-26','yyyy-mm-dd')
+		where deal_date between to_date('20210623', 'yyyy-mm-dd') and to_date('20210629','yyyy-mm-dd')
 		and business_no=#{businessNo}
 		group by deal_date
 		order by deal_date asc
@@ -151,7 +153,7 @@
 	<!-- 저저번주 매출액 -->
 	<select id="weekBeforeLast" parameterType="String" resultType="returnSalesVO" resultMap="returnSalesMap">
 		select deal_date as week_before_last, sum(approval_amount) as week_before_last_sales from tb_card_sales
-		where deal_date between to_date('2020-11-10', 'yyyy-mm-dd') and to_date('2020-11-17','yyyy-mm-dd')
+		where deal_date between to_date('20210614', 'yyyy-mm-dd') and to_date('20210622','yyyy-mm-dd')
 		and business_no=#{businessNo}
 		group by deal_date
 	</select>
@@ -159,7 +161,7 @@
 	<!-- 고객평균 객단가 -->
 	<select id="perCutomerSale" parameterType="String" resultType="int">
 		select trunc(sum(approval_amount)/ count(*)) as cutomerAverage from TB_CARD_SALES 
-		where deal_date = '20201126' and business_no=#{businessNo}
+		where deal_date = '20210629' and business_no=#{businessNo}
 	</select>
 	
 	<!-- 전날 시간대별 판매금액 -->
@@ -168,23 +170,23 @@
 		(select decode(sum(approval_amount),null, 0, sum(approval_amount))
 		from tb_card_sales
 		where to_TIMESTAMP(deal_date||deal_time, 'yy/mm/dd hh24:mi:ss')
-		between to_TIMESTAMP('20201126 06:00:01', 'yy/mm/dd hh24:mi:ss')
-		and  to_TIMESTAMP('20201126 11:00:00', 'yy/mm/dd hh24:mi:ss') and business_no =#{businessNo}) as morning_sale,
+		between to_TIMESTAMP('20210629 06:00:01', 'yy/mm/dd hh24:mi:ss')
+		and  to_TIMESTAMP('20210629 11:00:00', 'yy/mm/dd hh24:mi:ss') and business_no =#{businessNo}) as morning_sale,
 		(select decode(sum(approval_amount),null,0,sum(approval_amount))
 		from tb_card_sales
 		where to_TIMESTAMP(deal_date||deal_time, 'yy/mm/dd hh24:mi:ss') 
-		between to_TIMESTAMP('20201126 11:00:01', 'yy/mm/dd hh24:mi:ss')
-		and  to_TIMESTAMP('20201126 14:00:00', 'yy/mm/dd hh24:mi:ss') and business_no =#{businessNo}) as AFTERNOON1_sale, 
+		between to_TIMESTAMP('20210629 11:00:01', 'yy/mm/dd hh24:mi:ss')
+		and  to_TIMESTAMP('20210629 14:00:00', 'yy/mm/dd hh24:mi:ss') and business_no =#{businessNo}) as AFTERNOON1_sale, 
 		(select decode(sum(approval_amount),null,0,sum(approval_amount))
 		from tb_card_sales
 		where to_TIMESTAMP(deal_date||deal_time, 'yy/mm/dd hh24:mi:ss') 
-		between to_TIMESTAMP('20201126 14:00:01', 'yy/mm/dd hh24:mi:ss')
-		and  to_TIMESTAMP('20201126 17:00:00', 'yy/mm/dd hh24:mi:ss') and business_no =#{businessNo}) as AFTERNOON2_sale,
+		between to_TIMESTAMP('20210629 14:00:01', 'yy/mm/dd hh24:mi:ss')
+		and  to_TIMESTAMP('20210629 17:00:00', 'yy/mm/dd hh24:mi:ss') and business_no =#{businessNo}) as AFTERNOON2_sale,
 		(select decode(sum(approval_amount),null,0,sum(approval_amount))
 		from tb_card_sales
 		where to_TIMESTAMP(deal_date||deal_time, 'yy/mm/dd hh24:mi:ss')
-		between to_TIMESTAMP('20201126 17:00:01', 'yy/mm/dd hh24:mi:ss')
-		and  to_TIMESTAMP('20201126 23:59:59', 'yy/mm/dd hh24:mi:ss') and business_no =#{businessNo}) as EVENING_sale
+		between to_TIMESTAMP('20210629 17:00:01', 'yy/mm/dd hh24:mi:ss')
+		and  to_TIMESTAMP('20210629 23:59:59', 'yy/mm/dd hh24:mi:ss') and business_no =#{businessNo}) as EVENING_sale
 		from dual
 	</select>
 	
@@ -194,23 +196,23 @@
 		(select decode(sum(approval_amount),null, 0, sum(approval_amount))
 		from tb_card_sales
 		where to_TIMESTAMP(deal_date||deal_time, 'yy/mm/dd hh24:mi:ss')
-		between to_TIMESTAMP('20201125 06:00:01', 'yy/mm/dd hh24:mi:ss')
-		and  to_TIMESTAMP('20201125 11:00:00', 'yy/mm/dd hh24:mi:ss') and business_no =#{businessNo}) as morning_sale,
+		between to_TIMESTAMP('20210628 06:00:01', 'yy/mm/dd hh24:mi:ss')
+		and  to_TIMESTAMP('20210628 11:00:00', 'yy/mm/dd hh24:mi:ss') and business_no =#{businessNo}) as morning_sale,
 		(select decode(sum(approval_amount),null,0,sum(approval_amount))
 		from tb_card_sales
 		where to_TIMESTAMP(deal_date||deal_time, 'yy/mm/dd hh24:mi:ss') 
-		between to_TIMESTAMP('20201126 11:00:01', 'yy/mm/dd hh24:mi:ss')
-		and  to_TIMESTAMP('20201126 14:00:00', 'yy/mm/dd hh24:mi:ss') and business_no =#{businessNo}) as AFTERNOON1_sale, 
+		between to_TIMESTAMP('20210628 11:00:01', 'yy/mm/dd hh24:mi:ss')
+		and  to_TIMESTAMP('20210628 14:00:00', 'yy/mm/dd hh24:mi:ss') and business_no =#{businessNo}) as AFTERNOON1_sale, 
 		(select decode(sum(approval_amount),null,0,sum(approval_amount))
 		from tb_card_sales
 		where to_TIMESTAMP(deal_date||deal_time, 'yy/mm/dd hh24:mi:ss') 
-		between to_TIMESTAMP('20201125 14:00:01', 'yy/mm/dd hh24:mi:ss')
-		and  to_TIMESTAMP('20201125 17:00:00', 'yy/mm/dd hh24:mi:ss') and business_no =#{businessNo}) as AFTERNOON12_sale,
+		between to_TIMESTAMP('20210628 14:00:01', 'yy/mm/dd hh24:mi:ss')
+		and  to_TIMESTAMP('20210628 17:00:00', 'yy/mm/dd hh24:mi:ss') and business_no =#{businessNo}) as AFTERNOON12_sale,
 		(select decode(sum(approval_amount),null,0,sum(approval_amount))
 		from tb_card_sales
 		where to_TIMESTAMP(deal_date||deal_time, 'yy/mm/dd hh24:mi:ss')
-		between to_TIMESTAMP('20201125 17:00:01', 'yy/mm/dd hh24:mi:ss')
-		and  to_TIMESTAMP('20201125 23:59:59', 'yy/mm/dd hh24:mi:ss') and business_no =#{businessNo}) as EVENING_sale
+		between to_TIMESTAMP('20210628 17:00:01', 'yy/mm/dd hh24:mi:ss')
+		and  to_TIMESTAMP('20210628 23:59:59', 'yy/mm/dd hh24:mi:ss') and business_no =#{businessNo}) as EVENING_sale
 		from dual
 	</select>
 	
@@ -219,7 +221,7 @@
 		select chk as customer_kind, sum(customer_count) as customer_count, sum(approvalSum) as customer_sale from(SELECT DEAL_DATE, CARD_NAME, COUNT(APPROVAL_AMOUNT) as customer_count, SUM(APPROVAL_AMOUNT) as approvalSum, CHK FROM 
 		(
 		SELECT A.DEAL_DATE, A.DEAL_TIME, A.CARD_NAME, A.CARD_NUMBER, A.APPROVAL_AMOUNT, A.BUSINESS_NO, B.CHK FROM 
-		(SELECT DEAL_DATE, DEAL_TIME, CARD_NAME, CARD_NUMBER, APPROVAL_AMOUNT, BUSINESS_NO, (CARD_NAME||CARD_NUMBER) AS FULLNAME FROM TB_CARD_SALES WHERE DEAL_DATE='20201012' and business_no ='6052355236') A, 
+		(SELECT DEAL_DATE, DEAL_TIME, CARD_NAME, CARD_NUMBER, APPROVAL_AMOUNT, BUSINESS_NO, (CARD_NAME||CARD_NUMBER) AS FULLNAME FROM TB_CARD_SALES WHERE DEAL_DATE='20210629' and business_no ='6052355236') A, 
 		(SELECT (CARD_NAME||CARD_NUMBER) AS FULLNAME, DECODE(COUNT(*), 1, '신규고객', '재방문고객') AS CHK FROM TB_CARD_SALES
 		where business_no =#{businessNo}
 		GROUP BY (CARD_NAME||CARD_NUMBER)) B
@@ -234,7 +236,7 @@
 		select chk as customer_kind, sum(customer_count) as customer_count, sum(approvalSum) as customer_sale from(SELECT DEAL_DATE, CARD_NAME, COUNT(APPROVAL_AMOUNT) as customer_count, SUM(APPROVAL_AMOUNT) as approvalSum, CHK FROM 
 			(
 			SELECT A.DEAL_DATE, A.DEAL_TIME, A.CARD_NAME, A.CARD_NUMBER, A.APPROVAL_AMOUNT, A.BUSINESS_NO, B.CHK FROM 
-			(SELECT DEAL_DATE, DEAL_TIME, CARD_NAME, CARD_NUMBER, APPROVAL_AMOUNT, BUSINESS_NO, (CARD_NAME||CARD_NUMBER) AS FULLNAME FROM TB_CARD_SALES WHERE deal_date between to_date('2020-11-18', 'yy/mm/dd') and to_date('2020-11-26','yy/mm/dd')
+			(SELECT DEAL_DATE, DEAL_TIME, CARD_NAME, CARD_NUMBER, APPROVAL_AMOUNT, BUSINESS_NO, (CARD_NAME||CARD_NUMBER) AS FULLNAME FROM TB_CARD_SALES WHERE deal_date between to_date('20210623', 'yy/mm/dd') and to_date('20210629','yy/mm/dd')
 			and business_no =#{businessNo}) A, 
 			(SELECT (CARD_NAME||CARD_NUMBER) AS FULLNAME, DECODE(COUNT(*), 1, '신규고객', '재방문고객') AS CHK FROM TB_CARD_SALES
 			where business_no =#{businessNo}
@@ -250,10 +252,10 @@
 	<!-- 최근 7일간 매입현황  -->
 	<select id="recentWeekPurchaseInfo" parameterType="String" resultType="returnPurchaseVO" resultMap="returnPurchaseMap">
 		select receipt_code as receipt_name, sum(calsum) as recent_week_sum, count(*) as count from(select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE, STORE_NAME, amount, vat, amount+vat as calSum, receipt_date, SUPPLIER_BUSINESS_NO
-		from tb_receipt where BUSINESS_NO=#{businessNo} and receipt_status='P' and receipt_date between '20210524' and '20210528'
+		from tb_receipt where BUSINESS_NO=#{businessNo} and receipt_status='P' and receipt_date between '20210623' and '20210629'
 		union
 		select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE, store_name, amount, vat,amount+vat as calSum, receipt_date, SUPPLIER_BUSINESS_NO
-		from TB_PURCHASE where BUSINESS_NO=#{businessNo} and receipt_date between '20210524' and '20210528')
+		from TB_PURCHASE where BUSINESS_NO=#{businessNo} and receipt_date between '20210623' and '20210629')
 		group by receipt_code
 	</select>
 	
@@ -265,30 +267,31 @@
 		to_char(to_date(receipt_date,'yy/mm/dd'),'yy-mm-dd') as receipt_date , 
 		SUPPLIER_BUSINESS_NO, 
 		division
-		from tb_receipt where BUSINESS_NO=#{businessNo} and receipt_status='P' and receipt_date between '20210522' and '20210528'
+		from tb_receipt where BUSINESS_NO=#{businessNo} and receipt_status='P' and receipt_date between '20210623' and '20210629'
 		union
 		select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE, 
 		store_name, amount, vat,amount+vat as calSum,
 		to_char(to_date(receipt_date,'yy/mm/dd'),'yy-mm-dd') as receipt_date, 
 		SUPPLIER_BUSINESS_NO, division
-		from TB_PURCHASE where BUSINESS_NO=#{businessNo} and receipt_date between '20210522' and '20210528')
+		from TB_PURCHASE where BUSINESS_NO=#{businessNo} and receipt_date between '20210623' and '20210629')
 		group by receipt_date
 		order by receipt_date asc
 	</select>
 	
+	<!-- 2주 전 매입 리스트 전 주 대비 비교  -->
 	<select id="lastTwoWeekPurchaseTrend" parameterType="String" resultType="returnPurchaseVO" resultMap="returnPurchaseMap">
 		select receipt_date, sum(calSum) as sum from(select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE,
 		STORE_NAME, amount, vat, amount+vat as calSum,
 		to_char(to_date(receipt_date,'yy/mm/dd'),'yy-mm-dd') as receipt_date , 
 		SUPPLIER_BUSINESS_NO, 
 		division
-		from tb_receipt where BUSINESS_NO=#{businessNo} and receipt_status='P' and receipt_date between '20210515' and '20210521'
+		from tb_receipt where BUSINESS_NO=#{businessNo} and receipt_status='P' and receipt_date between '20210616' and '20210622'
 		union
 		select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE, 
 		store_name, amount, vat,amount+vat as calSum,
 		to_char(to_date(receipt_date,'yy/mm/dd'),'yy-mm-dd') as receipt_date, 
 		SUPPLIER_BUSINESS_NO, division
-		from TB_PURCHASE where BUSINESS_NO=#{businessNo} and receipt_date between '20210515' and '20210521')
+		from TB_PURCHASE where BUSINESS_NO=#{businessNo} and receipt_date between '20210616' and '20210622')
 		group by receipt_date
 		order by receipt_date asc
 	</select>
@@ -296,44 +299,44 @@
 	<!-- 월간 매입 합계, 영수증 별, 합계, 수  -->
 	<select id="monthPurchaseInfo" parameterType="String" resultType="returnPurchaseVO" resultMap="returnPurchaseMap">
 		select receipt_code as receipt_name, sum(calsum) as recent_month_sum, count(*) as count from(select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE, STORE_NAME, amount, vat, amount+vat as calSum, receipt_date, SUPPLIER_BUSINESS_NO
-		from tb_receipt where BUSINESS_NO=#{businessNo} and receipt_status='P' and receipt_date between '20210501' and '20210528'
+		from tb_receipt where BUSINESS_NO=#{businessNo} and receipt_status='P' and receipt_date between '20210531' and '20210629'
 		union
 		select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE, store_name, amount, vat,amount+vat as calSum, receipt_date, SUPPLIER_BUSINESS_NO
-		from TB_PURCHASE where BUSINESS_NO=#{businessNo} and receipt_date between '20210501' and '20210528')
+		from TB_PURCHASE where BUSINESS_NO=#{businessNo} and receipt_date between '20210531' and '20210629')
 		group by receipt_code
 	</select>
 	
 	<!-- 주간 공제 / 불공제 금액 비중, section, store_kind  -->
 	<select id="recentWeekDeduction" parameterType="String" resultType="returnPurchaseVO" resultMap="returnPurchaseMap">
 		select deduction, sum(sum) as sum, count(*) as count from tb_purchase
-		where BUSINESS_NO=#{businessNo} and receipt_date between '20210522' and '20210528'
+		where BUSINESS_NO=#{businessNo} and receipt_date between '20210623' and '20210629'
 		group by deduction
 	</select>
  	
- 	<!-- 주간 매입 순위TOP3 업체 -->
+ 	<!-- 월간 매입 순위TOP3 업체 -->
 	<select id="recentWeekTop3Store" parameterType="String" resultType="returnPurchaseVO" resultMap="returnPurchaseMap">
 		select store_name, sum from(select store_name, sum(amount) as sum from TB_PURCHASE
-		where BUSINESS_NO=#{businessNo} and receipt_date between '20210522' and '20210528'
+		where BUSINESS_NO=#{businessNo} and receipt_date between '20210531' and '20210629'
 		group by store_name) where rownum <![CDATA[ <= ]]> 3
 	</select>
 	
 	<!-- 최근 주간 매입 합계  -->
 	<select id="recentWeekSumCount" parameterType="String" resultType="returnPurchaseVO" resultMap="returnPurchaseMap">
 		select sum(recent_week_sum) as recent_week_sum, sum(count) as week_purchase_count from (select receipt_code as receipt_name, sum(calsum) as recent_week_sum, count(*) as count from(select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE, STORE_NAME, amount, vat, amount+vat as calSum, receipt_date, SUPPLIER_BUSINESS_NO
-		from tb_receipt where BUSINESS_NO='6052355236' and receipt_status='P' and receipt_date between '20210524' and '20210528'
+		from tb_receipt where BUSINESS_NO='6052355236' and receipt_status='P' and receipt_date between '20210623' and '20210629'
 		union
 		select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE, store_name, amount, vat,amount+vat as calSum, receipt_date, SUPPLIER_BUSINESS_NO
-		from TB_PURCHASE where BUSINESS_NO=#{businessNo} and receipt_date between '20210524' and '20210528')
+		from TB_PURCHASE where BUSINESS_NO=#{businessNo} and receipt_date between '20210623' and '20210629')
 		group by receipt_code)
 	</select>
 	
 	<!-- 2주전 주간 매입 합계 -->
 	<select id="twoWeekSumCount" parameterType="String" resultType="returnPurchaseVO" resultMap="returnPurchaseMap">
 		select sum(recent_week_sum) as two_week_sum, sum(count) as two_week_purchase_count from (select receipt_code as receipt_name, sum(calsum) as recent_week_sum, count(*) as count from(select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE, STORE_NAME, amount, vat, amount+vat as calSum, receipt_date, SUPPLIER_BUSINESS_NO
-		from tb_receipt where BUSINESS_NO='6052355236' and receipt_status='P' and receipt_date between '20210524' and '20210528'
+		from tb_receipt where BUSINESS_NO='6052355236' and receipt_status='P' and receipt_date between '20210616' and '20210622'
 		union
 		select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE, store_name, amount, vat,amount+vat as calSum, receipt_date, SUPPLIER_BUSINESS_NO
-		from TB_PURCHASE where BUSINESS_NO=#{businessNo} and receipt_date between '20210515' and '20210521')
+		from TB_PURCHASE where BUSINESS_NO=#{businessNo} and receipt_date between '20210616' and '20210622')
 		group by receipt_code)
 	</select>
 

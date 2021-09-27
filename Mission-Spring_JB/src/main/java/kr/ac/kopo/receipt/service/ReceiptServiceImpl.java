@@ -329,12 +329,12 @@ public class ReceiptServiceImpl implements ReceiptService {
 	@Override
 	public String homeTaxConnectService(HomeTaxInfoVO homeTaxInfo) {
 		
-		System.out.println("토큰화 하기 전 : " + homeTaxInfo);
+//		System.out.println("토큰화 하기 전 : " + homeTaxInfo);
 		
 		String valid = "";
 		String tokenizerHomeTaxInfo = createToken(homeTaxInfo);
 		
-		System.out.println("토큰화 후 : " + tokenizerHomeTaxInfo);
+//		System.out.println("토큰화 후 : " + tokenizerHomeTaxInfo);
 		
 		OkHttpClient client = new OkHttpClient();
 
@@ -368,7 +368,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 		
 		// 비밀키
 		String key="jbhana";
-		
+		//ㅎㅇ 고집불
 		// 헤더에는 타입과 알고리즘
 		Map<String, Object> headers = new HashMap<>();
 		headers.put("typ", "JWT");
@@ -867,7 +867,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 			  .url("https://55c7547061ee4d91891f615ee5e7c101.apigw.ntruss.com/custom/v1/10633/1ffc0406b9891fcd265a225e83a668fa045f1282588f80c8d11c029bad156d85/infer")
 			  .post(body)
 			  .addHeader("content-type", "application/json")
-			  .addHeader("x-ocr-secret", "dFpna0dQcVlGT3JDb1hQY2hYZnlYTkRwTUtsd0lIbko=")
+			  .addHeader("x-ocr-secret", "YW9TbmZ0ekZ6RlBrZHdRQlZhekVDb2x6dW9QaG9kVEE=")
 			  .addHeader("cache-control", "no-cache")
 //			  .addHeader("postman-token", "31917011-c262-8273-4761-7a87eef0d3fa")
 			  .build();

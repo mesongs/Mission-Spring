@@ -363,7 +363,7 @@ public class receiptController {
 		}
 		
 		// 홈택스 Main으로 이동
-		// post로 로그인 정보를 받아오자 form 방식
+		// post로 로그인 정보를 받아오자 (form 태그)
 		@PostMapping("/receipt/homeTaxConnect") 
 		public String homeTaxConnect(HomeTaxInfoVO homeTaxInfo, Model model) {
 				

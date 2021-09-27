@@ -38,13 +38,15 @@
 let ws;
 
 function openSocket(){
-	
+	// http://34.64.137.151:8080/Mission-Spring_JB/receipt/processedList
+	// http://localhost:9999/Mission-Spring/receipt/rejectReceiptList
     if(ws!==undefined && ws.readyState!==WebSocket.CLOSED){
         writeResponse("WebSocket is already opened.");
         return;
     }
     // 웹소켓 객체 만드는 코드
-    ws=new WebSocket("ws://localhost:9999/Mission-Spring/echo");
+    ws=new WebSocket("ws://34.64.137.151:8080/Mission-Spring_JB/echo");
+//  ws=new WebSocket("ws://localhost:9999/Mission-Spring/echo");
     
     ws.onopen=function(event){
         if(event.data===undefined) return;

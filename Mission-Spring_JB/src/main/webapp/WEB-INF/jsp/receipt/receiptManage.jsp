@@ -569,9 +569,9 @@ function YMDFormatter(num){
 		</div>
 		<div class="container">
 			<ul class="nav nav-tabs" style="margin-left: 50px;">
-				<li class="nav-item"><a class="nav-link active" aria-current="page" href="#">처리 대기 목록</a></li>
-				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/mgProcessed">승인 목록</a></li>
-				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/mgReturn">반려 목록</a></li>
+				<li class="nav-item"><a class="nav-link active" aria-current="page" href="#"><i style="color:#27b2a5" class="fas fa-pause-circle"></i><span style="margin-left: 5px;">처리 대기 목록</span></a></li>
+				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/mgProcessed"><i style="color:#27b2a5;" class="fas fa-check-circle"></i><sapn style="margin-left: 5px;">승인 목록</sapn></a></li>
+				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/mgReturn"><i style="color:#27b2a5" class="fas fa-times-circle"></i><span style="margin-left:5px;">반려 목록</span></a></li>
 			</ul>
 			
 			<section>

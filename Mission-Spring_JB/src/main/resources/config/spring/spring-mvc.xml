@@ -19,7 +19,6 @@
 	<task:scheduler id="cardSalesScheduler" pool-size="10"/>
 	<task:annotation-driven scheduler="cardSalesScheduler"/>
 	
-	
     <mvc:annotation-driven />
 	<mvc:default-servlet-handler />
 	
@@ -88,17 +87,18 @@
 	
 	<!-- 필터-dispatcher-인터셉터 exclude로 굳이 로그인을 거치지 않아도 되는 것을 설정할 수 있음  -->
 	<!--  -->
-	<bean class="kr.ac.kopo.interceptor.LoginInterceptor" id="loginInterceptor" />
+	<!-- <bean class="kr.ac.kopo.interceptor.LoginInterceptor" id="loginInterceptor" />
 	
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/**" />
 			<mvc:exclude-mapping path="/member/login" />
+			<mvc:exclude-mapping path="/member/signUp" />
 			<mvc:exclude-mapping path="/resources/**" />
 			<mvc:exclude-mapping path="/" />
 			<ref bean="loginInterceptor" />
 		</mvc:interceptor>
-	</mvc:interceptors>
+	</mvc:interceptors> -->
 	
 
 </beans>

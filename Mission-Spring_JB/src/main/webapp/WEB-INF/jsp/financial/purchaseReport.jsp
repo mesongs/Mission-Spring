@@ -407,7 +407,14 @@ function numberWithCommas(x) {
 							ticks : {
 								stepSize: 400000,
 								beginAtZero: true,
-								fontSize : 14
+								fontSize : 14,
+								userCallback : function(value, index,
+		                                 values) {
+		                              value = value.toString();
+		                              value = value.split(/(?=(?:...)*$)/);
+		                              value = value.join(',');
+		                              return value + "원";
+		                           }
 							}
 						}]
 						
@@ -482,7 +489,14 @@ function numberWithCommas(x) {
 							ticks : {
 								stepSize: 500000,
 								beginAtZero: true,
-								fontSize : 14
+								fontSize : 14,
+								userCallback : function(value, index,
+		                                 values) {
+		                              value = value.toString();
+		                              value = value.split(/(?=(?:...)*$)/);
+		                              value = value.join(',');
+		                              return value + "원";
+		                           }
 							}
 						}]
 						
@@ -506,7 +520,7 @@ function numberWithCommas(x) {
 						
 						data : lastMonthSumArr,
 						backgroundColor:
-		                        ["rgba(43,63,60,0.7)","#27b2a5", "rgb(179,221,210)","rgb(79,186,140)","rgba(43, 63, 56, 0.2)"]
+		                        ["#27b2a5", "rgba(43,63,60,0.7)", "rgb(179,221,210)","rgb(79,186,140)","rgba(43, 63, 56, 0.2)"]
 					}
 					]
 					
@@ -699,7 +713,7 @@ function numberWithCommas(x) {
 													<c:forEach items="${ recentMonthPurchaseList }" var="recentMonthPurchaseList">
 																<tr>
 																	<th style="padding-right: 35px;">${ recentMonthPurchaseList.receiptName}</th>
-																	<td><fmt:formatNumber value="${ recentMonthPurchaseList.recentMonthSum}" pattern="#,###" />원</td>
+																	<td align="right"><fmt:formatNumber value="${ recentMonthPurchaseList.recentMonthSum}" pattern="#,###" />원</td>
 																</tr>
 													</c:forEach>
 													

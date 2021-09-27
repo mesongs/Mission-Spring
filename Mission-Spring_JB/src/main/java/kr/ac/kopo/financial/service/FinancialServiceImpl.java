@@ -231,7 +231,7 @@ public class FinancialServiceImpl implements FinancialService {
 		Calendar c= Calendar.getInstance();
 		
 		// 어제 날짜 구하기(시나리오 시간 6월 30일 => 6월 29일 날짜 구해야함)
-		calendar.add(Calendar.DATE, -89);
+		calendar.add(Calendar.DATE, -90);
 		String yesterdayDate = SDF.format(calendar.getTime());
 		
 //		System.out.println("어제 시간 설정하기" + yesterdayDate);

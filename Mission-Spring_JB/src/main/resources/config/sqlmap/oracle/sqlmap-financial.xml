@@ -256,7 +256,7 @@
 		union
 		select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE, store_name, amount, vat,amount+vat as calSum, receipt_date, SUPPLIER_BUSINESS_NO
 		from TB_PURCHASE where BUSINESS_NO=#{businessNo} and receipt_date between '20210623' and '20210629')
-		group by receipt_code
+		group by receipt_code order by recent_week_sum desc
 	</select>
 	
 
@@ -296,14 +296,14 @@
 		order by receipt_date asc
 	</select>
 	
-	<!-- 월간 매입 합계, 영수증 별, 합계, 수  -->
+	<!-- 월간 매입 합계, 영수증 별, 합계, 수 -->
 	<select id="monthPurchaseInfo" parameterType="String" resultType="returnPurchaseVO" resultMap="returnPurchaseMap">
 		select receipt_code as receipt_name, sum(calsum) as recent_month_sum, count(*) as count from(select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE, STORE_NAME, amount, vat, amount+vat as calSum, receipt_date, SUPPLIER_BUSINESS_NO
 		from tb_receipt where BUSINESS_NO=#{businessNo} and receipt_status='P' and receipt_date between '20210531' and '20210629'
 		union
 		select decode(receipt_code, '001','세금계산서','002','계산서','003','카드영수증','004','간이영수증','005','현금영수증') as RECEIPT_CODE, store_name, amount, vat,amount+vat as calSum, receipt_date, SUPPLIER_BUSINESS_NO
 		from TB_PURCHASE where BUSINESS_NO=#{businessNo} and receipt_date between '20210531' and '20210629')
-		group by receipt_code
+		group by receipt_code order by recent_month_sum desc
 	</select>
 	
 	<!-- 주간 공제 / 불공제 금액 비중, section, store_kind  -->

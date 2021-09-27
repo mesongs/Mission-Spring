@@ -326,12 +326,12 @@ function numberWithCommas(x) {
 		//var getYesterday = (today.getDay() - 1); // 인덱스로 표현된 요일 (0~6)
 		var getYesterday = '2';
 		var yesterDayMonth = ('0' + (today.getMonth() - 2)).slice(-2);
-		var yesterday = ('0' + (today.getDate() + 3)).slice(-2);
+		var yesterday = ('0' + (today.getDate() + 2)).slice(-2);
 		
 		//var getDayBefore = (today.getDay() - 2);
 		var getDayBefore = '1';
 	    var dayBeforeMonth = ('0' + (today.getMonth() -2)).slice(-2);
-	    var dayBeforeDay = ('0' + (today.getDate() + 2)).slice(-2);
+	    var dayBeforeDay = ('0' + (today.getDate() + 1)).slice(-2);
 		
 		var yesterdayString = yesterDayMonth  + '-' + yesterday;
 	    var dayBeforeDayString = dayBeforeMonth + '-' + dayBeforeDay;
@@ -457,13 +457,13 @@ function numberWithCommas(x) {
 								stepSize: 300000,
 								beginAtZero: true,
 								fontSize : 14,
-								userCallBack:function(value, index, values){
-									value=value.toString();
-									value=value.split(/(?=(?:...)*$)/);
-									value=value.join(',');
-									return value+"원";
-									
-								}
+								userCallback : function(value, index,
+		                                 values) {
+		                              value = value.toString();
+		                              value = value.split(/(?=(?:...)*$)/);
+		                              value = value.join(',');
+		                              return value + "원";
+		                           }
 							}
 						}]
 						
@@ -554,7 +554,14 @@ function numberWithCommas(x) {
 							ticks : {
 								stepSize: 400000,
 								beginAtZero: true,
-								fontSize : 14
+								fontSize : 14,
+								userCallback : function(value, index,
+		                                 values) {
+		                              value = value.toString();
+		                              value = value.split(/(?=(?:...)*$)/);
+		                              value = value.join(',');
+		                              return value + "원";
+		                           }
 							}
 						}]
 						
@@ -728,13 +735,13 @@ function numberWithCommas(x) {
 								stepSize: 1000000,
 								beginAtZero: true,
 								fontSize : 14,
-								userCallBack:function(value, index, values){
-									value=value.toString();
-									value=value.split(/(?=(?:...)*$)/);
-									value=value.join(',');
-									return value+"원";
-									
-								}
+								userCallback : function(value, index,
+		                                 values) {
+		                              value = value.toString();
+		                              value = value.split(/(?=(?:...)*$)/);
+		                              value = value.join(',');
+		                              return value + "원";
+		                           }
 							}
 						}]
 						
@@ -818,7 +825,14 @@ function numberWithCommas(x) {
 							max : 800000,
 							stepSize: 200000,
 							beginAtZero: true,
-							fontSize : 14
+							fontSize : 14,
+							userCallback : function(value, index,
+	                                 values) {
+	                              value = value.toString();
+	                              value = value.split(/(?=(?:...)*$)/);
+	                              value = value.join(',');
+	                              return value + "원";
+	                           }
 						}
 					}]
 					
@@ -888,7 +902,7 @@ function numberWithCommas(x) {
 				          display: false
 				        }
 				},
-				pieceLabel: { 
+				pieceLabel: {
 					mode:"label",
 					position:"outside",
 					fontSize: 12,
@@ -1093,19 +1107,19 @@ function numberWithCommas(x) {
 										</tr>
 										<tr>
 											<th class="reportDayByTime">아침(06시 ~ 11시)</th>
-											<td id="morningSale"></td>
+											<td id="morningSale" align="right"></td>
 										</tr>
 										<tr>
 											<th class="reportDayByTime">점심(11시 ~ 14시)</th>
-											<td id="AFTERNOON1Sale"></td>
+											<td id="AFTERNOON1Sale" align="right"></td>
 										</tr>
 										<tr>
 											<th class="reportDayByTime">오후(14시 ~ 17시)</th>
-											<td id="AFTERNOON2Sale"></td>
+											<td id="AFTERNOON2Sale" align="right"></td>
 										</tr>
 										<tr>
 											<th class="reportDayByTime">저녁(17시 ~ 22시)</th>
-											<td id="EVENINGSale"></td>
+											<td id="EVENINGSale" align="right"></td>
 										</tr>
 									</table>
 												

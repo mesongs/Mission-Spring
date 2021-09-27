@@ -5,6 +5,7 @@ public class HomeTaxInfoVO {
 	private String hometaxId;
 	private String hometaxPassword;
 	private String businessNo;
+	
 	public String getHometaxId() {
 		return hometaxId;
 	}

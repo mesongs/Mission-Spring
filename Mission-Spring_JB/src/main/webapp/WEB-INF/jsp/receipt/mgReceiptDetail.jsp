@@ -169,8 +169,9 @@ function openSocket(){
         writeResponse("WebSocket is already opened.");
         return;
     }
-    // 웹소켓 객체 만드는 코드
-    ws=new WebSocket("ws://localhost:9999/Mission-Spring/echo");
+    // 웹소켓 객체 만드는 코드 192.168.217.51
+//  ws=new WebSocket("ws://localhost:9999/Mission-Spring/echo");
+    ws=new WebSocket("ws://34.64.137.151:8080/Mission-Spring_JB/echo");
     
     ws.onopen=function(event){
         if(event.data===undefined) return;

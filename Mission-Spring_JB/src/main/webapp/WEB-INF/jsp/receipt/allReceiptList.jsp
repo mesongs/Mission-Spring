@@ -584,11 +584,11 @@ function YMDFormatter(num){
 		<div class="container">
 			<ul class="nav nav-tabs" style="margin-left: 50px;">
 				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/register"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/pictureReceipt.jpg">증빙자료 직접 등록</a></li>
-				<li class="nav-item"><a class="nav-link" href="#" style="padding-bottom: 10px";>처리 완료 목록</a></li>
-				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/receiptWaitList">처리 대기 목록</a></li>
-				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/rejectReceiptList">반려 목록</a></li>
+				<li class="nav-item"><a class="nav-link" href="#" style="padding-bottom: 10px";><i style="color:#27b2a5;" class="fas fa-check-circle"></i><sapn style="margin-left: 5px;">처리 완료 목록</sapn></a></li>
+				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/receiptWaitList"><i style="color:#27b2a5" class="fas fa-pause-circle"></i><span style="margin-left: 5px;">처리 대기 목록</span></a></li>
+				<li class="nav-item"><a class="nav-link" href="${ pageContext.request.contextPath }/receipt/rejectReceiptList"><i style="color:#27b2a5" class="fas fa-times-circle"></i><span style="margin-left:5px;">반려 목록</span></a></li>
 				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/receipt/homeTaxConnect"><img class="product-img3" src="${ pageContext.request.contextPath }/resources/img/autoCollect.png">전자 증빙자료 조회</a></li>
-				<li class="nav-item"><a class="nav-link active" aria-current="page" href="#" style="border-bottom-width: 3px;">통합 매입/매출 조회</a></li>
+				<li class="nav-item"><a class="nav-link active" aria-current="page" href="#" style="border-bottom-width: 3px;"><i style="color:#27b2a5" class="fas fa-dot-circle"></i><span style="margin-left:5px;">통합 매입/매출 조회</span></a></li>
 			</ul> 
 			
 			<section>

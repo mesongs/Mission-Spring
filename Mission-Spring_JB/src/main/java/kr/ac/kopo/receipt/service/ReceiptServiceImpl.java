@@ -368,7 +368,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 		
 		// 비밀키
 		String key="jbhana";
-		//ㅎㅇ 고집불
+		
 		// 헤더에는 타입과 알고리즘
 		Map<String, Object> headers = new HashMap<>();
 		headers.put("typ", "JWT");
